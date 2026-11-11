@@ -28,7 +28,7 @@ SOURCES = {
     "CHF": ("Swiss franc / SNB", ["https://tradingeconomics.com/switzerland/currency"], "Swiss franc SNB"),
     "GOLD": ("Gold (XAUUSD)", ["https://tradingeconomics.com/commodity/gold"], "gold price"),
     "US30": ("Dow Jones (US30)", ["https://tradingeconomics.com/united-states/stock-market"], "Dow Jones stocks"),
-    "US100": ("Nasdaq 100 (US100)", ["https://tradingeconomics.com/ndx:ind"], "Nasdaq 100 tech stocks"),
+    "US100": ("Nasdaq 100 (US100)", ["https://tradingeconomics.com/ndx:ind", "https://tradingeconomics.com/ccmp:ind"], "Nasdaq 100 tech stocks"),
     "GER30": ("DAX (GER30)", ["https://tradingeconomics.com/germany/stock-market"], "DAX German stocks"),
     "BTC": ("Bitcoin (BTCUSD)", ["https://tradingeconomics.com/btcusd:cur"], "bitcoin price"),
 }
@@ -93,6 +93,8 @@ def collect():
             status.setdefault(key, []).append(f"Google News failed: {e}")
         news[key] = {"name": name, "paragraphs": paras, "headlines": heads}
         print(f"[news] {key:6} paragraphs={len(paras)} headlines={len(heads)} {status.get(key, '')}")
+        for p_ in paras[:2]:
+            print("        >", p_[:110])
     return news, status
 
 
