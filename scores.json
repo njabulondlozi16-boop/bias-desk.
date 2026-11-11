@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-11",
+  "generated_at": "10:30 SAST",
+  "model": "gemini-3.5-flash-lite",
+  "scores": {
+    "EURUSD": {
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Strong US dollar outpaces a politically pressured euro."
+    },
+    "GBPUSD": {
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "Hot US inflation drives dollar strength, weighing on sterling."
+    },
+    "AUDUSD": {
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Soft domestic Australian data and a robust USD push the pair lower."
+    },
+    "NZDUSD": {
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "US rate hike expectations weigh heavily on the New Zealand dollar."
+    },
+    "USDCHF": {
+      "score": 6,
+      "label": "Strong Bullish",
+      "reason": "Widening US-Swiss rate differentials drive USD/CHF higher."
+    },
+    "XAUUSD": {
+      "score": -4,
+      "label": "Moderately Bearish",
+      "reason": "Higher US rate hike expectations raise the opportunity cost of gold."
+    },
+    "US30": {
+      "score": 1,
+      "label": "Neutral",
+      "reason": "AI optimism offsets broader rate-hike pressures on the index."
+    },
+    "US100": {
+      "score": 2,
+      "label": "Neutral",
+      "reason": "Upbeat tech and AI earnings support a rebound despite rate worries."
+    },
+    "GER30": {
+      "score": 2,
+      "label": "Neutral",
+      "reason": "Strong corporate earnings and tech sentiment lift the DAX near highs."
+    },
+    "BTCUSD": {
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Hotter US inflation and risk-off sentiment heavily pressure crypto."
+    }
+  },
+  "currencies": {
+    "USD": {
+      "score": 7,
+      "reason": "Strong US inflation and hawkish Fed speakers boost rate hike bets."
+    },
+    "EUR": {
+      "score": -3,
+      "reason": "Weighed down by a surging US dollar and local political concerns."
+    },
+    "GBP": {
+      "score": -2,
+      "reason": "Pound pressured by hot US inflation data despite hawkish BoE hints."
+    },
+    "AUD": {
+      "score": -4,
+      "reason": "Weak domestic surveys and peak rates reinforce dovish RBA expectations."
+    },
+    "NZD": {
+      "score": -2,
+      "reason": "Kiwi gives back gains as strong US CPI weighs on risk sentiment."
+    },
+    "CHF": {
+      "score": -5,
+      "reason": "Widening interest rate differentials with the US weaken the franc."
+    }
+  },
+  "sources": {
+    "USD": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "EUR": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "GBP": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "AUD": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "NZD": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "CHF": {
+      "paragraphs": 3,
+      "headlines": 5,
+      "problems": []
+    },
+    "GOLD": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "US30": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "US100": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "GER30": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    },
+    "BTC": {
+      "paragraphs": 3,
+      "headlines": 6,
+      "problems": []
+    }
+  }
+}
