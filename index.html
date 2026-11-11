@@ -786,6 +786,25 @@ body.chart-fs .sidenav,body.chart-fs .topbar,body.chart-fs .bottom-nav{visibilit
 .sync-steps li{margin-bottom:4px}.sync-steps b{color:var(--text,#e6ebf5)}.sync-steps code{font-size:12px;background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px}
 .sync-msg{margin-top:10px;font-size:12.5px}.sync-msg.ok{color:#22c55e}.sync-msg.err{color:#f87171}
 .sync-chip{text-decoration:none;color:inherit}.sync-chip.ok strong{color:#22c55e}.sync-chip.err strong{color:#f87171}.sync-chip.busy strong{color:#9aa4b2}
+/* journal pictures + full screen viewer */
+.shot-open{display:block;position:relative;width:100%;padding:0;border:0;background:none;cursor:zoom-in;border-radius:10px;overflow:hidden}
+.shot-open img{display:block}
+.shot-open span{position:absolute;right:8px;bottom:8px;background:rgba(6,8,15,.85);color:#e6ebf5;font:600 11px 'Space Grotesk',sans-serif;padding:4px 8px;border-radius:6px;opacity:.85;transition:opacity .15s}
+.shot-open:hover span{opacity:1;background:#2962ff}
+.shot-viewer{position:fixed;inset:0;z-index:2000;background:rgba(3,5,10,.97);display:flex;flex-direction:column;color:#e6ebf5}
+.sv-top{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+.sv-title{font:700 14px 'Space Grotesk',sans-serif;margin-right:auto}
+.sv-tabs,.sv-tools{display:flex;gap:6px;align-items:center}
+.sv-top button,.sv-dl{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#e6ebf5;border-radius:8px;min-width:34px;height:32px;padding:0 10px;font:600 13px 'Space Grotesk',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.sv-tabs button.on{background:#2962ff;border-color:#2962ff}
+.sv-x{color:#f87171!important}
+.sv-stage{flex:1;position:relative;overflow:hidden;cursor:grab;touch-action:none}
+.sv-stage.grab{cursor:grabbing}
+.sv-stage img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;user-select:none;-webkit-user-drag:none;image-rendering:auto}
+.sv-hint{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);font-size:11.5px;color:rgba(230,235,245,.55);pointer-events:none;white-space:nowrap}
+.sv-info{display:flex;flex-wrap:wrap;gap:8px 22px;padding:10px 14px 12px;border-top:1px solid rgba(255,255,255,.08);font-size:13px}
+.sv-info span{display:flex;flex-direction:column;gap:1px}.sv-info small{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8b95a7}
+@media(max-width:700px){.sv-hint{display:none}.sv-info{gap:6px 14px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -1611,7 +1630,7 @@ async function openDetail(id){
       <div><small>Duration</small><strong>${durationStr(t)}</strong></div><div><small>Bonus wins</small><strong>${(t.bonusWins||[]).length?(t.bonusWins.map(b=>'1:'+b.ratio+' (+'+b.bonusR+'R)').join(', ')):'—'}</strong></div>
     </div>
     ${t.biasReason?`<p class="pt-muted">Bias reason: ${t.biasReason}</p>`:''}
-    <div class="shots">${t.screenshot?`<figure><img src="${t.screenshot}"><figcaption>At entry</figcaption></figure>`:''}${t.closeScreenshot?`<figure><img src="${t.closeScreenshot}"><figcaption>At close</figcaption></figure>`:''}</div>
+    <div class="shots">${t.screenshot?`<figure><button class="shot-open" data-shot="0" title="View full screen"><img src="${t.screenshot}" alt="At entry"><span>⤢ View full screen</span></button><figcaption>At entry</figcaption></figure>`:''}${t.closeScreenshot?`<figure><button class="shot-open" data-shot="${t.screenshot?1:0}" title="View full screen"><img src="${t.closeScreenshot}" alt="At close"><span>⤢ View full screen</span></button><figcaption>At close</figcaption></figure>`:''}</div>
     <label class="field"><span>Notes</span><textarea id="d-notes" rows="2">${esc(t.notes||'')}</textarea></label>
     <label class="field"><span>Entry model</span><select id="d-tag"><option value="">—</option>${ENTRY_MODELS.map(x=>`<option ${t.setupTag===x?'selected':''}>${x}</option>`).join('')}</select></label>
     <label class="field"><span>Custom tags (comma separated)</span><input id="d-custom" value="${esc((t.customTags||[]).join(', '))}"></label>
@@ -1621,6 +1640,8 @@ async function openDetail(id){
     <div class="detail-actions"><button id="d-save" class="btn-primary">Save changes</button><button id="d-delete" class="btn-delete">Delete trade</button>${t.status==='OPEN'||t.status==='PENDING'?`<button id="d-close" class="btn-close-now small">${t.status==='PENDING'?'Cancel order':'Close now'}</button>`:''}</div>
   </div>`;
   document.body.appendChild(ov);
+  const shotList=[t.screenshot&&{src:t.screenshot,label:'At entry'},t.closeScreenshot&&{src:t.closeScreenshot,label:'At close'}].filter(Boolean);
+  ov.querySelectorAll('.shot-open').forEach(b=>b.addEventListener('click',()=>openShotViewer(shotList,+b.dataset.shot,t)));
   let emotion=t.emotion, rating=t.rating;
   ov.querySelectorAll('[data-emo]').forEach(b=>b.addEventListener('click',()=>{ emotion=b.dataset.emo; ov.querySelectorAll('[data-emo]').forEach(x=>x.classList.toggle('active',x===b)); }));
   ov.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',()=>{ rating=parseInt(b.dataset.star); ov.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('active',parseInt(x.dataset.star)<=rating)); }));
@@ -1972,9 +1993,17 @@ async function restoreToolForInst(inst){
   renderTool();
 }
 // Screenshot: chart canvas + FBC-style lines and pills drawn on top
+// zoom the chart onto the trade (context before the key level → the trade → a little space), take the picture, restore the view
+async function frameTradeForShot(){
+  try{ const ts=tsApi(); if(!tool||!ts||!ts.setVisibleLogicalRange||!ts.getVisibleLogicalRange) return null; const T=barTimes(); if(T.length<10) return null;
+    const prev=ts.getVisibleLogicalRange(); const L0=logicalForTime(tool.t0); if(prev===null||L0===null) return null; const last=T.length-1;
+    const from=Math.max(0,Math.min(L0,last)-70), to=Math.max(last+4,L0+(tool.wBars||13)+3);
+    ts.setVisibleLogicalRange({from,to}); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))); repositionOnly&&repositionOnly(); return prev; }catch(e){ return null; } }
 async function takeScreenshotWithOverlay(){
+  let prevRange=null;
   try{
     if(!chartRef||!chartRef.takeScreenshot) return null;
+    prevRange=await frameTradeForShot();
     const shot=chartRef.takeScreenshot(); const c=document.createElement('canvas'); c.width=shot.width; c.height=shot.height;
     const ctx=c.getContext('2d'); ctx.drawImage(shot,0,0);
     // overlay coordinates are CSS pixels; the screenshot can be in device pixels
@@ -1994,8 +2023,9 @@ async function takeScreenshotWithOverlay(){
         ctx.fillStyle=d.text; ctx.fillText(label,X0+9,py+12.5);
       }
     }
-    return c.toDataURL('image/jpeg',0.8);
+    return c.toDataURL('image/jpeg',0.9);
   }catch(e){ console.warn('screenshot',e); return null; }
+  finally{ if(prevRange){ try{ tsApi().setVisibleLogicalRange(prevRange); }catch(e){} } }
 }
 function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 async function confirmTrade(){
@@ -2674,6 +2704,51 @@ function startSyncLoop(){ if(syncTimerStarted) return; syncTimerStarted=true; se
   if(syncCfg()) setTimeout(syncNow,2500);
   setInterval(()=>{ if(syncCfg()) syncNow(); },2*60*1000);
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&syncCfg()&&Date.now()-(syncLast.at||0)>30000) syncNow(); }); }
+// ===== Screenshot viewer — full screen, zoom (wheel / pinch / double-click), drag to pan, ← → between shots =====
+function openShotViewer(shots,start,t){
+  if(!shots.length) return; let idx=Math.max(0,Math.min(start,shots.length-1));
+  const inst=getInstruments().find(i=>i.symbol===t.symbol); const fp=v=>v==null?'—':(inst?fmtPrice(inst,v):v);
+  const ov=document.createElement('div'); ov.className='shot-viewer';
+  ov.innerHTML=`<div class="sv-top">
+      <strong class="sv-title">${t.direction==='buy'?'▲ BUY':'▼ SELL'} ${esc(t.name||t.symbol)} · ${resultOf(t)}</strong>
+      <div class="sv-tabs">${shots.map((s,i)=>`<button data-i="${i}">${s.label}</button>`).join('')}</div>
+      <div class="sv-tools"><button data-z="out" title="Zoom out">−</button><button data-z="in" title="Zoom in">+</button><button data-z="fit" title="Fit to screen">Fit</button><button data-z="1" title="Actual size">1:1</button>
+      <a class="sv-dl" title="Download picture">⤓</a><button class="sv-x" title="Close (Esc)">✕</button></div></div>
+    <div class="sv-stage"><img alt="Trade screenshot" draggable="false"><span class="sv-hint">Scroll or pinch to zoom · drag to move · double-click to zoom in</span></div>
+    <div class="sv-info">
+      <span><small>Date</small>${new Date(t.entryTime).toLocaleString('en-ZA',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</span>
+      <span><small>Session</small>${esc(t.session||'—')}</span><span><small>TF</small>${esc(t.timeframe||'—')}</span>
+      <span><small>Model</small>${esc(t.setupTag||'—')} · ${esc(t.tradeType||'')}</span>
+      <span><small>Key level</small><b class="mono">${fp(t.entry)}</b></span>
+      <span><small>Invalidation</small><b class="mono">${t.slHistory&&t.slHistory.length?fp(t.slOriginal)+' → '+fp(t.sl):fp(t.sl)}</b></span>
+      <span><small>Target 1:2.5</small><b class="mono">${fp(t.tp1)}</b></span>
+      <span><small>Bias</small>${t.biasScore??'—'} ${esc(t.biasLabel||'')}</span>
+      <span><small>Result</small><b>${resultOf(t)}${t.R!=null?' · '+(t.R>0?'+':'')+t.R+'R':''}</b></span></div>`;
+  document.body.appendChild(ov);
+  const stage=ov.querySelector('.sv-stage'), img=ov.querySelector('img'); let s=1,x=0,y=0,fit=1; const pts=new Map(); let pinch=null, panning=null;
+  const apply=()=>{ img.style.transform=`translate(${x}px,${y}px) scale(${s})`; };
+  const fitNow=()=>{ const W=stage.clientWidth, H=stage.clientHeight, iw=img.naturalWidth||1, ih=img.naturalHeight||1; fit=Math.min(W/iw,H/ih); s=fit; x=(W-iw*s)/2; y=(H-ih*s)/2; apply(); };
+  const zoomAt=(f,cx,cy)=>{ const ns=Math.max(fit*0.5,Math.min(fit*12,s*f)); const k=ns/s; x=cx-(cx-x)*k; y=cy-(cy-y)*k; s=ns; apply(); };
+  const show=i=>{ idx=(i+shots.length)%shots.length; img.onload=fitNow; img.src=shots[idx].src; ov.querySelectorAll('.sv-tabs button').forEach(b=>b.classList.toggle('on',+b.dataset.i===idx));
+    const a=ov.querySelector('.sv-dl'); a.href=shots[idx].src; a.download=`${t.symbol}-${shots[idx].label.replace(/\s+/g,'-').toLowerCase()}-${t.id}.jpg`; };
+  const close=()=>{ document.removeEventListener('keydown',onKey,true); window.removeEventListener('resize',fitNow); ov.remove(); };
+  const onKey=e=>{ if(e.key==='Escape'){ e.stopPropagation(); close(); } else if(e.key==='ArrowRight') show(idx+1); else if(e.key==='ArrowLeft') show(idx-1); else if(e.key==='+'||e.key==='=') zoomAt(1.25,stage.clientWidth/2,stage.clientHeight/2); else if(e.key==='-') zoomAt(0.8,stage.clientWidth/2,stage.clientHeight/2); else if(e.key==='0') fitNow(); };
+  document.addEventListener('keydown',onKey,true); window.addEventListener('resize',fitNow);
+  ov.querySelector('.sv-x').addEventListener('click',close);
+  ov.querySelector('.sv-tabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) show(+b.dataset.i); });
+  ov.querySelector('.sv-tools').addEventListener('click',e=>{ const b=e.target.closest('[data-z]'); if(!b) return; const cx=stage.clientWidth/2, cy=stage.clientHeight/2; const z=b.dataset.z;
+    if(z==='in') zoomAt(1.4,cx,cy); else if(z==='out') zoomAt(1/1.4,cx,cy); else if(z==='fit') fitNow(); else if(z==='1') zoomAt(1/s,cx,cy); });
+  stage.addEventListener('wheel',e=>{ e.preventDefault(); const r=stage.getBoundingClientRect(); zoomAt(Math.exp(-e.deltaY*0.0018),e.clientX-r.left,e.clientY-r.top); },{passive:false});
+  stage.addEventListener('dblclick',e=>{ const r=stage.getBoundingClientRect(); if(s>fit*1.5) fitNow(); else zoomAt(3,e.clientX-r.left,e.clientY-r.top); });
+  stage.addEventListener('pointerdown',e=>{ stage.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); stage.classList.add('grab');
+    if(pts.size===2){ const [a,b]=[...pts.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)}; panning=null; } else panning={x:e.clientX,y:e.clientY}; });
+  stage.addEventListener('pointermove',e=>{ if(!pts.has(e.pointerId)) return; pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); const r=stage.getBoundingClientRect();
+    if(pinch&&pts.size===2){ const [a,b]=[...pts.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y); zoomAt(d/pinch.d,(a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top); pinch.d=d; }
+    else if(panning){ x+=e.clientX-panning.x; y+=e.clientY-panning.y; panning={x:e.clientX,y:e.clientY}; apply(); } });
+  const up=e=>{ pts.delete(e.pointerId); if(pts.size<2) pinch=null; if(!pts.size){ panning=null; stage.classList.remove('grab'); } else { const p=[...pts.values()][0]; panning={x:p.x,y:p.y}; } };
+  stage.addEventListener('pointerup',up); stage.addEventListener('pointercancel',up);
+  show(idx);
+}
 function renderSettings(){
   const g=document.getElementById('settings-grid'); const mode=getFeedMode();
   const themeBtns=THEMES.map(t=>`<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}"><div class="theme-swatch" style="background:linear-gradient(135deg,${t.up} 50%,${t.down} 50%)"></div>${t.name}</button>`).join('');
