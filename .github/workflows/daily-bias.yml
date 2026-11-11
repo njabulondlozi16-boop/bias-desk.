@@ -1,0 +1,40 @@
+name: Daily bias scores
+
+on:
+  schedule:
+    - cron: '40 2 * * *'   # 02:40 UTC = 04:40 SAST, so scores are ready before 05:00
+  workflow_dispatch: {}     # "Run workflow" button for an on-demand update
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: daily-bias
+  cancel-in-progress: false
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect news and score every pair
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/score.py
+      - name: Save scores.json
+        run: |
+          git config user.name "bias-desk-bot"
+          git config user.email "bias-desk-bot@users.noreply.github.com"
+          git add scores.json
+          if git diff --cached --quiet; then echo "No change"; exit 0; fi
+          git commit -m "Daily bias scores $(TZ=Africa/Johannesburg date +%F)"
+          git push
+      - name: Refresh the website
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages refresh request skipped"

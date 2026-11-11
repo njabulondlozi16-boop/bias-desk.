@@ -664,19 +664,20 @@ function lockoutRemaining(){ const l=lsGet(LOCK_KEY,null); return l&&l.until>Dat
 // ===== js/data-feed.js (merged, imports/exports resolved) =====
 // data-feed.js — Deriv WebSocket live feed + labelled DEMO fallback (Prompt 2)
 const DEFAULT_INSTRUMENTS=[
- {name:'GER30',symbol:'GER30',group:'INDEXES',type:'Index',contract:25,pip:0.1,spread:1.2,base:26597,derivSymbol:''},
- {name:'US30',symbol:'US30',group:'INDEXES',type:'Index',contract:5,pip:0.1,spread:1.5,base:52373,derivSymbol:''},
- {name:'US100',symbol:'US100',group:'INDEXES',type:'Index',contract:5,pip:0.1,spread:1.4,base:28093,derivSymbol:''},
- {name:'AUDUSD',symbol:'AUDUSD',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:0.8,base:0.6890,derivSymbol:''},
- {name:'XAUUSD',symbol:'XAUUSD',group:'FIRST PRIORITY',type:'Metal',contract:100,pip:0.01,spread:2.5,base:4048,derivSymbol:''},
- {name:'BTCUSD',symbol:'BTCUSD',group:'FIRST PRIORITY',type:'Crypto',contract:1,pip:1,spread:15,base:97400,derivSymbol:''},
- {name:'GBPUSD',symbol:'GBPUSD',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:0.9,base:1.3395,derivSymbol:''},
- {name:'NZDUSD',symbol:'NZDUSD',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:1.1,base:0.5600,derivSymbol:''},
- {name:'USDCHF',symbol:'USDCHF',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:1.0,base:0.8840,derivSymbol:''},
- {name:'EURUSD',symbol:'EURUSD',group:'FIRST PRIORITY',type:'Forex',contract:100000,pip:0.0001,spread:0.7,base:1.1195,derivSymbol:''},
+ {name:'GER30',symbol:'GER30',group:'INDEXES',type:'Index',contract:25,pip:0.1,spread:15,base:26597,derivSymbol:''},
+ {name:'US30',symbol:'US30',group:'INDEXES',type:'Index',contract:5,pip:0.1,spread:30,base:52373,derivSymbol:''},
+ {name:'US100',symbol:'US100',group:'INDEXES',type:'Index',contract:5,pip:0.1,spread:15,base:28093,derivSymbol:''},
+ {name:'AUDUSD',symbol:'AUDUSD',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:1.2,base:0.6890,derivSymbol:''},
+ {name:'XAUUSD',symbol:'XAUUSD',group:'FIRST PRIORITY',type:'Metal',contract:100,pip:0.01,spread:30,base:4048,derivSymbol:''},
+ {name:'BTCUSD',symbol:'BTCUSD',group:'FIRST PRIORITY',type:'Crypto',contract:1,pip:1,spread:30,base:97400,derivSymbol:''},
+ {name:'GBPUSD',symbol:'GBPUSD',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:1.3,base:1.3395,derivSymbol:''},
+ {name:'NZDUSD',symbol:'NZDUSD',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:1.8,base:0.5600,derivSymbol:''},
+ {name:'USDCHF',symbol:'USDCHF',group:'FOREX',type:'Forex',contract:100000,pip:0.0001,spread:1.5,base:0.8840,derivSymbol:''},
+ {name:'EURUSD',symbol:'EURUSD',group:'FIRST PRIORITY',type:'Forex',contract:100000,pip:0.0001,spread:1.0,base:1.1195,derivSymbol:''},
 ];
 const INST_KEY='bd_instruments';
 function getInstruments(){ let saved=lsGet(INST_KEY,null);
+  if(saved&&saved.length&&!lsGet('bd_mig_spread1',false)){ const est={GER30:15,US30:30,US100:15,AUDUSD:1.2,XAUUSD:30,BTCUSD:30,GBPUSD:1.3,NZDUSD:1.8,USDCHF:1.5,EURUSD:1.0}, old={GER30:1.2,US30:1.5,US100:1.4,AUDUSD:0.8,XAUUSD:2.5,BTCUSD:15,GBPUSD:0.9,NZDUSD:1.1,USDCHF:1.0,EURUSD:0.7}; saved.forEach(i=>{ if(est[i.symbol]!==undefined&&i.spread===old[i.symbol]) i.spread=est[i.symbol]; }); lsSet(INST_KEY,saved); lsSet('bd_mig_spread1',true); }
   if(saved&&saved.length&&!lsGet('bd_mig_nosynth',false)){ saved=saved.filter(i=>i.type!=='Synthetic'); lsSet(INST_KEY,saved); lsSet('bd_groups',(lsGet('bd_groups',null)||[]).filter(g=>g!=='SYNTHETICS')); lsSet('bd_mig_nosynth',true); }
    if(saved&&saved.length){ saved.forEach(i=>{ if(i.derivSymbol===undefined) i.derivSymbol=''; }); return saved; } return DEFAULT_INSTRUMENTS; }
 function saveInstruments(list){ lsSet(INST_KEY,list); }
@@ -739,9 +740,9 @@ function matchSymbols(active){
 }
 // --- Deriv endpoints, tried in order until one works (the working one is remembered) ---
 const ENDPOINTS=[
-  {id:'public26',name:'Deriv public API (2026)',url:()=>'wss://api.derivws.com/trading/v1/options/ws/public'},
-  {id:'derivws',name:'Deriv API v3 · ws.derivws.com',url:()=>`wss://ws.derivws.com/websockets/v3?app_id=${getAppId()}`},
-  {id:'binaryws',name:'Deriv API v3 · ws.binaryws.com',url:()=>`wss://ws.binaryws.com/websockets/v3?app_id=${getAppId()}`},
+  {id:'derivws',name:'Price feed A · ws.derivws.com',url:()=>`wss://ws.derivws.com/websockets/v3?app_id=${getAppId()}`},
+  {id:'binaryws',name:'Price feed B · ws.binaryws.com',url:()=>`wss://ws.binaryws.com/websockets/v3?app_id=${getAppId()}`},
+  {id:'public26',name:'Price feed C · api.derivws.com',url:()=>'wss://api.derivws.com/trading/v1/options/ws/public'},
 ];
 let epIndex=Math.max(0,ENDPOINTS.findIndex(e=>e.id===lsGet('bd_endpoint','')));
 const epStatus={}; let epFailsThisRound=0, roundSummary='';
@@ -786,7 +787,7 @@ function connect(){
   let sock; try{ sock=new WebSocket(ep.url()); }catch(e){ epStatus[ep.id]={ok:false,noOpen:true,reason:'Browser refused: '+e.message}; if(!endpointFailed(ep,'Browser refused: '+e.message)) scheduleReconnect(); return; }
   ws=sock;
   const fail=(reason,noOpen)=>{ if(done) return; done=true; try{ sock.onclose=null; sock.close(); }catch(_){} if(ws===sock) ws=null; epStatus[ep.id]={ok:false,noOpen:!!noOpen,reason}; if(feedMode==='live') setMode('connecting'); if(!endpointFailed(ep,reason)){ scheduleReconnect(); } };
-  const openTimer=setTimeout(()=>{ if(!opened) fail('no response (blocked or unreachable)',true); },9000);
+  const openTimer=setTimeout(()=>{ if(!opened) fail('no response (blocked or unreachable)',true); },7000);
   sock.onopen=async()=>{
     opened=true; clearTimeout(openTimer);
     try{
@@ -972,6 +973,12 @@ const URL_KEY='bd_scores_url', FILE_KEY='bd_bias_file', MANUAL_KEY='bd_bias_manu
 const scoresListeners=new Set();
 function onScoresChange(fn){ scoresListeners.add(fn); return ()=>scoresListeners.delete(fn); }
 function notify(){ scoresListeners.forEach(fn=>{ try{fn();}catch(e){console.warn(e);} }); }
+function defaultScoresUrls(){
+  try{ if(!/^https?:/.test(location.protocol)) return [];
+    const urls=[]; const m=location.hostname.match(/^([^.]+)\.github\.io$/i); const repo=location.pathname.split('/').filter(Boolean)[0];
+    if(m&&repo) urls.push(`https://raw.githubusercontent.com/${m[1]}/${repo}/main/scores.json`);
+    urls.push(new URL('scores.json',location.href).href); return urls; }catch(e){ return []; }
+}
 function getScoresUrl(){ return lsGet(URL_KEY,''); }
 function setScoresUrl(u){ lsSet(URL_KEY,(u||'').trim()); }
 function todaySAST(){
@@ -1013,9 +1020,11 @@ function biasBadge(symbol){
 }
 // Fetch scores file from URL, validate date is today (SAST), cache, notify. Re-checked every 15 min.
 async function fetchScores(){
-  const url=getScoresUrl(); if(!url) return {ok:false,reason:'no-url'};
+  const custom=getScoresUrl(); const urls=custom?[custom]:defaultScoresUrls(); if(!urls.length) return {ok:false,reason:'no-url'};
+  let res=null, lastReason='';
+  for(const u of urls){ try{ const r=await fetch(u+(u.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'}); if(r.ok){ res=r; break; } lastReason='http-'+r.status; }catch(e){ lastReason=e.message; } }
+  if(!res) return {ok:false,reason:lastReason||'not found'};
   try{
-    const res=await fetch(url,{cache:'no-store'}); if(!res.ok) return {ok:false,reason:'http-'+res.status};
     const data=await res.json();
     if(!data || !data.date || !data.scores) return {ok:false,reason:'bad-format'};
     if(data.date!==todaySAST()){ lsSet(FILE_KEY,data); notify(); return {ok:false,reason:'not-today',date:data.date}; }
@@ -1815,12 +1824,12 @@ function renderSettings(){
     <div class="row" style="margin-top:10px"><button id="s-save-symbols" class="btn-primary">Save symbols</button><button id="s-reconnect" class="btn-primary">Reconnect feed</button><button id="s-test-conn" class="btn-primary">🔌 Test connection</button></div>
     <div id="s-conn-results" class="conn-results">${getEndpointStatus().map(e=>`<div class="conn-row ${e.ok?'ok':e.reason?'bad':''}"><b>${e.ok?'✓':e.reason?'✗':'·'}</b><span>${esc(e.name)}</span><small>${esc(e.reason||'not tried yet')}</small></div>`).join('')}</div>
     <p class="pt-muted" style="margin-top:8px">Page opened from: <b>${location.protocol==='file:'?'a local file (file://)':esc(location.origin)}</b></p></div>
-  <div class="setting-card glass"><h3>📊 Bias scores</h3><p>Raw GitHub link to <em>scores.json</em> (written 05:00 SAST). Re-checked every 15 min. Only today's (SAST) scores show — never yesterday's.</p>
+  <div class="setting-card glass"><h3>📊 Bias scores</h3><p>Scores are written automatically every morning at 04:40 SAST by your GitHub job and loaded from <em>scores.json</em> — leave the link empty to use your own repository. Re-checked every 15 min. Only today's (SAST) scores show — never yesterday's.</p>
     <div class="row"><input id="s-scores-url" placeholder="https://raw.githubusercontent.com/.../scores.json" value="${getScoresUrl()}" style="flex:1"><button id="s-save-url" class="btn-primary">Save &amp; fetch</button></div>
     <p id="s-scores-msg" style="margin-top:8px;color:var(--muted);font-size:13px">Today (SAST): ${todaySAST()}</p>
     <div style="margin-top:12px;max-height:220px;overflow-y:auto;padding-right:4px">${manualRows}</div>
     <div class="row" style="margin-top:10px"><button id="s-save-manual" class="btn-primary">Save manual scores (today only)</button></div></div>
-  <div class="setting-card glass"><h3>💰 Money &amp; spreads</h3><p>Columns: <b>spread</b> (copy from Headway, in pips/points) · <b>contract size</b> · <b>pip/point size</b>. USD→ZAR: <strong>${rate.toFixed(2)}</strong> (${source}).</p>
+  <div class="setting-card glass"><h3>💰 Money &amp; spreads</h3><p>Columns: <b>spread</b> (estimated Headway spread — pips for forex, points for gold/indices/BTC; edit any time) · <b>contract size</b> · <b>pip/point size</b>. USD→ZAR: <strong>${rate.toFixed(2)}</strong> (${source}).</p>
     <div class="row"><label>Simulated balance (ZAR)</label><input id="s-balance" type="number" value="${lsGet('bd_balance',10000)}"><button id="s-save-bal" class="btn-primary">Save</button></div>
     <div class="row" style="margin-top:8px"><label>USD→ZAR (manual)</label><input id="s-usdzar" type="number" step="0.01" value="${lsGet('bd_usdzar',18.20)}"><button id="s-save-usdzar" class="btn-primary">Save</button></div>
     <div style="margin-top:12px;max-height:220px;overflow-y:auto;padding-right:4px">${moneyRows}</div>
