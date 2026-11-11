@@ -1628,17 +1628,20 @@ function xForTime(t){
   try{ const xl=ts.timeToCoordinate(last); if(xl===null||xl===undefined) return null; const lg=ts.coordinateToLogical(xl); const x=ts.logicalToCoordinate(lg+(tb-last)/g); return (x===null||isNaN(x))?null:x; }catch(e){ return null; }
 }
 function plotRight(){ const W=(overlay&&overlay.clientWidth)||(wrapEl&&wrapEl.clientWidth)||0; let aw=60; try{ aw=chartRef.priceScale('right').width()||aw; }catch(e){} return Math.max(0,W-aw); }
-function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null; return {x0,x1:Math.min(plotRight(),x0+Math.max(6,tool.wBars||40)*barSpacing())}; }
-function defaultT0(){ const g=currentGranularity(); const last=lastBarTime()||Math.floor(Date.now()/1000/g)*g; return last-20*g; }
+// lines start at the setup candle and are always long enough for their name pill
+function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null; return {x0,x1:Math.min(plotRight()-4,x0+Math.max((tool.wBars||13)*barSpacing(),190))}; }
+// placing a setup: scroll so there is clear space right of the current candle for the levels
+function ensureRightRoom(px){ try{ const ts=tsApi(); const T=barTimes(); if(!ts||!T.length) return; const xl=ts.timeToCoordinate(T[T.length-1]); if(xl==null) return; if(plotRight()-xl<px) ts.scrollToPosition(Math.ceil(px/barSpacing())+1,false); }catch(e){} }
+function defaultT0(){ const g=currentGranularity(); return lastBarTime()||Math.floor(Date.now()/1000/g)*g; }
 const ENTRY_MODELS=['FRVP','Engulfing sweep'];
 // Create draft setup at the current price, sensibly sized
 function createSetup(direction,inst,timeframe){
   if(!inst) return;
   if(!hasPrice(inst)){ toast('Waiting for a live price for '+inst.name+' — check the feed status'); return false; }
   const price=getState(inst).price, risk=price*0.002;
-  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m',t0:defaultT0(),wBars:26};
+  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m',t0:defaultT0(),wBars:13};
   recalcTPs(); tool.lots=Math.max(lotsFromRisk(100,inst),0.001); tool.riskZAR=calcMoney().riskZAR;
-  renderTool();
+  ensureRightRoom(215); renderTool();
   toast(`${direction.toUpperCase()} setup placed — drag the invalidation or target to adjust`);
 }
 function addExtraTP(){
