@@ -10,7 +10,7 @@ Runs on GitHub Actions every morning (04:40 SAST) so scores are ready by 05:00.
 
 Only the Python standard library is used. Needs the GEMINI_API_KEY repository secret.
 """
-import datetime, html, json, os, re, sys, time, urllib.parse, urllib.request
+import datetime, html, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 from zoneinfo import ZoneInfo
 
 SAST = ZoneInfo("Africa/Johannesburg")
@@ -51,7 +51,7 @@ def get(url, timeout=25):
         return r.read().decode("utf-8", "replace")
 
 
-def news_paragraphs(page_html, limit=6):
+def news_paragraphs(page_html, limit=3):
     """Pull the long news paragraphs out of a Trading Economics page."""
     t = re.sub(r"(?is)<(script|style|noscript)[^>]*>.*?</\1>", " ", page_html)
     chunks = re.split(r"(?i)<\s*/?\s*(?:p|div|span|h1|h2|h3|li|td|section|article)[^>]*>", t)
@@ -64,13 +64,13 @@ def news_paragraphs(page_html, limit=6):
         key = txt[:80]
         if key in seen:
             continue
-        seen.add(key); out.append(txt[:1200])
+        seen.add(key); out.append(txt[:700])
         if len(out) >= limit:
             break
     return out
 
 
-def google_news(query, limit=8):
+def google_news(query, limit=6):
     url = "https://news.google.com/rss/search?" + urllib.parse.urlencode({"q": query + " when:1d", "hl": "en-US", "gl": "US", "ceid": "US:en"})
     xml = get(url)
     titles = [html.unescape(re.sub(r"<!\[CDATA\[|\]\]>", "", m)) for m in re.findall(r"<item>.*?<title>(.*?)</title>", xml, re.S)]
@@ -140,8 +140,12 @@ def gemini_models(key):
         names = [m["name"].split("/")[-1] for m in data.get("models", [])
                  if "generateContent" in m.get("supportedGenerationMethods", [])]
         flash = [n for n in names if "flash" in n and "image" not in n and "tts" not in n and "live" not in n]
-        flash.sort(key=lambda n: (("lite" in n), ("exp" in n or "preview" in n), [-int(x) for x in re.findall(r"\d+", n)[:2]]))
-        preferred += flash + [n for n in names if "pro" in n]
+        ver = lambda n: [-int(x) for x in re.findall(r"\d+", n)[:2]] or [0]
+        stable = lambda n: ("exp" in n or "preview" in n or "latest" in n)
+        full = sorted([n for n in flash if "lite" not in n], key=lambda n: (stable(n), ver(n)))
+        lite = sorted([n for n in flash if "lite" in n], key=lambda n: (stable(n), ver(n)))
+        for i in range(max(len(full), len(lite))):
+            preferred += full[i:i+1] + lite[i:i+1]
     except Exception as e:
         print("[ai] could not list models:", e)
     return preferred or ["gemini-2.5-flash", "gemini-2.0-flash"]
@@ -151,24 +155,39 @@ def ask_ai(prompt):
     key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not key:
         raise SystemExit("GEMINI_API_KEY secret is missing. Add it in GitHub: Settings > Secrets and variables > Actions.")
-    body = json.dumps({"contents": [{"parts": [{"text": prompt}]}],
-                       "generationConfig": {"temperature": 0, "responseMimeType": "application/json"}}).encode()
+    def body_for(model, thinking=True):
+        cfg = {"temperature": 0, "responseMimeType": "application/json", "maxOutputTokens": 4096}
+        if thinking:
+            m = re.search(r"gemini-(\d+)", model)
+            major = int(m.group(1)) if m else 3
+            cfg["thinkingConfig"] = {"thinkingLevel": "low"} if major >= 3 else {"thinkingBudget": 0}
+        return json.dumps({"contents": [{"parts": [{"text": prompt}]}], "generationConfig": cfg}).encode()
     last = None
-    for model in gemini_models(key)[:6]:
+    for model in gemini_models(key)[:8]:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-        for attempt in range(2):
+        thinking = True
+        for attempt in range(3):
             try:
-                req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
-                with urllib.request.urlopen(req, timeout=120) as r:
+                req = urllib.request.Request(url, data=body_for(model, thinking), headers={"Content-Type": "application/json"})
+                with urllib.request.urlopen(req, timeout=240) as r:
                     res = json.loads(r.read().decode())
-                text = res["candidates"][0]["content"]["parts"][0]["text"]
+                text = "".join(p.get("text", "") for p in res["candidates"][0]["content"]["parts"] if not p.get("thought"))
                 text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
                 print(f"[ai] scored with {model}")
                 return json.loads(text), model
+            except urllib.error.HTTPError as e:
+                detail = e.read().decode("utf-8", "replace")[:200]
+                last = f"{model}: HTTP {e.code} {detail}"
+                print("[ai] failed", last)
+                if e.code == 400 and thinking:
+                    thinking = False; continue          # model doesn't accept thinkingConfig: retry plain
+                if e.code == 404:
+                    break                               # model not available: next model
+                time.sleep(15 if e.code in (429, 503) else 5)
             except Exception as e:
                 last = f"{model}: {e}"
                 print("[ai] failed", last)
-                time.sleep(4)
+                time.sleep(5)
     raise SystemExit("All Gemini models failed. Last error: " + str(last))
 
 
