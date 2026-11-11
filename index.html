@@ -748,6 +748,7 @@ body.chart-fs .sidenav,body.chart-fs .topbar,body.chart-fs .bottom-nav{visibilit
 .pb-openr{font:700 12px 'JetBrains Mono',monospace;padding:2px 7px;border-radius:5px;background:rgba(255,255,255,.08);color:#e6ebf5}
 .pb-openr.pos{background:rgba(8,153,129,.2);color:#22c55e}.pb-openr.neg{background:rgba(242,54,69,.2);color:#f87171}
 .pb-openr:empty{display:none}
+.pt-line.fbc[data-drag="0"]{pointer-events:none}
 </style>
 </head>
 <body>
@@ -1627,18 +1628,18 @@ function xForTime(t){
   try{ const xl=ts.timeToCoordinate(last); if(xl===null||xl===undefined) return null; const lg=ts.coordinateToLogical(xl); const x=ts.logicalToCoordinate(lg+(tb-last)/g); return (x===null||isNaN(x))?null:x; }catch(e){ return null; }
 }
 function plotRight(){ const W=(overlay&&overlay.clientWidth)||(wrapEl&&wrapEl.clientWidth)||0; let aw=60; try{ aw=chartRef.priceScale('right').width()||aw; }catch(e){} return Math.max(0,W-aw); }
-function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null; const x1=plotRight(); return {x0:Math.min(x0,x1-40),x1}; }
-function defaultT0(){ const g=currentGranularity(); const last=lastBarTime()||Math.floor(Date.now()/1000/g)*g; return last-24*g; }
+function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null; return {x0,x1:Math.min(plotRight(),x0+Math.max(6,tool.wBars||40)*barSpacing())}; }
+function defaultT0(){ const g=currentGranularity(); const last=lastBarTime()||Math.floor(Date.now()/1000/g)*g; return last-20*g; }
 const ENTRY_MODELS=['FRVP','Engulfing sweep'];
 // Create draft setup at the current price, sensibly sized
 function createSetup(direction,inst,timeframe){
   if(!inst) return;
   if(!hasPrice(inst)){ toast('Waiting for a live price for '+inst.name+' — check the feed status'); return false; }
   const price=getState(inst).price, risk=price*0.002;
-  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m',t0:defaultT0(),wBars:40};
+  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m',t0:defaultT0(),wBars:26};
   recalcTPs(); tool.lots=Math.max(lotsFromRisk(100,inst),0.001); tool.riskZAR=calcMoney().riskZAR;
   renderTool();
-  toast(`${direction.toUpperCase()} setup placed — drag any line to adjust it`);
+  toast(`${direction.toUpperCase()} setup placed — drag the invalidation or target to adjust`);
 }
 function addExtraTP(){
   if(!tool){ return false; } if(tool.locked){ toast('Trade is locked — targets can only be added before CONFIRM'); return false; }
@@ -1685,7 +1686,7 @@ function onPointerMove(e){
   if(drag.kind==='w'){ tool.wBars=Math.max(6,drag.startW+bars); repositionOnly(); return; }
   const p=priceAtY(localY(e)); if(p===null) return;
   const target=p+drag.offset; const minGap=tool.inst.pip||1e-6;
-  if(drag.kind==='entry'){ const d=target-drag.startEntry; tool.entry=drag.startEntry+d; tool.sl=drag.startSl+d; tool.entryMoved=true; tool.t0=drag.startT0+bars*currentGranularity(); }
+  if(drag.kind==='entry') return; // key level is fixed
   else if(drag.kind==='sl'&&tool.locked){
     // running trade: stop can trail past the key level (breakeven / lock profit) but must stay on the right side of price
     const mk=hasPrice(tool.inst)?getState(tool.inst).price:tool.entry; const ref=tool.status==='PENDING'?tool.entry:mk;
@@ -1729,7 +1730,7 @@ function levelDefs(){
   // FBC Ultra look: thin line from the setup to the price axis, name pill under the line at its start
   const tgt=lightChart()?{c:'#111827',t:'#ffffff'}:{c:'#ffffff',t:'#0b1220'};
   const defs=[
-    {key:'entry',price:tool.entry,label:L.entry,color:'#00a651',text:'#fff',draggable:!tool.locked,pos:'below'},
+    {key:'entry',price:tool.entry,label:L.entry,color:'#00a651',text:'#fff',draggable:false,pos:'below'},
     {key:'sl',price:tool.sl,label:L.sl+slTag(),color:'#e3193b',text:'#fff',draggable:tool.status!=='WIN',pos:slNearOrPastEntry()?'above':'below'},
     {key:'tp1',price:tool.tp1,label:L.tp1+(fin?' ✓':''),color:tgt.c,text:tgt.t,draggable:!tool.locked,pos:'below'},
   ];
@@ -1749,13 +1750,13 @@ function renderLevels(){
 }
 function zlText(){
   const inst=tool.inst, price=getState(inst).price; const out={mid:''};
-  if(tool.locked&&tool.status==='OPEN'&&hasPrice(inst)){ const r=((price-tool.entry)/riskDist())*(tool.direction==='buy'?1:-1); out.mid=`${r>=0?'+':''}${r.toFixed(2)}R`; out.midCls=r>=0?'pos':'neg'; }
+  if(tool.locked&&tool.status==='OPEN'&&hasPrice(inst)){ let r=((price-tool.entry)/riskDist())*(tool.direction==='buy'?1:-1); if(Math.abs(r)<0.005) r=0; out.mid=`${r>0?'+':''}${r.toFixed(2)}R`; out.midCls=r>=0?'pos':'neg'; }
   return out;
 }
 function repositionOnly(){
   if(!overlay||!tool) return;
   const defs=levelDefs(); const seg=segX(); const lv=overlay.querySelector('.pt-levels');
-  if(!seg){ lv.style.visibility='hidden'; return; } lv.style.visibility='';
+  if(!seg||seg.x1<=0){ lv.style.visibility='hidden'; return; } lv.style.visibility='';
   const {x0,x1}=seg; const w=x1-x0;
   const vis=x=>Math.max(0,x); // setup started off-screen: line still comes in from the left edge
   overlay.querySelectorAll('.pt-line').forEach(line=>{
@@ -1809,7 +1810,7 @@ function renderPanel(){
       ${lk?`<span class="pb-meta">${esc(tool.setupTag||'—')} · ${esc(tool.tradeType||'')}</span>`:`<span class="pb-lbl">Entry</span>${ENTRY_MODELS.map(x=>`<button class="pb-chip ${tool.setupTag===x?'active':''}" data-tag="${x}">${x}</button>`).join('')}
       <span class="pb-sep"></span>${['Scalp','Intraday','Swing'].map(x=>`<button class="pb-chip ${tool.tradeType===x?'active':''}" data-type="${x}">${x}</button>`).join('')}`}
       <details class="pb-more"><summary>⋯</summary><div class="pb-pop">
-        <div class="pt-row"><span>Key level</span><input class="lv-in" data-lv="entry" type="number" step="any" value="${fmtPrice(inst,tool.entry)}" ${lk?'disabled':''}></div>
+        <div class="pt-row"><span>Key level</span><input class="lv-in" data-lv="entry" type="number" step="any" value="${fmtPrice(inst,tool.entry)}" disabled title="Key level is fixed at the price where the setup was placed"></div>
         <div class="pt-row"><span>Invalidation</span><input class="lv-in" data-lv="sl" type="number" step="any" value="${fmtPrice(inst,tool.sl)}" ${tool.status==='WIN'?'disabled':''}></div>
         ${lk&&tool.status==='OPEN'?'<div class="pt-row"><span>Stop loss</span><button id="pt-be" class="pb-chip">Move to breakeven</button></div>':''}
         <div class="pt-row"><span>Target 1:2.5</span><input class="lv-in" data-lv="tp1" type="number" step="any" value="${fmtPrice(inst,tool.tp1)}" ${lk?'disabled':''}></div>
@@ -1821,7 +1822,7 @@ function renderPanel(){
   $p('#pt-min')?.addEventListener('click',()=>{ tool.barMin=!tool.barMin; renderPanel(); });
   slot.querySelectorAll('.lv-in').forEach(inp=>inp.addEventListener('change',()=>{ const v=parseFloat(inp.value); if(!isFinite(v)) return; const buy=tool.direction==='buy', g=tool.inst.pip||1e-6;
     if(tool.locked){ if(inp.dataset.lv!=='sl') return; moveRunningStop(v); return; }
-    if(inp.dataset.lv==='entry'){ const d=v-tool.entry; tool.entry=v; tool.sl+=d; tool.entryMoved=true; }
+    if(inp.dataset.lv==='entry') return;
     else if(inp.dataset.lv==='sl'){ if(buy?v>=tool.entry-g:v<=tool.entry+g){ toast('Invalidation must be '+(buy?'below':'above')+' the key level'); renderPanel(); return; } tool.sl=v; }
     else if(inp.dataset.lv==='tp1'){ if(buy?v<=tool.entry:v>=tool.entry){ toast('Target must be '+(buy?'above':'below')+' the key level'); renderPanel(); return; } const risk=Math.abs(v-tool.entry)/2.5; tool.sl=buy?tool.entry-risk:tool.entry+risk; }
     recalcTPs(); renderTool(); }));
@@ -1886,8 +1887,11 @@ async function confirmTrade(){
   const m=calcMoney(); const inst=tool.inst; const {rate,source}=getUSDZAR(); const bias=getBias(inst.symbol);
   const balance=parseFloat(lsGet('bd_balance',10000))||10000;
   const market=getState(inst).price;
-  // Key level never dragged = "enter now": shift the whole setup to the current market price
-  if(!tool.entryMoved){ const d=market-tool.entry; tool.entry+=d; tool.sl+=d; recalcTPs(); }
+  // Market entry: key level = current price; invalidation stays exactly where you put it, target re-set to 1:2.5
+  if(hasPrice(inst)&&Math.abs(market-tool.entry)>1e-12){
+    if(tool.direction==='buy'?tool.sl>=market:tool.sl<=market){ toast('Price is already through your invalidation level — move the stop first'); return; }
+    tool.entry=market; recalcTPs();
+  }
   const tol=Math.max(inst.spread*inst.pip*1.5,riskDist()*0.15);
   const filledNow=Math.abs(tool.entry-market)<=tol;
   tool.risk0=Math.abs(tool.entry-tool.sl); tool.locked=true; tool.status=filledNow?'OPEN':'PENDING'; tool.tradeId=tool.id;
