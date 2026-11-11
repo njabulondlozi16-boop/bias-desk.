@@ -28,7 +28,7 @@ SOURCES = {
     "CHF": ("Swiss franc / SNB", ["https://tradingeconomics.com/switzerland/currency"], "Swiss franc SNB"),
     "GOLD": ("Gold (XAUUSD)", ["https://tradingeconomics.com/commodity/gold"], "gold price"),
     "US30": ("Dow Jones (US30)", ["https://tradingeconomics.com/united-states/stock-market"], "Dow Jones stocks"),
-    "US100": ("Nasdaq 100 (US100)", ["https://tradingeconomics.com/ndx:ind", "https://tradingeconomics.com/ccmp:ind"], "Nasdaq 100 tech stocks"),
+    "US100": ("Nasdaq 100 (US100)", ["https://tradingeconomics.com/ndx:ind", "https://tradingeconomics.com/united-states/stock-market"], "Nasdaq 100 tech stocks"),
     "GER30": ("DAX (GER30)", ["https://tradingeconomics.com/germany/stock-market"], "DAX German stocks"),
     "BTC": ("Bitcoin (BTCUSD)", ["https://tradingeconomics.com/btcusd:cur"], "bitcoin price"),
 }
@@ -59,7 +59,7 @@ def news_paragraphs(page_html, limit=6):
     for c in chunks:
         txt = html.unescape(re.sub(r"<[^>]+>", " ", c))
         txt = re.sub(r"\s+", " ", txt).strip()
-        if len(txt) < 160 or txt.count(".") < 2 or BOILERPLATE.search(txt):
+        if len(txt) < 160 or txt.count(".") < 2 or BOILERPLATE.search(txt) or "..." in txt:
             continue
         key = txt[:80]
         if key in seen:
