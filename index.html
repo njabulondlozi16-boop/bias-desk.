@@ -471,9 +471,10 @@ body.light .gauge-tick{fill:#475569}
 @media(prefers-reduced-motion:reduce){.card{animation:none}.hero::before,.card-border{animation:none}}
 
 /* TradingView + view switch */
-.tv-wrap{position:relative;flex:1;min-height:560px;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--border),0 20px 60px rgba(0,0,0,.35);background:rgba(0,0,0,.2)}
+.tv-wrap{position:relative;flex:1 1 auto;height:calc(100vh - 330px);min-height:560px;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--border),0 20px 60px rgba(0,0,0,.35);background:rgba(0,0,0,.2)}
 .chart-container.view-tv #ct-tp{display:none}
 .hero-tv{position:absolute;inset:0}
+.tradingview-widget-container .tradingview-widget-copyright{display:none}
 .ct-view{display:flex;gap:4px;background:rgba(0,0,0,.3);padding:4px;border-radius:12px}
 .ct-view button{background:none;border:none;padding:8px 14px;border-radius:9px;font-weight:800;font-size:13px;color:var(--muted);transition:all .2s}
 .ct-view button.active{background:linear-gradient(135deg,var(--accent),#00c2ff);color:#fff;box-shadow:0 0 16px var(--accent)}
@@ -899,7 +900,7 @@ function tvSymbol(inst){ return (inst.tvSymbol&&inst.tvSymbol.trim())||TV_DEFAUL
 const TV_IV={'1m':'1','5m':'5','15m':'15','1h':'60','4h':'240','1D':'D'};
 function mountTradingView(el,inst,tf,opts={}){
   if(!el||!inst) return; const def=getThemeDef(); el.innerHTML='';
-  const box=document.createElement('div'); box.className='tradingview-widget-container'; box.style.cssText='height:100%;width:100%';
+  const box=document.createElement('div'); box.className='tradingview-widget-container'; box.style.cssText='position:absolute;inset:0;height:100%;width:100%';
   const w=document.createElement('div'); w.className='tradingview-widget-container__widget'; w.style.cssText='height:100%;width:100%'; box.appendChild(w);
   const sc=document.createElement('script'); sc.type='text/javascript'; sc.async=true; sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
   sc.textContent=JSON.stringify({autosize:true,symbol:tvSymbol(inst),interval:TV_IV[tf]||'15',timezone:'Africa/Johannesburg',theme:def.light?'light':'dark',style:'1',locale:'en',
@@ -1713,6 +1714,7 @@ function updateHeader(){
   const src=getState(currentInst).src; const fm=getFeedMode(); const instLive=src==='live';
   feed.textContent=instLive?`● LIVE · ${sourceLabel(currentInst)}`:src==='demo'?'● DEMO DATA':fm==='offline'?'● PRICE FEED OFFLINE':'● CONNECTING';
   feed.className='feed-tag '+(instLive?'live':src==='demo'?'demo':'off');
+  if(chartView==='tv'&&!instLive){ feed.textContent='● TRADINGVIEW LIVE'; feed.className='feed-tag live'; feed.title='Chart is live from TradingView. The Trade tool needs the price feed, which is offline.'; }
   const b=biasBadge(currentInst.symbol); const banner=$('bias-banner'); setGauge('banner-gauge',b.score);
   if(b.score===null){ banner.className='bias-banner bias-none'; $('bias-banner-badge').textContent='No score yet for today'; $('bias-banner-badge').className='bias-badge bias-none'; $('bias-banner-text').textContent='No score yet for today — check Settings for the scores URL'; $('bias-banner-score').textContent='—'; $('bias-banner-label').textContent='NO SCORE YET FOR TODAY'; }
   else { banner.className='bias-banner '+b.cls; $('bias-banner-badge').textContent=b.text; $('bias-banner-badge').className='bias-badge '+b.cls; $('bias-banner-text').textContent=b.reason||''; $('bias-banner-score').textContent=(b.score>0?'+':'')+b.score; $('bias-banner-label').textContent=b.label; $('bias-banner-date').textContent=b.date; }
