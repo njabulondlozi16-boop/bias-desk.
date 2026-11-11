@@ -1626,7 +1626,7 @@ async function openDetail(id){
       <div><small>Target 1:2.5</small><strong class="mono">${t.tp1}</strong></div><div><small>Extra targets</small><strong class="mono">${(t.extraTPs||[]).map(x=>x.price+' (1:'+x.ratio+')').join(', ')||'—'}</strong></div>
       <div><small>Bias at entry</small><strong>${t.biasScore??'—'} ${t.biasLabel||''} · ${t.biasAlignment}</strong></div>
       <div><small>Order</small><strong>${t.orderType||'Market'}</strong></div>
-      <div><small>Result / R / ZAR</small><strong>${resultOf(t)} · ${t.R??'—'}R</strong></div>
+      <div><small>Result / R</small><strong>${resultOf(t)} · ${t.R??'—'}R</strong></div>
       <div><small>Duration</small><strong>${durationStr(t)}</strong></div><div><small>Bonus wins</small><strong>${(t.bonusWins||[]).length?(t.bonusWins.map(b=>'1:'+b.ratio+' (+'+b.bonusR+'R)').join(', ')):'—'}</strong></div>
     </div>
     ${t.biasReason?`<p class="pt-muted">Bias reason: ${t.biasReason}</p>`:''}
@@ -2040,6 +2040,7 @@ async function confirmTrade(){
   }
   const tol=Math.max(inst.spread*inst.pip*1.5,riskDist()*0.15);
   const filledNow=Math.abs(tool.entry-market)<=tol;
+  { const lb=lastBarTime(); if(lb!==null) tool.t0=lb; }
   tool.risk0=Math.abs(tool.entry-tool.sl); tool.locked=true; tool.status=filledNow?'OPEN':'PENDING'; tool.tradeId=tool.id;
   const screenshot=await takeScreenshotWithOverlay();
   const entryTime=new Date().toISOString();
