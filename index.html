@@ -749,6 +749,43 @@ body.chart-fs .sidenav,body.chart-fs .topbar,body.chart-fs .bottom-nav{visibilit
 .pb-openr.pos{background:rgba(8,153,129,.2);color:#22c55e}.pb-openr.neg{background:rgba(242,54,69,.2);color:#f87171}
 .pb-openr:empty{display:none}
 .pt-line.fbc[data-drag="0"]{pointer-events:none}
+/* FRVP */
+.vp-layer{position:absolute;left:0;top:0;pointer-events:none;z-index:3;overflow:hidden}
+.vp-box{fill:rgba(41,98,255,.05);stroke:rgba(41,98,255,.4);stroke-width:1;pointer-events:none;display:none}
+.vp.sel .vp-box,.vp.draft .vp-box{display:inline}
+.vp-up{fill:rgba(41,98,255,.28);pointer-events:all;cursor:pointer}.vp-up.va{fill:rgba(41,98,255,.62)}
+.vp-dn{fill:rgba(251,192,45,.25);pointer-events:all;cursor:pointer}.vp-dn.va{fill:rgba(251,192,45,.6)}
+.vp-poc{stroke:#f23645;stroke-width:1.5}
+.vp-va{stroke:rgba(41,98,255,.85);stroke-width:1;stroke-dasharray:4 3}
+.vp-t{font:600 10px 'JetBrains Mono',monospace;fill:var(--vp-text,#cbd5e1)}.vp-t-poc{fill:#f23645}
+.vp-kind{font:500 9.5px 'Space Grotesk',sans-serif;fill:var(--vp-text,#cbd5e1);opacity:.6}
+.vp-status{font:600 11px 'Space Grotesk',sans-serif;fill:var(--vp-text,#e6ebf5)}
+.vp-edge{fill:transparent;pointer-events:none;cursor:ew-resize}
+.vp.sel .vp-edge{pointer-events:all;fill:rgba(41,98,255,.35)}
+.vp-capture{position:absolute;left:0;top:0;right:0;bottom:0;z-index:8;cursor:col-resize;touch-action:none}
+.vp-bar{position:absolute;z-index:7;display:flex;gap:4px;align-items:center;background:rgba(14,19,32,.95);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:4px 6px;font:600 11px 'Space Grotesk',sans-serif;color:#9aa4b2}
+.vp-bar button{background:transparent;border:1px solid rgba(255,255,255,.14);color:#cbd5e1;border-radius:6px;padding:3px 8px;font:inherit;cursor:pointer}
+.vp-bar button.on{background:#2962ff;border-color:#2962ff;color:#fff}.vp-bar .vp-x{color:#f23645}
+/* bias accuracy */
+.acc-card{margin-bottom:18px}
+.acc-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.acc-head h3{margin:0 0 4px}.acc-head p{margin:0;max-width:560px;font-size:12.5px}
+.acc-big{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.acc-big strong{font:700 34px 'Space Grotesk',sans-serif;line-height:1}.acc-big small{color:var(--muted,#8b95a7);font-size:12px}
+.acc-table{margin-top:14px;display:flex;flex-direction:column}
+.acc-row{display:grid;grid-template-columns:minmax(110px,1.2fr) 70px 70px 70px minmax(150px,2fr);gap:10px;align-items:center;padding:8px 4px;border-top:1px solid rgba(255,255,255,.06);font-size:13px}
+.acc-th{color:var(--muted,#8b95a7);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-top:none}
+.acc-pair{font-weight:600}.acc-pct{font:700 14px 'JetBrains Mono',monospace}.acc-n{font-family:'JetBrains Mono',monospace;color:var(--muted,#8b95a7)}
+.acc-dots{display:flex;gap:4px;flex-wrap:wrap}
+.acc-dot{width:12px;height:12px;border-radius:3px;display:inline-block;background:rgba(255,255,255,.12)}
+.acc-dot.hit{background:#089981}.acc-dot.miss{background:#f23645}.acc-dot.flat{background:rgba(255,255,255,.18)}
+.bb-acc{margin-top:6px;font-size:11px;color:var(--muted,#8b95a7);font-weight:600}
+@media(max-width:700px){.acc-row{grid-template-columns:1fr 54px 54px;}.acc-row>span:nth-child(4),.acc-row>span:nth-child(5){display:none}}
+/* sync */
+.sync-steps{margin:8px 0 12px 18px;padding:0;font-size:12.5px;line-height:1.55;color:var(--muted,#9aa4b2)}
+.sync-steps li{margin-bottom:4px}.sync-steps b{color:var(--text,#e6ebf5)}.sync-steps code{font-size:12px;background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px}
+.sync-msg{margin-top:10px;font-size:12.5px}.sync-msg.ok{color:#22c55e}.sync-msg.err{color:#f87171}
+.sync-chip{text-decoration:none;color:inherit}.sync-chip.ok strong{color:#22c55e}.sync-chip.err strong{color:#f87171}.sync-chip.busy strong{color:#9aa4b2}
 </style>
 </head>
 <body>
@@ -801,6 +838,7 @@ body.chart-fs .sidenav,body.chart-fs .topbar,body.chart-fs .bottom-nav{visibilit
       <div class="topbar-right">
         <div class="tb-chip"><small>WIN RATE</small><strong id="wr-val" class="mono">—</strong></div>
         <div class="tb-chip"><small>SAST</small><strong id="tb-clock" class="mono">—</strong></div>
+        <a id="sync-chip" class="tb-chip sync-chip" href="#/settings" hidden title="Sync"><small>SYNC</small><strong>✓</strong></a>
         <button id="theme-btn" class="btn-soft tb-layout" title="Switch chart layout">Layout</button>
       </div>
       <span id="balance-val" hidden></span>
@@ -883,16 +921,24 @@ body.chart-fs .sidenav,body.chart-fs .topbar,body.chart-fs .bottom-nav{visibilit
 // ===== js/storage.js (merged, imports/exports resolved) =====
 // storage.js — safe localStorage + IndexedDB wrappers (all try/catch)
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
-function lsSet(key, value){ try{ localStorage.setItem(key, JSON.stringify(value)); return true;}catch(e){ console.warn('lsSet',e); return false; } }
+// settings that travel between devices (Sync)
+const SYNC_KEYS=['bd_instruments','bd_groups','bd_labels','bd_ratios','bd_rules','bd_mot_custom','bd_mot_pin','bd_theme','bd_bias_manual','bd_scores_url'];
+function isSyncKey(k){ return SYNC_KEYS.includes(k)||k.startsWith('bd_lines_')||k.startsWith('bd_frvp_'); }
+var syncApplying=false;
+function syncSoon(){ try{ const c=JSON.parse(localStorage.getItem('bd_sync_cfg')||'null'); if(!c||!c.repo||!c.token) return; clearTimeout(window.__bdSyncT); window.__bdSyncT=setTimeout(()=>{ try{ syncNow(); }catch(e){} },4000); }catch(e){} }
+function lsSet(key, value){ try{ const s=JSON.stringify(value);
+  if(isSyncKey(key)&&!syncApplying&&localStorage.getItem(key)!==s){ const ts=JSON.parse(localStorage.getItem('bd_sync_keyts')||'{}'); ts[key]=Date.now(); localStorage.setItem('bd_sync_keyts',JSON.stringify(ts)); localStorage.setItem(key,s); syncSoon(); return true; }
+  localStorage.setItem(key,s); return true;}catch(e){ console.warn('lsSet',e); return false; } }
 function lsRemove(key){ try{ localStorage.removeItem(key);}catch(e){ console.warn('lsRemove',e);} }
 // Open (or create) the Bias Desk IndexedDB database
 function openDB(){ return new Promise((resolve,reject)=>{ try{ const req=indexedDB.open('biasdesk',1); req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains('journal')) db.createObjectStore('journal',{keyPath:'id',autoIncrement:true}); if(!db.objectStoreNames.contains('screenshots')) db.createObjectStore('screenshots',{keyPath:'id',autoIncrement:true}); }; req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }catch(e){ reject(e);} }); }
 // Generic IndexedDB helpers wrapped in try/catch
-async function idbAdd(store, value){ try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).add(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbAdd',e); return null; } }
+function stampTrade(store,value,opts){ if(store==='journal'&&value&&!(opts&&opts.sync)){ value.updatedAt=Date.now(); syncSoon(); } }
+async function idbAdd(store, value){ stampTrade(store,value); try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).add(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbAdd',e); return null; } }
 async function idbAll(store){ try{ const db=await openDB(); return new Promise((res,rej)=>{ const r=db.transaction(store).objectStore(store).getAll(); r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbAll',e); return []; } }
 // Update (put) a record by keyPath id — used for trade outcome tracking
-async function idbPut(store, value){ try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).put(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbPut',e); return null; } }
-async function idbDelete(store, key){ try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).delete(key); r.onsuccess=()=>res(true); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbDelete',e); return false; } }
+async function idbPut(store, value, opts){ stampTrade(store,value,opts); try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).put(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbPut',e); return null; } }
+async function idbDelete(store, key, opts){ if(store==='journal'&&!(opts&&opts.sync)){ try{ const d=JSON.parse(localStorage.getItem('bd_sync_del')||'[]'); d.push(String(key)); localStorage.setItem('bd_sync_del',JSON.stringify(d)); }catch(e){} syncSoon(); } try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).delete(key); r.onsuccess=()=>res(true); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbDelete',e); return false; } }
 
 // ===== js/auth.js (merged, imports/exports resolved) =====
 // auth.js — PBKDF2 salted hashing, account create/verify, lockout, idle lock
@@ -1305,6 +1351,67 @@ function biasBadge(symbol){
   if(!b) return {text:'No score yet for today',cls:'bias-none',score:null,label:'',reason:'',date:todaySAST()};
   return {text:`${b.score>0?'+':''}${b.score} · ${b.label}`,cls:clsFor(b.score),score:b.score,label:b.label,reason:b.reason,date:b.date,source:b.source};
 }
+// ===== Bias accuracy — did the morning score call the day's direction? =====
+// Window per day: from the time the score was published (never before 05:00 SAST) to 23:00 SAST.
+// A "call" is a score of ±3 or more (the site labels −2..+2 NEUTRAL). Hit = price moved the way the score said.
+const EVAL_KEY='bd_bias_eval', HIST_KEY='bd_bias_hist';
+let biasHistory=lsGet(HIST_KEY,null), accBusy=false; const accListeners=new Set();
+function onAccuracyChange(fn){ accListeners.add(fn); }
+function accNotify(){ accListeners.forEach(fn=>{ try{ fn(); }catch(e){ console.warn(e); } }); }
+function historyUrls(){ const c=getScoresUrl(); if(c) return [c.replace(/scores\.json(\?.*)?$/i,'scores_history.json')]; return defaultScoresUrls().map(u=>u.replace(/scores\.json$/,'scores_history.json')); }
+async function fetchBiasHistory(){
+  for(const u of historyUrls()){ try{ const r=await fetch(u+(u.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'}); if(!r.ok) continue; const j=await r.json(); if(j&&j.days&&typeof j.days==='object'){ biasHistory=j; lsSet(HIST_KEY,j); return j; } }catch(e){} }
+  return biasHistory;
+}
+function evalWindow(date,at){
+  const [h,m]=(at||'05:00').split(':').map(Number); const mins=Math.max(5*60,(h||0)*60+(m||0));
+  const hh=String(Math.floor(mins/60)).padStart(2,'0'), mm=String(mins%60).padStart(2,'0');
+  const start=Math.ceil(Date.parse(`${date}T${hh}:${mm}:00+02:00`)/1000/900)*900; const end=Date.parse(`${date}T23:00:00+02:00`)/1000;
+  return {start,end};
+}
+async function candles15(inst,start,end){
+  if(isBinance(inst)){ const out=[]; let from=start*1000; for(let n=0;n<40&&from<end*1000;n++){ const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=15m&startTime=${from}&endTime=${end*1000-1}&limit=1000`); if(!r.ok) throw new Error('Binance HTTP '+r.status); const k=await r.json(); if(!k.length) break; k.forEach(c=>out.push({t:Math.floor(c[0]/1000),o:+c[1],c:+c[4]})); from=k[k.length-1][0]+1; if(k.length<1000) break; } return out; }
+  const d=getDerivSymbol(inst); if(feedMode!=='live'||!d) throw new Error('needs live prices'); const out=[];
+  for(let s=start,n=0;s<end&&n<20;n++){ const e=Math.min(end,s+4800*900); const r=await wsSend({ticks_history:d,start:s,end:e,style:'candles',granularity:900,count:5000},20000); (r.candles||[]).forEach(c=>out.push({t:+c.epoch,o:+c.open,c:+c.close})); s=e; }
+  return out;
+}
+async function runBiasAccuracy(){
+  if(accBusy) return; accBusy=true;
+  try{
+    await fetchBiasHistory(); const H=biasHistory&&biasHistory.days; if(!H){ return; }
+    const ev=lsGet(EVAL_KEY,{}); const now=Date.now()/1000; let changed=false;
+    for(const inst of getInstruments()){
+      const todo=[]; for(const [date,day] of Object.entries(H)){ const e=day&&day[inst.symbol]; if(!e) continue; const k=date+'|'+inst.symbol; if(ev[k]) continue; const w=evalWindow(date,e.at); if(now<w.end+600) continue; todo.push({k,date,score:+e.score,...w}); }
+      if(!todo.length) continue;
+      let cs; try{ cs=await candles15(inst,Math.min(...todo.map(x=>x.start)),Math.max(...todo.map(x=>x.end))); }catch(err){ continue; } // feed not ready: try again later
+      for(const d of todo){
+        const inWin=cs.filter(c=>c.t>=d.start&&c.t+900<=d.end).sort((a,b)=>a.t-b.t);
+        if(inWin.length<4){ ev[d.k]={s:d.score,skip:'market closed / no data'}; changed=true; continue; }
+        const o=inWin[0].o, c=inWin[inWin.length-1].c, mv=(c-o)/o*100;
+        const call=Math.abs(d.score)>=3; const hit=call&&mv!==0?Math.sign(mv)===Math.sign(d.score):null;
+        ev[d.k]={s:d.score,o,c,mv:+mv.toFixed(3),hit,from:d.start,to:d.end}; changed=true;
+      }
+    }
+    if(changed){ lsSet(EVAL_KEY,ev); }
+    accNotify();
+  } finally { accBusy=false; }
+}
+// stats for one pair (or all pairs when sym is null)
+function accuracyStats(sym){
+  const ev=lsGet(EVAL_KEY,{}); const rows=Object.entries(ev).filter(([k,v])=>!v.skip&&(!sym||k.endsWith('|'+sym))).map(([k,v])=>({date:k.split('|')[0],sym:k.split('|')[1],...v})).sort((a,b)=>a.date<b.date?-1:1);
+  const calls=rows.filter(r=>r.hit!==null&&r.hit!==undefined), hits=calls.filter(r=>r.hit).length;
+  const strong=calls.filter(r=>Math.abs(r.s)>=6), sHits=strong.filter(r=>r.hit).length;
+  return {rows,days:rows.length,calls:calls.length,hits,pct:calls.length?hits/calls.length*100:null,strong:strong.length,sHits,sPct:strong.length?sHits/strong.length*100:null,neutral:rows.filter(r=>Math.abs(r.s)<3).length};
+}
+function accuracyShort(sym){ const a=accuracyStats(sym); return a.calls?`${Math.round(a.pct)}% right · ${a.calls} day${a.calls===1?'':'s'}`:''; }
+function accuracyCard(){
+  const all=accuracyStats(null); const list=getInstruments(); const firstDay=biasHistory&&biasHistory.days?Object.keys(biasHistory.days).sort()[0]:null;
+  const dots=rs=>rs.slice(-10).map(r=>`<i class="acc-dot ${r.hit===true?'hit':r.hit===false?'miss':'flat'}" title="${r.date} · score ${r.s>0?'+':''}${r.s} · price ${r.mv>0?'+':''}${r.mv}%${r.hit===null?' · neutral score, not counted':''}"></i>`).join('');
+  const body=list.map(i=>{ const a=accuracyStats(i.symbol); return `<div class="acc-row"><span class="acc-pair">${esc(i.name)}</span><span class="acc-pct ${a.pct===null?'':a.pct>=55?'up':a.pct<45?'down':''}">${a.pct===null?'—':Math.round(a.pct)+'%'}</span><span class="acc-n">${a.calls?`${a.hits}/${a.calls}`:'—'}</span><span class="acc-n">${a.sPct===null?'—':Math.round(a.sPct)+'%'}</span><span class="acc-dots">${dots(a.rows)||'<small class="pt-muted">no days checked yet</small>'}</span></div>`; }).join('');
+  return `<div class="card-s acc-card"><div class="acc-head"><div><h3>Bias accuracy</h3><p class="pt-muted">Did the morning score call the direction? Checked from when the score was published (05:00 SAST) to 23:00 SAST. Scores of −2…+2 are neutral and not counted.</p></div>
+    <div class="acc-big"><strong class="${all.pct===null?'':all.pct>=55?'up':all.pct<45?'down':''}">${all.pct===null?'—':Math.round(all.pct)+'%'}</strong><small>${all.calls?`${all.hits} of ${all.calls} calls right`:firstDay?`first check after 23:00 SAST on ${firstDay}`:'waiting for score history'}</small>${all.sPct!==null?`<small>Strong scores (±6+): ${Math.round(all.sPct)}% of ${all.strong}</small>`:''}</div></div>
+    <div class="acc-table"><div class="acc-row acc-th"><span>Pair</span><span>Right</span><span>Hits</span><span>Strong</span><span>Last 10 days</span></div>${body}</div></div>`;
+}
 // Fetch scores file from URL, validate date is today (SAST), cache, notify. Re-checked every 15 min.
 async function fetchScores(){
   const custom=getScoresUrl(); const urls=custom?[custom]:defaultScoresUrls(); if(!urls.length) return {ok:false,reason:'no-url'};
@@ -1323,6 +1430,8 @@ function startScoresPolling(){
   if(pollStarted) return; pollStarted=true;
   fetchScores();
   setInterval(fetchScores,15*60*1000);
+  // accuracy check: once the live feed has had time to connect, then every 30 min
+  setTimeout(runBiasAccuracy,9000); setInterval(runBiasAccuracy,30*60*1000);
 }
 
 // ===== js/stats.js (merged, imports/exports resolved) =====
@@ -1419,8 +1528,8 @@ async function renderJournal(){
 async function renderAnalytics(){
   const el=$('analytics-body'); if(!el) return;
   const trades=(await getTrades()).map(enrich); const s=computeStats(trades);
-  if(!trades.length){ el.innerHTML=`<div class="empty-state"><h3>No data yet</h3><p>Your win rate, entry-model and session breakdowns appear after your first confirmed trades.</p></div>`; return; }
-  el.innerHTML=`
+  if(!trades.length){ el.innerHTML=accuracyCard()+`<div class="empty-state"><h3>No trades yet</h3><p>Your win rate, entry-model and session breakdowns appear after your first confirmed trades.</p></div>`; return; }
+  el.innerHTML=accuracyCard()+`
   <div class="an-top">
     <div class="an-ring card-s"><div class="ring-wrap big"><svg viewBox="0 0 120 120" class="ring"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring-fg" id="ring-fg"/></svg><div class="ring-center"><strong id="ring-pct">0%</strong><small>WIN RATE</small></div></div>
       <div class="perf-stats"><div><small>Closed trades</small><strong>${s.wins+s.losses}</strong></div><div><small>Wins</small><strong class="up">${s.wins}</strong></div><div><small>Losses</small><strong class="down">${s.losses}</strong></div><div><small>Bonus wins</small><strong>${s.bonusWins}</strong></div><div><small>Manual closes</small><strong>${s.manual}</strong></div><div><small>Open now</small><strong>${s.open}</strong></div></div></div>
@@ -1870,6 +1979,10 @@ async function takeScreenshotWithOverlay(){
     const ctx=c.getContext('2d'); ctx.drawImage(shot,0,0);
     // overlay coordinates are CSS pixels; the screenshot can be in device pixels
     const cssW=($('lw-container')||{}).clientWidth||c.width; const k=c.width/cssW; ctx.scale(k,k);
+    try{ const a=tlAnchor(); if(a) for(const v of vpList){ const P=v.prof; const xr=vpXRange(v,a); if(!P||!xr) continue; const x0=Math.min(xr[0],xr[1]), x1=Math.max(xr[0],xr[1]); const bw=Math.max(70,(x1-x0)*0.3); const mx=Math.max(...P.up.map((u,i)=>u+P.dn[i]))||1; const st=(P.hi-P.lo)/P.rows;
+      for(let i=0;i<P.rows;i++){ const ya=yAtPrice(P.lo+(i+1)*st), yb=yAtPrice(P.lo+i*st); if(ya===null||yb===null) continue; const va=i>=P.vaLo&&i<=P.vaHi; const h=Math.max(1,Math.abs(yb-ya)-1), y=Math.min(ya,yb)+.5; const wu=bw*P.up[i]/mx, wd=bw*P.dn[i]/mx;
+        ctx.fillStyle=va?'rgba(41,98,255,.62)':'rgba(41,98,255,.28)'; ctx.fillRect(x0,y,wu,h); ctx.fillStyle=va?'rgba(251,192,45,.6)':'rgba(251,192,45,.25)'; ctx.fillRect(x0+wu,y,wd,h); }
+      const yp=yAtPrice(P.lo+(P.poc+.5)*st); if(yp!==null){ ctx.strokeStyle='#f23645'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x0,yp); ctx.lineTo(Math.max(x1,x0+bw),yp); ctx.stroke(); } } }catch(e){}
     try{ const a=tlAnchor(); if(a){ ctx.strokeStyle='#2f80ff'; ctx.lineWidth=2; ctx.lineCap='round'; for(const l of tlLines){ const x1=tlX(l.t1,a),x2=tlX(l.t2,a),y1=yAtPrice(l.p1),y2=yAtPrice(l.p2); if(![x1,x2,y1,y2].every(v=>v!==null&&Number.isFinite(v))) continue; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); } } }catch(e){}
     if(tool){
       const seg=segX()||{x0:40,x1:cssW*0.8}; const X0=Math.max(0,seg.x0), X1=Math.min(cssW,seg.x1);
@@ -2043,6 +2156,7 @@ function buildChartShell(){
     <div class="ct-tfs" id="ct-tfs">${TIMEFRAMES.map(t=>`<button data-tf="${t.label}" class="${t.label===currentTF?'active':''}">${t.label}</button>`).join('')}</div>
     <div class="ct-actions">
       <button id="ct-line" class="ct-tool" title="Trendline: click two points (Alt+T). Drag the line or its ends; Delete removes it.">╱ Trendline</button>
+      <button id="ct-vp" class="ct-tool" title="FRVP — Fixed Range Volume Profile: drag across the candles you want measured">▥ FRVP</button>
       <button id="ct-buy" class="btn-buy">Buy setup</button>
       <button id="ct-sell" class="btn-sell">Sell setup</button>
       <button id="ct-tp" class="btn-tp" disabled>+ Add TP</button>
@@ -2061,8 +2175,9 @@ function buildChartShell(){
   $('ct-tp').addEventListener('click',addTP);
   $('ct-journal').addEventListener('click',()=>{ if(isFs()) toggleFs(); showPairJournal(); });
   $('ct-line').addEventListener('click',()=>tlSetMode(!tlMode));
+  $('ct-vp').addEventListener('click',()=>vpSetMode(!vpMode));
   $('ct-fs').addEventListener('click',toggleFs);
-  tlSetup();
+  tlSetup(); vpSetup();
   onFeedModeChange(m=>{ if(currentInst&&$('page-chart').classList.contains('active')&&(m==='live'||m==='demo')) loadCandles().then(()=>{ if(!tool) restoreToolForInst(currentInst); }); });
   window.addEventListener('bd:tool-cleared',()=>{ $('ct-tp').disabled=true; $('ct-buy').classList.remove('active-setup'); $('ct-sell').classList.remove('active-setup'); });
   onThemeChange(def=>{ if(chart){ chart.applyOptions(chartOptionsForTheme(def)); } if(series){ series.applyOptions(seriesOptionsForTheme(def)); } });
@@ -2096,7 +2211,7 @@ async function loadCandles(){
     const candles=await getCandles(currentInst,gran,300);
     candleMap=new Map(candles.map(c=>[c.time,c]));
     if(series && ensureChartLib()){ series.setData(candles); chart.timeScale().fitContent(); }
-    tlTimesKey=''; tlRender();
+    tlTimesKey=''; tlRender(); vpRender();
     if(series && ensureChartLib() && !candles.length) series.setData([]);
     const cw=$('chart-wait'); if(cw){ cw.hidden=!!candles.length; if(!candles.length) cw.innerHTML=`<span class="spinner"></span><div><b>Waiting for live prices</b><small>${esc(getFeedMode()==='offline'?(getFeedError()||'Price feed offline — retrying'):'Connecting to the live price feed…')}</small></div>`; }
     if(chartView!=='trade') return;
@@ -2119,7 +2234,7 @@ function updateHeader(){
 
   const b=biasBadge(currentInst.symbol); const banner=$('bias-banner'); setGauge('banner-gauge',b.score);
   if(b.score===null){ banner.className='bias-banner bias-none'; $('bias-banner-badge').textContent='No score yet for today'; $('bias-banner-badge').className='bias-badge bias-none'; $('bias-banner-text').textContent='No score yet for today — check Settings for the scores URL'; $('bias-banner-score').textContent='—'; $('bias-banner-label').textContent='NO SCORE YET FOR TODAY'; }
-  else { banner.className='bias-banner '+b.cls; $('bias-banner-badge').textContent=b.text; $('bias-banner-badge').className='bias-badge '+b.cls; $('bias-banner-text').textContent=b.reason||''; $('bias-banner-score').textContent=(b.score>0?'+':'')+b.score; $('bias-banner-label').textContent=b.label; $('bias-banner-date').textContent=b.date; }
+  else { banner.className='bias-banner '+b.cls; $('bias-banner-badge').textContent=b.text; $('bias-banner-badge').className='bias-badge '+b.cls; $('bias-banner-text').textContent=b.reason||''; $('bias-banner-score').textContent=(b.score>0?'+':'')+b.score; $('bias-banner-label').textContent=b.label; $('bias-banner-date').textContent=b.date+(accuracyShort(currentInst.symbol)?' · 🎯 '+accuracyShort(currentInst.symbol):''); }
   const hb=$('chart-head-bias'); if(hb){ hb.textContent=b.score===null?'No score yet for today':b.text; hb.className='bias-badge '+b.cls; }
   $('chart-title').textContent=currentInst.name;
   $('chart-sub').textContent=`${currentInst.symbol} · ${priceText(currentInst)} · ${chgText(currentInst)} · ${sourceLabel(currentInst)}`;
@@ -2151,7 +2266,7 @@ function initChart(){
 }
 function openChart(inst){
   currentInst=inst; setupState=null; clearTool(); renderPairTabs();
-  buildChartShell(); initChart(); updateHeader(); tlLoad(inst.symbol);
+  buildChartShell(); initChart(); updateHeader(); tlLoad(inst.symbol); vpLoad(inst.symbol);
   setChartView(chartView);
   loadCandles().then(async()=>{ await restoreToolForInst(inst); if(tool&&chartView!=='trade') setChartView('trade'); });
   $('ct-theme').value=getThemeDef().id;
@@ -2219,10 +2334,10 @@ function tlSetup(){
     if((e.key==='Delete'||e.key==='Backspace')&&tlSel){ e.preventDefault(); tlDelete(tlSel); return; }
     if(e.altKey&&(e.key==='t'||e.key==='T'||e.code==='KeyT')){ e.preventDefault(); tlSetMode(!tlMode); }
   });
-  window.addEventListener('hashchange',()=>setTimeout(()=>{ if(document.body.dataset.page!=='chart'){ if(cssFs()) toggleFs(); tlSetMode(false); } else tlKick(); },30));
+  window.addEventListener('hashchange',()=>setTimeout(()=>{ if(document.body.dataset.page!=='chart'){ if(cssFs()) toggleFs(); tlSetMode(false); vpSetMode(false); } else tlKick(); },30));
 }
 function tlSetMode(on){
-  tlMode=!!on; if(!tlMode) tlDraft=null;
+  tlMode=!!on; if(!tlMode) tlDraft=null; if(tlMode&&vpMode) vpSetMode(false);
   const w=tlWrap(); if(w){ const cap=w.querySelector('.tl-capture'), hint=w.querySelector('.tl-hint'); if(cap) cap.hidden=!tlMode; if(hint) hint.hidden=!tlMode; }
   const b=$('ct-line'); if(b){ b.classList.toggle('active',tlMode); b.textContent=tlMode?'╱ Click 2 points…':'╱ Trendline'; }
   if(tlMode) tlSelect(null);
@@ -2264,8 +2379,170 @@ function tlPosition(){
   }
 }
 // keep lines glued to the candles while you scroll / zoom (only runs on the Trade page when lines exist)
-function tlKick(){ if(tlRaf) return; const tick=()=>{ tlRaf=null; if(document.body.dataset.page!=='chart'||document.hidden||(!tlLines.length&&!tlDraft)) return; tlPosition(); tlRaf=requestAnimationFrame(tick); }; tlRaf=requestAnimationFrame(tick); }
+function tlKick(){ if(tlRaf) return; const tick=()=>{ tlRaf=null; if(document.body.dataset.page!=='chart'||document.hidden||(!tlLines.length&&!tlDraft&&!vpList.length&&!vpDraft)) return; tlPosition(); vpPosition(); tlRaf=requestAnimationFrame(tick); }; tlRaf=requestAnimationFrame(tick); }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tlKick(); });
+
+// ===== FRVP — Fixed Range Volume Profile =====
+// BTCUSD: real traded volume (Binance 1m klines, taker-buy = up volume).
+// Deriv pairs (FX, gold, indices): tick volume — every tick counted at its exact price, split up/down by tick direction (same idea as MT5 tick volume).
+// Very long ranges fall back to a 1-minute time profile, and the label says so.
+let vpList=[], vpMode=false, vpDraft=null, vpSel=null, vpDrag=null;
+const VP_VA=0.70, VP_ROWS=[24,48,96];
+function vpKey(sym){ return 'bd_frvp_'+sym; }
+function vpLoad(sym){ const saved=lsGet(vpKey(sym),[]); vpList=(Array.isArray(saved)?saved:[]).filter(v=>v&&Number.isFinite(v.t1)&&Number.isFinite(v.t2)&&v.t2>v.t1); vpSel=null; vpDraft=null; vpSetMode(false); vpRender();
+  const now=Date.now()/1000; vpList.forEach(v=>{ if(!v.prof||(v.prof.at&&v.t2>v.prof.at-60&&v.t2<=now+86400)) vpCompute(v); }); }
+function vpSave(){ if(tlSym) lsSet(vpKey(tlSym),vpList.map(v=>({id:v.id,t1:v.t1,t2:v.t2,rows:v.rows,prof:v.prof||null}))); }
+function vpSvg(){ const w=tlWrap(); return w?w.querySelector('svg.vp-layer'):null; }
+function vpSetMode(on){ vpMode=!!on; if(!vpMode) vpDraft=null; if(vpMode&&tlMode) tlSetMode(false);
+  const w=tlWrap(); if(w){ const cap=w.querySelector('.vp-capture'), hint=w.querySelector('.vp-hint'); if(cap) cap.hidden=!vpMode; if(hint) hint.hidden=!vpMode; }
+  const b=$('ct-vp'); if(b){ b.classList.toggle('active',vpMode); b.textContent=vpMode?'▥ Drag the range…':'▥ FRVP'; }
+  if(vpMode){ vpSelect(null); tlSelect(null); } }
+// one price level per tick, or volume spread over each 1m candle's high-low
+function vpBuild(samples,rows,kind){
+  let lo=Infinity,hi=-Infinity; for(const s of samples){ if(s.l<lo) lo=s.l; if(s.h>hi) hi=s.h; }
+  if(!isFinite(lo)||!isFinite(hi)) return null; if(hi===lo){ hi=lo*1.0000001+1e-9; }
+  const step=(hi-lo)/rows, up=new Array(rows).fill(0), dn=new Array(rows).fill(0);
+  const idx=p=>Math.min(rows-1,Math.max(0,Math.floor((p-lo)/step)));
+  for(const s of samples){
+    if(s.h===s.l){ const i=idx(s.h); up[i]+=s.u; dn[i]+=s.d; continue; }
+    const a=idx(s.l), b=idx(s.h), span=s.h-s.l;
+    for(let i=a;i<=b;i++){ const rl=lo+i*step, rh=rl+step; const ov=(Math.min(rh,s.h)-Math.max(rl,s.l))/span; if(ov>0){ up[i]+=s.u*ov; dn[i]+=s.d*ov; } }
+  }
+  const tot=up.map((u,i)=>u+dn[i]); const sum=tot.reduce((a,b)=>a+b,0); if(!sum) return null;
+  let poc=0; for(let i=1;i<rows;i++) if(tot[i]>tot[poc]) poc=i;
+  // value area: grow from the POC, always adding the bigger neighbouring row, until 70% of all volume is inside
+  let a=poc,b=poc,acc=tot[poc];
+  while(acc<sum*VP_VA&&(a>0||b<rows-1)){ const below=a>0?tot[a-1]:-1, above=b<rows-1?tot[b+1]:-1; if(above>=below){ b++; acc+=tot[b]; } else { a--; acc+=tot[a]; } }
+  return {lo,hi,rows,up:up.map(x=>+x.toFixed(4)),dn:dn.map(x=>+x.toFixed(4)),poc,vaLo:a,vaHi:b,total:+sum.toFixed(4),kind,at:Math.floor(Date.now()/1000)};
+}
+// Deriv caps a reply at 5000 ticks. A full reply means the window holds more, so split it in half and ask again —
+// this collects every tick in the range whichever end Deriv trims, with no gaps or duplicates.
+async function vpTicksDeriv(sym,start,end,onProg){
+  const out=[]; let req=0; const MAX=48; const stack=[[start,end-1]];
+  while(stack.length){
+    const [a,b]=stack.pop(); if(b<a) continue; if(++req>MAX) return null; onProg&&onProg(req);
+    const r=await wsSend({ticks_history:sym,start:a,end:b,count:5000,style:'ticks'},20000);
+    const P=(r.history&&r.history.prices)||[], T=(r.history&&r.history.times)||[];
+    if(P.length>=5000&&b>a){ const m=Math.floor((a+b)/2); stack.push([m+1,b],[a,m]); continue; }
+    for(let i=0;i<P.length;i++){ const t=+T[i]; if(t>=a&&t<=b) out.push({t,p:+P[i]}); }
+  }
+  out.sort((x,y)=>x.t-y.t); return out;
+}
+async function vpBinance(inst,start,end){
+  const span=(end-start)/60; const ivs=[[1,'1m'],[3,'3m'],[5,'5m'],[15,'15m'],[30,'30m'],[60,'1h'],[240,'4h']];
+  const iv=ivs.find(([m])=>span/m<=30000)||ivs[ivs.length-1];
+  const out=[]; let from=start*1000; const to=end*1000-1; let pages=0;
+  while(from<to&&pages++<32){
+    const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=${iv[1]}&startTime=${from}&endTime=${to}&limit=1000`); if(!r.ok) throw new Error('Binance HTTP '+r.status);
+    const k=await r.json(); if(!k.length) break;
+    for(const c of k){ const v=+c[5], buy=+c[9]; out.push({h:+c[2],l:+c[3],u:buy,d:Math.max(0,v-buy)}); }
+    from=k[k.length-1][0]+1; if(k.length<1000) break;
+  }
+  return {samples:out,kind:iv[0]===1?'volume':'volume-'+iv[1]};
+}
+async function vpCandles1m(inst,start,end){
+  const deriv=getDerivSymbol(inst); const out=[];
+  if(feedMode==='live'&&deriv){ let s=start; for(let n=0;n<10&&s<end;n++){ const r=await wsSend({ticks_history:deriv,start:s,end,style:'candles',granularity:60,count:5000},20000); const c=r.candles||[]; if(!c.length) break; c.forEach(x=>{ if(+x.epoch>=start&&+x.epoch<end) out.push({h:+x.high,l:+x.low,u:+x.close>=+x.open?1:0,d:+x.close>=+x.open?0:1}); }); if(c.length<5000) break; s=+c[c.length-1].epoch+60; } }
+  else { for(const [t,c] of candleMap) if(t>=start&&t<end) out.push({h:c.high,l:c.low,u:c.close>=c.open?1:0,d:c.close>=c.open?0:1}); }
+  return out;
+}
+async function vpCompute(v){
+  const inst=currentInst; if(!inst) return; const sym=tlSym; v.loading=true; v.err=''; vpRender();
+  try{
+    let samples=null, kind='tick';
+    if(isBinance(inst)){ const r=await vpBinance(inst,v.t1,v.t2); samples=r.samples; kind=r.kind; }
+    else if(feedMode==='live'&&getDerivSymbol(inst)){
+      const ticks=await vpTicksDeriv(getDerivSymbol(inst),v.t1,v.t2,n=>{ v.prog=n; vpLabel(v); });
+      if(ticks&&ticks.length>1){ samples=[]; let dir=1; for(let i=0;i<ticks.length;i++){ const p=ticks[i].p; if(i>0){ if(p>ticks[i-1].p) dir=1; else if(p<ticks[i-1].p) dir=-1; } samples.push({h:p,l:p,u:dir>0?1:0,d:dir>0?0:1}); } kind='tick'; }
+      else { samples=await vpCandles1m(inst,v.t1,v.t2); kind='time'; }
+    } else { samples=await vpCandles1m(inst,v.t1,v.t2); kind='time'; }
+    const prof=samples&&samples.length?vpBuild(samples,v.rows||24,kind):null;
+    if(!prof) throw new Error('No price data in this range');
+    v.prof=prof;
+  }catch(e){ v.err=e.message||'Could not load'; }
+  v.loading=false; v.prog=0;
+  if(tlSym===sym){ vpSave(); vpRender(); }
+  else { const saved=lsGet(vpKey(sym),[]); const it=Array.isArray(saved)&&saved.find(x=>x.id===v.id); if(it){ it.prof=v.prof||null; lsSet(vpKey(sym),saved); } }
+}
+function vpLabel(v){ const g=vpSvg()?.querySelector(`g.vp[data-id="${v.id}"] text.vp-status`); if(g) g.textContent=v.loading?`Loading ${v.prog?('ticks · page '+v.prog):'volume'}…`:(v.err||''); }
+function vpRender(){
+  const svg=vpSvg(); if(!svg) return; const all=vpDraft?[...vpList,{...vpDraft,id:'__draft'}]:vpList;
+  svg.innerHTML=all.map(v=>{ const P=v.prof; let bars='';
+    if(P&&v.id!=='__draft') for(let i=0;i<P.rows;i++){ const va=i>=P.vaLo&&i<=P.vaHi; bars+=`<rect class="vp-up${va?' va':''}" data-r="${i}"></rect><rect class="vp-dn${va?' va':''}" data-r="${i}"></rect>`; }
+    return `<g class="vp${v.id===vpSel?' sel':''}${v.id==='__draft'?' draft':''}" data-id="${v.id}"><rect class="vp-box"></rect>${bars}
+      ${P&&v.id!=='__draft'?'<line class="vp-poc"></line><line class="vp-va vp-vah"></line><line class="vp-va vp-val"></line><text class="vp-t vp-t-poc">POC</text><text class="vp-t vp-t-vah">VAH</text><text class="vp-t vp-t-val">VAL</text><text class="vp-kind"></text>':''}
+      <text class="vp-status"></text><rect class="vp-edge" data-edge="1"></rect><rect class="vp-edge" data-edge="2"></rect></g>`; }).join('');
+  all.forEach(vpLabel);
+  const bar=tlWrap()?.querySelector('.vp-bar'); if(bar){ const v=vpList.find(x=>x.id===vpSel); bar.hidden=!v; if(v){ bar.querySelectorAll('[data-rows]').forEach(b=>b.classList.toggle('on',+b.dataset.rows===(v.rows||24))); } }
+  vpPosition(true); tlKick();
+}
+function vpXRange(v,a){ const g=currentGranularity(); const xa=tlX(v.t1,a), xb=tlX(v.t2,a); if(xa===null||xb===null) return null; return [xa-a.bs/2, xb-a.bs/2]; }
+function vpPosition(force){
+  const svg=vpSvg(); if(!svg) return; const w=tlWrap(); if(force) w.style.setProperty('--vp-text',lightChart()?'#1f2937':'#cbd5e1');
+  let aw=0, th=0; try{ aw=chart.priceScale('right').width()||0; }catch(e){} try{ th=chart.timeScale().height()||0; }catch(e){}
+  const W=Math.max(0,w.clientWidth-aw), H=Math.max(0,w.clientHeight-th); svg.style.width=W+'px'; svg.style.height=H+'px';
+  const cap=w.querySelector('.vp-capture'); if(cap){ cap.style.right=aw+'px'; cap.style.bottom=th+'px'; }
+  const a=tlAnchor(); const all=vpDraft?[...vpList,{...vpDraft,id:'__draft'}]:vpList;
+  for(const v of all){
+    const g=svg.querySelector(`g.vp[data-id="${v.id}"]`); if(!g) continue;
+    const xr=a?vpXRange(v,a):null; const P=v.prof;
+    if(!xr){ g.style.display='none'; continue; }
+    let [x0,x1]=xr; if(x1<x0) [x0,x1]=[x1,x0];
+    const yTop=P?yAtPrice(P.hi):0, yBot=P?yAtPrice(P.lo):H;
+    const key=[x0,x1,yTop,yBot,W,H].map(n=>n==null?'n':Math.round(n*10)).join(',')+(v.loading?'L':'')+(v.id===vpSel?'S':'');
+    if(!force&&g.dataset.k===key) continue; g.dataset.k=key; g.style.display='';
+    const top=P&&yTop!==null?yTop:8, bot=P&&yBot!==null?yBot:H-8;
+    const box=g.querySelector('.vp-box'); box.setAttribute('x',x0); box.setAttribute('y',Math.min(top,bot)); box.setAttribute('width',Math.max(1,x1-x0)); box.setAttribute('height',Math.max(1,Math.abs(bot-top)));
+    g.querySelectorAll('.vp-edge').forEach(e=>{ const ex=e.dataset.edge==='1'?x0:x1; e.setAttribute('x',ex-3); e.setAttribute('y',Math.min(top,bot)); e.setAttribute('width',6); e.setAttribute('height',Math.max(1,Math.abs(bot-top))); });
+    const st=g.querySelector('.vp-status'); st.setAttribute('x',x0+6); st.setAttribute('y',Math.min(top,bot)+16);
+    if(!P||v.id==='__draft') continue;
+    const maxT=Math.max(...P.up.map((u,i)=>u+P.dn[i]))||1; const bw=Math.max(70,(x1-x0)*0.30);
+    const step=(P.hi-P.lo)/P.rows; const yOf=p=>yAtPrice(p);
+    g.querySelectorAll('rect.vp-up').forEach(r=>{ const i=+r.dataset.r; const ya=yOf(P.lo+(i+1)*step), yb=yOf(P.lo+i*step); if(ya===null||yb===null) return; const hgt=Math.max(1,Math.abs(yb-ya)-1); const wu=bw*P.up[i]/maxT; r.setAttribute('x',x0); r.setAttribute('y',Math.min(ya,yb)+0.5); r.setAttribute('width',wu); r.setAttribute('height',hgt); });
+    g.querySelectorAll('rect.vp-dn').forEach(r=>{ const i=+r.dataset.r; const ya=yOf(P.lo+(i+1)*step), yb=yOf(P.lo+i*step); if(ya===null||yb===null) return; const hgt=Math.max(1,Math.abs(yb-ya)-1); const wu=bw*P.up[i]/maxT, wd=bw*P.dn[i]/maxT; r.setAttribute('x',x0+wu); r.setAttribute('y',Math.min(ya,yb)+0.5); r.setAttribute('width',wd); r.setAttribute('height',hgt); });
+    const pocP=P.lo+(P.poc+0.5)*step, vah=P.lo+(P.vaHi+1)*step, val=P.lo+P.vaLo*step; const xe=Math.max(x1,x0+bw);
+    const ln=(sel,p)=>{ const el=g.querySelector(sel); const y=yOf(p); if(y===null) return; el.setAttribute('x1',x0); el.setAttribute('x2',xe); el.setAttribute('y1',y); el.setAttribute('y2',y); };
+    ln('.vp-poc',pocP); ln('.vp-vah',vah); ln('.vp-val',val);
+    const tx=(sel,p,txt)=>{ const el=g.querySelector(sel); const y=yOf(p); if(y===null) return; el.setAttribute('x',xe+4); el.setAttribute('y',y+3.5); el.textContent=txt; };
+    const inst=currentInst; tx('.vp-t-poc',pocP,'POC '+fmtPrice(inst,pocP)); tx('.vp-t-vah',vah,'VAH '+fmtPrice(inst,vah)); tx('.vp-t-val',val,'VAL '+fmtPrice(inst,val));
+    const k=g.querySelector('.vp-kind'); k.setAttribute('x',x0+2); k.setAttribute('y',Math.max(top,bot)+12); k.textContent=P.kind==='tick'?'tick volume':P.kind==='time'?'time profile (no volume data)':'volume';
+  }
+  const bar=w.querySelector('.vp-bar'); const v=vpList.find(x=>x.id===vpSel);
+  if(bar&&v&&a){ const xr=vpXRange(v,a); if(xr){ const P=v.prof; const yT=P?yAtPrice(P.hi):40; bar.style.left=Math.max(4,Math.min(W-200,Math.min(xr[0],xr[1])))+'px'; bar.style.top=Math.max(4,(yT??40)-38)+'px'; } }
+}
+function vpSelect(id){ vpSel=id; const svg=vpSvg(); if(svg) svg.querySelectorAll('g.vp').forEach(g=>g.classList.toggle('sel',g.dataset.id===id)); const bar=tlWrap()?.querySelector('.vp-bar'); if(bar){ const v=vpList.find(x=>x.id===id); bar.hidden=!v; if(v) bar.querySelectorAll('[data-rows]').forEach(b=>b.classList.toggle('on',+b.dataset.rows===(v.rows||24))); } vpPosition(true); }
+function vpDelete(id){ vpList=vpList.filter(v=>v.id!==id); if(vpSel===id) vpSel=null; vpSave(); vpRender(); toast('Volume profile deleted'); }
+function vpTimeAt(e){ const w=tlWrap(); const r=w.getBoundingClientRect(); const a=tlAnchor(); if(!a) return null; const g=currentGranularity(); const t=tlT(e.clientX-r.left+a.bs/2,a); return t===null?null:Math.floor(t/g)*g; }
+function vpFinish(tA,tB){ const g=currentGranularity(); let t1=Math.min(tA,tB), t2=Math.max(tA,tB)+g; const last=lastBarTime(); if(last!==null) t2=Math.min(t2,last+g);
+  vpDraft=null; vpSetMode(false); if(t2-t1<g*2){ vpRender(); toast('Pick at least 2 candles for a volume profile'); return; }
+  const v={id:'V'+Date.now().toString(36),t1,t2,rows:24}; vpList.push(v); vpSel=v.id; vpSave(); vpRender(); vpCompute(v); }
+function vpSetup(){
+  const w=tlWrap(); if(!w||w.querySelector('svg.vp-layer')) return;
+  const svg=document.createElementNS(TL_NS,'svg'); svg.setAttribute('class','vp-layer'); w.appendChild(svg);
+  const cap=document.createElement('div'); cap.className='vp-capture'; cap.hidden=true; w.appendChild(cap);
+  const hint=document.createElement('div'); hint.className='tl-hint vp-hint'; hint.hidden=true; hint.textContent='FRVP: drag from the first candle to the last candle of the range · Esc cancels'; w.appendChild(hint);
+  const bar=document.createElement('div'); bar.className='vp-bar'; bar.hidden=true;
+  bar.innerHTML=`<span>Rows</span>${VP_ROWS.map(n=>`<button data-rows="${n}">${n}</button>`).join('')}<button class="vp-x" title="Delete (Delete key)">✕</button>`; w.appendChild(bar);
+  bar.addEventListener('pointerdown',e=>e.stopPropagation());
+  bar.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; const v=vpList.find(x=>x.id===vpSel); if(!v) return;
+    if(b.classList.contains('vp-x')){ vpDelete(v.id); return; } v.rows=+b.dataset.rows; vpSave(); vpCompute(v); });
+  cap.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); const t=vpTimeAt(e); if(t===null) return;
+    if(!vpDraft){ vpDraft={t1:t,t2:t+currentGranularity(),ta:t,dx:e.clientX}; vpRender(); try{ cap.setPointerCapture(e.pointerId); }catch(_){} }
+    else vpFinish(vpDraft.ta,t); });
+  cap.addEventListener('pointermove',e=>{ if(!vpDraft) return; const t=vpTimeAt(e); if(t===null) return; const g=currentGranularity(); vpDraft.t1=Math.min(vpDraft.ta,t); vpDraft.t2=Math.max(vpDraft.ta,t)+g; vpPosition(true); });
+  cap.addEventListener('pointerup',e=>{ if(!vpDraft) return; if(Math.abs(e.clientX-vpDraft.dx)>8){ const t=vpTimeAt(e); if(t!==null) vpFinish(vpDraft.ta,t); } });
+  svg.addEventListener('pointerdown',e=>{ const g=e.target.closest('g.vp'); if(!g||g.classList.contains('draft')) return; const v=vpList.find(x=>x.id===g.dataset.id); if(!v) return;
+    e.preventDefault(); e.stopPropagation(); vpSelect(v.id); tlSelect(null);
+    const edge=e.target.closest('.vp-edge'); if(edge&&vpSel===v.id) vpDrag={id:v.id,edge:edge.dataset.edge,t1:v.t1,t2:v.t2,moved:false}; });
+  window.addEventListener('pointermove',e=>{ if(!vpDrag) return; const v=vpList.find(x=>x.id===vpDrag.id); if(!v) return; const t=vpTimeAt(e); if(t===null) return; const g=currentGranularity();
+    if(vpDrag.edge==='1') v.t1=Math.min(t,v.t2-2*g); else { const last=lastBarTime(); v.t2=Math.max(v.t1+2*g,Math.min(t+g,last!==null?last+g:t+g)); }
+    vpDrag.moved=true; v.prof=null; vpRender(); });
+  window.addEventListener('pointerup',()=>{ if(!vpDrag) return; const d=vpDrag; vpDrag=null; const v=vpList.find(x=>x.id===d.id); if(v&&d.moved){ vpSave(); vpCompute(v); } });
+  w.addEventListener('pointerdown',e=>{ if(vpSel&&!e.target.closest('g.vp')&&!e.target.closest('.vp-bar')) vpSelect(null); },true);
+  document.addEventListener('keydown',e=>{ if(document.body.dataset.page!=='chart') return; const typing=/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable;
+    if(e.key==='Escape'&&(vpMode||vpDraft)){ vpSetMode(false); vpRender(); return; }
+    if(typing) return; if((e.key==='Delete'||e.key==='Backspace')&&vpSel){ e.preventDefault(); vpDelete(vpSel); } });
+}
 
 // ===== Full screen chart (pair tabs + bias + chart). Native full screen, CSS fallback on phones that block it =====
 function fsEl(){ return $('page-chart'); }
@@ -2320,6 +2597,83 @@ function refreshWatchlistPricesOld(){ for(const inst of getInstruments()){ const
 
 // ===== js/settings.js (merged, imports/exports resolved) =====
 // settings.js — Settings page (Prompt 3: bias URL + manual scores, money/spreads, position tool labels/ratios)
+// ===== Sync — journal + settings kept in YOUR private GitHub repo, so phone and laptop show the same thing =====
+// Each trade is one file (journal/<id>.json). Settings are one file (settings.json) with a time per setting.
+// Newest change wins; deletes travel too. Nothing is ever sent anywhere except your own repo.
+const SYNC_CFG='bd_sync_cfg', SYNC_STATE='bd_sync_state', SYNC_DEL='bd_sync_del', SYNC_TS='bd_sync_keyts';
+var syncBusy=false, syncLast={ok:null,msg:'',at:0};
+function syncCfg(){ const c=lsGet('bd_sync_cfg',null); return c&&c.repo&&c.token?c:null; }
+function syncHeaders(c,accept,json){ const h={Authorization:'Bearer '+c.token,Accept:accept||'application/vnd.github+json'}; if(json) h['Content-Type']='application/json'; return h; }
+async function gh(c,path,opts={}){ return fetch('https://api.github.com'+path,{method:opts.method||'GET',cache:'no-store',headers:syncHeaders(c,opts.accept,!!opts.body),body:opts.body?JSON.stringify(opts.body):undefined}); }
+function b64utf8(str){ const bytes=new TextEncoder().encode(str); let bin=''; for(let i=0;i<bytes.length;i+=0x8000) bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000)); return btoa(bin); }
+function syncLocalKeys(){ const out=[]; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&isSyncKey(k)) out.push(k); } return out; }
+function ghErr(r,what){ if(r.status===401) return new Error('GitHub did not accept the token — make a new one (Settings → Sync)'); if(r.status===403||r.status===429){ return new Error(r.headers.get('x-ratelimit-remaining')==='0'?'GitHub rate limit reached — sync resumes shortly':'The token cannot '+what+' — it needs "Contents: Read and write" on this repo'); } if(r.status===404) return new Error('Repo not found, or the token has no access to it — check the name (owner/repo)'); return new Error('GitHub error '+r.status+' while '+what); }
+function setSyncChip(state,msg){ const el=$('sync-chip'); if(!el) return; if(!syncCfg()){ el.hidden=true; return; } el.hidden=false; el.className='tb-chip sync-chip '+state;
+  el.innerHTML=state==='busy'?'<small>SYNC</small><strong>…</strong>':state==='err'?'<small>SYNC</small><strong>⚠</strong>':'<small>SYNC</small><strong>✓</strong>'; el.title=msg||''; }
+async function syncNow(){
+  const c=syncCfg(); if(!c) return {ok:false,msg:'Sync is not set up'};
+  if(syncBusy) return {ok:false,msg:'Sync already running'}; syncBusy=true; setSyncChip('busy','Syncing…');
+  const st=lsGet(SYNC_STATE,{}); st.shas=st.shas||{}; st.pushed=st.pushed||{}; if(st.first===undefined) st.first=true;
+  let pulled=0, pushed=0, removed=0, applied=0;
+  try{
+    if(st.repo!==c.repo||!st.branch){ const r=await gh(c,`/repos/${c.repo}`); if(!r.ok) throw ghErr(r,'open the repo'); const j=await r.json(); if(st.repo!==c.repo){ st.shas={}; st.pushed={}; st.first=true; } st.repo=c.repo; st.branch=j.default_branch||'main'; if(j.private===false) st.publicWarn=true; else delete st.publicWarn; }
+    // 1) what is in the repo now
+    const remote={}; { const r=await gh(c,`/repos/${c.repo}/git/trees/${encodeURIComponent(st.branch)}?recursive=1`); if(r.ok){ const j=await r.json(); (j.tree||[]).forEach(e=>{ if(e.type==='blob') remote[e.path]=e.sha; }); } else if(r.status!==409&&r.status!==404) throw ghErr(r,'list files'); }
+    const blob=async sha=>{ const r=await gh(c,`/repos/${c.repo}/git/blobs/${sha}`,{accept:'application/vnd.github.raw+json'}); if(!r.ok) throw ghErr(r,'read a file'); return r.text(); };
+    let writes=0; const MAXW=60;
+    const put=async(path,text,sha,msg)=>{ if(writes>=MAXW) return null; writes++; const r=await gh(c,`/repos/${c.repo}/contents/${path}`,{method:'PUT',body:{message:msg,content:b64utf8(text),...(sha?{sha}:{})}}); if(r.status===409||r.status===422) return null; if(!r.ok) throw ghErr(r,'save files'); const j=await r.json(); return j.content&&j.content.sha; };
+    const del=async(path,sha,msg)=>{ const r=await gh(c,`/repos/${c.repo}/contents/${path}`,{method:'DELETE',body:{message:msg,sha}}); if(r.ok||r.status===404) return true; if(r.status===409||r.status===422) return false; throw ghErr(r,'delete files'); };
+    // 2) journal
+    const local=await idbAll('journal'); const byId=new Map(local.map(t=>[String(t.id),t]));
+    const tomb=new Set((lsGet(SYNC_DEL,[])||[]).map(String));
+    for(const [path,sha] of Object.entries(remote)){
+      const m=path.match(/^journal\/(.+)\.json$/); if(!m) continue; const id=m[1];
+      if(tomb.has(id)){ if(await del(path,sha,`Delete trade ${id}`)){ tomb.delete(id); delete st.shas[path]; delete st.pushed[id]; } continue; }
+      if(st.shas[path]===sha) continue;
+      let rt; try{ rt=JSON.parse(await blob(sha)); }catch(e){ if(e instanceof SyntaxError) continue; throw e; }
+      const lt=byId.get(id); const ldirty=lt&&lt.updatedAt!==st.pushed[id];
+      if(lt&&ldirty&&(lt.updatedAt||0)>(rt.updatedAt||0)){ st.shas[path]=sha; continue; } // ours is newer — sent below
+      await idbPut('journal',rt,{sync:true}); byId.set(id,rt); st.shas[path]=sha; st.pushed[id]=rt.updatedAt; pulled++;
+    }
+    for(const [id,t] of byId){
+      const path=`journal/${id}.json`, rsha=remote[path];
+      if(!rsha&&st.shas[path]&&t.updatedAt===st.pushed[id]){ await idbDelete('journal',t.id,{sync:true}); delete st.shas[path]; delete st.pushed[id]; removed++; continue; } // deleted on the other device
+      if(rsha&&t.updatedAt!==undefined&&t.updatedAt===st.pushed[id]) continue; // already in sync
+      if(!t.updatedAt){ t.updatedAt=Date.now(); await idbPut('journal',t,{sync:true}); }
+      const n=await put(path,JSON.stringify(t),rsha,`${t.status==='CLOSED'?(t.result||'Closed'):t.status||'Trade'} ${t.symbol||''} ${id}`.trim());
+      if(n){ st.shas[path]=n; st.pushed[id]=t.updatedAt; pushed++; }
+    }
+    for(const id of [...tomb]) if(!remote[`journal/${id}.json`]) tomb.delete(id);
+    lsSet(SYNC_DEL,[...tomb]);
+    // 3) settings — newest value per setting wins; a brand-new device takes the repo's settings first
+    const keyts=lsGet(SYNC_TS,{}); const sp='settings.json'; let rset=null;
+    if(remote[sp]&&st.shas[sp]!==remote[sp]){ try{ rset=JSON.parse(await blob(remote[sp])); }catch(e){ if(!(e instanceof SyntaxError)) throw e; } }
+    if(rset&&rset.keys){ syncApplying=true; try{ for(const [k,e] of Object.entries(rset.keys)){ if(!isSyncKey(k)||!e) continue; if(st.first||(e.at||0)>(keyts[k]||0)){ const v=JSON.stringify(e.v); if(localStorage.getItem(k)!==v){ localStorage.setItem(k,v); applied++; } keyts[k]=e.at||Date.now(); } } } finally{ syncApplying=false; }
+      st.shas[sp]=remote[sp]; st.setAt=Math.max(st.setAt||0,...Object.values(rset.keys).map(e=>e&&e.at||0)); }
+    const keys=syncLocalKeys(); const newest=Math.max(0,...keys.map(k=>keyts[k]||0));
+    if(!remote[sp]||newest>(st.setAt||0)||(rset&&keys.some(k=>!rset.keys[k]))){
+      const body={about:'Bias Desk settings — synced between your devices',keys:{}}; keys.forEach(k=>{ if(!keyts[k]) keyts[k]=1; body.keys[k]={v:lsGet(k,null),at:keyts[k]}; });
+      const n=await put(sp,JSON.stringify(body),remote[sp],'Settings'); if(n){ st.shas[sp]=n; st.setAt=newest; }
+    }
+    lsSet(SYNC_TS,keyts);
+    st.first=false; st.last=Date.now(); st.count=byId.size; lsSet(SYNC_STATE,st);
+    syncLast={ok:true,at:Date.now(),msg:`${byId.size} trades in sync`+(pulled+removed?` · ${pulled+removed} updated from your other device`:'')+(pushed?` · ${pushed} sent`:'')+(writes>=MAXW?' · more next round':'')};
+    setSyncChip('ok','Synced '+new Date().toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'}));
+  }catch(e){ syncLast={ok:false,at:Date.now(),msg:e.message||String(e)}; lsSet(SYNC_STATE,st); setSyncChip('err',syncLast.msg); }
+  finally{ syncBusy=false; }
+  if(pulled||removed){ window.dispatchEvent(new CustomEvent('bd:trade-updated')); toast(`Journal synced — ${pulled+removed} change${pulled+removed===1?'':'s'} from your other device`); }
+  if(applied){ try{ applyTheme(getTheme()); renderCards(); if(currentInst){ tlLoad(currentInst.symbol); vpLoad(currentInst.symbol); } }catch(e){} toast('Synced settings from your other device ✓'); }
+  if(document.body.dataset.page==='settings') updateSyncCard();
+  return syncLast;
+}
+function updateSyncCard(){ const m=$('s-sync-msg'); if(!m) return; const c=syncCfg(); const st=lsGet(SYNC_STATE,{});
+  m.className='sync-msg '+(!c?'':syncLast.ok===false?'err':'ok');
+  m.textContent=!c?'Not connected yet.':syncLast.ok===false?'⚠ '+syncLast.msg:st.last?`✓ Last synced ${new Date(st.last).toLocaleString('en-ZA',{hour:'2-digit',minute:'2-digit',day:'numeric',month:'short'})} · ${syncLast.msg||((st.count||0)+' trades')}`+(st.publicWarn?' · ⚠ this repo is PUBLIC — make it private':''):'Connected — first sync running…'; }
+let syncTimerStarted=false;
+function startSyncLoop(){ if(syncTimerStarted) return; syncTimerStarted=true; setSyncChip('ok','');
+  if(syncCfg()) setTimeout(syncNow,2500);
+  setInterval(()=>{ if(syncCfg()) syncNow(); },2*60*1000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&syncCfg()&&Date.now()-(syncLast.at||0)>30000) syncNow(); }); }
 function renderSettings(){
   const g=document.getElementById('settings-grid'); const mode=getFeedMode();
   const themeBtns=THEMES.map(t=>`<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}"><div class="theme-swatch" style="background:linear-gradient(135deg,${t.up} 50%,${t.down} 50%)"></div>${t.name}</button>`).join('');
@@ -2329,6 +2683,14 @@ function renderSettings(){
   const moneyRows=getInstruments().map(i=>`<div class="symbol-row"><label>${i.name}</label><input data-spread="${i.symbol}" type="number" step="0.1" value="${i.spread}" title="Spread (pips)" style="flex:0 0 80px"><input data-contract="${i.symbol}" type="number" value="${i.contract}" title="Contract size" style="flex:0 0 110px"><input data-pip="${i.symbol}" type="number" step="any" value="${i.pip}" title="Pip/point size"></div>`).join('');
   const L=getLabels(), R=getRatios(); const {rate,source}=getUSDZAR();
   g.innerHTML=`
+  <div class="setting-card card-s sync-card"><h3>🔄 Sync phone + laptop</h3>
+    <p>Keeps your journal, screenshots, trendlines, FRVPs and settings the same on every device — stored in <b>your own private GitHub repo</b>, never anywhere else. Your password and PIN stay on each device.</p>
+    <ol class="sync-steps"><li>On GitHub: <b>New repository</b> → name it <code>bias-desk-data</code> → choose <b>Private</b> → tick <b>Add a README</b> → Create.</li>
+      <li>Profile picture → <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>. Repository access: <b>Only select repositories → bias-desk-data</b>. Permissions → Repository → <b>Contents: Read and write</b>. Generate, copy the token.</li>
+      <li>Paste both below and press Connect. Do the same once on your phone (same repo, same or a second token).</li></ol>
+    <div class="row"><input id="s-sync-repo" placeholder="your-github-name/bias-desk-data" value="${esc((lsGet(SYNC_CFG,{})||{}).repo||'')}" style="flex:1"><input id="s-sync-token" type="password" placeholder="github_pat_…" value="${(lsGet(SYNC_CFG,{})||{}).token?'••••••••••':''}" style="flex:1" autocomplete="off"></div>
+    <div class="row" style="margin-top:10px"><button id="s-sync-go" class="btn-primary">Connect &amp; sync now</button><button id="s-sync-off" class="btn-soft" ${syncCfg()?'':'hidden'}>Disconnect this device</button></div>
+    <p id="s-sync-msg" class="sync-msg"></p></div>
   <div class="setting-card card-s"><h3>🔒 Security</h3><p>Change password or PIN. Both are required to unlock. Auto-lock after idle.</p>
     <div class="row"><input id="s-newpw" type="password" placeholder="New password"><input id="s-newpin" inputmode="numeric" placeholder="New PIN" style="width:110px"><button id="s-save-sec" class="btn-primary">Save</button></div>
     <div class="row" style="margin-top:12px"><label>Auto-lock (min)</label><input id="s-idle" type="number" value="${getIdleMinutes()}"><button id="s-save-idle" class="btn-primary">Apply</button></div>
@@ -2365,6 +2727,16 @@ function renderSettings(){
   <div class="setting-card card-s"><h3>📓 Journal rules checklist</h3><p>Your own rules — ticked yes/no on each trade's detail card. One per line.</p><textarea id="s-rules" rows="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:rgba(0,0,0,.35);color:var(--text)">${getRules().join('\n')}</textarea><div class="row" style="margin-top:8px"><button id="s-save-rules" class="btn-primary">Save rules</button></div></div>
   <div class="setting-card card-s"><h3>💾 Backup</h3><p>Export journal to CSV, or a full JSON backup including screenshots, instruments and settings. Import restores everything.</p><div class="row"><button id="s-export-csv" class="btn-primary">Export CSV</button><button id="s-export" class="btn-primary">Export full JSON</button><label class="btn-primary" style="display:inline-block;text-align:center">Import JSON<input id="s-import" type="file" accept=".json" hidden></label></div></div>
   <div class="setting-card glass danger"><h3>⚠️ Reset everything</h3><p>Deletes your account, PIN, journal, screenshots, instruments and settings on this device. Export a backup first.</p><div class="row"><button id="s-reset-all" class="btn-delete">Reset everything</button></div></div>`;
+  document.getElementById('s-sync-go').addEventListener('click',async()=>{
+    const m=document.getElementById('s-sync-msg'); const repo=document.getElementById('s-sync-repo').value.trim().replace(/^https?:\/\/github\.com\//i,'').replace(/\.git$/,'').replace(/\/+$/,'');
+    const tin=document.getElementById('s-sync-token').value.trim(); const old=lsGet(SYNC_CFG,{})||{}; const token=tin&&!tin.startsWith('•')?tin:old.token;
+    if(!/^[\w.-]+\/[\w.-]+$/.test(repo)){ m.className='sync-msg err'; m.textContent='⚠ Repo must look like your-github-name/bias-desk-data'; return; }
+    if(!token){ m.className='sync-msg err'; m.textContent='⚠ Paste the token from GitHub'; return; }
+    lsSet(SYNC_CFG,{repo,token}); if(old.repo!==repo) lsSet(SYNC_STATE,{});
+    document.getElementById('s-sync-off').hidden=false; m.className='sync-msg'; m.textContent='Syncing…'; startSyncLoop();
+    const r=await syncNow(); updateSyncCard(); toast(r.ok?'Sync connected ✓':'Sync problem — see the message in Settings'); });
+  document.getElementById('s-sync-off').addEventListener('click',()=>{ lsRemove(SYNC_CFG); lsRemove(SYNC_STATE); setSyncChip('ok'); renderSettings(); toast('Sync switched off on this device — your data stays here and on GitHub'); });
+  updateSyncCard();
   document.getElementById('s-save-sec').addEventListener('click',async()=>{ const m=document.getElementById('s-sec-msg'); try{ await changeCredentials(document.getElementById('s-newpw').value||null,document.getElementById('s-newpin').value||null); m.textContent='✓ Saved.'; m.style.color='var(--green)'; }catch(e){ m.textContent=e.message; m.style.color='var(--red)'; } });
   document.getElementById('s-save-idle').addEventListener('click',()=>{ setIdleMinutes(Math.max(1,parseInt(document.getElementById('s-idle').value)||30)); toast('Auto-lock updated ✓'); });
   document.getElementById('s-save-pt').addEventListener('click',()=>{ const l={...getLabels()}; g.querySelectorAll('[data-label]').forEach(inp=>l[inp.dataset.label]=inp.value.trim().toUpperCase()||l[inp.dataset.label]); setLabels(l); const r={...getRatios()}; g.querySelectorAll('[data-ratio]').forEach(inp=>r[inp.dataset.ratio]=Math.max(parseFloat(inp.value)||r[inp.dataset.ratio],0.1)); setRatios(r); toast('Position tool settings saved ✓'); });
@@ -2464,7 +2836,8 @@ function enterApp(){
   $('login-screen').hidden=true; $('app-shell').hidden=false;
   applyTheme(getTheme()); updateFeedUI(); renderSettings();
   if(!feedStarted){ onFeedModeChange(()=>{ updateFeedUI(); renderCards(); });
-    startFeed(); feedStarted=true; startScoresPolling(); startOutcomeTracking(); recheckOpenTradesOnLoad(); onScoresChange(()=>{ renderCards(); if(currentInst) updateHeader(); });
+    startFeed(); feedStarted=true; startScoresPolling(); startSyncLoop(); startOutcomeTracking(); recheckOpenTradesOnLoad(); onScoresChange(()=>{ renderCards(); if(currentInst) updateHeader(); });
+    onAccuracyChange(()=>{ renderOverview(); if(currentInst) updateHeader(); if(document.body.dataset.page==='analytics') renderAnalytics(); });
     startBinance(); recheckBinanceTrades();
     window.addEventListener('hashchange',route); }
   renderCards(); route(); resetIdle(); initMotivation(); renderSessions();
@@ -2534,7 +2907,7 @@ function renderOverview(){
   const list=getInstruments();
   $('bias-board').innerHTML=list.map(i=>{ const b=biasBadge(i.symbol); const sc=b.score; const pct=sc===null?50:(sc+10)*5;
     return `<button class="bb-tile ${b.cls}" data-trade="${i.symbol}"><div class="bb-top"><strong>${esc(i.name)}</strong><span class="bb-score">${sc===null?'—':(sc>0?'+':'')+sc}</span></div>
-      <div class="bb-meter"><i style="left:${pct}%"></i></div><div class="bb-label">${sc===null?'No score yet':esc(b.label)}</div>${b.reason?`<p class="bb-why">${esc(b.reason)}</p>`:''}</button>`; }).join('');
+      <div class="bb-meter"><i style="left:${pct}%"></i></div><div class="bb-label">${sc===null?'No score yet':esc(b.label)}</div>${b.reason?`<p class="bb-why">${esc(b.reason)}</p>`:''}${accuracyShort(i.symbol)?`<div class="bb-acc" title="How often this pair's morning score called the day right">🎯 ${accuracyShort(i.symbol)}</div>`:''}</button>`; }).join('');
   $('bias-board').querySelectorAll('[data-trade]').forEach(t=>t.addEventListener('click',()=>goTrade(t.dataset.trade)));
   renderOverviewPerf(); updateOverviewOpen(true);
 }
@@ -2575,7 +2948,7 @@ function showPage(name){
   document.body.dataset.page=name;
   if(name==='settings') renderSettings();
   if(name==='journal') renderJournal();
-  if(name==='analytics') renderAnalytics();
+  if(name==='analytics'){ renderAnalytics(); runBiasAccuracy(); }
   if(name==='overview') renderOverview();
   if(name==='markets') renderMarketsTable();
   window.scrollTo({top:0});

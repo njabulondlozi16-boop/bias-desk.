@@ -16,6 +16,7 @@ from zoneinfo import ZoneInfo
 SAST = ZoneInfo("Africa/Johannesburg")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "scores.json")
+HISTORY = os.path.join(ROOT, "scores_history.json")
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
 
 # What drives each instrument -> where to read about it
@@ -196,6 +197,28 @@ def clamp(v):
     except Exception: return 0
 
 
+def save_history(date, at, scores):
+    """Keep every day's scores so the website can check how accurate they were.
+    The FIRST score of the day is kept (the one you saw in the morning) - a re-run later
+    the same day only fills pairs that were missing, so nothing is changed with hindsight."""
+    hist = {"about": "Daily bias scores per pair (SAST date). 'at' = time the score was published.", "days": {}}
+    try:
+        with open(HISTORY) as f:
+            old = json.load(f)
+            if isinstance(old.get("days"), dict):
+                hist["days"] = old["days"]
+    except (OSError, ValueError):
+        pass
+    day = hist["days"].setdefault(date, {})
+    for sym, v in scores.items():
+        if sym not in day:
+            day[sym] = {"score": v["score"], "at": at}
+    keep = sorted(hist["days"])[-730:]
+    hist["days"] = {d: hist["days"][d] for d in keep}
+    with open(HISTORY, "w") as f:
+        json.dump(hist, f, indent=1, sort_keys=True)
+
+
 def main():
     now = datetime.datetime.now(SAST)
     date = now.strftime("%Y-%m-%d")
@@ -223,6 +246,7 @@ def main():
     }
     with open(OUT, "w") as f:
         json.dump(out, f, indent=2)
+    save_history(date, now.strftime("%H:%M"), scores)
     for sym, v in scores.items():
         print(f"{sym:7} {v['score']:+3d}  {v['label']:20} {v['reason']}")
 
