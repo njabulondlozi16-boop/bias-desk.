@@ -504,6 +504,48 @@ body.light .gauge-tick{fill:#475569}
 .chip-row.need .chip{border-color:var(--orange);box-shadow:0 0 10px rgba(255,159,46,.6)}
 .pt-panel .chip{padding:5px 9px;font-size:11px}
 .pt-panel .btn-confirm{padding:11px;font-size:13px}
+
+/* TradingView-style position tool */
+.pt-zone-risk{background:rgba(242,54,69,.16)}
+.pt-zone-reward{background:rgba(8,153,129,.18)}
+.pt-zone-extra{background:color-mix(in srgb,var(--c) 10%,transparent)}
+.pt-stroke{height:1px;top:8.5px;box-shadow:none}
+.pt-line[data-level="entry"] .pt-stroke{height:1px;opacity:.9}
+.pt-line[data-drag="1"]:hover .pt-stroke,.pt-line.dragging .pt-stroke{height:2px;top:8px;box-shadow:0 0 8px var(--c)}
+.pt-pill{box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.pt-zl{position:absolute;transform:translate(-100%,-50%);padding:3px 8px;border-radius:4px;font:600 11px 'Space Grotesk',sans-serif;white-space:nowrap;pointer-events:none;z-index:2;color:#fff}
+.pt-zl-tp{background:#089981}.pt-zl-sl{background:#f23645}.pt-zl-x{background:var(--c);color:#0a1a3f}
+.pt-zl-mid{background:rgba(20,24,35,.92);border:1px solid rgba(255,255,255,.18);color:#e6edf7}
+.pt-zl-mid.pos{background:#089981;border-color:#089981;color:#fff}.pt-zl-mid.neg{background:#f23645;border-color:#f23645;color:#fff}
+.pt-h{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;background:#fff;border:2px solid #2962ff;border-radius:2px;pointer-events:auto;z-index:3;cursor:move}
+.pt-h-sl{cursor:ns-resize;border-color:#f23645}
+.pt-handle{width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:2px;border-color:#2962ff;box-shadow:none}
+.pt-bar{position:absolute;z-index:7;pointer-events:auto;background:rgba(19,23,34,.96);border:1px solid rgba(255,255,255,.12);border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.55);font-size:12px;color:#d1d4dc;user-select:none}
+.pb-row{display:flex;align-items:center;gap:6px;padding:5px 8px}
+.pb-sub{border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+.pt-bar.min .pb-sub{display:none}
+.pt-grip{cursor:grab;color:#787b86;font-size:14px;padding:0 2px}
+.pb-dir{font-size:12px;letter-spacing:.3px}
+.pb-sep{width:1px;height:18px;background:rgba(255,255,255,.12)}
+.pb-risk{display:flex;align-items:center;gap:4px;color:#787b86}
+.pb-risk input{width:62px;padding:4px 6px;border-radius:5px;border:1px solid rgba(255,255,255,.14);background:#1e222d;color:#d1d4dc;font:600 12px 'JetBrains Mono',monospace}
+.pb-btn{padding:5px 10px;border-radius:5px;border:1px solid rgba(255,255,255,.14);background:#2a2e39;color:#d1d4dc;font-weight:700;font-size:12px}
+.pb-btn:hover{background:#363a45}
+.pb-btn.confirm{background:#089981;border-color:#089981;color:#fff}.pb-btn.confirm:hover{background:#0aa38a}
+.pb-btn.danger{background:#f23645;border-color:#f23645;color:#fff}
+.pb-icon{min-width:26px;height:26px;padding:0 6px;border-radius:5px;border:1px solid transparent;background:transparent;color:#b2b5be;font-weight:700;font-size:12px}
+.pb-icon:hover{background:#2a2e39}
+.pb-lbl{color:#787b86;font-size:11px}
+.pb-chip{padding:4px 9px;border-radius:5px;border:1px solid rgba(255,255,255,.14);background:transparent;color:#d1d4dc;font-size:11px;font-weight:600}
+.pb-chip.active{background:#2962ff;border-color:#2962ff;color:#fff}
+.pb-sub.need .pb-chip[data-tag]{border-color:#ff9f2e;box-shadow:0 0 8px rgba(255,159,46,.7)}
+.pb-meta{color:#b2b5be}
+.pb-win{color:#22e58a;font-weight:800}
+.pb-more{position:relative;margin-left:auto}.pb-more summary{list-style:none;cursor:pointer;padding:2px 8px;border-radius:5px;color:#b2b5be}.pb-more summary::-webkit-details-marker{display:none}
+.pb-more[open] summary{background:#2a2e39}
+.pb-pop{position:absolute;right:0;top:28px;width:230px;padding:8px 10px;background:#1e222d;border:1px solid rgba(255,255,255,.12);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:8}
+.pb-pop .pt-row input{width:84px}
+@media(max-width:820px){ .pt-bar{position:fixed;left:8px!important;right:8px;top:auto!important;bottom:8px} }
 </style>
 </head>
 <body>
@@ -1374,14 +1416,14 @@ function xForTime(t){
   try{ const xl=ts.timeToCoordinate(last); if(xl===null||xl===undefined) return null; const lg=ts.coordinateToLogical(xl); const x=ts.logicalToCoordinate(lg+(tb-last)/g); return (x===null||isNaN(x))?null:x; }catch(e){ return null; }
 }
 function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null; return {x0,x1:x0+Math.max(6,tool.wBars||24)*barSpacing()}; }
-function defaultT0(){ const g=currentGranularity(); const last=lastBarTime()||Math.floor(Date.now()/1000/g)*g; return last-12*g; }
+function defaultT0(){ const g=currentGranularity(); const last=lastBarTime()||Math.floor(Date.now()/1000/g)*g; return last-24*g; }
 const ENTRY_MODELS=['FRVP','Engulfing sweep'];
 // Create draft setup at the current price, sensibly sized
 function createSetup(direction,inst,timeframe){
   if(!inst) return;
   if(!hasPrice(inst)){ toast('Waiting for a live price for '+inst.name+' — check the feed status'); return false; }
   const price=getState(inst).price, risk=price*0.002;
-  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m',t0:defaultT0(),wBars:24};
+  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m',t0:defaultT0(),wBars:40};
   recalcTPs(); tool.lots=Math.max(lotsFromRisk(100,inst),0.001); tool.riskZAR=calcMoney().riskZAR;
   renderTool();
   toast(`${direction.toUpperCase()} setup placed — drag the green line to move it, the red line to set risk, ○ to stretch`);
@@ -1412,7 +1454,10 @@ function priceAtY(y){ try{ const p=seriesRef?seriesRef.coordinateToPrice(y):null
 function localY(e){ const r=wrapEl.getBoundingClientRect(); return e.clientY-r.top; }
 function localX(e){ const r=wrapEl.getBoundingClientRect(); return e.clientX-r.left; }
 function onPointerDown(e){
-  if(!tool||tool.locked) return;
+  if(!tool) return;
+  const grip=e.target.closest('.pt-grip');
+  if(grip){ e.preventDefault(); e.stopPropagation(); drag={kind:'bar',startX:e.clientX,startY:e.clientY,dx:tool.barDx||0,dy:tool.barDy||0,el:grip}; try{ grip.setPointerCapture(e.pointerId); }catch(_){} return; }
+  if(tool.locked) return;
   const el=e.target.closest('[data-drag="1"]'); if(!el) return;
   const kind=el.dataset.level; const p=priceAtY(localY(e)); if(p===null&&kind!=='w') return;
   e.preventDefault(); e.stopPropagation();
@@ -1421,6 +1466,7 @@ function onPointerDown(e){
 }
 function onPointerMove(e){
   if(!drag||!tool) return;
+  if(drag.kind==='bar'){ tool.barDx=drag.dx+(e.clientX-drag.startX); tool.barDy=drag.dy+(e.clientY-drag.startY); repositionOnly(); return; }
   const bars=Math.round((localX(e)-drag.startX)/barSpacing());
   if(drag.kind==='w'){ tool.wBars=Math.max(6,drag.startW+bars); repositionOnly(); return; }
   const p=priceAtY(localY(e)); if(p===null) return;
@@ -1429,7 +1475,7 @@ function onPointerMove(e){
   else { tool.sl=tool.direction==='buy'?Math.min(target,tool.entry-minGap):Math.max(target,tool.entry+minGap); }
   recalcTPs(); tool.riskZAR=calcMoney().riskZAR; updateLivePanel(); repositionOnly();
 }
-function onPointerUp(){ if(!drag) return; drag.el?.classList.remove('dragging'); drag=null; renderPanel(); }
+function onPointerUp(){ if(!drag) return; const k=drag.kind; drag.el?.classList.remove('dragging'); drag=null; if(k!=='bar') renderPanel(); }
 function levelDefs(){
   const L=getLabels(); const fin=tool.status==='WIN'; const buy=tool.direction==='buy';
   // pills sit on the outside of the box (targets/invalidation) and the key level pill sits on the risk side
@@ -1441,7 +1487,7 @@ function levelDefs(){
   tool.extraTPs.forEach((t,i)=>{ const hit=(tool.bonusHits||[]).includes(t.ratio); defs.push({key:'tp'+(i+2),price:t.price,label:(t.label||('POTENTIAL TARGET '+(i+2)))+(hit?' ✓':''),color:TP_COLORS[(i+1)%TP_COLORS.length],text:'#0a1a3f',draggable:false,ratio:t.ratio,pos:buy?'above':'below'}); });
   return defs;
 }
-// Build lines, boxes and axis tags once; repositionOnly() moves them every frame
+// Build lines, TradingView-style boxes + labels, handles and axis tags once; repositionOnly() moves them every frame
 function renderLevels(){
   const lv=overlay.querySelector('.pt-levels'); const inst=tool.inst;
   const statusTag=tool.status==='PENDING'?'<span class="live-tag pend">PENDING</span>':tool.locked?'<span class="live-tag">LIVE</span>':'';
@@ -1451,8 +1497,21 @@ function renderLevels(){
     html+=`<div class="pt-line" data-level="${d.key}" data-drag="${d.draggable?1:0}" style="--c:${d.color};--t:${d.text}"><i class="pt-stroke"></i><span class="pt-pill pos-${d.pos}">${esc(d.label)}${d.ratio?` · 1:${d.ratio}`:''}${d.key==='entry'?statusTag:''}</span></div>`;
     html+=`<span class="pt-axis-tag" data-atag="${d.key}" style="--c:${d.color};--t:${d.text}">${fmtPrice(inst,d.price)}</span>`;
   }
-  if(!tool.locked) html+='<div class="pt-handle" data-level="w" data-drag="1" title="Drag to stretch"></div>';
+  // TradingView-style info labels inside the boxes
+  html+='<span class="pt-zl pt-zl-tp" data-zl="tp1"></span><span class="pt-zl pt-zl-sl" data-zl="sl"></span><span class="pt-zl pt-zl-mid" data-zl="mid"></span>';
+  tool.extraTPs.forEach((t,i)=>{ html+=`<span class="pt-zl pt-zl-x" data-zl="x${i}" style="--c:${TP_COLORS[(i+1)%TP_COLORS.length]}"></span>`; });
+  if(!tool.locked) html+='<div class="pt-h pt-h-move" data-level="entry" data-drag="1" title="Move"></div><div class="pt-h pt-h-sl" data-level="sl" data-drag="1" title="Risk"></div><div class="pt-handle" data-level="w" data-drag="1" title="Stretch"></div>';
   lv.innerHTML=html; repositionOnly();
+}
+function zlText(){
+  const inst=tool.inst, m=calcMoney(), u=unitName(inst), price=getState(inst).price;
+  const dist=p=>inst.type==='Forex'?(Math.abs(p-tool.entry)/inst.pip).toFixed(1)+' pips':Math.abs(p-tool.entry).toFixed(decimals(inst.base));
+  const out={tp1:`1:2.5 · ${dist(tool.tp1)} · +${fmtZAR(m.rewards[0].zar)}`,
+             sl:`Stop ${dist(tool.sl)} · −${fmtZAR(m.riskZAR)}`};
+  tool.extraTPs.forEach((t,i)=>{ out['x'+i]=`1:${t.ratio} · ${dist(t.price)} · +${fmtZAR(m.rewards[i+1].zar)}`; });
+  if(tool.locked&&tool.status==='OPEN'&&hasPrice(inst)){ const r=((price-tool.entry)/riskDist())*(tool.direction==='buy'?1:-1); const pnl=r*m.riskZAR; out.mid=`Open P&L ${pnl>=0?'+':'−'}${fmtZAR(Math.abs(pnl))} · ${r>=0?'+':''}${r.toFixed(2)}R`; out.midCls=pnl>=0?'pos':'neg'; }
+  else out.mid=`${fmtLots(tool.lots)} lots · risk ${fmtZAR(m.riskZAR)}${tool.setupTag?' · '+tool.setupTag:''}`;
+  return out;
 }
 function repositionOnly(){
   if(!overlay||!tool) return;
@@ -1469,55 +1528,75 @@ function repositionOnly(){
     if(y===null){ tag.style.display='none'; return; } tag.style.display=''; tag.style.top=y+'px';
     const txt=fmtPrice(tool.inst,d.price); if(tag.textContent!==txt) tag.textContent=txt;
   });
-  const yE=yAtPrice(tool.entry);
+  const yE=yAtPrice(tool.entry), yS=yAtPrice(tool.sl), yT=yAtPrice(tool.tp1);
   const setZone=(z,y)=>{ const el=overlay.querySelector(`[data-zone="${z}"]`); if(!el) return; if(yE===null||y===null){ el.style.display='none'; return; } el.style.display=''; el.style.top=Math.min(yE,y)+'px'; el.style.height=Math.abs(y-yE)+'px'; el.style.left=x0+'px'; el.style.width=w+'px'; };
-  setZone('risk',yAtPrice(tool.sl)); setZone('reward',yAtPrice(tool.tp1));
+  setZone('risk',yS); setZone('reward',yT);
   tool.extraTPs.forEach((t,i)=>setZone('x'+i,yAtPrice(t.price)));
+  // labels: target at the outer edge of its box, stop at the outer edge of the risk box, info on the entry line
+  const txt=zlText(); const cx=x0+w/2; const up=tool.direction==='buy'; const rx=x1-6;
+  // pill side for each line: targets 'above' (buy) / 'below' (sell); key level + invalidation the other way. Labels go opposite the pill.
+  const place=(key,y,pillAbove)=>{ const el=overlay.querySelector(`[data-zl="${key}"]`); if(!el) return; if(y===null){ el.style.display='none'; return; } el.style.display=''; if(el.textContent!==txt[key]) el.textContent=txt[key]; el.style.left=rx+'px'; el.style.top=(y+(pillAbove?12:-12))+'px'; };
+  place('tp1',yT,up); place('sl',yS,!up);
+  tool.extraTPs.forEach((t,i)=>place('x'+i,yAtPrice(t.price),up));
+  const mid=overlay.querySelector('[data-zl="mid"]'); if(mid&&yE!==null){ if(mid.textContent!==txt.mid) mid.textContent=txt.mid; mid.className='pt-zl pt-zl-mid '+(txt.midCls||''); mid.style.left=rx+'px'; mid.style.top=(yE+(up?-12:12))+'px'; }
+  const hm=overlay.querySelector('.pt-h-move'); if(hm&&yE!==null){ hm.style.left=x0+'px'; hm.style.top=yE+'px'; }
+  const hs=overlay.querySelector('.pt-h-sl'); if(hs&&yS!==null){ hs.style.left=cx+'px'; hs.style.top=yS+'px'; }
   const h=overlay.querySelector('.pt-handle'); if(h&&yE!==null){ h.style.left=x1+'px'; h.style.top=yE+'px'; }
-  // compact card sits beside the tool, never over it
-  const card=overlay.querySelector('.pt-panel'); if(card&&yE!==null&&innerWidth>820){
-    const W=overlay.clientWidth, H=overlay.clientHeight, cw=card.offsetWidth||250, ch=card.offsetHeight||300;
-    let left=x1+16; if(left+cw>W-70) left=x0-cw-16; if(left<8) left=Math.max(8,Math.min(W-cw-70,x1+16));
-    const top=Math.max(8,Math.min(H-ch-8,yE-ch/2));
-    card.style.left=left+'px'; card.style.top=top+'px';
+  // floating toolbar: follows the tool (above it), keeps the user's drag offset, stays inside the chart
+  const bar=overlay.querySelector('.pt-bar'); if(bar&&yE!==null&&innerWidth>820){
+    const ys=[yE,yS,yT,...tool.extraTPs.map(t=>yAtPrice(t.price))].filter(v=>v!==null); const top0=Math.min(...ys);
+    const W=overlay.clientWidth, H=overlay.clientHeight, bw=bar.offsetWidth||300, bh=bar.offsetHeight||40;
+    let left=x0+(tool.barDx||0), top=top0-bh-26+(tool.barDy||0);
+    left=Math.max(6,Math.min(W-bw-70,left)); top=Math.max(6,Math.min(H-bh-6,top));
+    bar.style.left=left+'px'; bar.style.top=top+'px';
   }
 }
-// Compact info card (FBC style: small, next to the tool)
+// Slim floating toolbar attached to the trade (TradingView-style). Drag it by ⠿, minimise with –.
 function renderPanel(){
   if(!overlay||!tool) return;
   const slot=overlay.querySelector('.pt-panel-slot'); const m=calcMoney(); const inst=tool.inst; const {rate,source}=getUSDZAR(); const u=unitName(inst);
-  const lk=tool.locked; const wasMin=slot.querySelector('.pt-panel')?.classList.contains('min');
-  const rewardsHtml=m.rewards.map((r,i)=>`<div class="pt-row"><span><i class="dot" style="background:${TP_COLORS[i%TP_COLORS.length]}"></i>Target 1:${r.ratio}</span><span class="pt-rgt"><strong data-v="rw${i}">${fmtZAR(r.zar)}</strong>${i>0&&!lk?`<button data-rmtp="${i-1}" title="Remove target">✕</button>`:''}</span></div>`).join('');
+  const lk=tool.locked; const dir=tool.direction==='buy';
   let actions;
-  if(tool.status==='PENDING') actions=`<button id="pt-close" class="btn-close-now">CANCEL ORDER</button><div class="pt-muted ctr">Waiting for price to reach the key level</div>`;
-  else if(tool.status==='WIN') actions=`<div class="pt-win">WIN ✓ +2.5R${tool.bonusHits&&tool.bonusHits.length?` · bonus to 1:${Math.max(...tool.bonusHits)}`:''}</div><button id="pt-stopbonus" class="btn-close-now">STOP BONUS TRACKING</button>`;
-  else if(lk) actions=`<button id="pt-close" class="btn-close-now">CLOSE NOW</button>`;
-  else actions=`<button id="pt-confirm" class="btn-confirm">CONFIRM TRADE</button>`;
-  slot.innerHTML=`<div class="pt-panel glass ${wasMin?'min':''}">
-    <div class="pt-panel-head"><strong class="${tool.direction==='buy'?'up':'down'}">${tool.direction==='buy'?'▲ BUY':'▼ SELL'} · ${esc(inst.name)}</strong><button id="pt-min" class="pt-min" title="Minimise">–</button></div>
-    <div class="pt-body">
-    <div class="pt-two"><label>Risk R<input id="pt-risk" type="number" step="10" min="0" value="${tool.riskZAR.toFixed(0)}" ${lk?'disabled':''}></label><label>Lots<input id="pt-lots" type="number" step="0.01" min="0" value="${fmtLots(tool.lots)}" ${lk?'disabled':''}></label></div>
-    ${rewardsHtml}
-    ${lk?'':`<button id="pt-addtp" class="btn-addtp">+ Add target</button>
-    <div class="chip-row"><span class="pt-muted">Entry</span>${ENTRY_MODELS.map(x=>`<button class="chip ${tool.setupTag===x?'active':''}" data-tag="${x}">${x}</button>`).join('')}</div>
-    <div class="chip-row"><span class="pt-muted">Type</span>${['Scalp','Intraday','Swing'].map(x=>`<button class="chip ${tool.tradeType===x?'active':''}" data-type="${x}">${x}</button>`).join('')}</div>`}
-    <details class="pt-more"><summary>Details</summary>
-      <div class="pt-row"><span>Key level</span><strong class="mono" data-v="entry">${fmtPrice(inst,tool.entry)}</strong></div>
-      <div class="pt-row"><span>Invalidation</span><strong class="mono" data-v="sl">${fmtPrice(inst,tool.sl)}</strong></div>
-      <div class="pt-row"><span>Risk distance</span><strong class="mono" data-v="dist">${m.riskUnits.toFixed(1)} ${u}</strong></div>
-      <div class="pt-row"><span>Spread cost</span><strong data-v="spread">${fmtZAR(m.spreadZAR)}</strong></div>
-      <div class="pt-row"><span>USD→ZAR</span><strong>${rate.toFixed(2)} <small class="pt-muted">${source}</small></strong></div>
-    </details>
-    ${actions}</div></div>`;
+  if(tool.status==='PENDING') actions=`<button id="pt-close" class="pb-btn danger">Cancel order</button>`;
+  else if(tool.status==='WIN') actions=`<span class="pb-win">WIN ✓${tool.bonusHits&&tool.bonusHits.length?' · bonus 1:'+Math.max(...tool.bonusHits):''}</span><button id="pt-stopbonus" class="pb-btn">Stop bonus</button>`;
+  else if(lk) actions=`<button id="pt-close" class="pb-btn danger">Close now</button>`;
+  else actions=`<button id="pt-confirm" class="pb-btn confirm">✓ CONFIRM</button><button id="pt-cancel" class="pb-icon" title="Remove setup">✕</button>`;
+  slot.innerHTML=`<div class="pt-bar ${tool.barMin?'min':''}">
+    <div class="pb-row">
+      <span class="pt-grip" title="Drag toolbar">⠿</span>
+      <strong class="pb-dir ${dir?'up':'down'}">${dir?'▲ BUY':'▼ SELL'} ${esc(inst.name)}</strong>
+      ${tool.status==='PENDING'?'<span class="live-tag pend">PENDING</span>':lk?'<span class="live-tag">LIVE</span>':''}
+      <span class="pb-sep"></span>
+      <label class="pb-risk">R<input id="pt-risk" type="number" step="10" min="0" value="${tool.riskZAR.toFixed(0)}" ${lk?'disabled':''} title="Risk in rand"></label>
+      ${lk?'':'<button id="pt-addtp" class="pb-icon" title="Add target">+TP</button>'}
+      ${actions}
+      <button id="pt-min" class="pb-icon" title="${tool.barMin?'Expand':'Minimise'}">${tool.barMin?'▸':'–'}</button>
+    </div>
+    <div class="pb-row pb-sub">
+      ${lk?`<span class="pb-meta">${esc(tool.setupTag||'—')} · ${esc(tool.tradeType||'')}</span>`:`<span class="pb-lbl">Entry</span>${ENTRY_MODELS.map(x=>`<button class="pb-chip ${tool.setupTag===x?'active':''}" data-tag="${x}">${x}</button>`).join('')}
+      <span class="pb-sep"></span>${['Scalp','Intraday','Swing'].map(x=>`<button class="pb-chip ${tool.tradeType===x?'active':''}" data-type="${x}">${x}</button>`).join('')}`}
+      <details class="pb-more"><summary>⋯</summary><div class="pb-pop">
+        <div class="pt-row"><span>Lots</span><input id="pt-lots" type="number" step="0.01" min="0" value="${fmtLots(tool.lots)}" ${lk?'disabled':''}></div>
+        <div class="pt-row"><span>Key level</span><strong class="mono" data-v="entry">${fmtPrice(inst,tool.entry)}</strong></div>
+        <div class="pt-row"><span>Invalidation</span><strong class="mono" data-v="sl">${fmtPrice(inst,tool.sl)}</strong></div>
+        <div class="pt-row"><span>Risk distance</span><strong class="mono" data-v="dist">${m.riskUnits.toFixed(1)} ${u}</strong></div>
+        <div class="pt-row"><span>Spread cost</span><strong data-v="spread">${fmtZAR(m.spreadZAR)}</strong></div>
+        <div class="pt-row"><span>USD→ZAR</span><strong>${rate.toFixed(2)} <small class="pt-muted">${source}</small></strong></div>
+        ${tool.extraTPs.map((t,i)=>`<div class="pt-row"><span>Target ${i+2} 1:</span><span class="pt-rgt"><input data-ratio="${i}" type="number" step="0.1" min="2.6" value="${t.ratio}" ${lk?'disabled':''} style="width:60px">${lk?'':`<button data-rmtp="${i}" title="Remove">✕</button>`}</span></div>`).join('')}
+      </div></details>
+    </div>
+  </div>`;
   const $p=sel=>slot.querySelector(sel);
-  $p('#pt-min')?.addEventListener('click',()=>{ slot.querySelector('.pt-panel').classList.toggle('min'); repositionOnly(); });
+  $p('#pt-min')?.addEventListener('click',()=>{ tool.barMin=!tool.barMin; renderPanel(); });
   $p('#pt-lots')?.addEventListener('change',e=>{ tool.lots=Math.max(parseFloat(e.target.value)||0.01,0.0001); tool.riskZAR=calcMoney().riskZAR; renderPanel(); });
   $p('#pt-risk')?.addEventListener('change',e=>{ tool.riskZAR=Math.max(parseFloat(e.target.value)||0,0); tool.lots=Math.max(lotsFromRisk(tool.riskZAR,tool.inst),0.0001); renderPanel(); });
+  slot.querySelectorAll('[data-ratio]').forEach(inp=>inp.addEventListener('change',()=>{ const i=+inp.dataset.ratio; tool.extraTPs[i].ratio=Math.max(parseFloat(inp.value)||tool.extraTPs[i].ratio,2.6); tool.extraTPs.sort((a,b)=>a.ratio-b.ratio); recalcTPs(); renderTool(); }));
   slot.querySelectorAll('[data-rmtp]').forEach(b=>b.addEventListener('click',()=>removeExtraTP(+b.dataset.rmtp)));
   slot.querySelectorAll('[data-type]').forEach(b=>b.addEventListener('click',()=>{ tool.tradeType=b.dataset.type; renderPanel(); }));
   slot.querySelectorAll('[data-tag]').forEach(b=>b.addEventListener('click',()=>{ tool.setupTag=tool.setupTag===b.dataset.tag?'':b.dataset.tag; renderPanel(); }));
   $p('#pt-addtp')?.addEventListener('click',addExtraTP);
-  $p('#pt-confirm')?.addEventListener('click',()=>{ if(!tool.setupTag){ toast('Pick your entry model: FRVP or Engulfing sweep'); slot.querySelector('[data-tag]')?.parentElement.classList.add('need'); return; } confirmTrade(); });
+  $p('#pt-cancel')?.addEventListener('click',()=>{ clearTool(); toast('Setup removed'); });
+  $p('#pt-confirm')?.addEventListener('click',()=>{ if(!tool.setupTag){ tool.barMin=false; renderPanel(); toast('Pick your entry model first: FRVP or Engulfing sweep'); overlay.querySelector('.pb-sub')?.classList.add('need'); return; } confirmTrade(); });
   $p('#pt-close')?.addEventListener('click',()=>closeTrade(tool.tradeId,tool.status==='PENDING'?'CANCELLED':'MANUAL CLOSE',getState(tool.inst).price));
   $p('#pt-stopbonus')?.addEventListener('click',async()=>{ const t=(await idbAll('journal')).find(x=>x.id===tool.tradeId); if(t){ t.bonusTracking=false; await idbPut('journal',t); } clearTool(); toast('Bonus tracking stopped — result saved'); });
   repositionOnly();
@@ -1528,7 +1607,7 @@ function updateLivePanel(){
   const set=(k,v)=>{ const el=overlay.querySelector(`[data-v="${k}"]`); if(el) el.textContent=v; };
   set('entry',fmtPrice(inst,tool.entry)); set('sl',fmtPrice(inst,tool.sl)); set('dist',m.riskUnits.toFixed(1)+' '+unitName(inst)); set('spread',fmtZAR(m.spreadZAR));
   m.rewards.forEach((r,i)=>set('rw'+i,fmtZAR(r.zar)));
-  const ri=overlay.querySelector('#pt-risk'); if(ri) ri.value=tool.riskZAR.toFixed(0);
+  const ri=overlay.querySelector('#pt-risk'); if(ri&&document.activeElement!==ri) ri.value=tool.riskZAR.toFixed(0);
 }
 function renderTool(){ if(!tool||!ensureOverlay()) return; renderLevels(); renderPanel(); startLoop(); }
 function startLoop(){ if(rafId) return; const tick=()=>{ if(!tool){ rafId=null; return; } repositionOnly(); rafId=requestAnimationFrame(tick); }; rafId=requestAnimationFrame(tick); }
@@ -1539,7 +1618,7 @@ async function restoreToolForInst(inst){
   const all=await idbAll('journal');
   const t=all.filter(x=>x.symbol===inst.symbol&&(x.status==='OPEN'||x.status==='PENDING'||(x.result==='WIN'&&x.bonusTracking))).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0];
   if(!t) return;
-  tool={id:t.id,tradeId:t.id,symbol:t.symbol,inst,direction:t.direction,tradeType:t.tradeType,setupTag:t.setupTag,customTags:t.customTags||[],entry:t.entry,sl:t.sl,tp1:t.tp1,extraTPs:(t.extraTPs||[]).map(x=>({...x})),lots:t.lots,riskZAR:t.riskZAR,locked:true,status:t.status==='CLOSED'?'WIN':t.status,bonusHits:(t.bonusWins||[]).map(b=>b.ratio),timeframe:t.timeframe,t0:t.t0||Math.floor(new Date(t.entryTime).getTime()/1000)-6*currentGranularity(),wBars:t.wBars||24};
+  tool={id:t.id,tradeId:t.id,symbol:t.symbol,inst,direction:t.direction,tradeType:t.tradeType,setupTag:t.setupTag,customTags:t.customTags||[],entry:t.entry,sl:t.sl,tp1:t.tp1,extraTPs:(t.extraTPs||[]).map(x=>({...x})),lots:t.lots,riskZAR:t.riskZAR,locked:true,status:t.status==='CLOSED'?'WIN':t.status,bonusHits:(t.bonusWins||[]).map(b=>b.ratio),timeframe:t.timeframe,barMin:true,t0:t.t0||Math.floor(new Date(t.entryTime).getTime()/1000)-6*currentGranularity(),wBars:t.wBars||24};
   renderTool();
 }
 // Screenshot: chart canvas + FBC-style lines and pills drawn on top
