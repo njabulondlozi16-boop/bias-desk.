@@ -392,7 +392,7 @@ body.light .pt-panel{background:rgba(255,255,255,.92)}
 .hp-dot.bias-strong-bear,.hp-dot.bias-mod-bear{background:#ff4d6d;box-shadow:0 0 8px #ff4d6d}
 .hero-chart{position:relative;height:340px;border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at 70% 0%,rgba(30,107,255,.18),transparent 60%),rgba(0,0,0,.18);border:1px solid var(--border)}
 .hero-chart .lw-host{position:absolute;inset:0}
-.hero-chart::after{content:'';position:absolute;top:0;bottom:0;width:120px;left:-120px;background:linear-gradient(90deg,transparent,rgba(56,225,255,.07),transparent);animation:scan 5s linear infinite;pointer-events:none}
+
 @keyframes scan{to{left:100%}}
 .hero-wait{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--muted);font-size:14px;z-index:2;text-align:center;padding:20px}
 .spinner{width:22px;height:22px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:var(--accent);animation:spin 1s linear infinite;flex-shrink:0}
@@ -479,6 +479,10 @@ body.light .gauge-tick{fill:#475569}
 .ct-view button{background:none;border:none;padding:8px 14px;border-radius:9px;font-weight:800;font-size:13px;color:var(--muted);transition:all .2s}
 .ct-view button.active{background:linear-gradient(135deg,var(--accent),#00c2ff);color:#fff;box-shadow:0 0 16px var(--accent)}
 .symbol-row input[data-tv]{flex:1}
+
+.chart-wait{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);color:#e2e8f0;text-align:left;padding:20px}
+.chart-wait div{display:flex;flex-direction:column;gap:4px}.chart-wait small{color:#9db4d8;max-width:520px}
+.hero-chart{background:transparent}
 </style>
 </head>
 <body>
@@ -535,7 +539,7 @@ body.light .gauge-tick{fill:#475569}
       <div class="hero glass" id="hero">
         <div class="hero-main">
           <div class="hero-head">
-            <div class="hero-title"><span class="hero-kicker"><i class="live-ring"></i>TRADINGVIEW · LIVE</span><h2 id="hero-name">—</h2><span id="hero-type" class="hero-type">—</span></div>
+            <div class="hero-title"><span class="hero-kicker"><i class="live-ring"></i>LIVE · 5-MIN CANDLES</span><h2 id="hero-name">—</h2><span id="hero-type" class="hero-type">—</span></div>
             <div class="hero-quote"><div id="hero-price" class="hero-price mono">—</div><span id="hero-chg" class="mono hero-chg">—</span></div>
           </div>
           <div class="hero-picker" id="hero-picker"></div>
@@ -585,8 +589,7 @@ body.light .gauge-tick{fill:#475569}
   <div class="modal glass" role="dialog" aria-modal="true">
     <div class="modal-head"><h3>Add instrument</h3><button id="modal-close" class="icon-btn">✕</button></div>
     <label class="field"><span>Display name</span><input id="f-name" placeholder="e.g. USDJPY"></label>
-    <label class="field"><span>TradingView symbol</span><input id="f-tv" placeholder="e.g. OANDA:USDJPY"></label>
-    <label class="field"><span>Short code</span><input id="f-symbol" placeholder="e.g. USDJPY (optional)"></label>
+    <label class="field"><span>Price-feed symbol (optional)</span><input id="f-symbol" placeholder="e.g. frxUSDJPY — leave empty to auto-match"></label>
     <label class="field"><span>Group</span><select id="f-group"></select></label>
     <label class="field"><span>Type</span><select id="f-type"><option>Forex</option><option>Index</option><option>Metal</option><option>Crypto</option></select></label>
     <div class="field-row">
@@ -740,10 +743,11 @@ function matchSymbols(active){
 }
 // --- Deriv endpoints, tried in order until one works (the working one is remembered) ---
 const ENDPOINTS=[
-  {id:'derivws',name:'Price feed A · ws.derivws.com',url:()=>`wss://ws.derivws.com/websockets/v3?app_id=${getAppId()}`},
-  {id:'binaryws',name:'Price feed B · ws.binaryws.com',url:()=>`wss://ws.binaryws.com/websockets/v3?app_id=${getAppId()}`},
-  {id:'public26',name:'Price feed C · api.derivws.com',url:()=>'wss://api.derivws.com/trading/v1/options/ws/public'},
+  {id:'public26',name:'Deriv live feed (api.derivws.com)',url:()=>'wss://api.derivws.com/trading/v1/options/ws/public'},
+  {id:'derivws',name:'Backup feed A (ws.derivws.com)',url:()=>`wss://ws.derivws.com/websockets/v3?app_id=${getAppId()}`},
+  {id:'binaryws',name:'Backup feed B (ws.binaryws.com)',url:()=>`wss://ws.binaryws.com/websockets/v3?app_id=${getAppId()}`},
 ];
+if(!lsGet('bd_ep_v2',false)){ lsRemove('bd_endpoint'); lsSet('bd_ep_v2',true); }
 let epIndex=Math.max(0,ENDPOINTS.findIndex(e=>e.id===lsGet('bd_endpoint','')));
 const epStatus={}; let epFailsThisRound=0, roundSummary='';
 function getEndpoint(){ return ENDPOINTS[epIndex]; }
@@ -791,7 +795,7 @@ function connect(){
   sock.onopen=async()=>{
     opened=true; clearTimeout(openTimer);
     try{
-      const res=await wsSend({active_symbols:'brief',product_type:'basic'});
+      const res=await wsSend({active_symbols:'brief'});
       activeSymbolsCache=normActive(res.active_symbols);
       if(!activeSymbolsCache.length) throw new Error('returned no symbols');
       matchSymbols(activeSymbolsCache);
@@ -820,7 +824,7 @@ async function testAllEndpoints(){
     const r=await new Promise(res=>{ let s, opened=false; const finish=x=>{ try{ s&&s.close(); }catch(_){} res(x); };
       const to=setTimeout(()=>finish({ok:false,reason:opened?'no answer to active_symbols':'no response (blocked or unreachable)'}),9000);
       try{ s=new WebSocket(ep.url()); }catch(e){ clearTimeout(to); return finish({ok:false,reason:'browser refused: '+e.message}); }
-      s.onopen=()=>{ opened=true; s.send(JSON.stringify({active_symbols:'brief',product_type:'basic',req_id:1})); };
+      s.onopen=()=>{ opened=true; s.send(JSON.stringify({active_symbols:'brief',req_id:1})); };
       s.onmessage=ev=>{ clearTimeout(to); let m; try{ m=JSON.parse(ev.data); }catch(e){ return finish({ok:false,reason:'unreadable reply'}); } if(m.error) finish({ok:false,reason:'API error: '+(m.error.message||m.error.code)}); else finish({ok:true,reason:`${normActive(m.active_symbols).length} symbols available`}); };
       s.onclose=ev=>{ if(!opened){ clearTimeout(to); finish({ok:false,reason:`connection refused (code ${ev.code})`}); } };
     });
@@ -833,7 +837,7 @@ function scheduleReconnect(){
   if(!fallbackTimer) fallbackTimer=setTimeout(()=>{ fallbackTimer=null; if(feedMode!=='live') goOffline(); },8000);
   clearTimeout(reconnectTimer); reconnectTimer=setTimeout(()=>{ if(feedMode!=='live') connect(); },delay);
 }
-function startFeed(){ if(started) return; started=true; fallbackTimer=setTimeout(()=>{ fallbackTimer=null; if(feedMode!=='live') goOffline(lastFeedError||'Still connecting to Deriv…'); },12000); connect(); }
+function startFeed(){ if(started) return; started=true; fallbackTimer=setTimeout(()=>{ fallbackTimer=null; if(feedMode!=='live') goOffline(lastFeedError||'Still connecting to the live feed…'); },20000); connect(); }
 function reconnectFeed(){ reconnectAttempt=0; epFailsThisRound=0; lastFeedError=''; const old=ws; ws=null; try{ if(old) old.close(); }catch(e){} if(feedMode!=='live') setMode('connecting'); else setMode('connecting'); mapping.clear(); connect(); }
 // --- Candles for the full chart (live only; demo only when allowed) ---
 async function getCandles(inst,granularity,count=300){
@@ -909,6 +913,15 @@ function mountTradingView(el,inst,tf,opts={}){
   sc.onerror=()=>{ el.innerHTML='<div class="hero-wait">⚠ TradingView could not load. Charts need internet in a normal browser (Chrome) — preview windows block them.</div>'; };
   box.appendChild(sc); el.appendChild(box);
 }
+async function fetchCandlesOnce(inst,gran,count){
+  try{
+    if(isBinance(inst)) return await binanceCandles(inst,gran,count);
+    const deriv=getDerivSymbol(inst);
+    if(feedMode==='live'&&deriv){ const r=await wsSend({ticks_history:deriv,adjust_start_time:1,count,end:'latest',style:'candles',granularity:gran}); return (r.candles||[]).map(c=>({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close})); }
+    if(feedMode==='demo') return generateDemoCandles(inst,gran,count);
+  }catch(e){ console.warn('candles',e.message); }
+  return [];
+}
 function generateDemoCandles(inst,granularity,count){
   const s=getState(inst); const out=[]; let price=s.price; const now=Math.floor(Date.now()/1000); const bucket=Math.floor(now/granularity)*granularity;
   // Walk backwards then forwards for realism
@@ -922,15 +935,15 @@ function generateDemoCandles(inst,granularity,count){
 // ===== js/themes.js (merged, imports/exports resolved) =====
 // themes.js — 5 candle themes (Prompt 2). Each changes candles, wicks, bg, grid, accent. Remembered in localStorage.
 const THEMES=[
- {id:'ultra-blue',name:'Ultra Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'rgba(120,170,255,0.07)',text:'#dbeafe',up:'#1e6bff',down:'#e5e7eb',wickUp:'#7db4ff',wickDown:'#9ca3af',borderUp:'#1e6bff',borderDown:'#d1d5db',crosshair:'#38e1ff',priceLine:'#38e1ff',light:false},
- {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'rgba(0,255,156,0.08)',text:'#e0fff5',up:'#00ff9c',down:'#ff2e88',wickUp:'#00ff9c',wickDown:'#ff2e88',borderUp:'#00ff9c',borderDown:'#ff2e88',crosshair:'#00ff9c',priceLine:'#00ff9c',light:false},
- {id:'classic-pro',name:'Classic Pro',accent:'#26a69a',bg:'#1e293b',bg2:'#0f172a',chartBg:'#1e293b',grid:'rgba(148,163,184,0.10)',text:'#e2e8f0',up:'#26a69a',down:'#ef5350',wickUp:'#26a69a',wickDown:'#ef5350',borderUp:'#26a69a',borderDown:'#ef5350',crosshair:'#94a3b8',priceLine:'#26a69a',light:false},
- {id:'gold-luxe',name:'Gold Luxe',accent:'#d4af37',bg:'#1a1a1a',bg2:'#2b2118',chartBg:'#1a1a1a',grid:'rgba(212,175,55,0.09)',text:'#f5e6b8',up:'#d4af37',down:'#8b1e3f',wickUp:'#d4af37',wickDown:'#c94a6a',borderUp:'#d4af37',borderDown:'#8b1e3f',crosshair:'#d4af37',priceLine:'#d4af37',light:false},
- {id:'light-focus',name:'Light Focus',accent:'#16a34a',bg:'#f8fafc',bg2:'#e2e8f0',chartBg:'#ffffff',grid:'rgba(100,116,139,0.12)',text:'#0f172a',up:'#16a34a',down:'#dc2626',wickUp:'#16a34a',wickDown:'#dc2626',borderUp:'#16a34a',borderDown:'#dc2626',crosshair:'#64748b',priceLine:'#16a34a',light:true},
+ {id:'mt5-black',name:'MT5 Black',accent:'#00c853',bg:'#05070a',bg2:'#0d1117',chartBg:'#000000',grid:'transparent',text:'#c9d1d9',up:'#00c853',down:'#ff1e1e',wickUp:'#00c853',wickDown:'#ff1e1e',borderUp:'#00c853',borderDown:'#ff1e1e',crosshair:'#8b949e',priceLine:'#8b949e',light:false},
+ {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f3f0e0',axisText:'#1b1a14',up:'#4b0082',down:'#ff0000',wickUp:'#4b0082',wickDown:'#ff0000',borderUp:'#3a0066',borderDown:'#d00000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
+ {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#dbeafe',up:'#1e6bff',down:'#e5e7eb',wickUp:'#7db4ff',wickDown:'#9ca3af',borderUp:'#1e6bff',borderDown:'#d1d5db',crosshair:'#38e1ff',priceLine:'#38e1ff',light:false},
+ {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'transparent',text:'#e0fff5',up:'#00ff9c',down:'#ff2e88',wickUp:'#00ff9c',wickDown:'#ff2e88',borderUp:'#00ff9c',borderDown:'#ff2e88',crosshair:'#00ff9c',priceLine:'#00ff9c',light:false},
+ {id:'light-focus',name:'Light Focus',accent:'#16a34a',bg:'#f8fafc',bg2:'#e2e8f0',chartBg:'#ffffff',grid:'transparent',text:'#0f172a',up:'#16a34a',down:'#dc2626',wickUp:'#16a34a',wickDown:'#dc2626',borderUp:'#16a34a',borderDown:'#dc2626',crosshair:'#64748b',priceLine:'#16a34a',light:true},
 ];
 const themeListeners=new Set();
 function onThemeChange(fn){ themeListeners.add(fn); return ()=>themeListeners.delete(fn); }
-function getTheme(){ const t=lsGet('bd_theme','ultra-blue'); return THEMES.some(x=>x.id===t)?t:'ultra-blue'; }
+function getTheme(){ const t=lsGet('bd_theme','mt5-black'); return THEMES.some(x=>x.id===t)?t:'mt5-black'; }
 function getThemeDef(){ return THEMES.find(x=>x.id===getTheme())||THEMES[0]; }
 // Apply theme to site (CSS vars + body class) with smooth transition, persist, notify chart
 function applyTheme(id){
@@ -954,10 +967,10 @@ function cycleTheme(){ const cur=getTheme(); const idx=THEMES.findIndex(x=>x.id=
 function chartOptionsForTheme(def){
   const t=def||getThemeDef();
   return {
-    layout:{background:{type:'solid',color:t.chartBg},textColor:t.text,fontFamily:"'JetBrains Mono',monospace",fontSize:11},
-    grid:{vertLines:{color:t.grid},horzLines:{color:t.grid}},
-    rightPriceScale:{borderColor:t.grid},
-    timeScale:{borderColor:t.grid,timeVisible:true,secondsVisible:false},
+    layout:{background:{type:'solid',color:t.chartBg},textColor:t.axisText||t.text,fontFamily:"'JetBrains Mono',monospace",fontSize:11,attributionLogo:false},
+    grid:{vertLines:{color:t.grid,visible:t.grid!=='transparent'},horzLines:{color:t.grid,visible:t.grid!=='transparent'}},
+    rightPriceScale:{borderColor:t.grid==='transparent'?hexA(t.axisText||t.text,.25):t.grid},
+    timeScale:{borderColor:t.grid==='transparent'?hexA(t.axisText||t.text,.25):t.grid,timeVisible:true,secondsVisible:false},
     crosshair:{mode:0,vertLine:{color:t.crosshair,width:1,style:2,labelBackgroundColor:t.accent},horzLine:{color:t.crosshair,width:1,style:2,labelBackgroundColor:t.accent}},
     handleScroll:{mouseWheel:true,pressedMouseMove:true},handleScale:{axisPressedMouseMove:true},
   };
@@ -1643,7 +1656,6 @@ function buildChartShell(){
   wrap.innerHTML=`
   <div id="bias-banner" class="bias-banner bias-none" aria-label="Daily bias banner">${gaugeSVG('banner-gauge',true)}<span id="bias-banner-score" class="bias-score">—</span><div class="bias-banner-main"><span id="bias-banner-label" class="bias-banner-label">NO SCORE YET FOR TODAY</span><span id="bias-banner-text" class="bias-reason"></span></div><span id="bias-banner-date" class="bias-date"></span><span id="bias-banner-badge" class="bias-badge bias-none">No score yet for today</span></div>
   <div class="chart-toolbar glass">
-    <div class="ct-view" id="ct-view"><button data-view="tv">📈 TradingView</button><button data-view="trade">🎯 Trade tool</button></div>
     <div class="ct-left"><strong id="ct-name">—</strong><span id="ct-price" class="mono ct-price">—</span><span id="ct-chg" class="mono">—</span><span id="ct-feed" class="feed-tag">—</span></div>
     <div class="ct-tfs" id="ct-tfs">${TIMEFRAMES.map(t=>`<button data-tf="${t.label}" class="${t.label===currentTF?'active':''}">${t.label}</button>`).join('')}</div>
     <div class="ct-actions">
@@ -1654,11 +1666,10 @@ function buildChartShell(){
       <select id="ct-theme" data-theme-select title="Candle theme">${THEMES.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select>
     </div>
   </div>
-  <div class="tv-wrap" id="tv-wrap"></div>
-  <div class="chart-wrap" id="chart-wrap"><div id="lw-container" class="lw-container"></div></div>
+  <div class="chart-wrap" id="chart-wrap"><div id="lw-container" class="lw-container"></div><div id="chart-wait" class="chart-wait" hidden></div></div>
   <div id="chart-status" class="chart-status">Loading candles…</div>`;
-  $('ct-tfs').addEventListener('click',e=>{ const b=e.target.closest('button[data-tf]'); if(!b) return; currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); loadCandles(); if(chartView==='tv') mountTradingView($('tv-wrap'),currentInst,currentTF); });
-  $('ct-view').addEventListener('click',e=>{ const b=e.target.closest('button[data-view]'); if(b) setChartView(b.dataset.view); });
+  $('ct-tfs').addEventListener('click',e=>{ const b=e.target.closest('button[data-tf]'); if(!b) return; currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); loadCandles();  });
+
   $('ct-theme').addEventListener('change',e=>{ applyTheme(e.target.value); toast(`Theme: ${e.target.selectedOptions[0].text} 🎨`); });
   $('ct-buy').addEventListener('click',()=>chartCreateSetup('buy'));
   $('ct-sell').addEventListener('click',()=>chartCreateSetup('sell'));
@@ -1666,19 +1677,11 @@ function buildChartShell(){
   $('ct-journal').addEventListener('click',showPairJournal);
   onFeedModeChange(m=>{ if(currentInst&&$('page-chart').classList.contains('active')&&(m==='live'||m==='demo')) loadCandles().then(()=>{ if(!tool) restoreToolForInst(currentInst); }); });
   window.addEventListener('bd:tool-cleared',()=>{ $('ct-tp').disabled=true; $('ct-buy').classList.remove('active-setup'); $('ct-sell').classList.remove('active-setup'); });
-  onThemeChange(def=>{ if(chart){ chart.applyOptions(chartOptionsForTheme(def)); } if(series){ series.applyOptions(seriesOptionsForTheme(def)); } if(chartView==='tv'&&currentInst&&$('page-chart').classList.contains('active')) setChartView('tv'); });
+  onThemeChange(def=>{ if(chart){ chart.applyOptions(chartOptionsForTheme(def)); } if(series){ series.applyOptions(seriesOptionsForTheme(def)); } });
 }
-let chartView=lsGet('bd_view','tv');
+let chartView='trade';
 // Switch between the real TradingView chart and our trade chart (with the FBC position tool)
-function setChartView(v){
-  chartView=v==='trade'?'trade':'tv'; lsSet('bd_view',chartView);
-  document.querySelectorAll('#ct-view button').forEach(b=>b.classList.toggle('active',b.dataset.view===chartView));
-  const tw=$('tv-wrap'), cw=$('chart-wrap'); if(!tw||!cw) return;
-  tw.style.display=chartView==='tv'?'':'none'; cw.style.display=chartView==='trade'?'':'none';
-  document.getElementById('chart-container').classList.toggle('view-tv',chartView==='tv');
-  if(chartView==='tv'){ if(tw.dataset.sym!==currentInst?.symbol+currentTF+getTheme()){ mountTradingView(tw,currentInst,currentTF); tw.dataset.sym=currentInst?.symbol+currentTF+getTheme(); } $('chart-status').textContent=`TradingView chart · ${tvSymbol(currentInst)} · switch to 🎯 Trade tool (or press Buy / Sell setup) to place a position`; }
-  else { if(chart){ const el=$('lw-container'); requestAnimationFrame(()=>{ if(el.clientWidth) chart.resize(el.clientWidth,el.clientHeight); chart.timeScale().fitContent(); }); } loadCandles(); }
-}
+function setChartView(){ chartView='trade'; if(chart){ const el=$('lw-container'); requestAnimationFrame(()=>{ if(el&&el.clientWidth) chart.resize(el.clientWidth,el.clientHeight); }); } }
 function chartCreateSetup(dir){
   if(!currentInst) return;
   if(chartView!=='trade') setChartView('trade');
@@ -1706,6 +1709,7 @@ async function loadCandles(){
     candleMap=new Map(candles.map(c=>[c.time,c]));
     if(series && ensureChartLib()){ series.setData(candles); chart.timeScale().fitContent(); }
     if(series && ensureChartLib() && !candles.length) series.setData([]);
+    const cw=$('chart-wait'); if(cw){ cw.hidden=!!candles.length; if(!candles.length) cw.innerHTML=`<span class="spinner"></span><div><b>Waiting for live prices</b><small>${esc(getFeedMode()==='offline'?(getFeedError()||'Price feed offline — retrying'):'Connecting to the live price feed…')}</small></div>`; }
     if(chartView!=='trade') return;
     $('chart-status').textContent=candles.length?`${candles.length} candles · ${currentTF} · ${getFeedMode().toUpperCase()}`:(getFeedMode()==='live'?'No candles returned for this symbol/timeframe':`Waiting for live data — feed is ${getFeedMode().toUpperCase()}${getFeedError()?' · '+getFeedError():''}`);
     updateHeader();
@@ -1723,13 +1727,13 @@ function updateHeader(){
   const src=getState(currentInst).src; const fm=getFeedMode(); const instLive=src==='live';
   feed.textContent=instLive?`● LIVE · ${sourceLabel(currentInst)}`:src==='demo'?'● DEMO DATA':fm==='offline'?'● PRICE FEED OFFLINE':'● CONNECTING';
   feed.className='feed-tag '+(instLive?'live':src==='demo'?'demo':'off');
-  if(chartView==='tv'&&!instLive){ feed.textContent='● TRADINGVIEW LIVE'; feed.className='feed-tag live'; feed.title='Chart is live from TradingView. The Trade tool needs the price feed, which is offline.'; }
+
   const b=biasBadge(currentInst.symbol); const banner=$('bias-banner'); setGauge('banner-gauge',b.score);
   if(b.score===null){ banner.className='bias-banner bias-none'; $('bias-banner-badge').textContent='No score yet for today'; $('bias-banner-badge').className='bias-badge bias-none'; $('bias-banner-text').textContent='No score yet for today — check Settings for the scores URL'; $('bias-banner-score').textContent='—'; $('bias-banner-label').textContent='NO SCORE YET FOR TODAY'; }
   else { banner.className='bias-banner '+b.cls; $('bias-banner-badge').textContent=b.text; $('bias-banner-badge').className='bias-badge '+b.cls; $('bias-banner-text').textContent=b.reason||''; $('bias-banner-score').textContent=(b.score>0?'+':'')+b.score; $('bias-banner-label').textContent=b.label; $('bias-banner-date').textContent=b.date; }
   const hb=$('chart-head-bias'); if(hb){ hb.textContent=b.score===null?'No score yet for today':b.text; hb.className='bias-badge '+b.cls; }
   $('chart-title').textContent=currentInst.name;
-  $('chart-sub').textContent=`${currentInst.symbol} · ${priceText(currentInst)} · ${chgText(currentInst)} · TradingView ${tvSymbol(currentInst)}`;
+  $('chart-sub').textContent=`${currentInst.symbol} · ${priceText(currentInst)} · ${chgText(currentInst)} · ${sourceLabel(currentInst)}`;
   const notFound=!isSymbolFound(currentInst);
   if(chartView==='trade') $('chart-status').textContent=notFound?'⚠ Symbol not found — set it in Settings':$('chart-status').textContent;
 }
@@ -1760,7 +1764,7 @@ function openChart(inst){
   currentInst=inst; setupState=null; clearTool();
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   $('page-chart').classList.add('active');
-  buildChartShell(); initChart(); updateHeader(); $('tv-wrap').dataset.sym='';
+  buildChartShell(); initChart(); updateHeader();
   setChartView(chartView);
   loadCandles().then(async()=>{ await restoreToolForInst(inst); if(tool&&chartView!=='trade') setChartView('trade'); });
   $('ct-theme').value=getThemeDef().id;
@@ -1806,7 +1810,7 @@ function refreshWatchlistPrices(){ for(const inst of getInstruments()){ const s=
 function renderSettings(){
   const g=document.getElementById('settings-grid'); const mode=getFeedMode();
   const themeBtns=THEMES.map(t=>`<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}"><div class="theme-swatch" style="background:linear-gradient(135deg,${t.up} 50%,${t.down} 50%)"></div>${t.name}</button>`).join('');
-  const symbolRows=getInstruments().map(i=>`<div class="symbol-row"><label>${esc(i.name)}</label><input data-tv="${i.symbol}" value="${esc(i.tvSymbol||'')}" placeholder="${esc(tvSymbol(i))}" title="TradingView symbol"><input data-deriv="${i.symbol}" value="${i.derivSymbol||''}" placeholder="${isBinance(i)?'Binance':'feed: auto'}" ${isBinance(i)?'disabled':''} title="Price-feed symbol" style="flex:0 0 120px"></div>`).join('');
+  const symbolRows=getInstruments().map(i=>`<div class="symbol-row"><label>${esc(i.name)}</label><input data-deriv="${i.symbol}" value="${i.derivSymbol||''}" placeholder="${isBinance(i)?'Binance':'feed: auto'}" ${isBinance(i)?'disabled':''} title="Price-feed symbol" style="flex:1"></div>`).join('');
   const manual=getManual();
   const manualRows=getInstruments().map(i=>{ const m=manual[i.symbol]; return `<div class="symbol-row"><label>${i.name}</label><input data-mscore="${i.symbol}" type="number" min="-10" max="10" value="${m?m.score:''}" placeholder="−10…+10" style="flex:0 0 90px"><input data-mreason="${i.symbol}" value="${m?m.reason||'':''}" placeholder="reason (optional)"></div>`; }).join('');
   const moneyRows=getInstruments().map(i=>`<div class="symbol-row"><label>${i.name}</label><input data-spread="${i.symbol}" type="number" step="0.1" value="${i.spread}" title="Spread (pips)" style="flex:0 0 80px"><input data-contract="${i.symbol}" type="number" value="${i.contract}" title="Contract size" style="flex:0 0 110px"><input data-pip="${i.symbol}" type="number" step="any" value="${i.pip}" title="Pip/point size"></div>`).join('');
@@ -1816,7 +1820,7 @@ function renderSettings(){
     <div class="row"><input id="s-newpw" type="password" placeholder="New password"><input id="s-newpin" inputmode="numeric" placeholder="New PIN" style="width:110px"><button id="s-save-sec" class="btn-primary">Save</button></div>
     <div class="row" style="margin-top:12px"><label>Auto-lock (min)</label><input id="s-idle" type="number" value="${getIdleMinutes()}"><button id="s-save-idle" class="btn-primary">Apply</button></div>
     <p id="s-sec-msg" style="margin-top:10px"></p></div>
-  <div class="setting-card glass"><h3>📡 Charts &amp; price feeds</h3><p><b>Charts:</b> real TradingView charts (set each symbol below). <b>Prices for the position tool &amp; journal:</b> BTCUSD from Binance (${typeof bnStatus!=='undefined'?bnStatus.toUpperCase():''}); forex, gold &amp; indices from the price feed. Status: <strong class="${mode==='live'?'up':'down'}">${mode.toUpperCase()}</strong>. Symbols auto-match from <em>active_symbols</em>; override any symbol below.</p>
+  <div class="setting-card glass"><h3>📡 Live price feed</h3><p><b>Live prices for charts, the position tool &amp; journal:</b> BTCUSD from Binance (${typeof bnStatus!=='undefined'?bnStatus.toUpperCase():''}); forex, gold &amp; indices from the price feed. Status: <strong class="${mode==='live'?'up':'down'}">${mode.toUpperCase()}</strong>. Symbols auto-match from <em>active_symbols</em>; override any symbol below.</p>
     ${getFeedError()?`<p class="feed-err">Last problem: ${esc(getFeedError())}</p>`:''}
     <label class="check-row"><input type="checkbox" id="s-demo" ${demoAllowed()?'checked':''}> Allow DEMO prices when the live feed is offline (off = live only)</label>
     <div class="row"><label>APP_ID</label><input id="s-appid" type="number" value="${getAppId()}"><button id="s-save-appid" class="btn-primary">Save &amp; reconnect</button></div>
@@ -1955,7 +1959,7 @@ function enterApp(){
   applyTheme(getTheme()); updateFeedUI(); if(!feedStarted) onFeedModeChange(()=>{ updateFeedUI(); renderCards(); renderWatchlist(); }); renderCards(); renderWatchlist(); renderSettings(); moveUnderline();
   if(!feedStarted){ startFeed(); feedStarted=true; startScoresPolling(); startOutcomeTracking(); recheckOpenTradesOnLoad(); onScoresChange(()=>{ renderCards(); renderWatchlist(); });
     onThemeChange(()=>{ initHeroChart(); updateHero(true); });
-    onFeedModeChange(()=>updateHero(true)); startBinance(); recheckBinanceTrades();
+    onFeedModeChange(m=>{ if(m==='live'||m==='demo') initHeroChart(); updateHero(true); }); startBinance(); recheckBinanceTrades();
     $('hero-open').addEventListener('click',()=>{ const i=heroInst(); if(i) openChart(i); }); }
   animateBalance(); resetIdle(); initMotivation();
   if(!$('hero-gauge')) $('hero-gauge-wrap').innerHTML=gaugeSVG('hero-gauge');
@@ -1980,7 +1984,7 @@ function renderCards(){
       <canvas data-spark="${inst.symbol}" width="440" height="88"></canvas>
       <span class="bias-badge ${b.cls}">${b.score===null?'No score yet for today':b.label}</span>
       ${getFeedMode()==='live'&&!isSymbolFound(inst)?'<div class="amber-badge">⚠ Symbol not found — set it in Settings</div>':''}
-      <div class="deriv-tag">📈 ${esc(tvSymbol(inst))}${isBinance(inst)?' · live: Binance':''}</div></article>`;
+      <div class="deriv-tag">${esc(sourceLabel(inst))}</div></article>`;
   }).join('')+`<article class="card glass add-card" id="add-card" style="--i:${list.length}"><span class="add-plus">+</span><span>Add instrument</span></article>`;
   grid.querySelectorAll('.card[data-sym]').forEach(card=>{
     card.addEventListener('click',e=>{ if(e.target.dataset.remove) return; const inst=getInstruments().find(i=>i.symbol===card.dataset.sym); if(inst) openChart(inst); });
@@ -2027,17 +2031,36 @@ function renderHeroPicker(){
   el.innerHTML=getInstruments().map(i=>{ const b=biasBadge(i.symbol); return `<button class="hp-chip ${cur&&i.symbol===cur.symbol?'active':''}" data-hero="${i.symbol}"><i class="hp-dot ${b.cls}"></i>${esc(i.name.replace(' INDEX',''))}</button>`; }).join('');
   el.querySelectorAll('[data-hero]').forEach(b=>b.addEventListener('click',()=>{ lsSet('bd_hero',b.dataset.hero); renderHeroPicker(); initHeroChart(); updateHero(true); }));
 }
-function initHeroChart(){
+const HERO_GRAN=300;
+async function initHeroChart(){
   const el=$('hero-tv'); const inst=heroInst(); if(!el||!inst) return;
-  const key=inst.symbol+getTheme(); if(el.dataset.key===key) return; el.dataset.key=key;
-  mountTradingView(el,inst,'15m',{compact:true});
+  if(!window.LightweightCharts){ el.innerHTML='<div class="hero-wait">⚠ Chart library failed to load — check your internet connection</div>'; return; }
+  const def=getThemeDef();
+  if(heroChart){ try{ heroChart.remove(); }catch(e){} heroChart=null; heroSeries=null; }
+  el.innerHTML='<div class="lw-host"></div><div id="hero-wait" class="hero-wait"><span class="spinner"></span>Loading live candles…</div>';
+  heroChart=window.LightweightCharts.createChart(el.querySelector('.lw-host'),{...chartOptionsForTheme(def),autoSize:true,handleScroll:false,handleScale:false});
+  heroSeries=heroChart.addCandlestickSeries(seriesOptionsForTheme(def));
+  heroLast=0; heroBar=null; const sym=inst.symbol;
+  const candles=await fetchCandlesOnce(inst,HERO_GRAN,160);
+  if(heroInst().symbol!==sym||!heroSeries) return;
+  if(candles.length){ heroSeries.setData(candles); heroLast=candles[candles.length-1].time; heroBar={...candles[candles.length-1]}; heroChart.timeScale().fitContent(); }
+  const w=$('hero-wait'); if(w){ w.hidden=!!candles.length; if(!candles.length) w.innerHTML=`<span class="spinner"></span>${getFeedMode()==='offline'?'Live prices offline — '+esc(getFeedError()||'retrying'):'Waiting for live prices…'}`; }
+}
+// Update the hero's last candle from live ticks (no extra subscriptions needed)
+let heroBar=null;
+function heroTick(){
+  const inst=heroInst(); if(!heroSeries||!inst||!heroBar) return; const s=getState(inst); if(!s.hasData) return;
+  const last=s.ticks[s.ticks.length-1]; if(!last) return; const b=Math.floor(last.time/HERO_GRAN)*HERO_GRAN; if(b<heroBar.time) return;
+  if(b>heroBar.time) heroBar={time:b,open:heroBar.close,high:last.value,low:last.value,close:last.value};
+  heroBar.high=Math.max(heroBar.high,last.value); heroBar.low=Math.min(heroBar.low,last.value); heroBar.close=last.value;
+  try{ heroSeries.update({...heroBar}); heroLast=b; }catch(e){}
 }
 function updateHero(full){
   const inst=heroInst(); if(!inst||!$('hero-name')) return;
-  const s=getState(inst);
+  const s=getState(inst); heroTick();
   const pe=$('hero-price'); const txt=priceText(inst); if(pe.textContent!==txt){ const old=parseFloat(pe.textContent.replace(/[^0-9.]/g,'')); pe.textContent=txt; pe.classList.remove('flash-up','flash-down'); void pe.offsetWidth; if(!isNaN(old)) pe.classList.add(s.price>=old?'flash-up':'flash-down'); }
   const ce=$('hero-chg'); ce.textContent=chgText(inst)+' today'; ce.className='mono hero-chg '+(getChange(inst)>=0?'up':'down');
-  if(full){ $('hero-name').textContent=inst.name; $('hero-type').textContent=`${inst.type} · ${tvSymbol(inst)}`; const b=biasBadge(inst.symbol); setGauge('hero-gauge',b.score); $('hero-bias-label').textContent=b.score===null?'NO SCORE YET':b.label; $('hero-bias-label').className='gauge-label '+b.cls; $('hero-bias-reason').textContent=b.score===null?'Today\'s score arrives at 05:00 — or set one in Settings':(b.reason||''); }
+  if(full){ $('hero-name').textContent=inst.name; $('hero-type').textContent=`${inst.type} · ${sourceLabel(inst)}`; const b=biasBadge(inst.symbol); setGauge('hero-gauge',b.score); $('hero-bias-label').textContent=b.score===null?'NO SCORE YET':b.label; $('hero-bias-label').className='gauge-label '+b.cls; $('hero-bias-reason').textContent=b.score===null?'Today\'s score arrives at 05:00 — or set one in Settings':(b.reason||''); }
 }
 // Semicircle gauge −10…+10 with animated needle
 function gaugeSVG(id,small){
@@ -2069,17 +2092,16 @@ function renderSessions(){
 function initFX(){
   const cv=$('fx-canvas'); if(!cv) return; const ctx=cv.getContext('2d'); const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   let W,H,pts=[],mouse={x:-999,y:-999}; const DPR=Math.min(devicePixelRatio||1,2);
-  const resize=()=>{ W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px'; ctx.setTransform(DPR,0,0,DPR,0,0); const n=Math.round(Math.min(110,W*H/14000)); pts=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.6+.4,tw:Math.random()*Math.PI*2})); };
+  const resize=()=>{ W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px'; ctx.setTransform(DPR,0,0,DPR,0,0); const n=Math.round(Math.min(60,W*H/26000)); pts=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.6+.4,tw:Math.random()*Math.PI*2})); };
   resize(); addEventListener('resize',resize); addEventListener('pointermove',e=>{ mouse.x=e.clientX; mouse.y=e.clientY; },{passive:true});
   const accent=()=>getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#1e6bff';
   let col=accent(), frame=0;
   const draw=()=>{
-    if(document.hidden){ requestAnimationFrame(draw); return; }
-    if(++frame%60===0) col=accent();
+    const onChart=document.getElementById('page-chart')?.classList.contains('active');
+    if(document.hidden||onChart||(frame++&1)){ requestAnimationFrame(draw); return; }
+    if(frame%120===0) col=accent();
     ctx.clearRect(0,0,W,H);
     for(const p of pts){ if(!reduce){ p.x+=p.vx; p.y+=p.vy; p.tw+=.03; const dx=mouse.x-p.x, dy=mouse.y-p.y, d=Math.hypot(dx,dy); if(d<160){ p.x-=dx/d*.6; p.y-=dy/d*.6; } if(p.x<0||p.x>W) p.vx*=-1; if(p.y<0||p.y>H) p.vy*=-1; } }
-    ctx.lineWidth=1;
-    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){ const a=pts[i],b=pts[j]; const d=Math.hypot(a.x-b.x,a.y-b.y); if(d<130){ ctx.strokeStyle=hexA(col.startsWith('#')?col:'#1e6bff',(1-d/130)*.22); ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } }
     for(const p of pts){ ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(1+.35*Math.sin(p.tw)),0,Math.PI*2); ctx.fillStyle=`rgba(180,210,255,${.55+.35*Math.sin(p.tw)})`; ctx.fill(); }
     if(!reduce) requestAnimationFrame(draw);
   };
@@ -2088,7 +2110,7 @@ function initFX(){
 function removeInstrument(sym){ const inst=getInstruments().find(i=>i.symbol===sym); if(!confirm(`Remove ${inst?inst.name:sym}?`)) return; saveInstruments(getInstruments().filter(i=>i.symbol!==sym)); renderCards(); renderWatchlist(); toast('Removed ✓'); }
 
 // ---------- ADD INSTRUMENT MODAL ----------
-function openAddModal(){ $('f-group').innerHTML=groupNames().map(g=>`<option>${esc(g)}</option>`).join('')+'<option value="__new">+ New group…</option>'; ['f-name','f-symbol','f-tv'].forEach(id=>$(id).value=''); $('modal-error').hidden=true; $('modal-overlay').hidden=false; }
+function openAddModal(){ $('f-group').innerHTML=groupNames().map(g=>`<option>${esc(g)}</option>`).join('')+'<option value="__new">+ New group…</option>'; ['f-name','f-symbol'].forEach(id=>$(id).value=''); $('modal-error').hidden=true; $('modal-overlay').hidden=false; }
 function closeAddModal(){ $('modal-overlay').hidden=true; }
 function saveInstrument(){
   const name=$('f-name').value.trim().toUpperCase(), symbol=$('f-symbol').value.trim().toUpperCase()||name;
@@ -2098,7 +2120,7 @@ function saveInstrument(){
   const base=name.includes('BTC')?97000:name.includes('XAU')?4048:name.includes('JPY')?150:1.10;
   let group=$('f-group').value;
   if(group==='__new'){ const g=(prompt('New group name:')||'').trim().toUpperCase(); if(!g){ err.textContent='Pick or name a group.'; err.hidden=false; return; } group=g; saveGroups([...groupNames(),g]); }
-  const inst={tvSymbol:($('f-tv').value||'').trim().toUpperCase(),name,symbol,group,type:$('f-type').value,contract:parseFloat($('f-contract').value)||100000,pip:parseFloat($('f-pip').value)||0.0001,spread:parseFloat($('f-spread').value)||1.5,base,derivSymbol:''};
+  const inst={name,symbol,group,type:$('f-type').value,contract:parseFloat($('f-contract').value)||100000,pip:parseFloat($('f-pip').value)||0.0001,spread:parseFloat($('f-spread').value)||1.5,base,derivSymbol:''};
   saveInstruments([...getInstruments(),inst]); closeAddModal(); renderCards(); renderWatchlist(); toast(`${name} added ✓`);
 }
 
