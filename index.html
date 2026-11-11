@@ -483,6 +483,27 @@ body.light .gauge-tick{fill:#475569}
 .chart-wait{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);color:#e2e8f0;text-align:left;padding:20px}
 .chart-wait div{display:flex;flex-direction:column;gap:4px}.chart-wait small{color:#9db4d8;max-width:520px}
 .hero-chart{background:transparent}
+
+/* FBC-style segment tool */
+.pt-line{left:auto;right:auto}
+.pt-stroke{height:1.5px;top:8.25px}
+.pt-pill{left:0;padding:4px 10px;border-radius:4px;font-size:10px;letter-spacing:1.4px}
+.pt-pill.pos-above{top:-15px}
+.pt-pill.pos-below{top:14px}
+.pt-pill.pos-below::after{bottom:auto;top:-6px;border-top:none;border-bottom:6px solid var(--c)}
+.pt-axis-tag{position:absolute;right:2px;margin-top:-10px;padding:3px 6px;border-radius:4px;background:var(--c);color:var(--t);font:700 11px 'JetBrains Mono',monospace;pointer-events:none;z-index:2}
+.pt-handle{position:absolute;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#fff;border:2px solid #16a34a;cursor:ew-resize;pointer-events:auto;box-shadow:0 0 10px rgba(22,163,74,.8);z-index:3}
+.pt-zone-risk{background:rgba(225,29,72,.10)}.pt-zone-reward{background:rgba(22,163,74,.10)}
+.pt-panel{position:absolute;top:12px;left:auto;right:auto;width:250px;padding:12px;font-size:12px}
+.pt-panel.min{width:auto}
+.pt-two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
+.pt-two label{display:flex;flex-direction:column;gap:3px;color:var(--muted);font-size:11px}
+.pt-two input{padding:7px 8px;border-radius:8px;border:1px solid var(--border);background:rgba(0,0,0,.35);color:var(--text);font-family:'JetBrains Mono',monospace;width:100%}
+.pt-rgt{display:flex;align-items:center;gap:4px}
+.pt-more{margin-top:6px;font-size:12px}.pt-more summary{cursor:pointer;color:var(--muted)}
+.chip-row.need .chip{border-color:var(--orange);box-shadow:0 0 10px rgba(255,159,46,.6)}
+.pt-panel .chip{padding:5px 9px;font-size:11px}
+.pt-panel .btn-confirm{padding:11px;font-size:13px}
 </style>
 </head>
 <body>
@@ -970,7 +991,7 @@ function chartOptionsForTheme(def){
     layout:{background:{type:'solid',color:t.chartBg},textColor:t.axisText||t.text,fontFamily:"'JetBrains Mono',monospace",fontSize:11,attributionLogo:false},
     grid:{vertLines:{color:t.grid,visible:t.grid!=='transparent'},horzLines:{color:t.grid,visible:t.grid!=='transparent'}},
     rightPriceScale:{borderColor:t.grid==='transparent'?hexA(t.axisText||t.text,.25):t.grid},
-    timeScale:{borderColor:t.grid==='transparent'?hexA(t.axisText||t.text,.25):t.grid,timeVisible:true,secondsVisible:false},
+    timeScale:{borderColor:t.grid==='transparent'?hexA(t.axisText||t.text,.25):t.grid,timeVisible:true,secondsVisible:false,rightOffset:16},
     crosshair:{mode:0,vertLine:{color:t.crosshair,width:1,style:2,labelBackgroundColor:t.accent},horzLine:{color:t.crosshair,width:1,style:2,labelBackgroundColor:t.accent}},
     handleScroll:{mouseWheel:true,pressedMouseMove:true},handleScale:{axisPressedMouseMove:true},
   };
@@ -1072,13 +1093,14 @@ function computeStats(trades){
   const byPair=groupBy(closed,t=>t.symbol||t.name||'—');
   const bySession=groupBy(closed,t=>t.session||'—');
   const byType=groupBy(closed,t=>t.tradeType||'—');
+  const byModel=groupBy(closed,t=>t.setupTag||'No model');
   const byBias=groupBy(closed,t=>t.biasAlignment||'—');
   const pairStats=Object.entries(byPair).map(([k,list])=>({key:k,...summ(list)})).sort((a,b)=>b.totalZAR-a.totalZAR);
   // Streaks (chronological wins/losses; manual closes break streaks neutrally)
   let curStreak={type:null,count:0}, longestWin=0, run=0;
   for(const t of sorted){ if(isWin(t)){ run=run>0?run+1:1; longestWin=Math.max(longestWin,run); } else if(isLoss(t)){ run=run<0?run-1:-1; } else { run=0; } }
   curStreak={type:run>0?'WIN':run<0?'LOSS':null,count:Math.abs(run)};
-  return {total:trades.length,closed:closed.length,open:trades.filter(t=>t.status==='OPEN'||t.status==='PENDING').length,wins:wins.length,losses:losses.length,manual:manual.length,bonusWins:bonusWins.length,winRate,totalR:Math.round(totalR*100)/100,totalZAR:Math.round(totalZAR*100)/100,equity,bySession:breakdown(bySession),byType:breakdown(byType),byBias:breakdown(byBias),pairStats,bestPair:pairStats[0]||null,worstPair:pairStats[pairStats.length-1]||null,curStreak,longestWin};
+  return {total:trades.length,closed:closed.length,open:trades.filter(t=>t.status==='OPEN'||t.status==='PENDING').length,wins:wins.length,losses:losses.length,manual:manual.length,bonusWins:bonusWins.length,winRate,totalR:Math.round(totalR*100)/100,totalZAR:Math.round(totalZAR*100)/100,equity,bySession:breakdown(bySession),byType:breakdown(byType),byModel:breakdown(byModel),byBias:breakdown(byBias),pairStats,bestPair:pairStats[0]||null,worstPair:pairStats[pairStats.length-1]||null,curStreak,longestWin};
 }
 function groupBy(list,fn){ const m={}; list.forEach(t=>{ const k=fn(t); (m[k]=m[k]||[]).push(t); }); return m; }
 function summ(list){ const w=list.filter(isWin).length,l=list.filter(isLoss).length; return {trades:list.length,wins:w,losses:l,winRate:(w+l)?w/(w+l)*100:0,totalR:Math.round(list.reduce((s,t)=>s+(t.R||0),0)*100)/100,totalZAR:Math.round(list.reduce((s,t)=>s+(t.pnlZAR||0),0)*100)/100}; }
@@ -1113,7 +1135,7 @@ function getRules(){ return lsGet('bd_rules',['Waited for bias alignment','Risk 
 function setRules(r){ lsSet('bd_rules',r); }
 function enrich(t){ t.session=t.session||sessionFor(t.entryTime); t.biasAlignment=biasAlignmentFor(t); t.tradeType=t.tradeType||'Intraday'; t.setupTag=t.setupTag||''; t.customTags=t.customTags||[]; t.emotion=t.emotion||''; t.rulesCheck=t.rulesCheck||{}; t.rating=t.rating||0; return t; }
 // --- Render journal page ---
-let filters={pair:'',session:'',result:'',type:'',bias:'',from:'',to:'',search:''};
+let filters={pair:'',session:'',result:'',type:'',model:'',bias:'',from:'',to:'',search:''};
 let equityChart=null;
 async function renderJournal(){
   const el=$('journal-list'); if(!el) return;
@@ -1137,7 +1159,7 @@ async function renderJournal(){
   </div>
   <div class="glass equity-card"><h3>Equity curve (ZAR)</h3><div id="equity-chart" class="equity-chart"></div><div id="equity-fallback" class="pt-muted"></div></div>
   <div class="breakdowns">
-    ${breakdownCard('Win rate by pair',s.pairStats)}${breakdownCard('By session',s.bySession)}${breakdownCard('By trade type',s.byType)}${breakdownCard('Bias alignment',s.byBias)}
+    ${breakdownCard('Win rate by pair',s.pairStats)}${breakdownCard('By session',s.bySession)}${breakdownCard('By entry model',s.byModel)}${breakdownCard('By trade type',s.byType)}${breakdownCard('Bias alignment',s.byBias)}
   </div>
   <div class="glass filters-card">
     <div class="filters-row">
@@ -1145,18 +1167,19 @@ async function renderJournal(){
       <select id="f-pair"><option value="">All pairs</option>${pairs.map(p=>`<option ${filters.pair===p?'selected':''}>${p}</option>`).join('')}</select>
       <select id="f-session"><option value="">All sessions</option>${['Asian','London','London–NY overlap','New York'].map(x=>`<option ${filters.session===x?'selected':''}>${x}</option>`).join('')}</select>
       <select id="f-result"><option value="">All results</option>${['WIN','LOSS','MANUAL CLOSE','OPEN','PENDING','CANCELLED'].map(x=>`<option ${filters.result===x?'selected':''}>${x}</option>`).join('')}</select>
+      <select id="f-model"><option value="">All entry models</option>${ENTRY_MODELS.map(x=>`<option ${filters.model===x?'selected':''}>${x}</option>`).join('')}</select>
       <select id="f-type"><option value="">All types</option>${['Scalp','Intraday','Swing'].map(x=>`<option ${filters.type===x?'selected':''}>${x}</option>`).join('')}</select>
       <select id="f-bias"><option value="">All bias</option>${['With bias','Against bias','Neutral bias'].map(x=>`<option ${filters.bias===x?'selected':''}>${x}</option>`).join('')}</select>
       <input id="f-from" type="date" value="${filters.from}"><input id="f-to" type="date" value="${filters.to}">
       <button id="f-clear" class="btn-ghost">Clear</button>
     </div>
-    <div class="table-wrap"><table class="trade-table"><thead><tr><th>Date (SAST)</th><th>Pair</th><th>Dir</th><th>Session</th><th>Type / Tag</th><th>Bias</th><th>Result</th><th>R</th><th>ZAR</th><th></th></tr></thead><tbody id="trade-tbody"></tbody></table></div>
+    <div class="table-wrap"><table class="trade-table"><thead><tr><th>Date (SAST)</th><th>Pair</th><th>Dir</th><th>Session</th><th>Type / Model</th><th>Bias</th><th>Result</th><th>R</th><th>ZAR</th><th></th></tr></thead><tbody id="trade-tbody"></tbody></table></div>
   </div>`;
   animateRing(s.winRate); renderEquity(s.equity); renderTable(trades);
   const bind=(id,key)=>{ const e=$(id); if(e) e.addEventListener('change',()=>{ filters[key]=e.value; renderTable(trades); }); };
-  bind('f-pair','pair'); bind('f-session','session'); bind('f-result','result'); bind('f-type','type'); bind('f-bias','bias'); bind('f-from','from'); bind('f-to','to');
+  bind('f-pair','pair'); bind('f-session','session'); bind('f-result','result'); bind('f-type','type'); bind('f-model','model'); bind('f-bias','bias'); bind('f-from','from'); bind('f-to','to');
   $('f-search').addEventListener('input',e=>{ filters.search=e.target.value.toLowerCase(); renderTable(trades); });
-  $('f-clear').addEventListener('click',()=>{ filters={pair:'',session:'',result:'',type:'',bias:'',from:'',to:'',search:''}; renderJournal(); });
+  $('f-clear').addEventListener('click',()=>{ filters={pair:'',session:'',result:'',type:'',model:'',bias:'',from:'',to:'',search:''}; renderJournal(); });
   el.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>window.dispatchEvent(new CustomEvent('bd:goto',{detail:'markets'}))));
 }
 function breakdownCard(title,rows){
@@ -1190,6 +1213,7 @@ function filtered(trades){
     if(filters.session&&t.session!==filters.session) return false;
     if(filters.result){ if(resultOf(t)!==filters.result) return false; }
     if(filters.type&&t.tradeType!==filters.type) return false;
+    if(filters.model&&t.setupTag!==filters.model) return false;
     if(filters.bias&&t.biasAlignment!==filters.bias) return false;
     if(filters.from&&new Date(t.entryTime)<new Date(filters.from)) return false;
     if(filters.to&&new Date(t.entryTime)>new Date(filters.to+'T23:59:59')) return false;
@@ -1218,7 +1242,7 @@ async function openDetail(id){
     <div class="detail-grid">
       <div><small>Trade ID</small><strong class="mono">${t.id}</strong></div><div><small>Date (SAST)</small><strong>${new Date(t.entryTime).toLocaleString('en-ZA')}</strong></div>
       <div><small>Session</small><strong>${t.session}</strong></div><div><small>Timeframe</small><strong>${t.timeframe||'—'}</strong></div>
-      <div><small>Type / Setup</small><strong>${t.tradeType||'—'}${t.setupTag?' · '+t.setupTag:''}</strong></div><div><small>Tags</small><strong>${(t.customTags||[]).join(', ')||'—'}</strong></div>
+      <div><small>Type / Entry model</small><strong>${t.tradeType||'—'}${t.setupTag?' · '+t.setupTag:''}</strong></div><div><small>Tags</small><strong>${(t.customTags||[]).join(', ')||'—'}</strong></div>
       <div><small>Entry (KEY LEVEL)</small><strong class="mono">${t.entry}</strong></div><div><small>Invalidation</small><strong class="mono">${t.sl}</strong></div>
       <div><small>Target 1:2.5</small><strong class="mono">${t.tp1}</strong></div><div><small>Extra targets</small><strong class="mono">${(t.extraTPs||[]).map(x=>x.price+' (1:'+x.ratio+')').join(', ')||'—'}</strong></div>
       <div><small>Lots / Risk</small><strong>${t.lots} · ${fmtZAR(t.riskZAR)}</strong></div><div><small>Spread cost</small><strong>${fmtZAR(t.spreadCostZAR)}</strong></div>
@@ -1231,7 +1255,7 @@ async function openDetail(id){
     ${t.biasReason?`<p class="pt-muted">Bias reason: ${t.biasReason}</p>`:''}
     <div class="shots">${t.screenshot?`<figure><img src="${t.screenshot}"><figcaption>At entry</figcaption></figure>`:''}${t.closeScreenshot?`<figure><img src="${t.closeScreenshot}"><figcaption>At close</figcaption></figure>`:''}</div>
     <label class="field"><span>Notes</span><textarea id="d-notes" rows="2">${esc(t.notes||'')}</textarea></label>
-    <label class="field"><span>Setup tag</span><input id="d-tag" value="${esc(t.setupTag||'')}" placeholder="Breakout / Pullback / Reversal / Liquidity grab / custom"></label>
+    <label class="field"><span>Entry model</span><select id="d-tag"><option value="">—</option>${ENTRY_MODELS.map(x=>`<option ${t.setupTag===x?'selected':''}>${x}</option>`).join('')}</select></label>
     <label class="field"><span>Custom tags (comma separated)</span><input id="d-custom" value="${esc((t.customTags||[]).join(', '))}"></label>
     <div class="field"><span>Emotion before trade</span><div class="emoji-row">${['😀','😌','😤','😰','😴','🤔','🔥','😶'].map(e=>`<button class="emoji-btn ${t.emotion===e?'active':''}" data-emo="${e}">${e}</button>`).join('')}</div></div>
     <div class="field"><span>Rules checklist</span>${rules.map((r,i)=>`<label class="check-row"><input type="checkbox" data-rule="${i}" ${t.rulesCheck&&t.rulesCheck[i]?'checked':''}> ${r}</label>`).join('')}</div>
@@ -1244,7 +1268,7 @@ async function openDetail(id){
   ov.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',()=>{ rating=parseInt(b.dataset.star); ov.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('active',parseInt(x.dataset.star)<=rating)); }));
   $('detail-close').addEventListener('click',closeDetail);
   ov.addEventListener('click',e=>{ if(e.target===ov) closeDetail(); });
-  $('d-save').addEventListener('click',async()=>{ t.notes=$('d-notes').value; t.setupTag=$('d-tag').value.trim(); t.customTags=$('d-custom').value.split(',').map(s=>s.trim()).filter(Boolean); t.emotion=emotion; t.rating=rating; t.rulesCheck={}; ov.querySelectorAll('[data-rule]').forEach(c=>t.rulesCheck[c.dataset.rule]=c.checked); await idbPut('journal',t); toast('Trade updated ✓'); closeDetail(); renderJournal(); });
+  $('d-save').addEventListener('click',async()=>{ t.notes=$('d-notes').value; t.setupTag=$('d-tag').value; t.customTags=$('d-custom').value.split(',').map(s=>s.trim()).filter(Boolean); t.emotion=emotion; t.rating=rating; t.rulesCheck={}; ov.querySelectorAll('[data-rule]').forEach(c=>t.rulesCheck[c.dataset.rule]=c.checked); await idbPut('journal',t); toast('Trade updated ✓'); closeDetail(); renderJournal(); });
   $('d-delete').addEventListener('click',async()=>{ if(!confirm('Delete this trade permanently?')) return; await idbDelete('journal',t.id); toast('Trade deleted'); closeDetail(); renderJournal(); });
   const dc=$('d-close'); if(dc) dc.addEventListener('click',()=>{ closeDetail(); window.dispatchEvent(new CustomEvent('bd:manual-close',{detail:t.id})); });
 }
@@ -1265,7 +1289,7 @@ async function openPairPanel(inst){
 function closePairPanel(){ $('pair-panel')?.remove(); }
 // --- Backup: CSV + full JSON ---
 function exportCSV(trades){
-  const rows=[['Trade ID','Date SAST','Pair','Session','Direction','Type','Setup tag','Timeframe','Entry','Invalidation','TP1','Lots','Risk ZAR','Spread ZAR','USDZAR','Bias score','Bias label','Bias alignment','Result','R','ZAR','Balance after','Duration','Notes']];
+  const rows=[['Trade ID','Date SAST','Pair','Session','Direction','Type','Entry model','Timeframe','Entry','Invalidation','TP1','Lots','Risk ZAR','Spread ZAR','USDZAR','Bias score','Bias label','Bias alignment','Result','R','ZAR','Balance after','Duration','Notes']];
   trades.forEach(t=>rows.push([t.id,t.entryTime,t.symbol,t.session,t.direction,t.tradeType,t.setupTag,t.timeframe,t.entry,t.sl,t.tp1,t.lots,t.riskZAR,t.spreadCostZAR,t.usdzar,t.biasScore,t.biasLabel,t.biasAlignment,resultOf(t),t.R,t.pnlZAR,t.balanceAfter,durationStr(t),(t.notes||'').replace(/,/g,';')]));
   const csv=rows.map(r=>r.map(c=>`"${String(c??'').replace(/"/g,'""')}"`).join(',')).join('\n');
   download(new Blob([csv],{type:'text/csv'}),'biasdesk-journal.csv');
@@ -1339,14 +1363,28 @@ function calcMoney(){
 function lotsFromRisk(riskZAR,inst){ const per=riskDist()*zarPerUnit(1,inst); return per?riskZAR/per:0; }
 function fmtLots(l){ return l<0.1?l.toFixed(3):l.toFixed(2); }
 // Create a draft setup at the current price, sensibly sized (0.2% risk distance, R100 risk)
+// ---- Time placement: the tool is a box that starts at time t0 and is wBars candles wide (FBC style) ----
+function tsApi(){ try{ return chartRef?chartRef.timeScale():null; }catch(e){ return null; } }
+function barSpacing(){ try{ return tsApi().options().barSpacing||6; }catch(e){ return 6; } }
+function lastBarTime(){ let mx=null; try{ for(const k of candleMap.keys()) if(mx===null||k>mx) mx=k; }catch(e){} return mx; }
+function xForTime(t){
+  const ts=tsApi(); if(!ts||!t) return null; const g=currentGranularity(); const tb=Math.floor(t/g)*g;
+  try{ const x=ts.timeToCoordinate(tb); if(x!==null&&x!==undefined&&!isNaN(x)) return x; }catch(e){}
+  const last=lastBarTime(); if(last===null) return null;
+  try{ const xl=ts.timeToCoordinate(last); if(xl===null||xl===undefined) return null; const lg=ts.coordinateToLogical(xl); const x=ts.logicalToCoordinate(lg+(tb-last)/g); return (x===null||isNaN(x))?null:x; }catch(e){ return null; }
+}
+function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null; return {x0,x1:x0+Math.max(6,tool.wBars||24)*barSpacing()}; }
+function defaultT0(){ const g=currentGranularity(); const last=lastBarTime()||Math.floor(Date.now()/1000/g)*g; return last-12*g; }
+const ENTRY_MODELS=['FRVP','Engulfing sweep'];
+// Create draft setup at the current price, sensibly sized
 function createSetup(direction,inst,timeframe){
   if(!inst) return;
   if(!hasPrice(inst)){ toast('Waiting for a live price for '+inst.name+' — check the feed status'); return false; }
   const price=getState(inst).price, risk=price*0.002;
-  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m'};
+  tool={id:uid(),symbol:inst.symbol,inst,direction,tradeType:'Intraday',setupTag:'',customTags:[],entry:price,sl:direction==='buy'?price-risk:price+risk,tp1:0,extraTPs:[],lots:0.01,riskZAR:100,locked:false,status:'DRAFT',timeframe:timeframe||'15m',t0:defaultT0(),wBars:24};
   recalcTPs(); tool.lots=Math.max(lotsFromRisk(100,inst),0.001); tool.riskZAR=calcMoney().riskZAR;
   renderTool();
-  toast(`${direction.toUpperCase()} setup placed @ ${fmtPrice(inst,price)} — drag the green or red line`);
+  toast(`${direction.toUpperCase()} setup placed — drag the green line to move it, the red line to set risk, ○ to stretch`);
 }
 function addExtraTP(){
   if(!tool){ return false; } if(tool.locked){ toast('Trade is locked — targets can only be added before CONFIRM'); return false; }
@@ -1372,101 +1410,117 @@ function ensureOverlay(){
 function yAtPrice(price){ try{ const y=seriesRef?seriesRef.priceToCoordinate(price):null; return (y===null||y===undefined||isNaN(y))?null:y; }catch(e){ return null; } }
 function priceAtY(y){ try{ const p=seriesRef?seriesRef.coordinateToPrice(y):null; return (p===null||p===undefined||isNaN(p))?null:p; }catch(e){ return null; } }
 function localY(e){ const r=wrapEl.getBoundingClientRect(); return e.clientY-r.top; }
+function localX(e){ const r=wrapEl.getBoundingClientRect(); return e.clientX-r.left; }
 function onPointerDown(e){
   if(!tool||tool.locked) return;
-  const line=e.target.closest('.pt-line[data-drag="1"]'); if(!line) return;
-  const p=priceAtY(localY(e)); if(p===null) return;
+  const el=e.target.closest('[data-drag="1"]'); if(!el) return;
+  const kind=el.dataset.level; const p=priceAtY(localY(e)); if(p===null&&kind!=='w') return;
   e.preventDefault(); e.stopPropagation();
-  const kind=line.dataset.level;
-  drag={kind,offset:(kind==='entry'?tool.entry:tool.sl)-p,startEntry:tool.entry,startSl:tool.sl,el:line};
-  line.classList.add('dragging'); try{ line.setPointerCapture(e.pointerId); }catch(_){}
+  drag={kind,offset:kind==='w'?0:((kind==='entry'?tool.entry:tool.sl)-p),startEntry:tool.entry,startSl:tool.sl,startX:localX(e),startT0:tool.t0,startW:tool.wBars,el};
+  el.classList.add('dragging'); try{ el.setPointerCapture(e.pointerId); }catch(_){}
 }
 function onPointerMove(e){
   if(!drag||!tool) return;
+  const bars=Math.round((localX(e)-drag.startX)/barSpacing());
+  if(drag.kind==='w'){ tool.wBars=Math.max(6,drag.startW+bars); repositionOnly(); return; }
   const p=priceAtY(localY(e)); if(p===null) return;
   const target=p+drag.offset; const minGap=tool.inst.pip||1e-6;
-  if(drag.kind==='entry'){ const d=target-drag.startEntry; tool.entry=drag.startEntry+d; tool.sl=drag.startSl+d; tool.entryMoved=true; }
+  if(drag.kind==='entry'){ const d=target-drag.startEntry; tool.entry=drag.startEntry+d; tool.sl=drag.startSl+d; tool.entryMoved=true; tool.t0=drag.startT0+bars*currentGranularity(); }
   else { tool.sl=tool.direction==='buy'?Math.min(target,tool.entry-minGap):Math.max(target,tool.entry+minGap); }
-  recalcTPs(); tool.riskZAR=calcMoney().riskZAR; updateLivePanel();
+  recalcTPs(); tool.riskZAR=calcMoney().riskZAR; updateLivePanel(); repositionOnly();
 }
 function onPointerUp(){ if(!drag) return; drag.el?.classList.remove('dragging'); drag=null; renderPanel(); }
 function levelDefs(){
-  const L=getLabels(); const fin=tool.status==='WIN';
+  const L=getLabels(); const fin=tool.status==='WIN'; const buy=tool.direction==='buy';
+  // pills sit on the outside of the box (targets/invalidation) and the key level pill sits on the risk side
   const defs=[
-    {key:'entry',price:tool.entry,label:L.entry,color:'#16a34a',text:'#fff',draggable:!tool.locked},
-    {key:'sl',price:tool.sl,label:L.sl,color:'#e11d48',text:'#fff',draggable:!tool.locked},
-    {key:'tp1',price:tool.tp1,label:L.tp1+(fin?' ✓':''),color:'#ffffff',text:'#0a1a3f',draggable:false,ratio:2.5},
+    {key:'entry',price:tool.entry,label:L.entry,color:'#16a34a',text:'#fff',draggable:!tool.locked,pos:buy?'below':'above'},
+    {key:'sl',price:tool.sl,label:L.sl,color:'#e11d48',text:'#fff',draggable:!tool.locked,pos:buy?'below':'above'},
+    {key:'tp1',price:tool.tp1,label:L.tp1+(fin?' ✓':''),color:'#ffffff',text:'#0a1a3f',draggable:false,ratio:2.5,pos:buy?'above':'below'},
   ];
-  tool.extraTPs.forEach((t,i)=>{ const hit=(tool.bonusHits||[]).includes(t.ratio); defs.push({key:'tp'+(i+2),price:t.price,label:(t.label||('POTENTIAL TARGET '+(i+2)))+(hit?' ✓':''),color:TP_COLORS[(i+1)%TP_COLORS.length],text:'#0a1a3f',draggable:false,ratio:t.ratio}); });
+  tool.extraTPs.forEach((t,i)=>{ const hit=(tool.bonusHits||[]).includes(t.ratio); defs.push({key:'tp'+(i+2),price:t.price,label:(t.label||('POTENTIAL TARGET '+(i+2)))+(hit?' ✓':''),color:TP_COLORS[(i+1)%TP_COLORS.length],text:'#0a1a3f',draggable:false,ratio:t.ratio,pos:buy?'above':'below'}); });
   return defs;
 }
-// Build the lines + zones once; positions are then updated every frame by repositionOnly()
+// Build lines, boxes and axis tags once; repositionOnly() moves them every frame
 function renderLevels(){
   const lv=overlay.querySelector('.pt-levels'); const inst=tool.inst;
   const statusTag=tool.status==='PENDING'?'<span class="live-tag pend">PENDING</span>':tool.locked?'<span class="live-tag">LIVE</span>':'';
   let html='<div class="pt-zone pt-zone-risk" data-zone="risk"></div><div class="pt-zone pt-zone-reward" data-zone="reward"></div>';
   tool.extraTPs.forEach((t,i)=>{ html+=`<div class="pt-zone pt-zone-extra" data-zone="x${i}" style="--c:${TP_COLORS[(i+1)%TP_COLORS.length]}"></div>`; });
   for(const d of levelDefs()){
-    html+=`<div class="pt-line" data-level="${d.key}" data-drag="${d.draggable?1:0}" style="--c:${d.color};--t:${d.text}"><i class="pt-stroke"></i><span class="pt-pill">${esc(d.label)}${d.ratio?` · 1:${d.ratio}`:''}${d.key==='entry'?statusTag:''}${d.draggable?' <b class="pt-grip">⇕</b>':''}</span><span class="pt-price-tag" data-ptag="${d.key}">${fmtPrice(inst,d.price)}</span></div>`;
+    html+=`<div class="pt-line" data-level="${d.key}" data-drag="${d.draggable?1:0}" style="--c:${d.color};--t:${d.text}"><i class="pt-stroke"></i><span class="pt-pill pos-${d.pos}">${esc(d.label)}${d.ratio?` · 1:${d.ratio}`:''}${d.key==='entry'?statusTag:''}</span></div>`;
+    html+=`<span class="pt-axis-tag" data-atag="${d.key}" style="--c:${d.color};--t:${d.text}">${fmtPrice(inst,d.price)}</span>`;
   }
+  if(!tool.locked) html+='<div class="pt-handle" data-level="w" data-drag="1" title="Drag to stretch"></div>';
   lv.innerHTML=html; repositionOnly();
 }
 function repositionOnly(){
   if(!overlay||!tool) return;
-  const defs=levelDefs();
+  const defs=levelDefs(); const seg=segX(); const lv=overlay.querySelector('.pt-levels');
+  if(!seg){ lv.style.visibility='hidden'; return; } lv.style.visibility='';
+  const {x0,x1}=seg; const w=x1-x0;
   overlay.querySelectorAll('.pt-line').forEach(line=>{
-    const d=defs.find(x=>x.key===line.dataset.level); if(!d) return;
-    const y=yAtPrice(d.price);
+    const d=defs.find(x=>x.key===line.dataset.level); if(!d) return; const y=yAtPrice(d.price);
     if(y===null){ line.style.display='none'; return; }
-    line.style.display=''; line.style.top=y+'px';
-    const tag=line.querySelector('.pt-price-tag'); const txt=fmtPrice(tool.inst,d.price); if(tag && tag.textContent!==txt) tag.textContent=txt;
+    line.style.display=''; line.style.top=y+'px'; line.style.left=x0+'px'; line.style.width=w+'px';
+  });
+  overlay.querySelectorAll('.pt-axis-tag').forEach(tag=>{
+    const d=defs.find(x=>x.key===tag.dataset.atag); if(!d) return; const y=yAtPrice(d.price);
+    if(y===null){ tag.style.display='none'; return; } tag.style.display=''; tag.style.top=y+'px';
+    const txt=fmtPrice(tool.inst,d.price); if(tag.textContent!==txt) tag.textContent=txt;
   });
   const yE=yAtPrice(tool.entry);
-  const setZone=(z,y)=>{ const el=overlay.querySelector(`[data-zone="${z}"]`); if(!el) return; if(yE===null||y===null){ el.style.display='none'; return; } el.style.display=''; el.style.top=Math.min(yE,y)+'px'; el.style.height=Math.abs(y-yE)+'px'; };
+  const setZone=(z,y)=>{ const el=overlay.querySelector(`[data-zone="${z}"]`); if(!el) return; if(yE===null||y===null){ el.style.display='none'; return; } el.style.display=''; el.style.top=Math.min(yE,y)+'px'; el.style.height=Math.abs(y-yE)+'px'; el.style.left=x0+'px'; el.style.width=w+'px'; };
   setZone('risk',yAtPrice(tool.sl)); setZone('reward',yAtPrice(tool.tp1));
   tool.extraTPs.forEach((t,i)=>setZone('x'+i,yAtPrice(t.price)));
+  const h=overlay.querySelector('.pt-handle'); if(h&&yE!==null){ h.style.left=x1+'px'; h.style.top=yE+'px'; }
+  // compact card sits beside the tool, never over it
+  const card=overlay.querySelector('.pt-panel'); if(card&&yE!==null&&innerWidth>820){
+    const W=overlay.clientWidth, H=overlay.clientHeight, cw=card.offsetWidth||250, ch=card.offsetHeight||300;
+    let left=x1+16; if(left+cw>W-70) left=x0-cw-16; if(left<8) left=Math.max(8,Math.min(W-cw-70,x1+16));
+    const top=Math.max(8,Math.min(H-ch-8,yE-ch/2));
+    card.style.left=left+'px'; card.style.top=top+'px';
+  }
 }
-// Floating info panel
+// Compact info card (FBC style: small, next to the tool)
 function renderPanel(){
   if(!overlay||!tool) return;
   const slot=overlay.querySelector('.pt-panel-slot'); const m=calcMoney(); const inst=tool.inst; const {rate,source}=getUSDZAR(); const u=unitName(inst);
-  const lk=tool.locked;
-  const rewardsHtml=m.rewards.map((r,i)=>`<div class="pt-row"><span><i class="dot" style="background:${TP_COLORS[i%TP_COLORS.length]}"></i>${r.label} reward <small class="pt-muted">1:${r.ratio}</small></span><strong data-v="rw${i}">${fmtZAR(r.zar)}</strong></div>`).join('');
-  const extraRows=tool.extraTPs.map((t,i)=>`<div class="pt-row"><span>TP${i+2} ratio 1:</span><span><input data-ratio="${i}" type="number" step="0.1" min="2.6" value="${t.ratio}" ${lk?'disabled':''} style="width:64px">${lk?'':`<button data-rmtp="${i}" title="Remove target">✕</button>`}</span></div>`).join('');
+  const lk=tool.locked; const wasMin=slot.querySelector('.pt-panel')?.classList.contains('min');
+  const rewardsHtml=m.rewards.map((r,i)=>`<div class="pt-row"><span><i class="dot" style="background:${TP_COLORS[i%TP_COLORS.length]}"></i>Target 1:${r.ratio}</span><span class="pt-rgt"><strong data-v="rw${i}">${fmtZAR(r.zar)}</strong>${i>0&&!lk?`<button data-rmtp="${i-1}" title="Remove target">✕</button>`:''}</span></div>`).join('');
   let actions;
   if(tool.status==='PENDING') actions=`<button id="pt-close" class="btn-close-now">CANCEL ORDER</button><div class="pt-muted ctr">Waiting for price to reach the key level</div>`;
-  else if(tool.status==='WIN') actions=`<div class="pt-win">WIN ✓ +2.5R recorded${tool.bonusHits&&tool.bonusHits.length?` · bonus to 1:${Math.max(...tool.bonusHits)}`:''}</div><button id="pt-stopbonus" class="btn-close-now">STOP BONUS TRACKING</button>`;
-  else if(lk) actions=`<button id="pt-close" class="btn-close-now">CLOSE NOW</button><div class="pt-muted ctr">Win = 1:2.5 · Loss = −1R · extra targets = bonus wins</div>`;
-  else actions=`<button id="pt-confirm" class="btn-confirm">CONFIRM TRADE</button><div class="pt-muted ctr">Drag the green line to move · drag the red line to resize risk</div>`;
-  slot.innerHTML=`<div class="pt-panel glass">
+  else if(tool.status==='WIN') actions=`<div class="pt-win">WIN ✓ +2.5R${tool.bonusHits&&tool.bonusHits.length?` · bonus to 1:${Math.max(...tool.bonusHits)}`:''}</div><button id="pt-stopbonus" class="btn-close-now">STOP BONUS TRACKING</button>`;
+  else if(lk) actions=`<button id="pt-close" class="btn-close-now">CLOSE NOW</button>`;
+  else actions=`<button id="pt-confirm" class="btn-confirm">CONFIRM TRADE</button>`;
+  slot.innerHTML=`<div class="pt-panel glass ${wasMin?'min':''}">
     <div class="pt-panel-head"><strong class="${tool.direction==='buy'?'up':'down'}">${tool.direction==='buy'?'▲ BUY':'▼ SELL'} · ${esc(inst.name)}</strong><button id="pt-min" class="pt-min" title="Minimise">–</button></div>
     <div class="pt-body">
-    <div class="pt-row"><span>Key level</span><strong class="mono" data-v="entry">${fmtPrice(inst,tool.entry)}</strong></div>
-    <div class="pt-row"><span>Invalidation</span><strong class="mono" data-v="sl">${fmtPrice(inst,tool.sl)}</strong></div>
-    <div class="pt-row"><span>Risk distance</span><strong class="mono" data-v="dist">${m.riskUnits.toFixed(1)} ${u}</strong></div>
-    <div class="pt-row"><span>Lots</span><input id="pt-lots" type="number" step="0.01" min="0" value="${fmtLots(tool.lots)}" ${lk?'disabled':''}></div>
-    <div class="pt-row"><span>Risk (ZAR)</span><input id="pt-risk" type="number" step="10" min="0" value="${tool.riskZAR.toFixed(2)}" ${lk?'disabled':''}></div>
-    <div class="pt-row"><span>Spread cost</span><strong data-v="spread">${fmtZAR(m.spreadZAR)}</strong></div>
-    <div class="pt-row"><span>USD→ZAR</span><strong>${rate.toFixed(2)} <small class="pt-muted">${source}</small></strong></div>
-    ${rewardsHtml}${extraRows}
+    <div class="pt-two"><label>Risk R<input id="pt-risk" type="number" step="10" min="0" value="${tool.riskZAR.toFixed(0)}" ${lk?'disabled':''}></label><label>Lots<input id="pt-lots" type="number" step="0.01" min="0" value="${fmtLots(tool.lots)}" ${lk?'disabled':''}></label></div>
+    ${rewardsHtml}
     ${lk?'':`<button id="pt-addtp" class="btn-addtp">+ Add target</button>
-    <div class="chip-row"><span class="pt-muted">Type</span>${['Scalp','Intraday','Swing'].map(x=>`<button class="chip ${tool.tradeType===x?'active':''}" data-type="${x}">${x}</button>`).join('')}</div>
-    <div class="chip-row"><span class="pt-muted">Setup</span>${['Breakout','Pullback','Reversal','Liquidity grab'].map(x=>`<button class="chip ${tool.setupTag===x?'active':''}" data-tag="${x}">${x}</button>`).join('')}</div>
-    <div class="chip-row"><input id="pt-custom" class="pt-custom" placeholder="Custom tags, comma separated" value="${esc((tool.customTags||[]).join(', '))}"></div>`}
+    <div class="chip-row"><span class="pt-muted">Entry</span>${ENTRY_MODELS.map(x=>`<button class="chip ${tool.setupTag===x?'active':''}" data-tag="${x}">${x}</button>`).join('')}</div>
+    <div class="chip-row"><span class="pt-muted">Type</span>${['Scalp','Intraday','Swing'].map(x=>`<button class="chip ${tool.tradeType===x?'active':''}" data-type="${x}">${x}</button>`).join('')}</div>`}
+    <details class="pt-more"><summary>Details</summary>
+      <div class="pt-row"><span>Key level</span><strong class="mono" data-v="entry">${fmtPrice(inst,tool.entry)}</strong></div>
+      <div class="pt-row"><span>Invalidation</span><strong class="mono" data-v="sl">${fmtPrice(inst,tool.sl)}</strong></div>
+      <div class="pt-row"><span>Risk distance</span><strong class="mono" data-v="dist">${m.riskUnits.toFixed(1)} ${u}</strong></div>
+      <div class="pt-row"><span>Spread cost</span><strong data-v="spread">${fmtZAR(m.spreadZAR)}</strong></div>
+      <div class="pt-row"><span>USD→ZAR</span><strong>${rate.toFixed(2)} <small class="pt-muted">${source}</small></strong></div>
+    </details>
     ${actions}</div></div>`;
   const $p=sel=>slot.querySelector(sel);
-  $p('#pt-min')?.addEventListener('click',()=>slot.querySelector('.pt-panel').classList.toggle('min'));
+  $p('#pt-min')?.addEventListener('click',()=>{ slot.querySelector('.pt-panel').classList.toggle('min'); repositionOnly(); });
   $p('#pt-lots')?.addEventListener('change',e=>{ tool.lots=Math.max(parseFloat(e.target.value)||0.01,0.0001); tool.riskZAR=calcMoney().riskZAR; renderPanel(); });
   $p('#pt-risk')?.addEventListener('change',e=>{ tool.riskZAR=Math.max(parseFloat(e.target.value)||0,0); tool.lots=Math.max(lotsFromRisk(tool.riskZAR,tool.inst),0.0001); renderPanel(); });
-  slot.querySelectorAll('[data-ratio]').forEach(inp=>inp.addEventListener('change',()=>{ const i=+inp.dataset.ratio; tool.extraTPs[i].ratio=Math.max(parseFloat(inp.value)||tool.extraTPs[i].ratio,2.6); tool.extraTPs.sort((a,b)=>a.ratio-b.ratio); recalcTPs(); renderTool(); }));
   slot.querySelectorAll('[data-rmtp]').forEach(b=>b.addEventListener('click',()=>removeExtraTP(+b.dataset.rmtp)));
   slot.querySelectorAll('[data-type]').forEach(b=>b.addEventListener('click',()=>{ tool.tradeType=b.dataset.type; renderPanel(); }));
   slot.querySelectorAll('[data-tag]').forEach(b=>b.addEventListener('click',()=>{ tool.setupTag=tool.setupTag===b.dataset.tag?'':b.dataset.tag; renderPanel(); }));
-  $p('#pt-custom')?.addEventListener('input',e=>{ tool.customTags=e.target.value.split(',').map(s=>s.trim()).filter(Boolean); });
   $p('#pt-addtp')?.addEventListener('click',addExtraTP);
-  $p('#pt-confirm')?.addEventListener('click',confirmTrade);
+  $p('#pt-confirm')?.addEventListener('click',()=>{ if(!tool.setupTag){ toast('Pick your entry model: FRVP or Engulfing sweep'); slot.querySelector('[data-tag]')?.parentElement.classList.add('need'); return; } confirmTrade(); });
   $p('#pt-close')?.addEventListener('click',()=>closeTrade(tool.tradeId,tool.status==='PENDING'?'CANCELLED':'MANUAL CLOSE',getState(tool.inst).price));
   $p('#pt-stopbonus')?.addEventListener('click',async()=>{ const t=(await idbAll('journal')).find(x=>x.id===tool.tradeId); if(t){ t.bonusTracking=false; await idbPut('journal',t); } clearTool(); toast('Bonus tracking stopped — result saved'); });
+  repositionOnly();
 }
 // Cheap panel refresh while dragging (no rebuild, keeps pointer capture)
 function updateLivePanel(){
@@ -1474,7 +1528,7 @@ function updateLivePanel(){
   const set=(k,v)=>{ const el=overlay.querySelector(`[data-v="${k}"]`); if(el) el.textContent=v; };
   set('entry',fmtPrice(inst,tool.entry)); set('sl',fmtPrice(inst,tool.sl)); set('dist',m.riskUnits.toFixed(1)+' '+unitName(inst)); set('spread',fmtZAR(m.spreadZAR));
   m.rewards.forEach((r,i)=>set('rw'+i,fmtZAR(r.zar)));
-  const ri=overlay.querySelector('#pt-risk'); if(ri) ri.value=tool.riskZAR.toFixed(2);
+  const ri=overlay.querySelector('#pt-risk'); if(ri) ri.value=tool.riskZAR.toFixed(0);
 }
 function renderTool(){ if(!tool||!ensureOverlay()) return; renderLevels(); renderPanel(); startLoop(); }
 function startLoop(){ if(rafId) return; const tick=()=>{ if(!tool){ rafId=null; return; } repositionOnly(); rafId=requestAnimationFrame(tick); }; rafId=requestAnimationFrame(tick); }
@@ -1485,7 +1539,7 @@ async function restoreToolForInst(inst){
   const all=await idbAll('journal');
   const t=all.filter(x=>x.symbol===inst.symbol&&(x.status==='OPEN'||x.status==='PENDING'||(x.result==='WIN'&&x.bonusTracking))).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0];
   if(!t) return;
-  tool={id:t.id,tradeId:t.id,symbol:t.symbol,inst,direction:t.direction,tradeType:t.tradeType,setupTag:t.setupTag,customTags:t.customTags||[],entry:t.entry,sl:t.sl,tp1:t.tp1,extraTPs:(t.extraTPs||[]).map(x=>({...x})),lots:t.lots,riskZAR:t.riskZAR,locked:true,status:t.status==='CLOSED'?'WIN':t.status,bonusHits:(t.bonusWins||[]).map(b=>b.ratio),timeframe:t.timeframe};
+  tool={id:t.id,tradeId:t.id,symbol:t.symbol,inst,direction:t.direction,tradeType:t.tradeType,setupTag:t.setupTag,customTags:t.customTags||[],entry:t.entry,sl:t.sl,tp1:t.tp1,extraTPs:(t.extraTPs||[]).map(x=>({...x})),lots:t.lots,riskZAR:t.riskZAR,locked:true,status:t.status==='CLOSED'?'WIN':t.status,bonusHits:(t.bonusWins||[]).map(b=>b.ratio),timeframe:t.timeframe,t0:t.t0||Math.floor(new Date(t.entryTime).getTime()/1000)-6*currentGranularity(),wBars:t.wBars||24};
   renderTool();
 }
 // Screenshot: chart canvas + FBC-style lines and pills drawn on top
@@ -1495,13 +1549,13 @@ async function takeScreenshotWithOverlay(){
     const shot=chartRef.takeScreenshot(); const c=document.createElement('canvas'); c.width=shot.width; c.height=shot.height;
     const ctx=c.getContext('2d'); ctx.drawImage(shot,0,0);
     if(tool){
-      const yE=yAtPrice(tool.entry);
-      const zone=(y,col)=>{ if(yE===null||y===null) return; ctx.fillStyle=col; ctx.fillRect(0,Math.min(yE,y),c.width,Math.abs(y-yE)); };
-      zone(yAtPrice(tool.sl),'rgba(225,29,72,.16)'); zone(yAtPrice(tool.tp1),'rgba(22,163,74,.16)');
+      const yE=yAtPrice(tool.entry); const seg=segX()||{x0:40,x1:c.width*0.6}; const X0=Math.max(0,seg.x0), X1=Math.min(c.width,seg.x1);
+      const zone=(y,col)=>{ if(yE===null||y===null) return; ctx.fillStyle=col; ctx.fillRect(X0,Math.min(yE,y),X1-X0,Math.abs(y-yE)); };
+      zone(yAtPrice(tool.sl),'rgba(225,29,72,.14)'); zone(yAtPrice(tool.tp1),'rgba(22,163,74,.14)');
       for(const d of levelDefs()){ const y=yAtPrice(d.price); if(y===null) continue;
-        ctx.strokeStyle=d.color; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(c.width,y); ctx.stroke();
-        ctx.font='bold 11px sans-serif'; const label=d.label+(d.ratio?' · 1:'+d.ratio:''); const w=ctx.measureText(label).width+18;
-        ctx.fillStyle=d.color; roundRect(ctx,8,y-24,w,20,10); ctx.fill(); ctx.fillStyle=d.text; ctx.fillText(label,17,y-10);
+        ctx.strokeStyle=d.color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(X0,y); ctx.lineTo(X1,y); ctx.stroke();
+        ctx.font='bold 10px sans-serif'; const label=(d.label+(d.ratio?' · 1:'+d.ratio:'')).toUpperCase(); const w=ctx.measureText(label).width+18; const py=d.pos==='below'?y+5:y-23;
+        ctx.fillStyle=d.color; roundRect(ctx,X0,py,w,18,4); ctx.fill(); ctx.fillStyle=d.text; ctx.fillText(label,X0+9,py+12.5);
       }
     }
     return c.toDataURL('image/jpeg',0.8);
@@ -1522,7 +1576,7 @@ async function confirmTrade(){
   const entryTime=new Date().toISOString();
   const list=getInstruments(); const it=list.find(i=>i.symbol===inst.symbol);
   const prevGroup=it?it.group:inst.group;
-  const entry={id:tool.id,symbol:inst.symbol,name:inst.name,direction:tool.direction,tradeType:tool.tradeType||'Intraday',setupTag:tool.setupTag||'',customTags:tool.customTags||[],session:sessionFor(entryTime),
+  const entry={t0:tool.t0,wBars:tool.wBars,id:tool.id,symbol:inst.symbol,name:inst.name,direction:tool.direction,tradeType:tool.tradeType||'Intraday',setupTag:tool.setupTag||'',customTags:tool.customTags||[],session:sessionFor(entryTime),
     biasAlignment:biasAlignmentFor({direction:tool.direction,biasScore:bias?bias.score:null}),entry:tool.entry,sl:tool.sl,tp1:tool.tp1,extraTPs:tool.extraTPs.map(t=>({price:t.price,ratio:t.ratio,label:t.label})),
     lots:tool.lots,riskZAR:m.riskZAR,riskPercent:balance?m.riskZAR/balance*100:0,spreadPips:inst.spread,spreadCostZAR:m.spreadZAR,contract:inst.contract,pipSize:inst.pip,usdzar:rate,usdzarSource:source,
     biasScore:bias?bias.score:null,biasLabel:bias?bias.label:null,biasReason:bias?bias.reason:null,timeframe:tool.timeframe,feed:getState(inst).src==='live'?'live':'demo',marketAtConfirm:market,
