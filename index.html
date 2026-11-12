@@ -1035,6 +1035,41 @@ body.light-chart .tb-btn,body.light-chart .pop-row{color:#131722}body.light-char
 .setting-card input:focus,.setting-card select:focus,.setting-card textarea:focus,.field input:focus,.field select:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent);outline:none}
 input::placeholder,textarea::placeholder{color:#93a0b6;opacity:1}
 .setting-card .row{margin-top:6px}
+/* timeframe dropdown — only used in the phone full-screen bar */
+.tf-dd{display:none;position:relative}
+.tf-dd-btn{gap:4px}.tf-dd-btn b{font:700 12.5px 'Space Grotesk',sans-serif}.tf-dd-btn i{font-size:9px;font-style:normal;opacity:.8}
+.tf-dd-list{position:absolute;top:calc(100% + 6px);left:0;z-index:95;display:flex;flex-direction:column;min-width:76px;padding:4px;background:rgba(18,22,32,.98);border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.6)}
+.tf-dd-list[hidden]{display:none}
+.tf-dd-list button{padding:9px 12px;border:none;border-radius:7px;background:none;color:#e6ebf5;font:600 13px 'Space Grotesk',sans-serif;text-align:left;cursor:pointer}
+.tf-dd-list button.on{background:var(--accent);color:#fff}
+/* phone full screen: one MT5-style top bar, drawing tools in a slim column on the left */
+@media(max-width:900px){
+  #page-chart.fs-on{padding:4px 4px 6px!important;gap:4px!important}
+  #page-chart.fs-on .chart-container{padding:4px!important;gap:4px!important}
+  #page-chart.fs-on .tv-head{flex-wrap:nowrap!important;gap:4px!important;padding:0!important}
+  #page-chart.fs-on .pair-dd{flex:0 1 auto;min-width:0}
+  #page-chart.fs-on .pdd-btn{height:30px;padding:0 6px 0 8px;gap:3px;max-width:100%}#page-chart.fs-on .pdd-btn strong{font-size:12.5px;overflow:hidden;text-overflow:ellipsis}#page-chart.fs-on .pdd-btn i{font-size:9px}
+  #page-chart.fs-on .tvh-px{gap:4px;min-width:max-content;flex:0 0 auto}
+  #page-chart.fs-on #ct-price{font-size:13px}
+  #page-chart.fs-on #ct-chg,#page-chart.fs-on #ct-feed{display:none}
+  #page-chart.fs-on .tv-head .ct-tfs{display:none!important}
+  #page-chart.fs-on .tf-dd{display:block;flex:0 0 auto}
+  #page-chart.fs-on .hd-btn{height:30px!important;padding:0 7px!important}
+  #page-chart.fs-on .hd-news{order:0!important;flex:0 0 auto;max-width:none!important;height:30px;padding:0 7px!important}
+  #page-chart.fs-on .hd-news span{display:none}
+  #page-chart.fs-on .hd-news:not(.soon):not(.now):not(.hour){display:none!important}
+  #page-chart.fs-on .th-mini,#page-chart.fs-on .th-mini svg{width:22px!important;height:14px!important}
+  #page-chart.fs-on .tvh-right{gap:3px!important;margin-left:auto}
+  #page-chart.fs-on #ct-journal{display:none}
+  #page-chart.fs-on .th-caret,#page-chart.fs-on .th-name{display:none}
+  #page-chart.fs-on .tv-body{flex-direction:row!important;gap:4px!important}
+  #page-chart.fs-on .tool-rail{flex-direction:column!important;align-self:flex-start!important;padding:3px!important;gap:2px!important;width:auto!important}
+  #page-chart.fs-on .rail-btn{width:32px!important;flex:0 0 auto!important;padding:6px 0!important}
+  #page-chart.fs-on .rail-btn span{display:none!important}
+  #page-chart.fs-on .rail-sep{width:auto!important;height:1px!important;margin:3px 5px!important}
+  #page-chart.fs-on .rail-btn .ico svg{width:17px;height:17px}
+}
+@media(max-width:480px){ #page-chart.fs-on .hd-news b{display:none} #page-chart.fs-on .hd-btn{padding:0 6px!important} }
 </style>
 </head>
 <body>
@@ -1173,7 +1208,7 @@ input::placeholder,textarea::placeholder{color:#93a0b6;opacity:1}
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>"};
-const BUILD='2026-11-12.10';
+const BUILD='2026-11-12.11';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1524,21 +1559,21 @@ function generateDemoCandles(inst,granularity,count){
 // ===== js/themes.js (merged, imports/exports resolved) =====
 // themes.js — 5 candle themes (Prompt 2). Each changes candles, wicks, bg, grid, accent. Remembered in localStorage.
 const THEMES=[
- {id:'tv-dark',name:'TradingView Dark',accent:'#2962ff',bg:'#0c0e15',bg2:'#131722',chartBg:'#131722',grid:'#1c2030',text:'#f0f3f8',axisText:'#e1e4ea',up:'#00c896',down:'#ff3d5a',wickUp:'#00c896',wickDown:'#ff3d5a',borderUp:'#00c896',borderDown:'#ff3d5a',crosshair:'#9aa6b8',priceLine:'#758696',light:false},
- {id:'hollow-pro',name:'Hollow Pro',accent:'#26a69a',bg:'#07090e',bg2:'#121826',chartBg:'#111622',chartBg2:'#06080d',grid:'transparent',text:'#f0f3f8',axisText:'#dfe5ee',up:'#1de9b6',down:'#ff4d6a',wickUp:'#1de9b6',wickDown:'#ff4d6a',borderUp:'#1de9b6',borderDown:'#ff4d6a',hollowUp:true,crosshair:'#93a3ba',priceLine:'#6b7a90',light:false},
- {id:'deep-ocean',name:'Deep Ocean',accent:'#22d3ee',bg:'#040b18',bg2:'#0b1e3d',chartBg:'#0b1f3f',chartBg2:'#030812',grid:'transparent',text:'#effaff',axisText:'#cfe6ff',up:'#00e5ff',down:'#ff4d8d',wickUp:'#00e5ff',wickDown:'#ff4d8d',borderUp:'#00e5ff',borderDown:'#ff4d8d',crosshair:'#4fc3ff',priceLine:'#38bdf8',light:false},
- {id:'gold-luxe',name:'Gold Luxe',accent:'#e9b949',bg:'#080705',bg2:'#1a160d',chartBg:'#14110a',chartBg2:'#040302',grid:'transparent',text:'#fbf3e0',axisText:'#eadcb4',up:'#ffc533',down:'#d3dae6',wickUp:'#ffc533',wickDown:'#d3dae6',borderUp:'#ffd25c',borderDown:'#d3dae6',crosshair:'#e0b84a',priceLine:'#c9a443',light:false},
- {id:'mono',name:'Monochrome',accent:'#3b82f6',bg:'#050505',bg2:'#141414',chartBg:'#0b0b0b',grid:'transparent',text:'#f7f7f7',axisText:'#d9d9d9',up:'#ffffff',down:'#b8b8b8',wickUp:'#ffffff',wickDown:'#b8b8b8',borderUp:'#ffffff',borderDown:'#b8b8b8',hollowUp:true,crosshair:'#a3a3a3',priceLine:'#a3a3a3',light:false},
- {id:'nord',name:'Nord',accent:'#88c0d0',bg:'#242933',bg2:'#2e3440',chartBg:'#2e3440',grid:'#363c48',text:'#f3f5f9',axisText:'#eceff4',up:'#b5e08c',down:'#ef6f7a',wickUp:'#b5e08c',wickDown:'#ef6f7a',borderUp:'#b5e08c',borderDown:'#ef6f7a',crosshair:'#9ab5d6',priceLine:'#81a1c1',light:false},
- {id:'dracula',name:'Dracula',accent:'#bd93f9',bg:'#1e1f29',bg2:'#282a36',chartBg:'#282a36',chartBg2:'#1d1e27',grid:'transparent',text:'#fbfbf6',axisText:'#e6e6f5',up:'#50fa7b',down:'#ff5555',wickUp:'#50fa7b',wickDown:'#ff5555',borderUp:'#50fa7b',borderDown:'#ff5555',crosshair:'#8b9bd6',priceLine:'#bd93f9',light:false},
- {id:'sunset',name:'Sunset Glow',accent:'#f97316',bg:'#0b0614',bg2:'#1f1033',chartBg:'#1f1033',chartBg2:'#09040f',grid:'transparent',text:'#fff0f8',axisText:'#f7d3e8',up:'#ffc300',down:'#ff2d55',wickUp:'#ffc300',wickDown:'#ff2d55',borderUp:'#ffc300',borderDown:'#ff2d55',crosshair:'#d39bff',priceLine:'#c084fc',light:false},
+ {id:'tv-dark',name:'TradingView Dark',accent:'#2962ff',bg:'#0c0e15',bg2:'#131722',chartBg:'#131722',grid:'#1c2030',text:'#f0f3f8',axisText:'#e1e4ea',up:'#00d9a3',down:'#ff2448',wickUp:'#00d9a3',wickDown:'#ff2448',borderUp:'#00d9a3',borderDown:'#ff2448',crosshair:'#9aa6b8',priceLine:'#758696',light:false},
+ {id:'hollow-pro',name:'Hollow Pro',accent:'#26a69a',bg:'#07090e',bg2:'#121826',chartBg:'#111622',chartBg2:'#06080d',grid:'transparent',text:'#f0f3f8',axisText:'#dfe5ee',up:'#00ffc6',down:'#ff2a4f',wickUp:'#00ffc6',wickDown:'#ff2a4f',borderUp:'#00ffc6',borderDown:'#ff2a4f',hollowUp:true,crosshair:'#93a3ba',priceLine:'#6b7a90',light:false},
+ {id:'deep-ocean',name:'Deep Ocean',accent:'#22d3ee',bg:'#040b18',bg2:'#0b1e3d',chartBg:'#0b1f3f',chartBg2:'#030812',grid:'transparent',text:'#effaff',axisText:'#cfe6ff',up:'#00e5ff',down:'#ff2d87',wickUp:'#00e5ff',wickDown:'#ff2d87',borderUp:'#00e5ff',borderDown:'#ff2d87',crosshair:'#4fc3ff',priceLine:'#38bdf8',light:false},
+ {id:'gold-luxe',name:'Gold Luxe',accent:'#e9b949',bg:'#080705',bg2:'#1a160d',chartBg:'#14110a',chartBg2:'#040302',grid:'transparent',text:'#fbf3e0',axisText:'#eadcb4',up:'#ffc400',down:'#e8edf5',wickUp:'#ffc400',wickDown:'#e8edf5',borderUp:'#ffd22e',borderDown:'#e8edf5',crosshair:'#e0b84a',priceLine:'#c9a443',light:false},
+ {id:'mono',name:'Monochrome',accent:'#3b82f6',bg:'#050505',bg2:'#141414',chartBg:'#0b0b0b',grid:'transparent',text:'#f7f7f7',axisText:'#d9d9d9',up:'#ffffff',down:'#b0b0b0',wickUp:'#ffffff',wickDown:'#b0b0b0',borderUp:'#ffffff',borderDown:'#b0b0b0',hollowUp:true,crosshair:'#a3a3a3',priceLine:'#a3a3a3',light:false},
+ {id:'nord',name:'Nord',accent:'#88c0d0',bg:'#242933',bg2:'#2e3440',chartBg:'#2e3440',grid:'#363c48',text:'#f3f5f9',axisText:'#eceff4',up:'#8cf55a',down:'#ff4f5e',wickUp:'#8cf55a',wickDown:'#ff4f5e',borderUp:'#8cf55a',borderDown:'#ff4f5e',crosshair:'#9ab5d6',priceLine:'#81a1c1',light:false},
+ {id:'dracula',name:'Dracula',accent:'#bd93f9',bg:'#1e1f29',bg2:'#282a36',chartBg:'#282a36',chartBg2:'#1d1e27',grid:'transparent',text:'#fbfbf6',axisText:'#e6e6f5',up:'#39ff6a',down:'#ff3333',wickUp:'#39ff6a',wickDown:'#ff3333',borderUp:'#39ff6a',borderDown:'#ff3333',crosshair:'#8b9bd6',priceLine:'#bd93f9',light:false},
+ {id:'sunset',name:'Sunset Glow',accent:'#f97316',bg:'#0b0614',bg2:'#1f1033',chartBg:'#1f1033',chartBg2:'#09040f',grid:'transparent',text:'#fff0f8',axisText:'#f7d3e8',up:'#ffc400',down:'#ff1a4b',wickUp:'#ffc400',wickDown:'#ff1a4b',borderUp:'#ffc400',borderDown:'#ff1a4b',crosshair:'#d39bff',priceLine:'#c084fc',light:false},
  {id:'mt5-black',name:'MT5 Black',accent:'#00c853',bg:'#05070a',bg2:'#0d1117',chartBg:'#000000',grid:'transparent',text:'#eef2f6',up:'#00ff3b',down:'#d60000',wickUp:'#00ff3b',wickDown:'#d60000',borderUp:'#00ff3b',borderDown:'#d60000',crosshair:'#a3acb7',priceLine:'#8b949e',axisText:'#e6edf3',light:false},
- {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#eef5ff',up:'#2f80ff',down:'#f1f5f9',wickUp:'#2f80ff',wickDown:'#f1f5f9',borderUp:'#2f80ff',borderDown:'#f1f5f9',crosshair:'#4de6ff',priceLine:'#38e1ff',axisText:'#e6f0ff',light:false},
- {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'transparent',text:'#ecfff8',up:'#00ff9c',down:'#ff2e88',wickUp:'#00ff9c',wickDown:'#ff2e88',borderUp:'#00ff9c',borderDown:'#ff2e88',crosshair:'#00ff9c',priceLine:'#00ff9c',axisText:'#e0fff5',light:false},
- {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f8f5e8',axisText:'#1b1a14',up:'#4b0082',down:'#ff0000',wickUp:'#4b0082',wickDown:'#ff0000',borderUp:'#3a0066',borderDown:'#d00000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
- {id:'tv-light',name:'TradingView Light',accent:'#2962ff',bg:'#eef1f7',bg2:'#ffffff',chartBg:'#ffffff',grid:'#f0f3fa',text:'#131722',axisText:'#131722',up:'#00a67e',down:'#ff2e4d',wickUp:'#00a67e',wickDown:'#ff2e4d',borderUp:'#00a67e',borderDown:'#ff2e4d',crosshair:'#7d818c',priceLine:'#9598a1',light:true},
- {id:'paper',name:'Paper',accent:'#0f766e',bg:'#f1ebdd',bg2:'#fbf7ee',chartBg:'#fbf7ee',grid:'#f0e9d9',text:'#1f2937',axisText:'#4b5563',up:'#0d9488',down:'#dc2626',wickUp:'#0d9488',wickDown:'#dc2626',borderUp:'#0d9488',borderDown:'#dc2626',hollowUp:true,crosshair:'#8a7f6a',priceLine:'#9a8f7a',light:true},
- {id:'light-focus',name:'Light Focus',accent:'#16a34a',bg:'#f8fafc',bg2:'#e2e8f0',chartBg:'#ffffff',grid:'transparent',text:'#0f172a',up:'#16a34a',down:'#e11d48',wickUp:'#16a34a',wickDown:'#e11d48',borderUp:'#16a34a',borderDown:'#e11d48',crosshair:'#64748b',priceLine:'#16a34a',light:true},
+ {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#eef5ff',up:'#1f7aff',down:'#ffffff',wickUp:'#1f7aff',wickDown:'#ffffff',borderUp:'#1f7aff',borderDown:'#ffffff',crosshair:'#4de6ff',priceLine:'#38e1ff',axisText:'#e6f0ff',light:false},
+ {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'transparent',text:'#ecfff8',up:'#00ff9c',down:'#ff1a8c',wickUp:'#00ff9c',wickDown:'#ff1a8c',borderUp:'#00ff9c',borderDown:'#ff1a8c',crosshair:'#00ff9c',priceLine:'#00ff9c',axisText:'#e0fff5',light:false},
+ {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f8f5e8',axisText:'#1b1a14',up:'#5200a3',down:'#ff0000',wickUp:'#5200a3',wickDown:'#ff0000',borderUp:'#5200a3',borderDown:'#ff0000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
+ {id:'tv-light',name:'TradingView Light',accent:'#2962ff',bg:'#eef1f7',bg2:'#ffffff',chartBg:'#ffffff',grid:'#f0f3fa',text:'#131722',axisText:'#131722',up:'#00b386',down:'#ff1f3d',wickUp:'#00b386',wickDown:'#ff1f3d',borderUp:'#00b386',borderDown:'#ff1f3d',crosshair:'#7d818c',priceLine:'#9598a1',light:true},
+ {id:'paper',name:'Paper',accent:'#0f766e',bg:'#f1ebdd',bg2:'#fbf7ee',chartBg:'#fbf7ee',grid:'#f0e9d9',text:'#1f2937',axisText:'#4b5563',up:'#00a38c',down:'#e60012',wickUp:'#00a38c',wickDown:'#e60012',borderUp:'#00a38c',borderDown:'#e60012',hollowUp:true,crosshair:'#8a7f6a',priceLine:'#9a8f7a',light:true},
+ {id:'light-focus',name:'Light Focus',accent:'#16a34a',bg:'#f8fafc',bg2:'#e2e8f0',chartBg:'#ffffff',grid:'transparent',text:'#0f172a',up:'#00b341',down:'#e6002e',wickUp:'#00b341',wickDown:'#e6002e',borderUp:'#00b341',borderDown:'#e6002e',crosshair:'#64748b',priceLine:'#16a34a',light:true},
 ];
 const themeListeners=new Set();
 function onThemeChange(fn){ themeListeners.add(fn); return ()=>themeListeners.delete(fn); }
@@ -2482,6 +2517,7 @@ function buildChartShell(){
     <div class="pair-dd" id="pair-dd"><button id="pair-dd-btn" class="pdd-btn" title="Change pair" aria-haspopup="listbox"><strong id="ct-name">—</strong><i>▾</i></button><div id="pair-dd-list" class="pdd-list" role="listbox" hidden></div></div>
     <div class="tvh-px"><span id="ct-price" class="mono ct-price">—</span><span id="ct-chg" class="mono">—</span><span id="ct-feed" class="feed-tag">—</span></div>
     <div class="ct-tfs" id="ct-tfs">${TIMEFRAMES.map(t=>`<button data-tf="${t.label}" class="${t.label===currentTF?'active':''}">${t.label}</button>`).join('')}</div>
+    <div class="tf-dd" id="tf-dd"><button id="tf-dd-btn" class="hd-btn tf-dd-btn" title="Timeframe"><b id="tf-dd-cur">${currentTF}</b><i>▾</i></button><div id="tf-dd-list" class="tf-dd-list" hidden>${TIMEFRAMES.map(t=>`<button data-tf="${t.label}">${t.label}</button>`).join('')}</div></div>
     <div id="hd-bias" class="bias-badge hd-bias bias-none" title="Today's fundamental bias for this pair">—</div>
     <span id="hd-news" class="hd-news"><i>📰</i><span>News…</span></span>
     <div class="tvh-right">
@@ -2513,7 +2549,10 @@ function buildChartShell(){
   <button id="ct-tp" hidden disabled></button>
   <div id="alert-panel" class="alert-panel" hidden></div>
   <div id="chart-status" class="chart-status">Loading candles…</div>`;
-  $('ct-tfs').addEventListener('click',e=>{ const b=e.target.closest('button[data-tf]'); if(!b) return; if(rp.picking){ endReplay({noReload:true,quiet:true}); } currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); if(rp.active){ rpSetTF(currentTF); return; } loadCandles();  });
+  $('tf-dd-btn').addEventListener('click',e=>{ e.stopPropagation(); const l=$('tf-dd-list'); l.hidden=!l.hidden; syncTfDD(); });
+  $('tf-dd-list').addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('button[data-tf]'); $('tf-dd-list').hidden=true; if(!b) return; const t=document.querySelector(`#ct-tfs button[data-tf="${b.dataset.tf}"]`); if(t&&b.dataset.tf!==currentTF) t.click(); });
+  document.addEventListener('click',e=>{ const l=$('tf-dd-list'); if(l&&!l.hidden&&!e.target.closest('#tf-dd')) l.hidden=true; });
+  $('ct-tfs').addEventListener('click',e=>{ const b=e.target.closest('button[data-tf]'); if(!b) return; if(rp.picking){ endReplay({noReload:true,quiet:true}); } currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); syncTfDD(); if(rp.active){ rpSetTF(currentTF); return; } loadCandles();  });
 
   $('ct-theme').addEventListener('click',e=>{ e.stopPropagation(); const p=$('theme-pop'); p.hidden=!p.hidden; if(!p.hidden) renderThemePop(); });
   $('theme-pop').addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('[data-th]'); if(!b) return; const d=applyTheme(b.dataset.th); renderThemePop(); renderThemeBtn(); toast(`Candles: ${d.name} 🎨`); });
@@ -2652,6 +2691,7 @@ function openChart(inst){
 }
 
 function defaultBars(){ const el=$('lw-container'); let aw=0; try{ aw=chart.priceScale('right').width()||0; }catch(e){} const w=Math.max(200,((el&&el.clientWidth)||800)-aw); return Math.max(30,Math.min(160,Math.round(w/9))); }
+function syncTfDD(){ const c=$('tf-dd-cur'); if(c) c.textContent=currentTF; document.querySelectorAll('#tf-dd-list button').forEach(x=>x.classList.toggle('on',x.dataset.tf===currentTF)); }
 function getChart(){ return chart; }
 function getSeries(){ return series; }
 
