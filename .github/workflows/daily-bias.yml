@@ -11,7 +11,7 @@ permissions:
   pages: write
 
 concurrency:
-  group: daily-bias
+  group: repo-writes
   cancel-in-progress: false
 
 jobs:
@@ -34,6 +34,7 @@ jobs:
           git add scores.json scores_history.json
           if git diff --cached --quiet; then echo "No change"; exit 0; fi
           git commit -m "Daily bias scores $(TZ=Africa/Johannesburg date +%F)"
+          git pull --rebase
           git push
       - name: Refresh the website
         env:

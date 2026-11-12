@@ -1,0 +1,35 @@
+name: News calendar
+
+on:
+  schedule:
+    - cron: '53 1 * * *'    # 03:53 SAST - before the 04:07 bias scores
+    - cron: '53 11 * * *'   # 13:53 SAST - picks up any time changes
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Save this week's high-impact news to news.json
+        run: python scripts/calendar.py
+      - name: Commit news.json
+        run: |
+          git config user.name "bias-desk-bot"
+          git config user.email "bias-desk-bot@users.noreply.github.com"
+          git add news.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No change"; exit 0; fi
+          git commit -m "News calendar $(TZ=Africa/Johannesburg date +%F)"
+          git pull --rebase
+          git push
