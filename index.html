@@ -1173,7 +1173,7 @@ input::placeholder,textarea::placeholder{color:#93a0b6;opacity:1}
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>"};
-const BUILD='2026-11-12.9';
+const BUILD='2026-11-12.10';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1532,7 +1532,7 @@ const THEMES=[
  {id:'nord',name:'Nord',accent:'#88c0d0',bg:'#242933',bg2:'#2e3440',chartBg:'#2e3440',grid:'#363c48',text:'#f3f5f9',axisText:'#eceff4',up:'#b5e08c',down:'#ef6f7a',wickUp:'#b5e08c',wickDown:'#ef6f7a',borderUp:'#b5e08c',borderDown:'#ef6f7a',crosshair:'#9ab5d6',priceLine:'#81a1c1',light:false},
  {id:'dracula',name:'Dracula',accent:'#bd93f9',bg:'#1e1f29',bg2:'#282a36',chartBg:'#282a36',chartBg2:'#1d1e27',grid:'transparent',text:'#fbfbf6',axisText:'#e6e6f5',up:'#50fa7b',down:'#ff5555',wickUp:'#50fa7b',wickDown:'#ff5555',borderUp:'#50fa7b',borderDown:'#ff5555',crosshair:'#8b9bd6',priceLine:'#bd93f9',light:false},
  {id:'sunset',name:'Sunset Glow',accent:'#f97316',bg:'#0b0614',bg2:'#1f1033',chartBg:'#1f1033',chartBg2:'#09040f',grid:'transparent',text:'#fff0f8',axisText:'#f7d3e8',up:'#ffc300',down:'#ff2d55',wickUp:'#ffc300',wickDown:'#ff2d55',borderUp:'#ffc300',borderDown:'#ff2d55',crosshair:'#d39bff',priceLine:'#c084fc',light:false},
- {id:'mt5-black',name:'MT5 Black',accent:'#00c853',bg:'#05070a',bg2:'#0d1117',chartBg:'#000000',grid:'transparent',text:'#eef2f6',up:'#00e676',down:'#ff1744',wickUp:'#00e676',wickDown:'#ff1744',borderUp:'#00e676',borderDown:'#ff1744',crosshair:'#a3acb7',priceLine:'#8b949e',axisText:'#e6edf3',light:false},
+ {id:'mt5-black',name:'MT5 Black',accent:'#00c853',bg:'#05070a',bg2:'#0d1117',chartBg:'#000000',grid:'transparent',text:'#eef2f6',up:'#00ff3b',down:'#d60000',wickUp:'#00ff3b',wickDown:'#d60000',borderUp:'#00ff3b',borderDown:'#d60000',crosshair:'#a3acb7',priceLine:'#8b949e',axisText:'#e6edf3',light:false},
  {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#eef5ff',up:'#2f80ff',down:'#f1f5f9',wickUp:'#2f80ff',wickDown:'#f1f5f9',borderUp:'#2f80ff',borderDown:'#f1f5f9',crosshair:'#4de6ff',priceLine:'#38e1ff',axisText:'#e6f0ff',light:false},
  {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'transparent',text:'#ecfff8',up:'#00ff9c',down:'#ff2e88',wickUp:'#00ff9c',wickDown:'#ff2e88',borderUp:'#00ff9c',borderDown:'#ff2e88',crosshair:'#00ff9c',priceLine:'#00ff9c',axisText:'#e0fff5',light:false},
  {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f8f5e8',axisText:'#1b1a14',up:'#4b0082',down:'#ff0000',wickUp:'#4b0082',wickDown:'#ff0000',borderUp:'#3a0066',borderDown:'#d00000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
@@ -2570,7 +2570,7 @@ async function loadCandles(){
     let candles=await getCandles(currentInst,gran,isBinance(currentInst)?1000:2000);
     histDone=false;
     candleMap=new Map(candles.map(c=>[c.time,c]));
-    if(series && ensureChartLib()){ series.setData(candles); const n=candles.length; try{ if(n>200) chart.timeScale().setVisibleLogicalRange({from:n-170,to:n+14}); else chart.timeScale().fitContent(); }catch(e){ chart.timeScale().fitContent(); } }
+    if(series && ensureChartLib()){ series.setData(candles); const n=candles.length; try{ const vis=defaultBars(); if(n>vis+20) chart.timeScale().setVisibleLogicalRange({from:n-vis,to:n+Math.max(4,Math.round(vis*0.08))}); else chart.timeScale().fitContent(); }catch(e){ chart.timeScale().fitContent(); } }
     tlTimesKey=''; tlRender(); vpRender();
     if(series && ensureChartLib() && !candles.length) series.setData([]);
     const cw=$('chart-wait'); if(cw){ cw.hidden=!!candles.length; if(!candles.length) cw.innerHTML=`<span class="spinner"></span><div><b>Waiting for live prices</b><small>${esc(getFeedMode()==='offline'?(getFeedError()||'Price feed offline — retrying'):'Connecting to the live price feed…')}</small></div>`; }
@@ -2651,6 +2651,7 @@ function openChart(inst){
   $('ct-tp').disabled=true; $('ct-buy').classList.remove('active-setup'); $('ct-sell').classList.remove('active-setup');
 }
 
+function defaultBars(){ const el=$('lw-container'); let aw=0; try{ aw=chart.priceScale('right').width()||0; }catch(e){} const w=Math.max(200,((el&&el.clientWidth)||800)-aw); return Math.max(30,Math.min(160,Math.round(w/9))); }
 function getChart(){ return chart; }
 function getSeries(){ return series; }
 
@@ -3224,11 +3225,11 @@ async function beginReplay(S){
   $('ct-replay').querySelector('span').textContent='Replay';
   if(m1.length<30){ toast('No 1-minute data for that date — pick a more recent candle'); rp={active:false}; $('ct-replay').classList.remove('active'); openChart(currentInst); return; }
   rp.m1=m1; rp.m1End=m1[m1.length-1].time+60; rp.S=S; rp.now=S; rp.active=true; rp.playing=false; rp.hist={};
-  await rpBuildChart(); try{ const n=barTimes().length; chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-130),to:n+20}); }catch(e){}
+  await rpBuildChart(); try{ const n=barTimes().length; chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-defaultBars()),to:n+Math.max(4,Math.round(defaultBars()*0.08))}); }catch(e){}
   document.body.classList.add('replaying'); renderReplayBar(); updateHeader(); tlRender(); vpRender();
   toast('Replay ready — press ▶. 1× = one minute of market per second. Trades here are practice only.');
 }
-async function rpSetTF(tf){ if(!rp.active) return; replayPlay(false); rp.g=granForLabel(tf); await rpBuildChart(); try{ const n=barTimes().length; chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-130),to:n+20}); }catch(e){} tlRender(); vpRender(); renderReplayBar(); updateHeader(); }
+async function rpSetTF(tf){ if(!rp.active) return; replayPlay(false); rp.g=granForLabel(tf); await rpBuildChart(); try{ const n=barTimes().length; chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-defaultBars()),to:n+Math.max(4,Math.round(defaultBars()*0.08))}); }catch(e){} tlRender(); vpRender(); renderReplayBar(); updateHeader(); }
 function renderReplayBar(){
   const w=tlWrap(); if(!w) return; let bar=w.querySelector('.rp-bar');
   if(!bar){ bar=document.createElement('div'); bar.className='rp-bar'; w.appendChild(bar);
