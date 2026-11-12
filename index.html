@@ -141,9 +141,10 @@ body{transition:background .6s ease,color .6s ease}
 body.theme-neon-night{--glass:rgba(0,255,156,.05);--border:rgba(0,255,156,.22)}
 body.theme-gold-luxe{--glass:rgba(212,175,55,.06);--border:rgba(212,175,55,.25)}
 body.theme-classic-pro{--glass:rgba(148,163,184,.07);--border:rgba(148,163,184,.2)}
-body.theme-light-focus{--glass:rgba(255,255,255,.75);--border:rgba(100,116,139,.25)}
-body.theme-light-focus .glass{color:#0f172a}
-body.theme-light-focus .card,body.theme-light-focus .watchlist,body.theme-light-focus .topbar{color:#0f172a}
+body.theme-deep-ocean{--glass:rgba(34,211,238,.045);--border:rgba(34,211,238,.18)}
+body.theme-sunset{--glass:rgba(249,115,22,.05);--border:rgba(249,115,22,.2)}
+body.theme-dracula{--glass:rgba(189,147,249,.05);--border:rgba(189,147,249,.2)}
+body.theme-nord{--glass:rgba(136,192,208,.05);--border:rgba(136,192,208,.18)}
 .live-badge{background:rgba(34,229,138,.15);border:1px solid var(--green);color:#a7f3d0;font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 10px;border-radius:20px}
 .status-dot.live{background:var(--green);box-shadow:0 0 10px var(--green)}
 .status-dot.connecting{background:var(--orange);box-shadow:0 0 10px var(--orange);animation:pulse 1s infinite}
@@ -231,7 +232,7 @@ body.theme-light-focus .card,body.theme-light-focus .watchlist,body.theme-light-
 .pt-zone-reward{background:linear-gradient(180deg,rgba(22,163,74,.20),rgba(22,163,74,.10))}
 .pt-zone-extra{background:color-mix(in srgb,var(--c) 8%,transparent)}
 .pt-panel{position:absolute;top:12px;right:76px;width:290px;padding:14px;pointer-events:auto;z-index:6;max-height:calc(100% - 24px);overflow-y:auto;background:rgba(6,14,36,.78);box-shadow:0 20px 50px rgba(0,0,0,.5)}
-body.light .pt-panel{background:rgba(255,255,255,.92)}
+body.light-chart .pt-panel{background:rgba(255,255,255,.92)}
 .pt-panel.min .pt-body{display:none}
 .pt-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px}
 .pt-min{background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:8px;width:28px;height:26px}
@@ -702,7 +703,7 @@ h1{font-size:34px;line-height:1.15;margin:0;font-weight:700;letter-spacing:-.5px
 .tl-capture{position:absolute;left:0;top:0;right:0;bottom:0;z-index:8;cursor:crosshair;touch-action:none}
 .tl-hint{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:9;pointer-events:none;background:rgba(14,19,32,.92);border:1px solid rgba(41,98,255,.6);color:#e6ebf5;font:600 12px 'Space Grotesk',sans-serif;padding:6px 12px;border-radius:8px;white-space:nowrap}
 /* full screen chart */
-#page-chart.fs-on{position:fixed;inset:0;z-index:200;max-width:none;margin:0;padding:10px 12px;background:#06080f;display:flex!important;flex-direction:column;gap:8px;overflow:hidden;animation:none}
+#page-chart.fs-on{position:fixed;inset:0;z-index:200;max-width:none;margin:0;padding:10px 12px;background:var(--bg,#06080f);display:flex!important;flex-direction:column;gap:8px;overflow:hidden;animation:none}
 #page-chart.fs-on .trade-head{margin:0;flex:0 0 auto}
 #page-chart.fs-on .chart-container{flex:1;min-height:0;padding:10px;border-radius:12px}
 #page-chart.fs-on .chart-wrap{flex:1;min-height:0}
@@ -996,7 +997,8 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #f59e0b}
 .tb-ls line{stroke-width:2}
 .tb-sep{width:1px;height:18px;background:rgba(255,255,255,.12);margin:0 3px}
 .tl-pop{position:absolute;z-index:10;padding:8px;background:rgba(24,28,39,.98);border:1px solid rgba(255,255,255,.1);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.6);color:#d1d4dc;font:500 12px 'Space Grotesk',sans-serif}
-.pop-sw{display:grid;grid-template-columns:repeat(8,22px);gap:6px}
+.pop-sw{display:grid;grid-template-columns:repeat(9,22px);gap:6px}
+.pop-sw button[data-c="#000000"]{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}.pop-sw button[data-c="#ffffff"]{box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
 .pop-sw button{width:22px;height:22px;border-radius:6px;border:none;padding:0;background:var(--sw);cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);transition:transform .1s}
 .pop-sw button:hover{transform:scale(1.12)}
 .pop-sw button.on{box-shadow:0 0 0 2px #181c27,0 0 0 4px #2962ff}
@@ -1007,13 +1009,28 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #f59e0b}
 .pop-row{display:flex;align-items:center;gap:10px;width:132px;padding:7px 8px;border:none;border-radius:6px;background:none;color:#d1d4dc;cursor:pointer;font:500 12px 'Space Grotesk',sans-serif}
 .pop-row svg{width:40px;height:10px;stroke:currentColor;stroke-linecap:round}
 .pop-row:hover{background:rgba(255,255,255,.07)}.pop-row.on{background:rgba(41,98,255,.22);color:#fff}
-body.light .tl-tb,body.light .tl-pop{background:rgba(255,255,255,.98);border-color:rgba(0,0,0,.1);color:#131722}
-body.light .tb-btn,body.light .pop-row{color:#131722}body.light .tb-btn:hover,body.light .pop-row:hover{background:rgba(0,0,0,.06)}
+body.light-chart .tl-tb,body.light-chart .tl-pop{background:rgba(255,255,255,.98);border-color:rgba(0,0,0,.1);color:#131722}
+body.light-chart .tb-btn,body.light-chart .pop-row{color:#131722}body.light-chart .tb-btn:hover,body.light-chart .pop-row:hover{background:rgba(0,0,0,.06)}
 /* clean line icons in the tool rail + header */
 .ico{display:inline-flex;align-items:center;justify-content:center}
 .ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .hd-btn .ico svg{width:17px;height:17px}
 .rail-btn .ico{opacity:.85}#page-chart.fs-on .rail-btn .ico svg{width:18px;height:18px}.rail-btn:hover .ico,.rail-btn.active .ico{opacity:1}
+.th-dd{position:relative}
+.th-btn{gap:7px}.th-mini{display:inline-flex;width:30px;height:18px;border-radius:4px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.14)}.th-mini svg{width:30px;height:18px;display:block}
+.th-name{font:600 12px 'Space Grotesk',sans-serif;white-space:nowrap}.th-btn .th-mini{display:inline-flex!important}.th-caret{font-size:10px;opacity:.7}
+.theme-pop{position:absolute;right:0;top:calc(100% + 8px);z-index:90;width:470px;max-height:min(72vh,620px);overflow:auto;padding:12px;background:rgba(18,22,32,.98);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.6);backdrop-filter:blur(8px)}
+.th-cap{margin:2px 2px 8px;font:700 10.5px 'Space Grotesk',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8b95a7}.th-grid+.th-cap{margin-top:12px}
+.th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.th-tile{display:flex;flex-direction:column;gap:6px;padding:5px;border-radius:10px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);color:#d1d4dc;cursor:pointer;text-align:left;transition:transform .15s,border-color .15s,box-shadow .15s}
+.th-tile:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.25)}
+.th-tile.on{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.th-tile span,.theme-btn span{font:600 12px 'Space Grotesk',sans-serif;padding:0 3px 2px}.th-tile i,.theme-btn i{font-style:normal;font-weight:500;font-size:10.5px;opacity:.6}
+.th-prev{display:block;width:100%;height:64px;border-radius:7px}
+.theme-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))!important;gap:10px!important}
+.theme-btn{display:flex;flex-direction:column;gap:7px;padding:6px!important;text-align:left!important}
+.theme-btn .th-prev{height:70px}
+@media(max-width:900px){.theme-pop{position:fixed;left:8px;right:8px;top:auto;bottom:70px;width:auto}.th-grid{grid-template-columns:repeat(2,1fr)}.th-name{display:none}}
 </style>
 </head>
 <body>
@@ -1152,7 +1169,7 @@ body.light .tb-btn,body.light .pop-row{color:#131722}body.light .tb-btn:hover,bo
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>"};
-const BUILD='2026-11-12.7';
+const BUILD='2026-11-12.8';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1503,10 +1520,20 @@ function generateDemoCandles(inst,granularity,count){
 // ===== js/themes.js (merged, imports/exports resolved) =====
 // themes.js — 5 candle themes (Prompt 2). Each changes candles, wicks, bg, grid, accent. Remembered in localStorage.
 const THEMES=[
+ {id:'tv-dark',name:'TradingView Dark',accent:'#2962ff',bg:'#0c0e15',bg2:'#131722',chartBg:'#131722',grid:'#1c2030',text:'#d1d4dc',axisText:'#b2b5be',up:'#089981',down:'#f23645',wickUp:'#089981',wickDown:'#f23645',borderUp:'#089981',borderDown:'#f23645',crosshair:'#758696',priceLine:'#758696',light:false},
+ {id:'hollow-pro',name:'Hollow Pro',accent:'#26a69a',bg:'#07090e',bg2:'#121826',chartBg:'#111622',chartBg2:'#06080d',grid:'transparent',text:'#d1d4dc',axisText:'#9aa4b5',up:'#26a69a',down:'#ef5350',wickUp:'#26a69a',wickDown:'#ef5350',borderUp:'#2bbbad',borderDown:'#ef5350',hollowUp:true,crosshair:'#6b7a90',priceLine:'#6b7a90',light:false},
+ {id:'deep-ocean',name:'Deep Ocean',accent:'#22d3ee',bg:'#040b18',bg2:'#0b1e3d',chartBg:'#0b1f3f',chartBg2:'#030812',grid:'transparent',text:'#e0f2fe',axisText:'#93c5fd',up:'#22d3ee',down:'#fb7185',wickUp:'#67e8f9',wickDown:'#fda4af',borderUp:'#22d3ee',borderDown:'#fb7185',crosshair:'#38bdf8',priceLine:'#38bdf8',light:false},
+ {id:'gold-luxe',name:'Gold Luxe',accent:'#e9b949',bg:'#080705',bg2:'#1a160d',chartBg:'#14110a',chartBg2:'#040302',grid:'transparent',text:'#f5ecd7',axisText:'#c9b98f',up:'#e9b949',down:'#aab1bf',wickUp:'#e9b949',wickDown:'#8d94a3',borderUp:'#f2c95c',borderDown:'#aab1bf',crosshair:'#c9a443',priceLine:'#c9a443',light:false},
+ {id:'mono',name:'Monochrome',accent:'#3b82f6',bg:'#050505',bg2:'#141414',chartBg:'#0b0b0b',grid:'transparent',text:'#e5e5e5',axisText:'#a3a3a3',up:'#f5f5f5',down:'#8f8f8f',wickUp:'#e5e5e5',wickDown:'#8f8f8f',borderUp:'#f5f5f5',borderDown:'#8f8f8f',hollowUp:true,crosshair:'#737373',priceLine:'#a3a3a3',light:false},
+ {id:'nord',name:'Nord',accent:'#88c0d0',bg:'#242933',bg2:'#2e3440',chartBg:'#2e3440',grid:'#363c48',text:'#eceff4',axisText:'#d8dee9',up:'#a3be8c',down:'#bf616a',wickUp:'#a3be8c',wickDown:'#bf616a',borderUp:'#a3be8c',borderDown:'#bf616a',crosshair:'#81a1c1',priceLine:'#81a1c1',light:false},
+ {id:'dracula',name:'Dracula',accent:'#bd93f9',bg:'#1e1f29',bg2:'#282a36',chartBg:'#282a36',chartBg2:'#1d1e27',grid:'transparent',text:'#f8f8f2',axisText:'#bfbfd8',up:'#50fa7b',down:'#ff5555',wickUp:'#50fa7b',wickDown:'#ff5555',borderUp:'#50fa7b',borderDown:'#ff5555',crosshair:'#6272a4',priceLine:'#bd93f9',light:false},
+ {id:'sunset',name:'Sunset Glow',accent:'#f97316',bg:'#0b0614',bg2:'#1f1033',chartBg:'#1f1033',chartBg2:'#09040f',grid:'transparent',text:'#fde7f3',axisText:'#e9b8d6',up:'#fbbf24',down:'#f43f5e',wickUp:'#fcd34d',wickDown:'#fb7185',borderUp:'#fbbf24',borderDown:'#f43f5e',crosshair:'#c084fc',priceLine:'#c084fc',light:false},
  {id:'mt5-black',name:'MT5 Black',accent:'#00c853',bg:'#05070a',bg2:'#0d1117',chartBg:'#000000',grid:'transparent',text:'#c9d1d9',up:'#00c853',down:'#ff1e1e',wickUp:'#00c853',wickDown:'#ff1e1e',borderUp:'#00c853',borderDown:'#ff1e1e',crosshair:'#8b949e',priceLine:'#8b949e',light:false},
- {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f3f0e0',axisText:'#1b1a14',up:'#4b0082',down:'#ff0000',wickUp:'#4b0082',wickDown:'#ff0000',borderUp:'#3a0066',borderDown:'#d00000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
  {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#dbeafe',up:'#1e6bff',down:'#e5e7eb',wickUp:'#7db4ff',wickDown:'#9ca3af',borderUp:'#1e6bff',borderDown:'#d1d5db',crosshair:'#38e1ff',priceLine:'#38e1ff',light:false},
  {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'transparent',text:'#e0fff5',up:'#00ff9c',down:'#ff2e88',wickUp:'#00ff9c',wickDown:'#ff2e88',borderUp:'#00ff9c',borderDown:'#ff2e88',crosshair:'#00ff9c',priceLine:'#00ff9c',light:false},
+ {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f3f0e0',axisText:'#1b1a14',up:'#4b0082',down:'#ff0000',wickUp:'#4b0082',wickDown:'#ff0000',borderUp:'#3a0066',borderDown:'#d00000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
+ {id:'tv-light',name:'TradingView Light',accent:'#2962ff',bg:'#eef1f7',bg2:'#ffffff',chartBg:'#ffffff',grid:'#f0f3fa',text:'#131722',axisText:'#131722',up:'#089981',down:'#f23645',wickUp:'#089981',wickDown:'#f23645',borderUp:'#089981',borderDown:'#f23645',crosshair:'#9598a1',priceLine:'#9598a1',light:true},
+ {id:'paper',name:'Paper',accent:'#0f766e',bg:'#f1ebdd',bg2:'#fbf7ee',chartBg:'#fbf7ee',grid:'#f0e9d9',text:'#1f2937',axisText:'#4b5563',up:'#0f766e',down:'#b42318',wickUp:'#0f766e',wickDown:'#b42318',borderUp:'#0f766e',borderDown:'#b42318',hollowUp:true,crosshair:'#9a8f7a',priceLine:'#9a8f7a',light:true},
  {id:'light-focus',name:'Light Focus',accent:'#16a34a',bg:'#f8fafc',bg2:'#e2e8f0',chartBg:'#ffffff',grid:'transparent',text:'#0f172a',up:'#16a34a',down:'#dc2626',wickUp:'#16a34a',wickDown:'#dc2626',borderUp:'#16a34a',borderDown:'#dc2626',crosshair:'#64748b',priceLine:'#16a34a',light:true},
 ];
 const themeListeners=new Set();
@@ -1518,24 +1545,38 @@ function applyTheme(id){
   const def=THEMES.find(x=>x.id===id)||THEMES[0];
   lsSet('bd_theme',def.id);
   const root=document.documentElement.style;
-  root.setProperty('--accent',def.accent); root.setProperty('--bg',def.bg); root.setProperty('--bg2',def.bg2);
-  root.setProperty('--blue',def.accent); root.setProperty('--text',def.text);
+  // light designs only change the chart — the site itself stays dark so every label stays readable
+  const site=def.light?{bg:'#0c0e15',bg2:'#131722',text:'#d1d4dc'}:def;
+  root.setProperty('--accent',def.accent); root.setProperty('--bg',site.bg); root.setProperty('--bg2',site.bg2);
+  root.setProperty('--blue',def.accent); root.setProperty('--text',site.text);
   document.body.className=document.body.className.replace(/theme-\S+/g,'').trim();
   document.body.classList.add('theme-'+def.id);
-  if(def.light){ document.body.classList.add('light'); } else { document.body.classList.remove('light'); }
+  document.body.classList.remove('light'); document.body.classList.toggle('light-chart',!!def.light);
   // Smooth animated transition: brief fade on chart container
   const cc=document.getElementById('chart-container'); if(cc){ cc.style.transition='opacity .45s ease'; cc.style.opacity='0.35'; setTimeout(()=>{ cc.style.opacity='1'; },180); }
   themeListeners.forEach(fn=>{ try{fn(def);}catch(e){console.warn(e);} });
   // Sync any theme selects
-  document.querySelectorAll('[data-theme-select]').forEach(s=>{ s.value=def.id; });
+  document.querySelectorAll('[data-theme-select]').forEach(s=>{ s.value=def.id; }); try{ renderThemeBtn(); }catch(e){}
   return def;
 }
+// little candle preview of a theme (used by the theme pickers)
+let thPrevN=0; const TH_PREV=[[.42,.56,.36,.52],[.52,.6,.4,.44],[.44,.5,.3,.34],[.34,.52,.3,.5],[.5,.68,.46,.64],[.64,.7,.5,.54],[.54,.62,.44,.6],[.6,.8,.56,.76],[.76,.84,.62,.66],[.66,.72,.52,.7],[.7,.9,.66,.86]];
+function themePreview(t,W=132,H=64){ const pad=7, bw=(W-2*pad)/TH_PREV.length, Y=v=>H-pad-v*(H-2*pad); const gid='tg'+t.id+'-'+(++thPrevN);
+  const bg=t.chartBg2?`<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${t.chartBg}"/><stop offset="1" stop-color="${t.chartBg2}"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#${gid})"/>`:`<rect width="${W}" height="${H}" fill="${t.chartBg}"/>`;
+  const grid=t.grid&&t.grid!=='transparent'?[1,2,3].map(i=>`<line x1="0" x2="${W}" y1="${(H*i/4).toFixed(1)}" y2="${(H*i/4).toFixed(1)}" stroke="${t.grid}" stroke-width="1"/>`).join(''):'';
+  const c=TH_PREV.map(([o,h,l,cl],i)=>{ const up=cl>=o, x=pad+bw*i+bw/2, w=Math.max(3,bw*0.62), top=Y(Math.max(o,cl)), bot=Y(Math.min(o,cl)), col=up?t.up:t.down, bc=up?(t.borderUp||col):(t.borderDown||col), wc=up?(t.wickUp||col):(t.wickDown||col), hol=up?t.hollowUp:t.hollowDown;
+    return `<line x1="${x}" x2="${x}" y1="${Y(h)}" y2="${top}" stroke="${wc}" stroke-width="1"/><line x1="${x}" x2="${x}" y1="${bot}" y2="${Y(l)}" stroke="${wc}" stroke-width="1"/><rect x="${(x-w/2).toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(1,bot-top).toFixed(1)}" fill="${hol?'none':col}" stroke="${bc}" stroke-width="${hol?1.2:0.6}" rx="0.6"/>`; }).join('');
+  return `<svg class="th-prev" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bg}${grid}${c}</svg>`; }
+function renderThemeBtn(){ const b=$('ct-theme'); if(!b) return; const t=getThemeDef(); b.querySelector('.th-mini').innerHTML=themePreview(t,30,18); b.querySelector('.th-name').textContent=t.name; }
+function renderThemePop(){ const p=$('theme-pop'); if(!p) return; const cur=getTheme();
+  const tile=t=>`<button class="th-tile${t.id===cur?' on':''}" data-th="${t.id}">${themePreview(t)}<span>${esc(t.name)}${t.hollowUp?' <i>hollow</i>':''}</span></button>`;
+  p.innerHTML=`<div class="th-cap">Dark</div><div class="th-grid">${THEMES.filter(t=>!t.light).map(tile).join('')}</div><div class="th-cap">Light</div><div class="th-grid">${THEMES.filter(t=>t.light).map(tile).join('')}</div>`; }
 function cycleTheme(){ const cur=getTheme(); const idx=THEMES.findIndex(x=>x.id===cur); const next=THEMES[(idx+1)%THEMES.length]; applyTheme(next.id); return next; }
 // Lightweight Charts options derived from theme
 function chartOptionsForTheme(def){
   const t=def||getThemeDef();
   return {
-    layout:{background:{type:'solid',color:t.chartBg},textColor:t.axisText||t.text,fontFamily:"'JetBrains Mono',monospace",fontSize:11,attributionLogo:false},
+    layout:{background:t.chartBg2?{type:'gradient',topColor:t.chartBg,bottomColor:t.chartBg2}:{type:'solid',color:t.chartBg},textColor:t.axisText||t.text,fontFamily:"'JetBrains Mono',monospace",fontSize:11,attributionLogo:false},
     grid:{vertLines:{color:t.grid,visible:t.grid!=='transparent'},horzLines:{color:t.grid,visible:t.grid!=='transparent'}},
     rightPriceScale:{borderColor:t.grid==='transparent'?hexA(t.axisText||t.text,.25):t.grid},
     timeScale:{borderColor:t.grid==='transparent'?hexA(t.axisText||t.text,.25):t.grid,timeVisible:true,secondsVisible:false,rightOffset:16},
@@ -1545,7 +1586,7 @@ function chartOptionsForTheme(def){
 }
 function seriesOptionsForTheme(def){
   const t=def||getThemeDef();
-  return {upColor:t.up,downColor:t.down,borderUpColor:t.borderUp,borderDownColor:t.borderDown,borderVisible:true,wickUpColor:t.wickUp,wickDownColor:t.wickDown,priceLineColor:t.priceLine,priceLineWidth:1,priceLineStyle:2};
+  return {upColor:t.hollowUp?'rgba(0,0,0,0)':t.up,downColor:t.hollowDown?'rgba(0,0,0,0)':t.down,borderUpColor:t.borderUp,borderDownColor:t.borderDown,borderVisible:true,wickUpColor:t.wickUp,wickDownColor:t.wickDown,priceLineColor:t.priceLine,priceLineWidth:1,priceLineStyle:2};
 }
 
 // ===== js/scores.js (merged, imports/exports resolved) =====
@@ -2443,7 +2484,7 @@ function buildChartShell(){
       <button id="ct-bell" class="hd-btn" title="Alerts"><i class="ico">${ICON.bell}</i><span class="bell-n"></span></button>
       <button id="ct-replay" class="hd-btn" title="Bar replay — practise on past candles"><i>⏮</i><span>Replay</span></button>
       <button id="ct-journal" class="hd-btn" title="Trades on this pair"><i>☰</i><span>Journal</span></button>
-      <label class="hd-sel" title="Candle layout"><i>◐</i><select id="ct-theme" data-theme-select>${THEMES.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select></label>
+      <div class="th-dd"><button id="ct-theme" class="hd-btn th-btn" title="Candle design"><span class="th-mini"></span><span class="th-name"></span><b class="th-caret">▾</b></button><div id="theme-pop" class="theme-pop" hidden></div></div>
       <button id="ct-fs" class="hd-btn" title="Full screen (Esc to exit)"><i>⛶</i><span>Full screen</span></button>
     </div>
   </div>
@@ -2470,7 +2511,10 @@ function buildChartShell(){
   <div id="chart-status" class="chart-status">Loading candles…</div>`;
   $('ct-tfs').addEventListener('click',e=>{ const b=e.target.closest('button[data-tf]'); if(!b) return; if(rp.picking){ endReplay({noReload:true,quiet:true}); } currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); if(rp.active){ rpSetTF(currentTF); return; } loadCandles();  });
 
-  $('ct-theme').addEventListener('change',e=>{ applyTheme(e.target.value); toast(`Theme: ${e.target.selectedOptions[0].text} 🎨`); });
+  $('ct-theme').addEventListener('click',e=>{ e.stopPropagation(); const p=$('theme-pop'); p.hidden=!p.hidden; if(!p.hidden) renderThemePop(); });
+  $('theme-pop').addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('[data-th]'); if(!b) return; const d=applyTheme(b.dataset.th); renderThemePop(); renderThemeBtn(); toast(`Candles: ${d.name} 🎨`); });
+  document.addEventListener('click',e=>{ const p=$('theme-pop'); if(p&&!p.hidden&&!e.composedPath().some(el=>el&&el.classList&&el.classList.contains('th-dd'))) p.hidden=true; });
+  renderThemeBtn();
   $('ct-buy').addEventListener('click',()=>chartCreateSetup('buy'));
   $('ct-sell').addEventListener('click',()=>chartCreateSetup('sell'));
   $('ct-tp').addEventListener('click',addTP);
@@ -2599,7 +2643,7 @@ function openChart(inst){
   buildChartShell(); initChart(); updateHeader(); tlLoad(inst.symbol); vpLoad(inst.symbol); alRender(); renderNewsChip();
   setChartView(chartView);
   loadCandles().then(async()=>{ await restoreToolForInst(inst); if(tool&&chartView!=='trade') setChartView('trade'); });
-  $('ct-theme').value=getThemeDef().id;
+  renderThemeBtn();
   $('ct-tp').disabled=true; $('ct-buy').classList.remove('active-setup'); $('ct-sell').classList.remove('active-setup');
 }
 
@@ -2609,7 +2653,7 @@ function getSeries(){ return series; }
 // ===== Trendlines (basic) — click two points (or click-drag); drag the line or its ends; Delete / ✕ removes; saved per pair =====
 let tlLines=[], tlSym=null, tlMode=false, tlKind='line', tlDraft=null, tlSel=null, tlDrag=null, tlRaf=null, tlPop=null;
 // drawing styles — every line / rectangle keeps its own; new drawings start with the last style you picked (like TradingView)
-const TL_COLORS=['#ffffff','#b2b5be','#787b86','#f23645','#ff9800','#ffeb3b','#4caf50','#089981','#00bcd4','#2962ff','#673ab7','#9c27b0','#e91e63','#f7525f','#ffb74d','#81c784'];
+const TL_COLORS=['#ffffff','#d1d4dc','#9598a1','#5d606b','#000000','#f23645','#ff9800','#ffeb3b','#4caf50','#089981','#00bcd4','#2962ff','#673ab7','#9c27b0','#e91e63','#f7525f','#ffb74d','#81c784'];
 const DRAW_DEF={line:{color:'#2962ff',width:2,style:'solid'},rect:{color:'#9c27b0',width:1,style:'solid',fill:0.2,ext:false}};
 function drawDef(kind){ const sv=(lsGet('bd_draw_defaults',{})||{})[kind]||{}; return {...DRAW_DEF[kind],...sv}; }
 function tlStyleOf(l){ return {...DRAW_DEF[l.kind==='rect'?'rect':'line'],...l}; }
@@ -3056,7 +3100,7 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   const W=1280,H=720, AX=92, TOP=58, BOT=H-34, L=8, R=W-AX; const c=document.createElement('canvas'); c.width=W; c.height=H; const x2=c.getContext('2d');
   const th=getThemeDef(); const bg=th.chartBg||'#000', up=th.up||'#26a69a', dn=th.down||'#ef5350', txt=th.axisText||'#cbd5e1';
   const light=lightChart(); const muted=light?'rgba(0,0,0,.55)':'rgba(230,235,245,.55)';
-  x2.fillStyle=bg; x2.fillRect(0,0,W,H);
+  if(th.chartBg2){ const gr=x2.createLinearGradient(0,0,0,H); gr.addColorStop(0,bg); gr.addColorStop(1,th.chartBg2); x2.fillStyle=gr; } else x2.fillStyle=bg; x2.fillRect(0,0,W,H);
   const buy=t.direction==='buy'; const iIn=candles.findIndex(k=>k.time>tIn-g&&k.time<=tIn); const entryIdx=iIn<0?candles.filter(k=>k.time<=tIn).length-1:iIn;
   // BEFORE shows only candles that had closed when you pressed CONFIRM — nothing from the future
   const decide=mode==='after'&&tOut?Math.floor(tOut/g)*g:null; // the candle that hit the target / invalidation (or where you closed)
@@ -3076,7 +3120,7 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   const every=Math.max(1,Math.ceil(n/7)); x2.fillStyle=txt; x2.textAlign='center'; x2.font="500 12px 'Space Grotesk',sans-serif";
   for(let i=0;i<n;i+=every){ x2.textAlign=i===0?'left':'center'; x2.fillText(sastFmt(shown[i].time,g>=3600||i===0),i===0?Math.max(L,X(i)-bw/2):X(i),BOT+20); }
   // candles
-  shown.forEach((k,i)=>{ const col=k.close>=k.open?up:dn; x2.fillStyle=col; const x=X(i); x2.fillRect(Math.round(x)-0.5,Y(k.high),1,Math.max(1,Y(k.low)-Y(k.high))); const yo=Y(k.open), yc=Y(k.close); x2.fillRect(x-Math.max(1,bw*0.35),Math.min(yo,yc),Math.max(2,bw*0.7),Math.max(1,Math.abs(yc-yo))); });
+  shown.forEach((k,i)=>{ const col=k.close>=k.open?up:dn; x2.fillStyle=col; const x=X(i); x2.fillRect(Math.round(x)-0.5,Y(k.high),1,Math.max(1,Y(k.low)-Y(k.high))); const yo=Y(k.open), yc=Y(k.close); const bx=x-Math.max(1,bw*0.35), by=Math.min(yo,yc), bW=Math.max(2,bw*0.7), bH=Math.max(1,Math.abs(yc-yo)); if(k.close>=k.open&&th.hollowUp&&bW>3){ x2.fillStyle=bg; x2.fillRect(bx,by,bW,bH); x2.strokeStyle=th.borderUp||col; x2.lineWidth=1; x2.strokeRect(Math.round(bx)+0.5,Math.round(by)+0.5,Math.round(bW)-1,Math.max(1,Math.round(bH)-1)); } else x2.fillRect(bx,by,bW,bH); });
   // levels — FBC style, starting on the entry candle
   const lvEnd=Math.min(R-6,Math.max(X(iE)+Math.max(14*bw,230),mode==='after'?X(iX)+Math.max(4*bw,40):0));
   const tg=light?{c:'#111827',t:'#fff'}:{c:'#ffffff',t:'#0b1220'}; const Lb=getLabels();
@@ -3557,7 +3601,7 @@ function openShotViewer(shots,start,t){
 }
 function renderSettings(){
   const g=document.getElementById('settings-grid'); const mode=getFeedMode();
-  const themeBtns=THEMES.map(t=>`<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}"><div class="theme-swatch" style="background:linear-gradient(135deg,${t.up} 50%,${t.down} 50%)"></div>${t.name}</button>`).join('');
+  const themeBtns=THEMES.map(t=>`<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}">${themePreview(t)}<span>${t.name}${t.hollowUp?' <i>hollow</i>':''}</span></button>`).join('');
   const symbolRows=getInstruments().map(i=>`<div class="symbol-row"><label>${esc(i.name)}</label><input data-deriv="${i.symbol}" value="${i.derivSymbol||''}" placeholder="${isBinance(i)?'Binance':'feed: auto'}" ${isBinance(i)?'disabled':''} title="Price-feed symbol" style="flex:1"></div>`).join('');
   const manual=getManual();
   const manualRows=getInstruments().map(i=>{ const m=manual[i.symbol]; return `<div class="symbol-row"><label>${i.name}</label><input data-mscore="${i.symbol}" type="number" min="-10" max="10" value="${m?m.score:''}" placeholder="−10…+10" style="flex:0 0 90px"><input data-mreason="${i.symbol}" value="${m?m.reason||'':''}" placeholder="reason (optional)"></div>`; }).join('');
