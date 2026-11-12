@@ -1,0 +1,118 @@
+{
+ "source": "Forex Factory economic calendar",
+ "fetched": "2026-11-12T03:02:52Z",
+ "events": [
+  {
+   "t": 1794245100,
+   "cur": "GBP",
+   "title": "BOE Gov Bailey Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794301200,
+   "cur": "USD",
+   "title": "FOMC Member Waller Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794317400,
+   "cur": "USD",
+   "title": "Core CPI m/m",
+   "impact": "high",
+   "forecast": "0.2%",
+   "previous": "0.3%"
+  },
+  {
+   "t": 1794317400,
+   "cur": "USD",
+   "title": "CPI m/m",
+   "impact": "high",
+   "forecast": "0.3%",
+   "previous": "0.6%"
+  },
+  {
+   "t": 1794380460,
+   "cur": "EUR",
+   "title": "French Bank Holiday",
+   "impact": "holiday",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794390300,
+   "cur": "EUR",
+   "title": "ECB President Lagarde Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794402000,
+   "cur": "CAD",
+   "title": "Bank Holiday",
+   "impact": "holiday",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794402000,
+   "cur": "USD",
+   "title": "Bank Holiday",
+   "impact": "holiday",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794466800,
+   "cur": "GBP",
+   "title": "GDP m/m",
+   "impact": "high",
+   "forecast": "0.0%",
+   "previous": "0.1%"
+  },
+  {
+   "t": 1794466800,
+   "cur": "GBP",
+   "title": "Prelim GDP q/q",
+   "impact": "medium",
+   "forecast": "0.7%",
+   "previous": "0.5%"
+  },
+  {
+   "t": 1794490200,
+   "cur": "USD",
+   "title": "Unemployment Claims",
+   "impact": "medium",
+   "forecast": "194K",
+   "previous": "189K"
+  },
+  {
+   "t": 1794511800,
+   "cur": "EUR",
+   "title": "ECB President Lagarde Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794576600,
+   "cur": "USD",
+   "title": "Core PPI m/m",
+   "impact": "high",
+   "forecast": "0.3%",
+   "previous": "0.7%"
+  },
+  {
+   "t": 1794576600,
+   "cur": "USD",
+   "title": "PPI m/m",
+   "impact": "high",
+   "forecast": "0.4%",
+   "previous": "1.3%"
+  }
+ ]
+}
