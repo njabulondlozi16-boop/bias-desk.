@@ -922,6 +922,11 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #f59e0b}
 .pt-bar{font-size:11px}.pb-row{gap:5px;padding:3px 6px}.pb-btn{padding:3px 8px;font-size:11px}
 .pt-bar .live-tag{font-size:9px;padding:1px 5px}.pb-openr{font-size:11px;padding:1px 5px}
 .rp-bar{padding:4px 6px;gap:4px;border-radius:10px}.rp-bar button{height:26px;min-width:28px;padding:0 7px;font-size:11.5px}.rp-badge{font-size:9.5px;padding:3px 6px}.rp-time{font-size:11.5px}
+.vp-r{shape-rendering:crispEdges}
+.vp-val{font:600 9px 'JetBrains Mono',monospace;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:2px;stroke-linejoin:round}
+.vp-vah,.vp-val-l{stroke-width:1.5}.vp-poc{stroke-width:2}.vp-poc-ext{stroke-width:1.5;stroke-dasharray:2 3}
+.vp-edge{fill:transparent}.vp.sel .vp-edge{fill:rgba(41,98,255,.18)}.vp.sel .vp-edge:hover{fill:rgba(41,98,255,.45)}
+.acc-neu{font:600 11px 'Space Grotesk',sans-serif;color:var(--muted,#8b95a7);letter-spacing:.04em}
 </style>
 </head>
 <body>
@@ -1553,7 +1558,7 @@ function accuracyShort(sym){ const a=accuracyPoints(sym); return a.calls?`${ptsT
 function accuracyCard(){
   const all=accuracyPoints(null); const list=getInstruments(); const firstDay=biasHistory&&biasHistory.days?Object.keys(biasHistory.days).sort()[0]:null;
   const chips=rs=>rs.slice(-10).map(r=>`<i class="acc-pt ${r.hit===true?'hit':r.hit===false?'miss':'flat'}" title="${r.date} · score ${r.s>0?'+':''}${r.s} · price ${r.mv>0?'+':''}${r.mv}%${r.hit===null?' · neutral score, not counted':''}">${r.hit===true?'+1':r.hit===false?'−1':'0'}</i>`).join('');
-  const body=list.map(i=>{ const a=accuracyPoints(i.symbol); return `<div class="acc-row"><span class="acc-pair">${esc(i.name)}</span><span class="acc-pct ${!a.calls?'':a.pts>0?'up':a.pts<0?'down':''}">${a.calls?ptsTxt(a.pts):'—'}</span><span class="acc-n">${a.calls?a.hits:'—'}</span><span class="acc-n">${a.calls?a.wrong:'—'}</span><span class="acc-dots">${chips(a.rows)||'<small class="pt-muted">no days checked yet</small>'}</span></div>`; }).join('');
+  const body=list.map(i=>{ const a=accuracyPoints(i.symbol); return `<div class="acc-row"><span class="acc-pair">${esc(i.name)}</span><span class="acc-pct ${!a.calls?'':a.pts>0?'up':a.pts<0?'down':''}" ${!a.calls&&a.neutral?'title="Every score for this pair was neutral (−2…+2) — no direction to be right or wrong about"':''}>${a.calls?ptsTxt(a.pts):a.neutral?'<small class="acc-neu">neutral</small>':'—'}</span><span class="acc-n">${a.calls?a.hits:'—'}</span><span class="acc-n">${a.calls?a.wrong:'—'}</span><span class="acc-dots">${chips(a.rows)||'<small class="pt-muted">no days checked yet</small>'}</span></div>`; }).join('');
   return `<div class="card-s acc-card"><div class="acc-head"><div><h3>Bias accuracy — points</h3><p class="pt-muted">Each day: <b>+1</b> if price moved the way the morning score said, <b>−1</b> if it didn't. Checked from when the score was published (05:00 SAST) to 23:00 SAST. Scores of −2…+2 are neutral and score 0.</p></div>
     <div class="acc-big"><strong class="${!all.calls?'':all.pts>0?'up':all.pts<0?'down':''}">${all.calls?ptsTxt(all.pts):'—'}</strong><small>${all.calls?`${all.hits} right · ${all.wrong} wrong`:firstDay?`first check after 23:00 SAST on ${firstDay}`:'waiting for score history'}</small></div></div>
     <div class="acc-table"><div class="acc-row acc-th"><span>Pair</span><span>Points</span><span>Right</span><span>Wrong</span><span>Last 10 days</span></div>${body}</div></div>`;
@@ -2149,7 +2154,7 @@ async function takeScreenshotWithOverlay(){
     const ctx=c.getContext('2d'); ctx.drawImage(shot,0,0);
     // overlay coordinates are CSS pixels; the screenshot can be in device pixels
     const cssW=($('lw-container')||{}).clientWidth||c.width; const k=c.width/cssW; ctx.scale(k,k);
-    try{ const a=tlAnchor(); if(a) for(const v of vpList){ const P=v.prof, C=v.cfg||VP_DEF; const xr=vpXRange(v,a); if(!P||P.ver!==2||!xr) continue; const x0=Math.min(xr[0],xr[1]), x1=Math.max(xr[0],xr[1]); const left=C.place!=='right', an=left?x0:x1, ml=Math.max(4,(x1-x0)*C.width/100);
+    try{ const a=tlAnchor(); if(a) for(const v of vpList){ const P=v.prof, C=v.cfg||VP_DEF; const xr=vpXRange(v,a); if(!P||P.ver!==3||!xr) continue; const x0=Math.min(xr[0],xr[1]), x1=Math.max(xr[0],xr[1]); const left=C.place!=='right', an=left?x0:x1, ml=Math.max(4,(x1-x0)*C.width/100);
       for(let i=0;i<P.rows;i++){ const ya=yAtPrice(P.lo+(i+1)*P.rowH), yb=yAtPrice(P.lo+i*P.rowH); if(ya===null||yb===null) continue; const va=i>=P.vaLo&&i<=P.vaHi; const h=Math.max(1,Math.abs(yb-ya)-.6), y=Math.min(ya,yb)+.3; const t=P.up[i]+P.dn[i], len=ml*t/(P.maxV||1), wu=t?len*P.up[i]/t:0, wd=len-wu;
         ctx.globalAlpha=va?.75:.38; ctx.fillStyle=va?C.cVaUp:C.cUp; ctx.fillRect(left?an:an-wu,y,wu,h); ctx.fillStyle=va?C.cVaDn:C.cDn; ctx.fillRect(left?an+wu:an-wu-wd,y,wd,h); ctx.globalAlpha=1; }
       const yp=yAtPrice(P.pocP); if(yp!==null&&C.poc){ ctx.strokeStyle=C.cPoc; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x0,yp); ctx.lineTo(x1,yp); ctx.stroke(); } } }catch(e){}
@@ -2607,13 +2612,13 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tlKick()
 let vpList=[], vpMode=false, vpDraft=null, vpSel=null, vpDrag=null, vpRefreshT=null;
 const vpCache=new Map(); // id -> {samples:[{h,l,v,u,b}], kind, lastT}
 const VP_DEF={layout:'rows',rowSize:24,snap:true,vol:'updown',va:70,live:true,width:30,place:'left',
-  values:true,poc:true,vah:true,val:true,devPoc:true,devVa:false,box:true,extend:false,stats:true,
+  values:true,poc:true,vah:true,val:true,devPoc:true,devVa:false,box:true,extend:true,stats:true,
   cUp:'#2962ff',cDn:'#e91e63',cVaUp:'#2962ff',cVaDn:'#e91e63',cPoc:'#5b2c9e',cVah:'#b2b5be',cVal:'#b2b5be',cDevPoc:'#f23645',cDevVa:'#00897b',cBox:'#787b86',cValues:'#b2b5be'};
 function vpDefaults(){ return {...VP_DEF,...(lsGet('bd_frvp_defaults',{})||{})}; }
 function vpKey(sym){ return 'bd_frvp_'+sym; }
 function vpLoad(sym){ const saved=lsGet(vpKey(sym),[]); vpList=(Array.isArray(saved)?saved:[]).filter(v=>v&&Number.isFinite(v.t1)&&Number.isFinite(v.t2)&&v.t2>v.t1).map(v=>({...v,cfg:{...vpDefaults(),...(v.cfg||{})}}));
   vpSel=null; vpDraft=null; vpSetMode(false); vpRender(); const now=Date.now()/1000;
-  vpList.forEach(v=>{ if(!v.prof||v.prof.ver!==2||(v.prof.at&&v.t2>v.prof.at-60)) vpCompute(v); }); vpScheduleLive(); }
+  vpList.forEach(v=>{ if(!v.prof||v.prof.ver!==3||(v.prof.at&&v.t2>v.prof.at-60)) vpCompute(v); }); vpScheduleLive(); }
 function vpSave(){ if(tlSym) lsSet(vpKey(tlSym),vpList.map(v=>({id:v.id,t1:v.t1,t2:v.t2,cfg:v.cfg,prof:v.prof||null}))); }
 function vpSvg(){ const w=tlWrap(); return w?w.querySelector('svg.vp-layer'):null; }
 function vpSetMode(on){ vpMode=!!on; if(!vpMode) vpDraft=null; if(vpMode&&tlMode) tlSetMode(false);
@@ -2643,17 +2648,31 @@ function vpBuild(samples,cfg,inst,g){
   }
   const c=vpCalc(tot,cfg.va); let uT=0,dT=0; for(let r=0;r<rows;r++){ uT+=up[r]; dT+=dn[r]; }
   const r4=a=>Array.from(a,x=>+x.toFixed(4));
-  return {ver:2,lo,rowH,rows,tpr,rawHi,rawLo,up:r4(up),dn:r4(dn),poc:c.poc,vaLo:c.lo,vaHi:c.hi,maxV:c.maxV,total:+c.sum.toFixed(4),upT:uT,dnT:dT,dev,g,
+  return {ver:3,lo,rowH,rows,tpr,rawHi,rawLo,up:r4(up),dn:r4(dn),poc:c.poc,vaLo:c.lo,vaHi:c.hi,maxV:c.maxV,total:+c.sum.toFixed(4),upT:uT,dnT:dT,dev,g,
     pocP:lo+(c.poc+0.5)*rowH,vahP:lo+(c.hi+1)*rowH,valP:lo+c.lo*rowH,at:Math.floor(Date.now()/1000)};
 }
-// Deriv caps a reply at 5000 ticks: a full reply means more inside, so split the window and ask again (no gaps, no duplicates)
+// Deriv trims a ticks reply (≈1000 ticks) and keeps one end of the window. We detect which end, keep paging from the
+// other side until the window is fully covered, and run a few windows in parallel. Every tick in the range, no gaps, no duplicates.
+var vpDerivSide=null;
 async function vpTicksDeriv(sym,start,end,onProg){
-  const out=[]; let req=0; const MAX=48; const stack=[[start,end-1]];
-  while(stack.length){ const [a,b]=stack.pop(); if(b<a) continue; if(++req>MAX) return null; onProg&&onProg(req);
-    const r=await wsSend({ticks_history:sym,start:a,end:b,count:5000,style:'ticks'},20000); const P=(r.history&&r.history.prices)||[], T=(r.history&&r.history.times)||[];
-    if(P.length>=5000&&b>a){ const m=Math.floor((a+b)/2); stack.push([m+1,b],[a,m]); continue; }
-    for(let i=0;i<P.length;i++){ const t=+T[i]; if(t>=a&&t<=b) out.push({t,p:+P[i]}); } }
-  out.sort((x,y)=>x.t-y.t); return out; }
+  const lanes=Math.max(1,Math.min(4,Math.ceil((end-start)/3600))), span=(end-start)/lanes; let req=0, aborted=false; const MAXREQ=260;
+  const lane=async(a,b)=>{ const out=[]; let lo=a, hi=b;
+    for(let guard=0;guard<500&&lo<=hi&&!aborted;guard++){
+      if(++req>MAXREQ){ aborted=true; break; } onProg&&onProg(req);
+      const r=await wsSend({ticks_history:sym,start:lo,end:hi,count:5000,style:'ticks'},25000);
+      const P=(r.history&&r.history.prices)||[], T=(r.history&&r.history.times)||[]; if(!P.length) break;
+      const ticks=[]; for(let i=0;i<P.length;i++){ const t=+T[i]; if(t>=lo&&t<=hi) ticks.push({t,p:+P[i]}); }
+      if(P.length<1000){ out.push(...ticks); break; }
+      const first=+T[0], last=+T[T.length-1];
+      if(!vpDerivSide){ if(last>=hi-1&&first>lo+1) vpDerivSide='newest'; else if(first<=lo+1&&last<hi-1) vpDerivSide='oldest'; }
+      if(first<=lo&&last>=hi){ out.push(...ticks); break; }
+      if((vpDerivSide||'newest')==='newest'){ if(first<=lo){ out.push(...ticks); break; } out.push(...ticks.filter(x=>x.t>first)); hi=first; }
+      else { if(last>=hi){ out.push(...ticks); break; } out.push(...ticks.filter(x=>x.t<last)); lo=last; }
+    }
+    return out; };
+  const parts=await Promise.all(Array.from({length:lanes},(_,k)=>lane(Math.floor(start+k*span),k===lanes-1?end-1:Math.floor(start+(k+1)*span)-1)));
+  if(aborted) return null; const all=parts.flat(); all.sort((x,y)=>x.t-y.t); return all;
+}
 function vpTickSamples(ticks,g,prevP,prevDir){ const out=[]; let dir=prevDir||1, last=prevP; for(const k of ticks){ if(last!=null){ if(k.p>last) dir=1; else if(k.p<last) dir=-1; } last=k.p; out.push({h:k.p,l:k.p,v:1,u:dir>0,b:Math.floor(k.t/g)*g,t:k.t}); } return {out,last,dir}; }
 async function vpBinance1m(inst,start,end){ const out=[]; let from=start*1000; const to=end*1000-1;
   for(let n=0;n<40&&from<=to;n++){ const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=1m&startTime=${from}&endTime=${to}&limit=1000`); if(!r.ok) throw new Error('Binance HTTP '+r.status); const k=await r.json(); if(!k.length) break;
@@ -2668,7 +2687,10 @@ async function vpLoadSamples(v,inst,g){
   const now=Math.floor(Date.now()/1000), end=Math.min(v.t2,now+1);
   if(isBinance(inst)){ const k=await vpBinance1m(inst,v.t1,end); return {samples:k.map(c=>({h:c.h,l:c.l,v:c.v,u:c.c>=c.o,b:Math.floor(c.t/g)*g,t:c.t})),kind:'volume',lastT:k.length?k[k.length-1].t:v.t1}; }
   if(feedMode==='live'&&getDerivSymbol(inst)){ const ticks=await vpTicksDeriv(getDerivSymbol(inst),v.t1,end,n=>{ v.prog=n; vpStatus(v); });
-    if(ticks&&ticks.length>1){ const r=vpTickSamples(ticks,g); return {samples:r.out,kind:'tick',lastT:ticks[ticks.length-1].t,lastP:r.last,lastDir:r.dir}; } }
+    if(ticks&&ticks.length>1){ let cH=-Infinity,cL=Infinity; for(const [t,c] of candleMap) if(t>=v.t1&&t<v.t2){ if(c.high>cH) cH=c.high; if(c.low<cL) cL=c.low; }
+      let tH=-Infinity,tL=Infinity; for(const k of ticks){ if(k.p>tH) tH=k.p; if(k.p<tL) tL=k.p; }
+      const tol=isFinite(cH)?(cH-cL)*0.06+vpMintick(inst)*2:Infinity; const covered=!isFinite(cH)||(tH>=cH-tol&&tL<=cL+tol&&ticks[0].t<=v.t1+Math.max(900,g*2));
+      if(covered){ const r=vpTickSamples(ticks,g); return {samples:r.out,kind:'tick',lastT:ticks[ticks.length-1].t,lastP:r.last,lastDir:r.dir}; } } }
   const c=await vpCandlesLTF(inst,v.t1,end); return {samples:c.map(x=>({h:x.h,l:x.l,v:1,u:x.c>=x.o,b:Math.floor(x.t/g)*g,t:x.t})),kind:'time',lastT:c.length?c[c.length-1].t:v.t1};
 }
 async function vpCompute(v,{rebuildOnly=false}={}){
@@ -2694,12 +2716,12 @@ function vpStatus(v){ const el=vpSvg()?.querySelector(`g.vp[data-id="${v.id}"] t
 const svgEsc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function vpRender(){
   const svg=vpSvg(); if(!svg) return; const all=vpDraft?[...vpList,{...vpDraft,id:'__draft',cfg:vpDefaults()}]:vpList;
-  svg.innerHTML=all.map(v=>{ const P=v.prof&&v.prof.ver===2?v.prof:null, C=v.cfg||VP_DEF; let rows='';
+  svg.innerHTML=all.map(v=>{ const P=v.prof&&v.prof.ver===3?v.prof:null, C=v.cfg||VP_DEF; let rows='';
     if(P&&v.id!=='__draft'&&!v.loading) for(let i=0;i<P.rows;i++){ const va=i>=P.vaLo&&i<=P.vaHi; rows+=`<rect class="vp-r vp-u" data-r="${i}" fill="${va?C.cVaUp:C.cUp}" fill-opacity="${va?.75:.38}"></rect><rect class="vp-r vp-d" data-r="${i}" fill="${va?C.cVaDn:C.cDn}" fill-opacity="${va?.75:.38}"></rect>${C.values?`<text class="vp-val" data-r="${i}" fill="${C.cValues}"></text>`:''}`; }
     return `<g class="vp${v.id===vpSel?' sel':''}${v.id==='__draft'?' draft':''}" data-id="${v.id}">
       <rect class="vp-box" fill="${C.cBox}" fill-opacity="${C.box||v.id==='__draft'?.08:0}" stroke="${C.cBox}" stroke-opacity="${C.box||v.id==='__draft'?.45:0}"></rect>${rows}
       ${P&&!v.loading&&v.id!=='__draft'?`${C.devVa?`<path class="vp-dva" stroke="${C.cDevVa}"></path><path class="vp-dvb" stroke="${C.cDevVa}"></path>`:''}${C.devPoc?`<path class="vp-dpoc" stroke="${C.cDevPoc}"></path>`:''}
-        ${C.vah?`<line class="vp-ln vp-vah" stroke="${C.cVah}"></line>`:''}${C.val?`<line class="vp-ln vp-val-l" stroke="${C.cVal}"></line>`:''}${C.poc?`<line class="vp-ln vp-poc" stroke="${C.cPoc}"></line>`:''}
+        ${C.vah?`<line class="vp-ln vp-vah" stroke="${C.cVah}"></line>`:''}${C.val?`<line class="vp-ln vp-val-l" stroke="${C.cVal}"></line>`:''}${C.poc?`<line class="vp-ln vp-poc" stroke="${C.cPoc}"></line><line class="vp-ln vp-poc-ext" stroke="${C.cPoc}"></line>`:''}
         ${C.stats?'<g class="vp-stats"><rect rx="4"></rect><text></text></g>':''}`:''}
       <text class="vp-status"></text><rect class="vp-edge" data-edge="1"></rect><rect class="vp-edge" data-edge="2"></rect></g>`; }).join('');
   all.forEach(vpStatus);
@@ -2714,7 +2736,7 @@ function vpPosition(force){
   const cap=w.querySelector('.vp-capture'); if(cap){ cap.style.right=aw+'px'; cap.style.bottom=th+'px'; }
   const a=tlAnchor(); const all=vpDraft?[...vpList,{...vpDraft,id:'__draft',cfg:vpDefaults()}]:vpList; const inst=currentInst;
   for(const v of all){
-    const g=svg.querySelector(`g.vp[data-id="${v.id}"]`); if(!g) continue; const xr=a?vpXRange(v,a):null; const P=v.prof&&v.prof.ver===2&&!v.loading?v.prof:null; const C=v.cfg||VP_DEF;
+    const g=svg.querySelector(`g.vp[data-id="${v.id}"]`); if(!g) continue; const xr=a?vpXRange(v,a):null; const P=v.prof&&v.prof.ver===3&&!v.loading?v.prof:null; const C=v.cfg||VP_DEF;
     if(!xr){ g.style.display='none'; continue; } let [x0,x1]=xr; if(x1<x0) [x0,x1]=[x1,x0];
     const top=P?yAtPrice(P.lo+P.rows*P.rowH):10, bot=P?yAtPrice(P.lo):H-10;
     const key=[x0,x1,top,bot,W,H].map(n=>n==null?'n':Math.round(n*10)).join(',');
@@ -2727,7 +2749,7 @@ function vpPosition(force){
     const left=C.place!=='right', anchor=left?x0:x1, dir=left?1:-1, maxLen=Math.max(4,(x1-x0)*C.width/100);
     const deltaRef=C.vol==='delta'?Math.max(...P.up.map((u,i)=>Math.abs(u-P.dn[i])))||1:0; const rowPx=Math.abs(yAtPrice(P.lo)-yAtPrice(P.lo+P.rowH))||0;
     for(let i=0;i<P.rows;i++){
-      const yT=yAtPrice(P.lo+(i+1)*P.rowH), yB=yAtPrice(P.lo+i*P.rowH); if(yT===null||yB===null) continue; const gap=rowPx>4?0.6:0; const y=Math.min(yT,yB)+gap/2, h=Math.max(0.6,Math.abs(yB-yT)-gap);
+      const yT=yAtPrice(P.lo+(i+1)*P.rowH), yB=yAtPrice(P.lo+i*P.rowH); if(yT===null||yB===null) continue; const y=Math.min(yT,yB), h=Math.max(0.6,Math.abs(yB-yT));
       const u=P.up[i], d=P.dn[i], t=u+d; let uLen=0,dLen=0;
       if(C.vol==='delta'){ const dl=u-d; const len=maxLen*Math.abs(dl)/deltaRef; if(dl>=0) uLen=len; else dLen=len; }
       else if(C.vol==='total'){ uLen=maxLen*t/(P.maxV||1); }
@@ -2735,10 +2757,11 @@ function vpPosition(force){
       const ru=g.querySelector(`.vp-u[data-r="${i}"]`), rd=g.querySelector(`.vp-d[data-r="${i}"]`);
       if(ru){ ru.setAttribute('x',left?anchor:anchor-uLen); ru.setAttribute('y',y); ru.setAttribute('width',Math.max(0,uLen)); ru.setAttribute('height',h); }
       if(rd){ const dx=C.vol==='delta'?(left?anchor:anchor-dLen):(left?anchor+uLen:anchor-uLen-dLen); rd.setAttribute('x',dx); rd.setAttribute('y',y); rd.setAttribute('width',Math.max(0,dLen)); rd.setAttribute('height',h); }
-      const tv=g.querySelector(`.vp-val[data-r="${i}"]`); if(tv){ if(t>0&&rowPx>=9){ tv.setAttribute('x',left?anchor-4:anchor+4); tv.setAttribute('y',y+h/2+3.2); tv.setAttribute('text-anchor',left?'end':'start'); tv.textContent=vpFmtVol(t); tv.style.display=''; } else tv.style.display='none'; }
+      const tv=g.querySelector(`.vp-val[data-r="${i}"]`); if(tv){ if(t>0&&rowPx>=8){ tv.setAttribute('x',left?anchor+3:anchor-3); tv.setAttribute('y',y+h/2+3); tv.setAttribute('text-anchor',left?'start':'end'); tv.textContent=vpFmtVol(t); tv.style.display=''; } else tv.style.display='none'; }
     }
-    const xR=C.extend?W:x1; const ln=(sel,p)=>{ const el=g.querySelector(sel); if(!el) return; const yy=yAtPrice(p); if(yy===null) return; el.setAttribute('x1',x0); el.setAttribute('x2',xR); el.setAttribute('y1',yy); el.setAttribute('y2',yy); };
+    const ln=(sel,p)=>{ const el=g.querySelector(sel); if(!el) return; const yy=yAtPrice(p); if(yy===null) return; el.setAttribute('x1',x0); el.setAttribute('x2',x1); el.setAttribute('y1',yy); el.setAttribute('y2',yy); };
     ln('.vp-poc',P.pocP); ln('.vp-vah',P.vahP); ln('.vp-val-l',P.valP);
+    const ext=g.querySelector('.vp-poc-ext'); if(ext){ const yy=yAtPrice(P.pocP); if(yy!==null&&C.extend&&W>x1){ ext.setAttribute('x1',x1); ext.setAttribute('x2',W); ext.setAttribute('y1',yy); ext.setAttribute('y2',yy); ext.style.display=''; } else ext.style.display='none'; }
     const path=(sel,k)=>{ const el=g.querySelector(sel); if(!el||!P.dev.length) return; let d=''; for(const row of P.dev){ const xa=tlX(row[0],a), xb=tlX(row[0]+P.g,a), yy=yAtPrice(row[k]); if(xa===null||xb===null||yy===null) continue; d+=(d?'L':'M')+(xa-a.bs/2).toFixed(1)+' '+yy.toFixed(1)+'H'+(xb-a.bs/2).toFixed(1); } el.setAttribute('d',d); };
     path('.vp-dpoc',1); path('.vp-dva',2); path('.vp-dvb',3);
     const sg=g.querySelector('.vp-stats'); if(sg){ const bars=Math.round((v.t2-v.t1)/P.g); const unit=P.kind==='tick'?' ticks':P.kind==='time'?' (no volume — time)':'';
@@ -2747,7 +2770,7 @@ function vpPosition(force){
       sg.setAttribute('transform',`translate(${sx},${sy})`); const rr=sg.querySelector('rect'); rr.setAttribute('width',bw); rr.setAttribute('height',bh); tx.setAttribute('transform','translate(9,15)'); }
   }
   const bar=w.querySelector('.vp-bar'); const v=vpList.find(x=>x.id===vpSel);
-  if(bar&&v&&a){ const xr=vpXRange(v,a); if(xr){ const P=v.prof; const yT=P&&P.ver===2?yAtPrice(P.lo+P.rows*P.rowH):40; bar.style.left=Math.max(4,Math.min(W-240,Math.min(xr[0],xr[1])))+'px'; bar.style.top=Math.max(4,(yT??40)-(v.cfg.stats?160:40))+'px'; } }
+  if(bar&&v&&a){ const xr=vpXRange(v,a); if(xr){ const P=v.prof; const yT=P&&P.ver===3?yAtPrice(P.lo+P.rows*P.rowH):40; const yB=P&&P.ver===3?yAtPrice(P.lo):H-40; bar.style.left=Math.max(4,Math.min(W-240,Math.min(xr[0],xr[1])))+'px'; bar.style.top=Math.min(H-38,Math.max(4,(yB??(H-40))+8))+'px'; } }
 }
 function vpSelect(id){ vpSel=id; const svg=vpSvg(); if(svg) svg.querySelectorAll('g.vp').forEach(g=>g.classList.toggle('sel',g.dataset.id===id)); const bar=tlWrap()?.querySelector('.vp-bar'); if(bar) bar.hidden=!vpList.some(x=>x.id===id); if(!id) vpCloseSettings(); vpPosition(true); }
 function vpDelete(id){ vpList=vpList.filter(v=>v.id!==id); vpCache.delete(id); if(vpSel===id) vpSel=null; vpCloseSettings(); vpSave(); vpRender(); toast('Volume profile deleted'); }
@@ -2780,7 +2803,7 @@ function vpOpenSettings(){
      <label class="vs-row"><span>Placement</span>${sel('place',[['left','Left'],['right','Right']])}</label>
      ${col('cUp','Up volume')}${col('cDn','Down volume')}${col('cVaUp','Value area up')}${col('cVaDn','Value area down')}
      ${chk('vah','VAH','cVah')}${chk('val','VAL','cVal')}${chk('poc','POC','cPoc')}${chk('devPoc','Developing POC','cDevPoc')}${chk('devVa','Developing VA','cDevVa')}
-     ${chk('box','Histogram box','cBox')}${chk('extend','Extend levels right')}${chk('stats','Value label')}
+     ${chk('box','Histogram box','cBox')}${chk('extend','Extend POC right')}${chk('stats','Value label')}
    </div>
    <div class="vs-foot"><button class="vs-def">Save as default</button><button class="vs-reset">Reset</button></div>`;
   w.appendChild(p); p.addEventListener('pointerdown',e=>e.stopPropagation()); p.addEventListener('wheel',e=>e.stopPropagation());
