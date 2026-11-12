@@ -1065,7 +1065,7 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #f59e0b}
 // storage.js — safe localStorage + IndexedDB wrappers (all try/catch)
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
-const BUILD='2026-11-12.3';
+const BUILD='2026-11-12.4';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -2623,11 +2623,11 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tlKick()
 let vpList=[], vpMode=false, vpDraft=null, vpSel=null, vpDrag=null, vpRefreshT=null;
 const vpCache=new Map(); // id -> {samples:[{h,l,v,u,b}], kind, lastT}
 const VP_DEF={layout:'rows',rowSize:24,snap:true,vol:'updown',va:70,live:true,width:30,place:'left',
-  values:true,poc:true,vah:true,val:true,devPoc:true,devVa:false,box:true,extend:true,stats:true,
+  values:true,poc:true,vah:true,val:true,devPoc:true,devVa:false,box:true,extend:true,stats:false,
   cUp:'#2962ff',cDn:'#e91e63',cVaUp:'#2962ff',cVaDn:'#e91e63',cPoc:'#5b2c9e',cVah:'#b2b5be',cVal:'#b2b5be',cDevPoc:'#f23645',cDevVa:'#00897b',cBox:'#787b86',cValues:'#b2b5be'};
-function vpDefaults(){ return {...VP_DEF,...(lsGet('bd_frvp_defaults',{})||{})}; }
+function vpDefaults(){ const sv=lsGet('bd_frvp_defaults',{})||{}; return {...VP_DEF,...sv,...(sv._v>=2?{}:{stats:false}),_v:2}; }
 function vpKey(sym){ return 'bd_frvp_'+sym; }
-function vpLoad(sym){ const saved=lsGet(vpKey(sym),[]); vpList=(Array.isArray(saved)?saved:[]).filter(v=>v&&Number.isFinite(v.t1)&&Number.isFinite(v.t2)&&v.t2>v.t1).map(v=>({...v,cfg:{...vpDefaults(),...(v.cfg||{})}}));
+function vpLoad(sym){ const saved=lsGet(vpKey(sym),[]); vpList=(Array.isArray(saved)?saved:[]).filter(v=>v&&Number.isFinite(v.t1)&&Number.isFinite(v.t2)&&v.t2>v.t1).map(v=>({...v,cfg:{...vpDefaults(),...(v.cfg||{}),...(v.cfg&&v.cfg._v>=2?{}:{stats:false}),_v:2}}));
   vpSel=null; vpDraft=null; vpSetMode(false); vpRender(); const now=Date.now()/1000;
   vpList.forEach(v=>{ if(!v.prof||v.prof.ver!==3||(v.prof.at&&v.t2>v.prof.at-60)) vpCompute(v); }); vpScheduleLive(); }
 function vpSave(){ if(tlSym) lsSet(vpKey(tlSym),vpList.map(v=>({id:v.id,t1:v.t1,t2:v.t2,cfg:v.cfg,prof:v.prof||null}))); }
