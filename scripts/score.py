@@ -219,9 +219,24 @@ def save_history(date, at, scores):
         json.dump(hist, f, indent=1, sort_keys=True)
 
 
+def already_done(date):
+    """A scheduled run skips if today's scores already exist (so a late or backup run never changes them)."""
+    if os.environ.get("GITHUB_EVENT_NAME") != "schedule":
+        return False
+    try:
+        with open(OUT) as f:
+            cur = json.load(f)
+        return cur.get("date") == date and len(cur.get("scores", {})) >= 8
+    except (OSError, ValueError):
+        return False
+
+
 def main():
     now = datetime.datetime.now(SAST)
     date = now.strftime("%Y-%m-%d")
+    if already_done(date):
+        print(f"Scores for {date} already exist - nothing to do.")
+        return
     news, status = collect()
     total = sum(len(d["paragraphs"]) + len(d["headlines"]) for d in news.values())
     if total == 0:

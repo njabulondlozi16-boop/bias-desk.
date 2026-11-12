@@ -2,7 +2,8 @@ name: Daily bias scores
 
 on:
   schedule:
-    - cron: '40 2 * * *'   # 02:40 UTC = 04:40 SAST, so scores are ready before 05:00
+    - cron: '7 2 * * *'    # 02:07 UTC = 04:07 SAST - early, because GitHub often starts scheduled runs late
+    - cron: '41 2 * * *'   # backup at 04:41 SAST - skips if today's scores already exist
   workflow_dispatch: {}     # "Run workflow" button for an on-demand update
 
 permissions:
