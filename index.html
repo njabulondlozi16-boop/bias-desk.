@@ -972,6 +972,13 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #f59e0b}
 @media(max-width:1500px){.ft-src{display:none}}
 @media(min-width:901px) and (max-width:1400px){.hd-news i{display:none}.hd-news{padding:0 7px}}
 @media(max-width:900px){.hd-news{max-width:100%;order:4}.alert-panel{right:8px;left:8px;width:auto}.rg{width:290px}}
+.ap-sounds{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ap-snd{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text);font:600 12px 'Space Grotesk',sans-serif;cursor:pointer;text-align:left}
+.ap-snd i{font-style:normal;color:#8b95a7;font-size:11px}.ap-snd.on{border-color:#f59e0b;background:rgba(245,158,11,.14)}.ap-snd.on i{color:#f59e0b}
+.ap-vol{margin-top:6px}.ap-vol input{flex:1;accent-color:#f59e0b}.ap-vol b{min-width:36px;text-align:right;font-size:12px}
+.ap-btns{display:flex;gap:6px}
+.alarm-stop{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;border:none;background:#f59e0b;color:#111;font:700 15px 'Space Grotesk',sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.5);cursor:pointer;animation:alarmPulse 1s ease-in-out infinite}
+@keyframes alarmPulse{50%{box-shadow:0 0 0 8px rgba(245,158,11,.25),0 10px 30px rgba(0,0,0,.5)}}
 </style>
 </head>
 <body>
@@ -1109,7 +1116,7 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #f59e0b}
 // storage.js — safe localStorage + IndexedDB wrappers (all try/catch)
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
-const BUILD='2026-11-12.5';
+const BUILD='2026-11-12.6';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -2293,7 +2300,7 @@ async function closeTrade(tradeId,result,exitPrice,opts={}){
   toast(result==='WIN'?`🎉 WIN +2.5R${t.bonusTracking?' — tracking bonus targets':''}`:result==='LOSS'?`Invalidated ${t.R}R`:result==='BREAKEVEN'?'Stopped at breakeven — not counted as a loss':result==='STOPPED IN PROFIT'?`Stopped in profit +${t.R}R`:`Manual close ${t.R}R`);
   if(tool&&tool.tradeId===tradeId){ if(t.bonusTracking){ tool.status='WIN'; tool.bonusHits=[]; renderTool(); } else clearTool(); }
   queueTradePics(t.id);
-  if(!t.practice&&alertCfg().trades&&['WIN','LOSS','BREAKEVEN','STOPPED IN PROFIT'].includes(t.result)) fireAlert(`${(getInstruments().find(i=>i.symbol===t.symbol)||{}).name||t.symbol} ${t.result==='WIN'?'hit the target 🎉':t.result==='LOSS'?'hit the invalidation level':t.result==='BREAKEVEN'?'stopped at breakeven':'stopped in profit'}`,`${t.direction.toUpperCase()} · ${t.R>0?'+':''}${t.R}R`,t.result==='LOSS'?'bad':'ok','tr'+t.id,{noToast:!opts.silent});
+  if(!t.practice&&alertCfg().trades&&['WIN','LOSS','BREAKEVEN','STOPPED IN PROFIT'].includes(t.result)) fireAlert(`${(getInstruments().find(i=>i.symbol===t.symbol)||{}).name||t.symbol} ${t.result==='WIN'?'hit the target 🎉':t.result==='LOSS'?'hit the invalidation level':t.result==='BREAKEVEN'?'stopped at breakeven':'stopped in profit'}`,`${t.direction.toUpperCase()} · ${t.R>0?'+':''}${t.R}R`,t.result==='LOSS'?'bad':'ok','tr'+t.id,{noToast:!opts.silent,delay:opts.silent?0:1.5});
 }
 // Decide what a price range (hi/lo) does to an OPEN or PENDING trade. Invalidation is checked first (conservative).
 // The stop that was active at a moment (ms). A moved stop only counts from the time it was moved.
@@ -2438,7 +2445,7 @@ function buildChartShell(){
   $('ct-cursor').addEventListener('click',()=>{ tlSetMode(false); vpSetMode(false); alSetMode(false); tlRender(); vpRender(); });
   $('ct-alert').addEventListener('click',()=>alSetMode(!alMode));
   $('ct-bell').addEventListener('click',e=>{ e.stopPropagation(); const p=$('alert-panel'); p.hidden=!p.hidden; renderAlertPanel(); });
-  document.addEventListener('click',e=>{ const p=$('alert-panel'); if(p&&!p.hidden&&!e.target.closest('#alert-panel')&&!e.target.closest('#ct-bell')) p.hidden=true; });
+  document.addEventListener('click',e=>{ const p=$('alert-panel'); if(!p||p.hidden) return; const path=e.composedPath(); if(path.includes(p)||path.some(el=>el&&el.id==='ct-bell'||el&&el.id==='alarm-stop')) return; p.hidden=true; });
   $('ct-clear').addEventListener('click',()=>{ if(!tlLines.length&&!vpList.length){ toast('Nothing drawn on this pair'); return; } if(!confirm(`Remove all ${tlLines.length} line(s) and ${vpList.length} volume profile(s) on ${currentInst.name}?`)) return; tlLines=[]; tlSel=null; tlSave(); vpList=[]; vpSel=null; vpCache.clear(); vpSave(); vpCloseSettings(); tlRender(); vpRender(); toast('Drawings cleared'); });
   $('ct-fs').addEventListener('click',toggleFs);
   tlSetup(); vpSetup(); alSetup(); renderAlertBadge();
@@ -3171,12 +3178,40 @@ async function openRulesGate(){
 // ===== Alerts — price levels, trendlines, trade results, news. Sound + notification while the site is open (also in a background tab) =====
 let audioCtx=null; function unlockAudio(){ try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); }catch(e){} }
 document.addEventListener('pointerdown',unlockAudio,{once:false,passive:true});
-function chime(kind){ try{ unlockAudio(); if(!audioCtx) return; const notes=kind==='bad'?[523,392,311]:kind==='news'?[660,660,660]:[523,659,784]; notes.forEach((f,i)=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=f; const t=audioCtx.currentTime+i*0.16; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.25,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.15); o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t+0.16); }); }catch(e){} }
-function alertCfg(){ return {trades:true,news:true,sound:true,...(lsGet('bd_alert_cfg',{})||{})}; }
+// 5 alarm sounds, 10 seconds each, built in the browser (no sound files). Loud: full-volume tones through a limiter.
+const ALARMS=[{id:'alarm',name:'Alarm clock'},{id:'digital',name:'Digital watch'},{id:'bells',name:'Bells'},{id:'siren',name:'Siren'},{id:'radar',name:'Radar'}];
+const ALARM_SECS=10; let alarmBus=null, alarmTimer=null;
+function stopAlarm(){ clearTimeout(alarmTimer); document.getElementById('alarm-stop')?.remove(); const b=alarmBus; alarmBus=null; if(!b||!audioCtx) return;
+  try{ const t=audioCtx.currentTime; b.gain.cancelScheduledValues(t); b.gain.setValueAtTime(b.gain.value,t); b.gain.linearRampToValueAtTime(0,t+0.06); setTimeout(()=>{ try{ b.disconnect(); }catch(e){} },150); }catch(e){} }
+function playAlarm(id,secs=ALARM_SECS,opts={}){
+  try{ unlockAudio(); if(!audioCtx) return; stopAlarm(); const ctx=audioCtx, C=alertCfg();
+    const t0=ctx.currentTime+0.05+(opts.delay||0), end=t0+secs;
+    const vol=Math.max(0.1,Math.min(1,C.vol??1)); const bus=ctx.createGain(); bus.gain.setValueAtTime(vol,ctx.currentTime); bus.gain.setValueAtTime(vol,end-0.3); bus.gain.linearRampToValueAtTime(0,end);
+    bus.connect(alarmLimiter(ctx)); alarmBus=bus; buildAlarm(ctx,bus,id,t0,end);
+    if(!opts.preview){ const host=isFs()?fsEl():document.body; const b=document.createElement('button'); b.id='alarm-stop'; b.className='alarm-stop'; b.innerHTML='🔔 <b>Stop alarm</b>'; b.addEventListener('click',e=>{ e.stopPropagation(); stopAlarm(); }); host.appendChild(b); }
+    alarmTimer=setTimeout(stopAlarm,(secs+(opts.delay||0))*1000+300);
+  }catch(e){} }
+function alarmLimiter(ctx){ const lim=ctx.createDynamicsCompressor(); lim.threshold.value=-6; lim.knee.value=3; lim.ratio.value=12; lim.attack.value=0.002; lim.release.value=0.08; lim.connect(ctx.destination); return lim; }
+function buildAlarm(ctx,bus,id,t0,end){
+    const beep=(type,f,at,dur,peak=1,f2)=>{ if(at>=end) return; const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.setValueAtTime(f,at); if(f2) o.frequency.linearRampToValueAtTime(f2,at+dur);
+      g.gain.setValueAtTime(0.0001,at); g.gain.exponentialRampToValueAtTime(peak,at+0.008); g.gain.setValueAtTime(peak,at+Math.max(0.01,dur-0.02)); g.gain.exponentialRampToValueAtTime(0.0001,at+dur); o.connect(g).connect(bus); o.start(at); o.stop(at+dur+0.02); };
+    const bell=(f,at,dur=1.4)=>{ if(at>=end) return; [[1,.5],[2.01,.28],[3.0,.18],[4.2,.1],[5.4,.06]].forEach(([h,a])=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sine'; o.frequency.value=f*h;
+      g.gain.setValueAtTime(0.0001,at); g.gain.exponentialRampToValueAtTime(a,at+0.004); g.gain.exponentialRampToValueAtTime(0.0001,at+dur/(1+h*0.35)); o.connect(g).connect(bus); o.start(at); o.stop(at+dur+0.05); }); };
+    if(id==='digital'){ for(let t=t0;t<end;t+=1.0) for(let k=0;k<4;k++){ beep('square',2048,t+k*0.11,0.07,0.9); } }
+    else if(id==='bells'){ const n=[1047,1319,1568,2093,1568,1319]; for(let t=t0,c=0;t<end;t+=0.24,c++){ bell(n[c%n.length],t); } }
+    else if(id==='siren'){ const o=ctx.createOscillator(), g=ctx.createGain(), lp=ctx.createBiquadFilter(); o.type='sawtooth'; lp.type='lowpass'; lp.frequency.value=3200; g.gain.value=0.9;
+      o.frequency.setValueAtTime(650,t0); for(let t=t0;t<end;t+=1.2){ o.frequency.linearRampToValueAtTime(1400,Math.min(end,t+0.6)); o.frequency.linearRampToValueAtTime(650,Math.min(end,t+1.2)); }
+      o.connect(lp).connect(g).connect(bus); o.start(t0); o.stop(end+0.05); }
+    else if(id==='radar'){ const n=[880,1047,1319,1760]; for(let t=t0;t<end;t+=1.25) n.forEach((f,k)=>{ beep('triangle',f,t+k*0.16,0.13,1); beep('sine',f*2,t+k*0.16,0.13,0.35); }); }
+    else { for(let t=t0;t<end;t+=0.8){ for(let k=0;k<4;k++) beep('square',1400,t+k*0.1,0.06,0.85); } }
+}
+function chime(kind){ playAlarm(alertCfg().tone); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&alarmBus) stopAlarm(); });
+function alertCfg(){ return {trades:true,news:true,sound:true,tone:'alarm',vol:1,...(lsGet('bd_alert_cfg',{})||{})}; }
 async function askNotify(){ try{ if('Notification' in window&&Notification.permission==='default') await Notification.requestPermission(); }catch(e){} renderAlertPanel(); }
 function fireAlert(title,body,kind='ok',tag,opts={}){
   const log=lsGet('bd_alert_log',[])||[]; log.unshift({at:Date.now(),title,body}); lsSet('bd_alert_log',log.slice(0,40));
-  if(alertCfg().sound) chime(kind); if(!opts.noToast) toast('🔔 '+title+(body?' — '+body:''));
+  if(alertCfg().sound) playAlarm(alertCfg().tone,ALARM_SECS,{delay:opts.delay||0}); if(!opts.noToast) toast('🔔 '+title+(body?' — '+body:''));
   try{ if('Notification' in window&&Notification.permission==='granted'){ const n=new Notification(title,{body,tag:tag||title,renotify:true,icon:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2962ff"/><text x="32" y="44" font-size="34" text-anchor="middle" fill="#fff">◆</text></svg>')}); n.onclick=()=>{ window.focus(); n.close(); }; } }catch(e){}
   renderAlertPanel(); }
 function getAlerts(){ return (lsGet('bd_alerts',[])||[]).filter(a=>a&&a.id); } function setAlerts(a){ lsSet('bd_alerts',a); renderAlertBadge(); }
@@ -3217,12 +3252,18 @@ function renderAlertPanel(){ const p=$('alert-panel'); if(!p||p.hidden) return; 
    ${perm!=='granted'?`<button class="ap-perm">${perm==='denied'?'Notifications are blocked in your browser settings':'Turn on notifications'}</button>`:''}
    <label class="ap-row"><input type="checkbox" data-c="trades" ${C.trades?'checked':''}> Trade hits target / invalidation</label>
    <label class="ap-row"><input type="checkbox" data-c="news" ${C.news?'checked':''}> High-impact news 15 min before (my pair + open trades)</label>
-   <label class="ap-row"><input type="checkbox" data-c="sound" ${C.sound?'checked':''}> Sound</label>
+   <label class="ap-row"><input type="checkbox" data-c="sound" ${C.sound?'checked':''}> Sound — plays for ${ALARM_SECS} seconds</label>
+   <div class="ap-cap">Alarm sound — tap to hear it</div>
+   <div class="ap-sounds">${ALARMS.map(a=>`<button class="ap-snd${(C.tone||'alarm')===a.id?' on':''}" data-tone="${a.id}"><i>${(C.tone||'alarm')===a.id?'●':'○'}</i>${a.name}</button>`).join('')}</div>
+   <div class="ap-row ap-vol"><span>Volume</span><input type="range" id="ap-vol" min="20" max="100" step="5" value="${Math.round((C.vol??1)*100)}"><b>${Math.round((C.vol??1)*100)}%</b></div>
    <div class="ap-cap">Active price & trendline alerts</div>
    ${al.length?al.map(a=>{ const i=getInstruments().find(x=>x.symbol===a.sym); return `<div class="ap-al"><span>${esc(i?i.name:a.sym)}</span><span class="mono">${a.kind==='line'?'trendline':fmtPrice(i||{base:1},a.price)}</span><button data-del="${a.id}">✕</button></div>`; }).join(''):'<p class="pt-muted ap-empty">None — use 🔔 Alert on the left, or the bell on a selected trendline.</p>'}
    <div class="ap-cap">Recent</div>${log.slice(0,6).map(l=>`<div class="ap-log"><small>${new Date(l.at).toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'})}</small><span>${esc(l.title)}</span></div>`).join('')||'<p class="pt-muted ap-empty">Nothing yet</p>'}
-   <button class="ap-test">▶ Test sound</button>`;
-  p.querySelector('.ap-x').onclick=()=>{ p.hidden=true; }; p.querySelector('.ap-perm')?.addEventListener('click',askNotify); p.querySelector('.ap-test').onclick=()=>chime('ok');
+   <div class="ap-btns"><button class="ap-test" data-play>▶ Play full alarm</button><button class="ap-test" data-stop>■ Stop</button></div>`;
+  p.querySelector('.ap-x').onclick=()=>{ p.hidden=true; }; p.querySelector('.ap-perm')?.addEventListener('click',askNotify); p.querySelector('[data-play]').onclick=()=>playAlarm(alertCfg().tone,ALARM_SECS,{preview:true}); p.querySelector('[data-stop]').onclick=()=>stopAlarm();
+  p.querySelectorAll('[data-tone]').forEach(x=>x.addEventListener('click',()=>{ lsSet('bd_alert_cfg',{...alertCfg(),tone:x.dataset.tone}); renderAlertPanel(); playAlarm(x.dataset.tone,4,{preview:true}); }));
+  const vol=p.querySelector('#ap-vol'); vol.addEventListener('input',()=>{ vol.nextElementSibling.textContent=vol.value+'%'; if(alarmBus&&audioCtx) alarmBus.gain.setValueAtTime(vol.value/100,audioCtx.currentTime); });
+  vol.addEventListener('change',()=>{ lsSet('bd_alert_cfg',{...alertCfg(),vol:vol.value/100}); playAlarm(alertCfg().tone,2,{preview:true}); });
   p.querySelectorAll('[data-c]').forEach(x=>x.addEventListener('change',()=>{ lsSet('bd_alert_cfg',{...alertCfg(),[x.dataset.c]:x.checked}); }));
   p.querySelectorAll('[data-del]').forEach(x=>x.addEventListener('click',()=>{ setAlerts(getAlerts().filter(a=>a.id!==x.dataset.del)); alRender(); tlRender(); renderAlertPanel(); })); }
 
