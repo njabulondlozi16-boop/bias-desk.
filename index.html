@@ -1123,6 +1123,12 @@ body.light-chart .pt-bar .pb-dir.up{color:color-mix(in srgb,var(--up) 85%,#000)}
 .mc-noqt .mc-qt{display:none}
 .lp-switch{display:flex;align-items:center;gap:8px;margin:10px 2px 0;font:600 12px 'Space Grotesk',sans-serif;color:#f1f5fb;cursor:pointer}.lp-switch input{accent-color:var(--accent);width:16px;height:16px}
 @media(max-width:900px){ .mc-qt{top:32px;left:4px} .mc-qt .qt-btn{min-width:52px;padding:2px 6px 3px} .mc-qt .qt-btn b{font-size:10.5px} }
+body.qt-hide .quick-trade,body.qt-hide .mc-qt{display:none!important}
+#ct-qt.active{background:color-mix(in srgb,var(--accent) 22%,transparent);border-color:var(--accent);color:#fff}
+@media(max-width:600px){ .tool-rail .rail-btn span{display:none} .tool-rail .rail-btn{padding:8px 0!important} }
+/* drawing on the extra charts */
+.mc-tl{z-index:3}.mc-cap{z-index:8}
+.mc-mini .tl-tb,.mc-mini .tl-pop{z-index:12}
 </style>
 </head>
 <body>
@@ -1260,8 +1266,8 @@ body.light-chart .pt-bar .pb-dir.up{color:color-mix(in srgb,var(--up) 85%,#000)}
 // storage.js — safe localStorage + IndexedDB wrappers (all try/catch)
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
-const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>"};
-const BUILD='2026-11-12.14';
+const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>"};
+const BUILD='2026-11-12.16';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1270,7 +1276,7 @@ async function checkForUpdate(){
 }
 setTimeout(checkForUpdate,6000); setInterval(checkForUpdate,3*60*1000); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) checkForUpdate(); });
 // settings that travel between devices (Sync)
-const SYNC_KEYS=['bd_instruments','bd_groups','bd_labels','bd_ratios','bd_rules','bd_mot_custom','bd_mot_pin','bd_theme','bd_bias_manual','bd_scores_url','bd_frvp_defaults','bd_rules_auto','bd_alerts','bd_alert_cfg','bd_draw_defaults','bd_multi'];
+const SYNC_KEYS=['bd_instruments','bd_groups','bd_labels','bd_ratios','bd_rules','bd_mot_custom','bd_mot_pin','bd_theme','bd_bias_manual','bd_scores_url','bd_frvp_defaults','bd_rules_auto','bd_alerts','bd_alert_cfg','bd_draw_defaults','bd_multi','bd_qt'];
 function isSyncKey(k){ return SYNC_KEYS.includes(k)||k.startsWith('bd_lines_')||k.startsWith('bd_frvp_'); }
 var syncApplying=false;
 function syncSoon(){ try{ const c=JSON.parse(localStorage.getItem('bd_sync_cfg')||'null'); if(!c||!c.repo||!c.token) return; clearTimeout(window.__bdSyncT); window.__bdSyncT=setTimeout(()=>{ try{ syncNow(); }catch(e){} },4000); }catch(e){} }
@@ -2596,6 +2602,7 @@ function buildChartShell(){
       <button id="ct-rect" class="rail-btn" title="Rectangle — drag a box (Alt+R). Great for zones. Click it to change colour, fill, or extend it right."><i class="ico">${ICON.rect}</i><span>Rect</span></button>
       <button id="ct-vp" class="rail-btn" title="Fixed Range Volume Profile — drag across the candles you want measured"><i class="ico">${ICON.vp}</i><span>FRVP</span></button>
  <button id="ct-alert" class="rail-btn" title="Price alert — click the price you want to be alerted at"><i class="ico">${ICON.bell}</i><span>Alert</span></button>
+      <button id="ct-qt" class="rail-btn" title="Trade — show / hide the BUY and SELL buttons on every chart"><i class="ico">${ICON.trade}</i><span>Trade</span></button>
       <span class="rail-sep"></span>
       <button id="ct-clear" class="rail-btn" title="Remove all drawings and volume profiles on this pair"><i class="ico">${ICON.trash}</i><span>Clear</span></button>
     </nav>
@@ -2632,6 +2639,8 @@ function buildChartShell(){
   document.addEventListener('keydown',e=>{ const l=$('pair-dd-list'); if(e.key==='Escape'&&l&&!l.hidden) l.hidden=true; });
   $('ct-cursor').addEventListener('click',()=>{ tlSetMode(false); vpSetMode(false); alSetMode(false); tlRender(); vpRender(); });
   $('ct-alert').addEventListener('click',()=>alSetMode(!alMode));
+  $('ct-qt').addEventListener('click',()=>{ const on=!qtShown(); lsSet('bd_qt',on); qtSync(); toast(on?'BUY / SELL buttons on':'BUY / SELL buttons hidden — tap Trade to bring them back'); });
+  qtSync();
   $('ct-bell').addEventListener('click',e=>{ e.stopPropagation(); const p=$('alert-panel'); p.hidden=!p.hidden; renderAlertPanel(); });
   document.addEventListener('click',e=>{ const p=$('alert-panel'); if(!p||p.hidden) return; const path=e.composedPath(); if(path.includes(p)||path.some(el=>el&&el.id==='ct-bell'||el&&el.id==='alarm-stop')) return; p.hidden=true; });
   $('ct-clear').addEventListener('click',()=>{ if(!tlLines.length&&!vpList.length){ toast('Nothing drawn on this pair'); return; } if(!confirm(`Remove all ${tlLines.length} drawing(s) and ${vpList.length} volume profile(s) on ${currentInst.name}?`)) return; tlLines=[]; tlSel=null; tlSave(); vpList=[]; vpSel=null; vpCache.clear(); vpSave(); vpCloseSettings(); tlRender(); vpRender(); toast('Drawings cleared'); });
@@ -2754,6 +2763,9 @@ function openChart(inst){
 
 function defaultBars(){ const el=$('lw-container'); let aw=0; try{ aw=chart.priceScale('right').width()||0; }catch(e){} const w=Math.max(200,((el&&el.clientWidth)||800)-aw); return Math.max(30,Math.min(160,Math.round(w/9))); }
 function syncTfDD(){ const c=$('tf-dd-cur'); if(c) c.textContent=currentTF; document.querySelectorAll('#tf-dd-list button').forEach(x=>x.classList.toggle('on',x.dataset.tf===currentTF)); }
+// BUY / SELL buttons: hidden until you tap Trade on the tool rail (more room for the charts); one switch for every chart
+function qtShown(){ return lsGet('bd_qt',false)===true; }
+function qtSync(){ const on=qtShown(); document.body.classList.toggle('qt-hide',!on); $('ct-qt')?.classList.toggle('active',on); }
 function getChart(){ return chart; }
 function getSeries(){ return series; }
 
@@ -2767,8 +2779,8 @@ function tlStyleOf(l){ return {...DRAW_DEF[l.kind==='rect'?'rect':'line'],...l};
 const TL_DASH={solid:'none',dashed:'8 5',dotted:'1.5 4.5'};
 const TL_NS='http://www.w3.org/2000/svg';
 function tlKey(sym){ return 'bd_lines_'+sym; }
-function tlLoad(sym){ tlSym=sym; const saved=lsGet(tlKey(sym),[]); tlLines=(Array.isArray(saved)?saved:[]).filter(l=>l&&[l.t1,l.p1,l.t2,l.p2].every(Number.isFinite)); tlSel=null; tlPop=null; tlDraft=null; tlSetMode(false); tlRender(); }
-function tlSave(){ if(tlSym) lsSet(tlKey(tlSym),tlLines); }
+function tlLoad(sym){ tlSym=sym; tlLines=drawLines(sym); tlSel=null; tlPop=null; tlDraft=null; tlSetMode(false); tlRender(); }
+function tlSave(){ if(!tlSym) return; drawStore[tlSym]=tlLines; drawChanged(tlSym,'main'); }
 // time <-> logical bar index (handles weekend gaps inside the data, extrapolates past either end)
 function logicalForTime(t){ const T=barTimes(), n=T.length; if(!n) return null; const g=currentGranularity();
   if(t<=T[0]) return (t-T[0])/g; if(t>=T[n-1]) return n-1+(t-T[n-1])/g;
@@ -2807,13 +2819,13 @@ function tlSetup(){
   w.appendChild(tb);
   const pop=document.createElement('div'); pop.className='tl-pop'; pop.hidden=true; w.appendChild(pop);
   for(const el of [tb,pop]) el.addEventListener('pointerdown',e=>e.stopPropagation());
-  tb.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('button'); const l=tlLines.find(x=>x.id===tlSel); if(!b||!l) return;
+  tb.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('button'); const l=selLine(); if(!b||!l) return;
     if(b.dataset.pop){ tlPop=tlPop===b.dataset.pop?null:b.dataset.pop; tlPopRender(); return; }
     if(b.classList.contains('tb-ext')){ tlUpdate({ext:!tlStyleOf(l).ext}); return; }
-    if(b.classList.contains('tl-del')){ tlDelete(l.id); return; }
-    if(b.classList.contains('tl-bell')&&currentInst){ const al=getAlerts(); const ex=al.find(a=>a.kind==='line'&&a.lineId===l.id&&a.active);
-      if(ex){ setAlerts(al.filter(a=>a!==ex)); toast('Trendline alert removed'); } else { al.push({id:'A'+Date.now().toString(36),sym:currentInst.symbol,kind:'line',lineId:l.id,active:true,created:Date.now()}); setAlerts(al); askNotify(); toast('Trendline alert on — the dotted part shows where the line continues'); }
-      tlRender(); } });
+    if(b.classList.contains('tl-del')){ if(mSel) mdDelete(); else tlDelete(l.id); return; }
+    if(b.classList.contains('tl-bell')&&selSym()){ const al=getAlerts(); const ex=al.find(a=>a.kind==='line'&&a.lineId===l.id&&a.active);
+      if(ex){ setAlerts(al.filter(a=>a!==ex)); toast('Trendline alert removed'); } else { al.push({id:'A'+Date.now().toString(36),sym:selSym(),kind:'line',lineId:l.id,active:true,created:Date.now()}); setAlerts(al); askNotify(); toast('Trendline alert on — the dotted part shows where the line continues'); }
+      drawChanged(selSym()); if(mSel) mdRender(mSel.m); else tlRender(); } });
   pop.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('button'); if(!b) return;
     if(b.dataset.c) tlUpdate({color:b.dataset.c}); else if(b.dataset.w) tlUpdate({width:+b.dataset.w}); else if(b.dataset.s) tlUpdate({style:b.dataset.s}); else return; tlPopRender(); });
   pop.addEventListener('input',e=>{ const t=e.target; if(t.type==='color') tlUpdate({color:t.value},true); else if(t.type==='range'){ tlUpdate({fill:t.value/100},true); t.nextElementSibling.textContent=t.value+'%'; } });
@@ -2840,6 +2852,7 @@ function tlSetup(){
   // click inside a rectangle selects / moves it; click anywhere else deselects
   w.addEventListener('pointerdown',e=>{
     if(e.target.closest('.tl-tb,.tl-pop')) return;
+    if(mSel) mdSelect(null);
     if(!tlMode&&!vpMode&&!alMode&&!rp.picking&&e.target.closest('#lw-container')){ const l=tlHitRect(e); if(l){ e.preventDefault(); e.stopPropagation(); tlStartDrag(l,null,e); return; } }
     if(tlSel&&!e.target.closest('g.tl')) tlSelect(null); },true);
   // hovering a rectangle highlights it (the chart keeps its crosshair)
@@ -2864,8 +2877,9 @@ function renderPairDD(){ const l=$('pair-dd-list'); if(!l) return;
 function railSync(){ $('ct-cursor')?.classList.toggle('active',!tlMode&&!vpMode&&!alMode); }
 function tlSetMode(on,kind){
   tlMode=!!on; if(kind) tlKind=kind; if(!tlMode) tlDraft=null; if(tlMode&&vpMode) vpSetMode(false); if(tlMode&&alMode) alSetMode(false);
-  const w=tlWrap(); if(w){ const cap=w.querySelector('.tl-capture'), hint=w.querySelector('.tl-hint'); if(cap) cap.hidden=!tlMode; if(hint){ hint.hidden=!tlMode; hint.textContent=tlKind==='rect'?'Rectangle: click one corner, then the opposite corner (or drag) · Esc cancels':'Trendline: click the first point, then the second · Esc cancels'; } }
+  const w=tlWrap(); if(w){ const cap=w.querySelector('.tl-capture'), hint=w.querySelector('.tl-hint'); if(cap) cap.hidden=!tlMode; if(hint){ hint.hidden=!tlMode; hint.textContent=(tlKind==='rect'?'Rectangle: click one corner, then the opposite corner (or drag)':'Trendline: click the first point, then the second')+(mcCharts.length?' — on any chart':'')+' · Esc cancels'; } }
   $('ct-line')?.classList.toggle('active',tlMode&&tlKind==='line'); $('ct-rect')?.classList.toggle('active',tlMode&&tlKind==='rect'); railSync();
+  mcCharts.forEach(m=>{ if(m.cap) m.cap.hidden=!(tlMode||alMode); }); if(!tlMode&&mdDraft){ const mm=mdDraft.m; mdDraft=null; mdRender(mm); } if(tlMode&&mSel) mdSelect(null);
   if(tlMode) tlSelect(null);
 }
 function tlFinish(pt){
@@ -2879,27 +2893,29 @@ function tlFinish(pt){
 function tlDelete(id){ const l=tlLines.find(x=>x.id===id); tlLines=tlLines.filter(x=>x.id!==id); if(tlSel===id){ tlSel=null; tlPop=null; } tlSave();
   const al=getAlerts(); if(al.some(a=>a.lineId===id)) setAlerts(al.filter(a=>a.lineId!==id)); tlRender(); toast(l&&l.kind==='rect'?'Rectangle deleted':'Trendline deleted'); }
 function tlSelect(id){
+  if(id&&mSel) mdSelect(null);
   if(tlSel!==id) tlPop=null; tlSel=id; const svg=tlSvg(); if(svg) svg.querySelectorAll('g.tl').forEach(g=>{ g.classList.toggle('sel',g.dataset.id===id); g.dataset.k=''; });
   tlSyncTb(); tlPopRender(); tlPosition();
 }
 // change the selected drawing's style; live=true while dragging a slider / colour wheel (saved on release)
-function tlUpdate(patch,live){ const l=tlLines.find(x=>x.id===tlSel); if(!l) return; Object.assign(l,patch);
-  const g=tlSvg()?.querySelector(`g[data-id="${l.id}"]`); if(g){ tlApplyStyle(g,l); g.dataset.k=''; } tlSyncTb(); tlPosition();
-  if(!live){ tlSave(); const k=l.kind==='rect'?'rect':'line', st=tlStyleOf(l), d=lsGet('bd_draw_defaults',{})||{}; d[k]={color:st.color,width:st.width,style:st.style,...(k==='rect'?{fill:st.fill}:{})}; lsSet('bd_draw_defaults',d); } }
-function tlSyncTb(){ const w=tlWrap(); const tb=w?.querySelector('.tl-tb'); if(!tb) return; const l=tlLines.find(x=>x.id===tlSel); tb.hidden=!l; if(!l) return; const st=tlStyleOf(l), rect=l.kind==='rect';
+function tlUpdate(patch,live){ const l=selLine(); if(!l) return; Object.assign(l,patch);
+  if(mSel){ const g=mSel.m.tl?.querySelector(`g[data-id="${l.id}"]`); if(g) tlApplyStyle(g,l); tlSyncTb(); mdPosition(mSel.m); if(!live) drawChanged(selSym()); }
+  else { const g=tlSvg()?.querySelector(`g[data-id="${l.id}"]`); if(g){ tlApplyStyle(g,l); g.dataset.k=''; } tlSyncTb(); tlPosition(); }
+  if(!live){ if(!mSel) tlSave(); const k=l.kind==='rect'?'rect':'line', st=tlStyleOf(l), d=lsGet('bd_draw_defaults',{})||{}; d[k]={color:st.color,width:st.width,style:st.style,...(k==='rect'?{fill:st.fill}:{})}; lsSet('bd_draw_defaults',d); } }
+function tlSyncTb(){ const tb=document.querySelector('.tl-tb'); if(!tb) return; const l=selLine(); tb.hidden=!l; if(!l) return; const st=tlStyleOf(l), rect=l.kind==='rect';
   tb.querySelector('.tb-sw').style.setProperty('--sw',st.color); tb.querySelector('.tb-wl').style.height=Math.max(1,st.width)+'px'; tb.querySelector('.tb-wn').textContent=st.width+'px';
   tb.querySelector('.tb-ls line').setAttribute('stroke-dasharray',st.style==='dashed'?'5 3':st.style==='dotted'?'1 3':'none');
   const ex=tb.querySelector('.tb-ext'); ex.hidden=!rect; ex.classList.toggle('on',!!st.ext);
   const bl=tb.querySelector('.tl-bell'); bl.hidden=rect; bl.classList.toggle('on',getAlerts().some(a=>a.kind==='line'&&a.active&&a.lineId===l.id));
   tb.querySelectorAll('[data-pop]').forEach(b=>b.classList.toggle('open',b.dataset.pop===tlPop)); }
-function tlPopRender(){ const pop=tlWrap()?.querySelector('.tl-pop'); if(!pop) return; const l=tlLines.find(x=>x.id===tlSel); if(!tlPop||!l){ pop.hidden=true; tlSyncTb(); return; }
+function tlPopRender(){ const pop=document.querySelector('.tl-pop'); if(!pop) return; const l=selLine(); if(!tlPop||!l){ pop.hidden=true; tlSyncTb(); return; }
   const st=tlStyleOf(l), cur=String(st.color).toLowerCase(); pop.hidden=false; pop.dataset.k=tlPop;
   if(tlPop==='color') pop.innerHTML=`<div class="pop-sw">${TL_COLORS.map(c=>`<button data-c="${c}" class="${c===cur?'on':''}" style="--sw:${c}" title="${c}"></button>`).join('')}</div>
     <label class="pop-custom"><input type="color" value="${/^#[0-9a-f]{6}$/.test(cur)?cur:'#2962ff'}"><span>Custom colour</span></label>
     ${l.kind==='rect'?`<div class="pop-fill"><span>Fill</span><input type="range" min="0" max="60" step="5" value="${Math.round(st.fill*100)}"><b>${Math.round(st.fill*100)}%</b></div>`:''}`;
   else if(tlPop==='width') pop.innerHTML=[1,2,3,4].map(n=>`<button class="pop-row${st.width===n?' on':''}" data-w="${n}"><svg viewBox="0 0 40 10"><line x1="3" y1="5" x2="37" y2="5" stroke-width="${n}"/></svg><span>${n} px</span></button>`).join('');
   else pop.innerHTML=[['solid','none','Solid'],['dashed','7 4','Dashed'],['dotted','0.5 4','Dotted']].map(([k,da,n])=>`<button class="pop-row${st.style===k?' on':''}" data-s="${k}"><svg viewBox="0 0 40 10"><line x1="3" y1="5" x2="37" y2="5" stroke-width="2" stroke-dasharray="${da}"/></svg><span>${n}</span></button>`).join('');
-  tlSyncTb(); tlPosition(); }
+  tlSyncTb(); if(mSel) mdPosition(mSel.m); else tlPosition(); }
 function tlRender(){
   const svg=tlSvg(); if(!svg) return;
   const all=tlDraft?[...tlLines,{...tlDraft,id:'__draft'}]:tlLines;
@@ -3495,7 +3511,7 @@ function checkNewsAlerts(){ if(!alertCfg().news||!newsData) return; const now=Da
 setInterval(async()=>{ try{ window.__openSyms=(await idbAll('journal')).filter(t=>!t.practice&&(t.status==='OPEN'||t.status==='PENDING')).map(t=>t.symbol); }catch(e){} checkNewsAlerts(); renderNewsChip(); },30000);
 // price-alert lines on the chart (orange dashed, bell on the price axis)
 let alMode=false, alSel=null;
-function alSetMode(on){ alMode=!!on; if(alMode){ tlSetMode(false); vpSetMode(false); } const w=tlWrap(); if(w){ const c=w.querySelector('.al-capture'), h=w.querySelector('.al-hint'); if(c) c.hidden=!alMode; if(h) h.hidden=!alMode; } $('ct-alert')?.classList.toggle('active',alMode); railSync(); }
+function alSetMode(on){ alMode=!!on; if(alMode){ tlSetMode(false); vpSetMode(false); } const w=tlWrap(); if(w){ const c=w.querySelector('.al-capture'), h=w.querySelector('.al-hint'); if(c) c.hidden=!alMode; if(h) h.hidden=!alMode; } $('ct-alert')?.classList.toggle('active',alMode); railSync(); mcCharts.forEach(m=>{ if(m.cap) m.cap.hidden=!(tlMode||alMode); }); }
 function alSetup(){ const w=tlWrap(); if(!w||w.querySelector('.al-layer')) return;
   const lay=document.createElement('div'); lay.className='al-layer'; w.appendChild(lay);
   const cap=document.createElement('div'); cap.className='al-capture'; cap.hidden=true; w.appendChild(cap);
@@ -3564,7 +3580,7 @@ function mcLayoutIcon(l,w=44,h=30){ const cols=l.c.split(' ').map(parseFloat), r
 function mcRender(){
   const grid=$('mc-grid'); if(!grid) return; const L=mcLayout(); grid.dataset.layout=L.id;
   grid.style.gridTemplateColumns=L.c; grid.style.gridTemplateRows=L.r; grid.style.gridTemplateAreas=L.a.map(x=>`"${x}"`).join(' ');
-  const main=$('chart-wrap'); if(main) main.style.gridArea='a'; grid.classList.toggle('mc-noqt',mcCfg().qt===false);
+  const main=$('chart-wrap'); if(main) main.style.gridArea='a';
   const P=mcPanels(); const want=L.n-1;
   while(mcCharts.length>want){ mcDestroy(mcCharts.pop()); }
   for(let k=0;k<want;k++){ const cfg=P[k]; const ex=mcCharts[k]; if(ex){ ex.cell.style.gridArea='bcd'[k]; const inst=mcInst(cfg); if(ex.inst!==inst||ex.cfg.tf!==cfg.tf){ ex.cfg=cfg; mcLoad(ex); } continue; } mcCharts.push(mcCreate(grid,k,cfg)); }
@@ -3582,7 +3598,7 @@ function mcCreate(grid,k,cfg){
   if(ensureChartLib()){ const def=getThemeDef(); m.chart=window.LightweightCharts.createChart(cell.querySelector('.mc-chart'),{...chartOptionsForTheme(def),autoSize:true});
     m.chart.applyOptions({layout:{fontSize:11},timeScale:{rightOffset:6}}); m.series=m.chart.addCandlestickSeries(seriesOptionsForTheme(def));
     try{ m.chart.timeScale().subscribeVisibleLogicalRangeChange(()=>mcDraw(m)); }catch(e){}
-    m.ro=new ResizeObserver(()=>mcDraw(m)); m.ro.observe(cell); }
+    m.ro=new ResizeObserver(()=>mcDraw(m)); m.ro.observe(cell); mdSetup(m); }
   const pop=cell.querySelector('.mc-pop');
   const openPop=kind=>{ if(!pop.hidden&&pop.dataset.k===kind){ pop.hidden=true; return; } pop.dataset.k=kind; pop.hidden=false; const c=m.cfg;
     if(kind==='sym') pop.innerHTML=`<button data-link="1" class="${c.link?'on':''}">🔗 Same as main chart</button>`+getInstruments().map(i=>`<button data-sym="${esc(i.symbol)}" class="${!c.link&&c.sym===i.symbol?'on':''}"><b>${esc(i.name)}</b><span class="mono">${hasPrice(i)?fmtPrice(i,getState(i).price):''}</span></button>`).join('');
@@ -3602,15 +3618,16 @@ function mcCreate(grid,k,cfg){
   mcLoad(m); return m;
 }
 function mcStorePanel(k,cfg){ const c=mcCfg(); const p=mcPanels(); p[k]=cfg; c.panels=p; mcSave(c); }
-function mcDestroy(m){ try{ m.ro&&m.ro.disconnect(); }catch(e){} try{ m.chart&&m.chart.remove(); }catch(e){} m.cell.remove(); }
+function mcDestroy(m){ const w=tlWrap(); const tb=m.cell.querySelector('.tl-tb'), pop=m.cell.querySelector('.tl-pop'); if(w){ if(tb) w.appendChild(tb); if(pop) w.appendChild(pop); } if(mSel&&mSel.m===m){ mSel=null; tlSyncTb(); } if(mdDraft&&mdDraft.m===m) mdDraft=null;
+  try{ m.ro&&m.ro.disconnect(); }catch(e){} try{ m.chart&&m.chart.remove(); }catch(e){} m.cell.remove(); }
 async function mcLoad(m){
-  const inst=mcInst(m.cfg); if(!inst) return; const g=granForLabel(m.cfg.tf); m.inst=inst; m.g=g; const key=inst.symbol+'|'+g+'|'+Date.now(); m.key=key; m.bar=null; m.times=[];
+  const inst=mcInst(m.cfg); if(!inst) return; if(mSel&&mSel.m===m) mdSelect(null); const g=granForLabel(m.cfg.tf); m.inst=inst; m.g=g; const key=inst.symbol+'|'+g+'|'+Date.now(); m.key=key; m.bar=null; m.times=[];
   m.cell.querySelector('.mc-sym b').textContent=(m.cfg.link?'🔗 ':'')+inst.name; m.cell.querySelector('.mc-tf b').textContent=m.cfg.tf; m.cell.querySelector('.mc-px').textContent=hasPrice(inst)?fmtPrice(inst,getState(inst).price):''; m.cell.querySelectorAll('.mc-qt b').forEach(b=>b.textContent=hasPrice(inst)?fmtPrice(inst,getState(inst).price):'—'); mcBadge(m);
   if(!m.series) return; try{ m.series.applyOptions({priceFormat:priceFormatFor(inst)}); m.series.setData([]); }catch(e){}
   const c=(await fetchCandlesOnce(inst,g,700))||[]; if(m.key!==key||!m.series) return;
   try{ m.series.setData(c); m.times=c.map(x=>x.time); m.bar=c.length?{...c[c.length-1]}:null;
     const w=Math.max(160,m.cell.clientWidth-60), vis=Math.max(24,Math.min(140,Math.round(w/8))); if(c.length>vis+10) m.chart.timeScale().setVisibleLogicalRange({from:c.length-vis,to:c.length+Math.max(3,Math.round(vis*0.08))}); else m.chart.timeScale().fitContent(); }catch(e){}
-  mcDraw(m);
+  mcDraw(m); mdRender(m);
 }
 // live candles from the tick stream (same way the Overview chart updates)
 function mcTick(){ for(const m of mcCharts){ if(!m.inst||!m.bar||!m.series) continue; const s=getState(m.inst); const last=s.ticks&&s.ticks[s.ticks.length-1]; if(!last) continue;
@@ -3620,13 +3637,11 @@ function mcTick(){ for(const m of mcCharts){ if(!m.inst||!m.bar||!m.series) cont
 // your saved trendlines + rectangles for that pair, drawn on the extra charts too
 function mcX(m,t){ const T=m.times, n=T.length; if(!n) return null; const g=m.g; let L; if(t<=T[0]) L=(t-T[0])/g; else if(t>=T[n-1]) L=n-1+(t-T[n-1])/g; else { let lo=0,hi=n-1; while(hi-lo>1){ const md=(lo+hi)>>1; if(T[md]<=t) lo=md; else hi=md; } L=lo+(t-T[lo])/((T[hi]-T[lo])||g); }
   try{ const x=m.chart.timeScale().logicalToCoordinate(L); return x===null||x===undefined?null:x; }catch(e){ return null; } }
-function mcDraw(m){ const svg=m.cell.querySelector('.mc-draw'); if(!svg||!m.inst||!m.series) return; const lines=lsGet('bd_lines_'+m.inst.symbol,[])||[];
-  let aw=0; try{ aw=m.chart.priceScale('right').width()||0; }catch(e){} const W=Math.max(0,m.cell.clientWidth-aw); let th=0; try{ th=m.chart.timeScale().height()||0; }catch(e){} svg.style.width=W+'px'; svg.style.height=Math.max(0,m.cell.clientHeight-th)+'px';
-  const trades=mcTradesFor(m);
-  if(!lines.length&&!trades.length){ if(svg.innerHTML) svg.innerHTML=''; return; } const Y=p=>{ try{ const y=m.series.priceToCoordinate(p); return y===null||y===undefined?null:y; }catch(e){ return null; } };
-  svg.innerHTML=trades.map(t=>tradeSvg(t,tt=>mcX(m,tt),Y,W,m.inst,false)).join('')+lines.map(l=>{ const st=tlStyleOf(l), x1=mcX(m,l.t1), x2=mcX(m,l.t2), y1=Y(l.p1), y2=Y(l.p2); if([x1,x2,y1,y2].some(v=>v===null||!isFinite(v))) return ''; const da=TL_DASH[st.style]||'none';
-    if(l.kind==='rect'){ const L=Math.min(x1,x2), R=st.ext?Math.max(W,Math.max(x1,x2)):Math.max(x1,x2); return `<rect x="${L}" y="${Math.min(y1,y2)}" width="${Math.max(1,R-L)}" height="${Math.max(1,Math.abs(y2-y1))}" fill="${st.color}" fill-opacity="${st.fill}" stroke="${st.color}" stroke-width="${st.width}" stroke-dasharray="${da}" shape-rendering="crispEdges"/>`; }
-    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st.color}" stroke-width="${st.width}" stroke-dasharray="${da}" stroke-linecap="round"/>`; }).join(''); }
+function mcDraw(m){ const svg=m.cell.querySelector('.mc-draw'); if(!svg||!m.inst||!m.series) return;
+  const {W,H}=mPlot(m); svg.style.width=W+'px'; svg.style.height=H+'px'; const trades=mcTradesFor(m); const als=getAlerts().filter(a=>a.active&&a.kind==='price'&&a.sym===m.inst.symbol);
+  const Y=p=>mY(m,p);
+  const alSvg=als.map(a=>{ const y=Y(a.price); if(y===null) return ''; const t='🔔 '+fmtPrice(m.inst,a.price), w=Math.round(t.length*6.2+12); return `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4 3"/><rect x="${W-w-2}" y="${y-8}" width="${w}" height="16" rx="3" fill="#f59e0b"/><text x="${W-w+4}" y="${y+4}" class="rt-p" fill="#111">${t}</text>`; }).join('');
+  const html=trades.map(t=>tradeSvg(t,tt=>mcX(m,tt),Y,W,m.inst,false)).join('')+alSvg; if(svg.innerHTML!==html) svg.innerHTML=html; mdPosition(m); }
 // swap: the extra chart becomes the main chart (tools, setups, replay), the main chart takes its place
 function mcToMain(m){ const inst=mcInst(m.cfg), tf=m.cfg.tf; const old={link:false,sym:currentInst?currentInst.symbol:inst.symbol,tf:currentTF};
   if(old.sym===inst.symbol) old.link=true; mcStorePanel(m.k,old); currentTF=tf;
@@ -3637,12 +3652,10 @@ function mcToMain(m){ const inst=mcInst(m.cfg), tf=m.cfg.tf; const old={link:fal
 function renderLayoutPop(){ const p=$('layout-pop'); if(!p) return; const c=mcCfg();
   p.innerHTML=[1,2,3,4].map(n=>`<div class="lp-cap">${n} chart${n>1?'s':''}</div><div class="lp-row">${MC_LAYOUTS.filter(l=>l.n===n).map(l=>`<button class="lp-btn${c.layout===l.id?' on':''}" data-lay="${l.id}" title="${l.name}">${mcLayoutIcon(l)}</button>`).join('')}</div>`).join('')+
     `<div class="lp-cap">Extra charts show</div><div class="lp-mode"><button data-mode="same" class="${c.mode!=='mixed'?'on':''}">Same pair<small>other timeframes</small></button><button data-mode="mixed" class="${c.mode==='mixed'?'on':''}">Different pairs<small>same timeframe</small></button></div>
-    <label class="lp-switch"><input type="checkbox" data-qt ${c.qt!==false?'checked':''}><span>BUY / SELL buttons on every chart</span></label>
     <p class="lp-tip">Chart 1 (coloured edge) has all the tools. Tap a pair or timeframe on any other chart to change it, or ⤢ to make it the main chart.</p>`; }
 function mcSetup(){
   const b=$('ct-layout'), p=$('layout-pop'); if(!b||!p) return;
   b.addEventListener('click',e=>{ e.stopPropagation(); p.hidden=!p.hidden; if(!p.hidden) renderLayoutPop(); });
-  p.addEventListener('change',e=>{ if(e.target.matches('[data-qt]')){ const c=mcCfg(); c.qt=e.target.checked; mcSave(c); mcRender(); } });
   p.addEventListener('click',e=>{ e.stopPropagation(); const x=e.target.closest('button'); if(!x) return; const c=mcCfg();
     if(x.dataset.lay){ c.layout=x.dataset.lay; mcSave(c); }
     else if(x.dataset.mode){ c.mode=x.dataset.mode; c.panels=mcDefaultPanels(c.mode); mcSave(c); mcCharts.forEach((m,k)=>{ m.cfg=c.panels[k]; mcLoad(m); }); }
@@ -3650,6 +3663,97 @@ function mcSetup(){
   if(!mcThemeHooked){ mcThemeHooked=true; onThemeChange(def=>{ for(const m of mcCharts){ try{ m.chart.applyOptions(chartOptionsForTheme(def)); m.chart.applyOptions({layout:{fontSize:11}}); m.series.applyOptions(seriesOptionsForTheme(def)); }catch(e){} } });
     onTick(mcTick); document.addEventListener('click',e=>{ const lp=$('layout-pop'); if(lp&&!lp.hidden&&!e.target.closest('#layout-pop,#ct-layout')) lp.hidden=true; document.querySelectorAll('.mc-pop').forEach(x=>{ if(!x.hidden&&!x.parentElement.contains(e.target)) x.hidden=true; }); }); }
 }
+
+// ===== Drawings on every chart: Line + Rect work on the extra charts too. Every chart of the same pair shares the
+// same drawings (draw on one XAUUSD chart → it appears on every XAUUSD chart); other pairs keep their own. =====
+const drawStore={}, drawRaw={};
+function drawValid(l){ return l&&[l.t1,l.p1,l.t2,l.p2].every(Number.isFinite); }
+// one shared array per pair — re-read when storage changed underneath (sync from your other device)
+function drawLines(sym){ const raw=localStorage.getItem(tlKey(sym)); if(!drawStore[sym]) drawStore[sym]=[];
+  if(raw!==drawRaw[sym]){ drawRaw[sym]=raw; let v=[]; try{ v=JSON.parse(raw||'[]'); }catch(e){} drawStore[sym].splice(0,drawStore[sym].length,...(Array.isArray(v)?v:[]).filter(drawValid)); }
+  return drawStore[sym]; }
+function drawPersist(sym){ lsSet(tlKey(sym),drawStore[sym]||[]); drawRaw[sym]=localStorage.getItem(tlKey(sym)); }
+// after any change: save once, redraw every chart showing that pair
+function drawChanged(sym,from){ drawPersist(sym); if(tlSym===sym&&from!=='main'){ tlLines=drawStore[sym]; tlRender(); } mcCharts.forEach(m=>{ if(m.inst&&m.inst.symbol===sym) mdRender(m); }); }
+let mSel=null, mdDrag=null, mdDraft=null;
+function mX(m,t){ return mcX(m,t); }
+function mL(m,t){ const T=m.times, n=T.length; if(!n) return null; const g=m.g; if(t<=T[0]) return (t-T[0])/g; if(t>=T[n-1]) return n-1+(t-T[n-1])/g; let lo=0,hi=n-1; while(hi-lo>1){ const md=(lo+hi)>>1; if(T[md]<=t) lo=md; else hi=md; } return lo+(t-T[lo])/((T[hi]-T[lo])||g); }
+function mTL(m,L){ const T=m.times, n=T.length, g=m.g; if(!n) return null; if(L<=0) return T[0]+L*g; if(L>=n-1) return T[n-1]+(L-(n-1))*g; const i=Math.floor(L); return T[i]+(L-i)*(T[i+1]-T[i]); }
+function mXT(m,x){ try{ const L=m.chart.timeScale().coordinateToLogical(x); return L===null||L===undefined?null:mTL(m,L); }catch(e){ return null; } }
+function mY(m,p){ try{ const y=m.series.priceToCoordinate(p); return y===null||y===undefined?null:y; }catch(e){ return null; } }
+function mP(m,y){ try{ const p=m.series.coordinateToPrice(y); return p===null||p===undefined||isNaN(p)?null:p; }catch(e){ return null; } }
+function mBS(m){ try{ const ts=m.chart.timeScale(); return (ts.logicalToCoordinate(1)-ts.logicalToCoordinate(0))||6; }catch(e){ return 6; } }
+function mPlot(m){ let aw=0, th=0; try{ aw=m.chart.priceScale('right').width()||0; }catch(e){} try{ th=m.chart.timeScale().height()||0; }catch(e){} return {W:Math.max(0,m.cell.clientWidth-aw),H:Math.max(0,m.cell.clientHeight-th),aw,th}; }
+function mPoint(m,e){ const r=m.cell.getBoundingClientRect(); const x=e.clientX-r.left, y=e.clientY-r.top; const t=mXT(m,x), p=mP(m,y); return t===null||p===null?null:{t,p,x,y}; }
+function mdSetup(m){
+  const svg=document.createElementNS(TL_NS,'svg'); svg.setAttribute('class','tl-layer mc-tl'); m.cell.appendChild(svg); m.tl=svg;
+  const cap=document.createElement('div'); cap.className='tl-capture mc-cap'; cap.hidden=!(tlMode||alMode); m.cell.appendChild(cap); m.cap=cap;
+  cap.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); const pt=mPoint(m,e); if(!pt||!m.inst) return;
+    if(alMode){ const al=getAlerts(); al.push({id:'A'+Date.now().toString(36),sym:m.inst.symbol,kind:'price',price:+pt.p.toFixed(decimals(m.inst.base)),active:true,created:Date.now()}); setAlerts(al); alSetMode(false); alRender(); mcCharts.forEach(mcDraw); askNotify(); toast(`Alert set on ${m.inst.name} at ${fmtPrice(m.inst,pt.p)}`); return; }
+    if(!tlMode) return;
+    if(!mdDraft||mdDraft.m!==m){ mdDraft={m,l:{...drawDef(tlKind),kind:tlKind,ext:false,t1:pt.t,p1:pt.p,t2:pt.t,p2:pt.p,id:'__draft'},dx:e.clientX,dy:e.clientY}; mdRender(m); try{ cap.setPointerCapture(e.pointerId); }catch(_){} }
+    else mdFinish(m,pt); });
+  cap.addEventListener('pointermove',e=>{ if(!mdDraft||mdDraft.m!==m) return; const pt=mPoint(m,e); if(!pt) return; mdDraft.l.t2=pt.t; mdDraft.l.p2=pt.p; mdPosition(m); });
+  cap.addEventListener('pointerup',e=>{ if(!mdDraft||mdDraft.m!==m) return; if(Math.hypot(e.clientX-mdDraft.dx,e.clientY-mdDraft.dy)>8){ const pt=mPoint(m,e); if(pt) mdFinish(m,pt); } });
+  // grab a line / rectangle border / handle
+  svg.addEventListener('pointerdown',e=>{ const g=e.target.closest('g.tl'); if(!g||g.classList.contains('draft')||!m.inst) return; const l=drawLines(m.inst.symbol).find(x=>x.id===g.dataset.id); if(!l) return;
+    e.preventDefault(); e.stopPropagation(); const hd=e.target.closest('.tl-end'); mdStartDrag(m,l,hd?hd.dataset.h:null,e); });
+  // inside a rectangle selects / moves it; elsewhere deselects (the chart keeps panning normally)
+  m.cell.addEventListener('pointerdown',e=>{ if(e.target.closest('.tl-tb,.tl-pop,.mc-head,.mc-qt,.mc-pop')) return;
+    if(!tlMode&&!alMode&&e.target.closest('.mc-chart')){ const l=mdHitRect(m,e); if(l){ e.preventDefault(); e.stopPropagation(); mdStartDrag(m,l,null,e); return; } }
+    if(mSel&&!e.target.closest('g.tl')) mdSelect(null); if(tlSel) tlSelect(null); },true);
+  for(const ev of ['mousedown','touchstart']) m.cell.addEventListener(ev,e=>{ if(mdDrag) e.stopPropagation(); },{capture:true,passive:true});
+  m.cell.addEventListener('pointermove',e=>{ if(mdDrag||tlMode||e.pointerType==='touch'||!m.inst) return; const l=drawLines(m.inst.symbol).some(x=>x.kind==='rect')?mdHitRect(m,e):null; const id=l?l.id:''; if(m.cell.dataset.hov===id) return; m.cell.dataset.hov=id; m.tl.querySelectorAll('g.rc').forEach(g=>g.classList.toggle('hov',g.dataset.id===id)); });
+}
+function mdRectBox(m,l,W){ const x1=mX(m,l.t1), x2=mX(m,l.t2), y1=mY(m,l.p1), y2=mY(m,l.p2); if(![x1,x2,y1,y2].every(v=>v!==null&&Number.isFinite(v))) return null; const L=Math.min(x1,x2); let R=Math.max(x1,x2); if(tlStyleOf(l).ext) R=Math.max(R,W); return {x:L,y:Math.min(y1,y2),w:Math.max(1,R-L),h:Math.max(1,Math.abs(y2-y1)),x1,x2,y1,y2}; }
+function mdHitRect(m,e){ if(!m.inst) return null; const r=m.cell.getBoundingClientRect(); const x=e.clientX-r.left, y=e.clientY-r.top, W=mPlot(m).W; const ls=drawLines(m.inst.symbol);
+  for(let i=ls.length-1;i>=0;i--){ const l=ls[i]; if(l.kind!=='rect') continue; const b=mdRectBox(m,l,W); if(b&&x>=b.x-2&&x<=b.x+b.w+2&&y>=b.y-2&&y<=b.y+b.h+2) return l; } return null; }
+function mdStartDrag(m,l,h,e){ const r=m.cell.getBoundingClientRect(); mdSelect(m,l.id); mdDrag={m,id:l.id,sym:m.inst.symbol,h,x0:e.clientX,L1:mL(m,l.t1),L2:mL(m,l.t2),p1:l.p1,p2:l.p2,py0:mP(m,e.clientY-r.top),moved:false}; m.tl.querySelector(`g[data-id="${l.id}"]`)?.classList.add('dragging'); }
+window.addEventListener('pointermove',e=>{ if(!mdDrag) return; const {m}=mdDrag; const l=drawLines(mdDrag.sym).find(x=>x.id===mdDrag.id); if(!l) return;
+  const r=m.cell.getBoundingClientRect(); const x=e.clientX-r.left, y=e.clientY-r.top; const p=mP(m,y); if(p===null) return; const h=mdDrag.h;
+  if(h){ const tt=mXT(m,x); if(tt===null) return; if(h[0]==='t') l['t'+h[1]]=tt; else if(h[0]==='p') l['p'+h[1]]=p; else { l['t'+h[0]]=tt; l['p'+h[1]]=p; } }
+  else { if(mdDrag.py0===null||mdDrag.L1===null||mdDrag.L2===null) return; const dL=(e.clientX-mdDrag.x0)/mBS(m), dp=p-mdDrag.py0; l.t1=mTL(m,mdDrag.L1+dL); l.t2=mTL(m,mdDrag.L2+dL); l.p1=mdDrag.p1+dp; l.p2=mdDrag.p2+dp; }
+  mdDrag.moved=true; mdPosition(m); });
+window.addEventListener('pointerup',()=>{ if(!mdDrag) return; const d=mdDrag; mdDrag=null; d.m.tl.querySelector('g.dragging')?.classList.remove('dragging'); if(d.moved) drawChanged(d.sym); });
+function mdFinish(m,pt){ const d=mdDraft; mdDraft=null; const l0=d.l, k=l0.kind==='rect'?'rect':'line'; const x1=mX(m,l0.t1), x2=mX(m,pt.t), y1=mY(m,l0.p1), y2=mY(m,pt.p);
+  if(x1!==null&&y1!==null&&x2!==null&&y2!==null&&(k==='rect'?(Math.abs(x2-x1)<6||Math.abs(y2-y1)<4):Math.hypot(x2-x1,y2-y1)<5)){ mdRender(m); return; }
+  const st=drawDef(k); const l={id:(k==='rect'?'R':'L')+Date.now().toString(36)+Math.random().toString(36).slice(2,5),kind:k,t1:l0.t1,p1:l0.p1,t2:pt.t,p2:pt.p,color:st.color,width:st.width,style:st.style,...(k==='rect'?{fill:st.fill,ext:false}:{})};
+  drawLines(m.inst.symbol).push(l); tlSetMode(false); drawChanged(m.inst.symbol); mdSelect(m,l.id); }
+function mdSelect(m,id){ const prev=mSel; if(m&&id){ if(tlSel) tlSelect(null); mSel={m,id}; } else mSel=null; tlPop=null;
+  const w=tlWrap(); const tb=w&&w.closest('.mc-grid')?document.querySelector('.tl-tb'):document.querySelector('.tl-tb'), pop=document.querySelector('.tl-pop');
+  if(mSel&&tb){ if(tb.parentElement!==m.cell){ m.cell.appendChild(tb); if(pop) m.cell.appendChild(pop); } } else if(tb&&w&&tb.parentElement!==w){ w.appendChild(tb); if(pop) w.appendChild(pop); }
+  if(prev&&prev.m!==m) mdRender(prev.m); if(m) mdRender(m); tlSyncTb(); tlPopRender(); }
+function mdDelete(){ if(!mSel) return; const {m,id}=mSel; const sym=m.inst.symbol; const ls=drawLines(sym); const i=ls.findIndex(x=>x.id===id); const l=ls[i]; if(i>=0) ls.splice(i,1);
+  const al=getAlerts(); if(al.some(a=>a.lineId===id)) setAlerts(al.filter(a=>a.lineId!==id)); mdSelect(null); drawChanged(sym); toast(l&&l.kind==='rect'?'Rectangle deleted':'Trendline deleted'); }
+function mdRender(m){ if(!m.tl||!m.inst) return; const ls=drawLines(m.inst.symbol); const all=mdDraft&&mdDraft.m===m?[...ls,mdDraft.l]:ls;
+  const alIds=new Set(getAlerts().filter(a=>a.kind==='line'&&a.active).map(a=>a.lineId)); const sel=mSel&&mSel.m===m?mSel.id:null;
+  m.tl.innerHTML=all.map(l=>{ const cls=`tl${l.kind==='rect'?' rc':''}${l.id===sel?' sel':''}${l.id==='__draft'?' draft':''}${alIds.has(l.id)?' alert':''}`;
+    if(l.kind==='rect') return `<g class="${cls}" data-id="${l.id}"><rect class="rc-body"></rect><rect class="rc-hit"></rect>${['11','22','12','21','t1','t2','p1','p2'].map(h=>`<circle class="tl-end${isNaN(h)?' mid':''}" data-h="${h}" r="${isNaN(h)?4:5}"></circle>`).join('')}</g>`;
+    return `<g class="${cls}" data-id="${l.id}"><line class="tl-ext"></line><line class="tl-hit"></line><line class="tl-stroke"></line><circle class="tl-end" data-h="11" r="5"></circle><circle class="tl-end" data-h="22" r="5"></circle></g>`; }).join('');
+  m.tl.querySelectorAll('g.tl').forEach(g=>{ const l=all.find(x=>x.id===g.dataset.id); if(l) tlApplyStyle(g,l); }); mdPosition(m); }
+function mdPosition(m){ if(!m.tl||!m.inst) return; const {W,H,aw,th}=mPlot(m); m.tl.style.width=W+'px'; m.tl.style.height=H+'px'; if(m.cap){ m.cap.style.right=aw+'px'; m.cap.style.bottom=th+'px'; }
+  const ls=drawLines(m.inst.symbol); const all=mdDraft&&mdDraft.m===m?[...ls,mdDraft.l]:ls; let selBox=null; const sel=mSel&&mSel.m===m?mSel.id:null;
+  for(const l of all){ const g=m.tl.querySelector(`g[data-id="${l.id}"]`); if(!g) continue;
+    if(l.kind==='rect'){ const b=mdRectBox(m,l,W); if(!b){ g.style.display='none'; continue; } g.style.display=''; if(l.id===sel) selBox={x:b.x,y:b.y,w:Math.min(b.w,W-b.x),h:b.h};
+      for(const r of g.querySelectorAll('rect')){ r.setAttribute('x',b.x); r.setAttribute('y',b.y); r.setAttribute('width',b.w); r.setAttribute('height',b.h); }
+      const xm=(b.x1+b.x2)/2, ym=(b.y1+b.y2)/2, P={'11':[b.x1,b.y1],'22':[b.x2,b.y2],'12':[b.x1,b.y2],'21':[b.x2,b.y1],'t1':[b.x1,ym],'t2':[b.x2,ym],'p1':[xm,b.y1],'p2':[xm,b.y2]};
+      g.querySelectorAll('.tl-end').forEach(c=>{ const q=P[c.dataset.h]; c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); }); continue; }
+    const x1=mX(m,l.t1), x2=mX(m,l.t2), y1=mY(m,l.p1), y2=mY(m,l.p2); if(![x1,y1,x2,y2].every(v=>v!==null&&Number.isFinite(v))){ g.style.display='none'; continue; } g.style.display='';
+    if(l.id===sel) selBox={x:Math.min(x1,x2),y:Math.min(y1,y2),w:Math.abs(x2-x1),h:Math.abs(y2-y1)};
+    for(const ln of g.querySelectorAll('line:not(.tl-ext)')){ ln.setAttribute('x1',x1); ln.setAttribute('y1',y1); ln.setAttribute('x2',x2); ln.setAttribute('y2',y2); }
+    const ex=g.querySelector('.tl-ext'); if(ex){ const [ax,ay,bx,by]=x2>=x1?[x1,y1,x2,y2]:[x2,y2,x1,y1]; if(g.classList.contains('alert')&&bx>ax&&W>bx){ ex.setAttribute('x1',bx); ex.setAttribute('y1',by); ex.setAttribute('x2',W); ex.setAttribute('y2',by+(W-bx)*(by-ay)/(bx-ax)); ex.style.display='inline'; } else ex.style.display='none'; }
+    const c=g.querySelectorAll('circle'); c[0].setAttribute('cx',x1); c[0].setAttribute('cy',y1); c[1].setAttribute('cx',x2); c[1].setAttribute('cy',y2); }
+  if(sel) tbPlace(m.cell.querySelector('.tl-tb'),m.cell.querySelector('.tl-pop'),selBox,W,H); }
+// toolbar above the selected drawing (below when there is no room), colour / thickness / style popover under it
+function tbPlace(tb,pop,selBox,W,H){ if(!tb||tb.hidden) return; if(!selBox){ tb.style.visibility='hidden'; if(pop) pop.style.visibility='hidden'; return; } tb.style.visibility='';
+  const tw=tb.offsetWidth||200, tH=tb.offsetHeight||34; const vb={x:Math.max(0,selBox.x),y:Math.max(0,selBox.y),r:Math.min(W,selBox.x+selBox.w),b:Math.min(H,selBox.y+selBox.h)};
+  let left=Math.round((vb.x+vb.r)/2-tw/2); left=Math.max(6,Math.min(W-tw-6,left)); let top=Math.round(vb.y-tH-12); if(top<6) top=Math.round(vb.b+12); if(top>H-tH-6) top=Math.max(6,Math.round(vb.y+8)); tb.style.left=left+'px'; tb.style.top=top+'px';
+  if(pop&&!pop.hidden){ pop.style.visibility=''; const ph=pop.offsetHeight||120, pw=pop.offsetWidth||200; const btn=tb.querySelector(`[data-pop="${tlPop}"]`); const bx=btn?btn.offsetLeft:0; let pt=top+tH+6; if(pt+ph>H-4) pt=Math.max(4,top-ph-6); pop.style.top=pt+'px'; pop.style.left=Math.max(6,Math.min(W-pw-6,left+bx-6))+'px'; } }
+// the selected drawing, wherever it is
+function selLine(){ if(mSel&&mSel.m.inst) return drawLines(mSel.m.inst.symbol).find(x=>x.id===mSel.id)||null; return tlLines.find(x=>x.id===tlSel)||null; }
+function selSym(){ return mSel&&mSel.m.inst?mSel.m.inst.symbol:(currentInst&&currentInst.symbol); }
+document.addEventListener('keydown',e=>{ if(!mSel||document.body.dataset.page!=='chart') return; if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if(e.key==='Delete'||e.key==='Backspace'){ e.preventDefault(); mdDelete(); } else if(e.key==='Escape') mdSelect(null); });
 
 // ===== Running trades on every chart: any open / pending trade is drawn on every chart of its pair (read-only),
 // so a second setup never hides the first one. The main chart's editable setup also shows on the extra charts. =====
@@ -3678,7 +3782,8 @@ function rtPosition(){ const w=tlWrap(); const svg=w&&w.querySelector('svg.rt-la
   const html=list.map(t=>tradeSvg(t,tt=>tlX(tt,a),yAtPrice,W,currentInst,true)).join(''); if(svg.innerHTML!==html) svg.innerHTML=html; }
 // extra charts: every running trade of that pair + the main chart's setup when it is the same pair
 function mcTradesFor(m){ if(!m.inst) return []; const out=runTrades.filter(t=>t.symbol===m.inst.symbol&&!(tool&&tool.tradeId===t.id));
-  if(tool&&tool.inst&&tool.inst.symbol===m.inst.symbol&&!rp.active) out.push({id:'__tool',direction:tool.direction,entry:tool.entry,sl:tool.sl,tp1:tool.tp1,extraTPs:tool.extraTPs||[],t0:tool.t0,status:tool.locked?(tool.status==='WIN'?'CLOSED':tool.status):'SETUP',result:tool.status==='WIN'?'WIN':null,bonusTracking:tool.status==='WIN',risk0:tool.risk0});
+  // an unconfirmed setup stays on the main chart only — it appears on the other charts once you CONFIRM it
+  if(tool&&tool.locked&&tool.inst&&tool.inst.symbol===m.inst.symbol&&!rp.active) out.push({id:'__tool',direction:tool.direction,entry:tool.entry,sl:tool.sl,tp1:tool.tp1,extraTPs:tool.extraTPs||[],t0:tool.t0,status:tool.locked?(tool.status==='WIN'?'CLOSED':tool.status):'SETUP',result:tool.status==='WIN'?'WIN':null,bonusTracking:tool.status==='WIN',risk0:tool.risk0});
   return out; }
 function mcBadge(m){ const b=m.cell.querySelector('.mc-trade'); if(!b||!m.inst) return; const list=runTrades.filter(t=>t.symbol===m.inst.symbol); if(!list.length){ b.hidden=true; return; }
   const px=hasPrice(m.inst)?getState(m.inst).price:NaN; const t=list[list.length-1]; const r=tradeR(t,px); b.hidden=false; b.className='mc-trade '+(r===null?'':r>=0?'pos':'neg');
