@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-11",
-  "generated_at": "10:30 SAST",
+  "date": "2026-11-12",
+  "generated_at": "04:53 SAST",
   "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
-      "score": -6,
+      "score": -7,
       "label": "Strong Bearish",
-      "reason": "Strong US dollar outpaces a politically pressured euro."
+      "reason": "Strong US dollar momentum weighs heavily on euro."
     },
     "GBPUSD": {
-      "score": -5,
-      "label": "Moderately Bearish",
-      "reason": "Hot US inflation drives dollar strength, weighing on sterling."
-    },
-    "AUDUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Soft domestic Australian data and a robust USD push the pair lower."
+      "reason": "Dollar strength drives pound lower despite BoE tightening expectations."
+    },
+    "AUDUSD": {
+      "score": -8,
+      "label": "Strong Bearish",
+      "reason": "Diverging Fed and RBA outlooks push Australian dollar down."
     },
     "NZDUSD": {
-      "score": -5,
-      "label": "Moderately Bearish",
-      "reason": "US rate hike expectations weigh heavily on the New Zealand dollar."
+      "score": -7,
+      "label": "Strong Bearish",
+      "reason": "Fed rate hike bets overshadow New Zealand election stability."
     },
     "USDCHF": {
-      "score": 6,
+      "score": 7,
       "label": "Strong Bullish",
-      "reason": "Widening US-Swiss rate differentials drive USD/CHF higher."
+      "reason": "Hawkish Fed expectations widen rate differentials, boosting USD/CHF."
     },
     "XAUUSD": {
-      "score": -4,
-      "label": "Moderately Bearish",
-      "reason": "Higher US rate hike expectations raise the opportunity cost of gold."
+      "score": -7,
+      "label": "Strong Bearish",
+      "reason": "Surging US dollar and hawkish Fed rate bets crush gold."
     },
     "US30": {
-      "score": 1,
-      "label": "Neutral",
-      "reason": "AI optimism offsets broader rate-hike pressures on the index."
+      "score": -3,
+      "label": "Moderately Bearish",
+      "reason": "Nvidia leadership turmoil and rate hike fears weigh on futures."
     },
     "US100": {
-      "score": 2,
-      "label": "Neutral",
-      "reason": "Upbeat tech and AI earnings support a rebound despite rate worries."
+      "score": -4,
+      "label": "Moderately Bearish",
+      "reason": "Nvidia executive turmoil and rate hike fears pressure tech index."
     },
     "GER30": {
-      "score": 2,
-      "label": "Neutral",
-      "reason": "Strong corporate earnings and tech sentiment lift the DAX near highs."
+      "score": 4,
+      "label": "Moderately Bullish",
+      "reason": "Strong corporate earnings and AI enthusiasm drive DAX to record highs."
     },
     "BTCUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Hotter US inflation and risk-off sentiment heavily pressure crypto."
+      "reason": "Hotter US inflation and rate hike bets slump risk-sensitive crypto."
     }
   },
   "currencies": {
     "USD": {
-      "score": 7,
-      "reason": "Strong US inflation and hawkish Fed speakers boost rate hike bets."
+      "score": 8,
+      "reason": "Hotter inflation and hawkish Fed rate hike bets drive strong rally."
     },
     "EUR": {
-      "score": -3,
-      "reason": "Weighed down by a surging US dollar and local political concerns."
+      "score": -5,
+      "reason": "Weighs down against strong USD amid French political uncertainty and ECB path."
     },
     "GBP": {
-      "score": -2,
-      "reason": "Pound pressured by hot US inflation data despite hawkish BoE hints."
+      "score": -4,
+      "reason": "Slip against surging dollar limited by potential BoE rate hikes."
     },
     "AUD": {
-      "score": -4,
-      "reason": "Weak domestic surveys and peak rates reinforce dovish RBA expectations."
+      "score": -6,
+      "reason": "Weak domestic surveys and paused RBA rate cycle pressure Aussie."
     },
     "NZD": {
-      "score": -2,
-      "reason": "Kiwi gives back gains as strong US CPI weighs on risk sentiment."
+      "score": -5,
+      "reason": "Kiwi slumps as surging dollar offsets election stability relief."
     },
     "CHF": {
-      "score": -5,
-      "reason": "Widening interest rate differentials with the US weaken the franc."
+      "score": -6,
+      "reason": "Widening yield differentials and low Swiss rates make franc funding currency."
     }
   },
   "sources": {
@@ -108,7 +108,7 @@
     },
     "CHF": {
       "paragraphs": 3,
-      "headlines": 5,
+      "headlines": 6,
       "problems": []
     },
     "GOLD": {
