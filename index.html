@@ -875,6 +875,53 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #f59e0b}
 .vs-foot{display:flex;gap:8px;justify-content:flex-end;padding:10px 14px 12px;border-top:1px solid rgba(255,255,255,.08)}
 .vs-foot button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#e6ebf5;border-radius:8px;padding:6px 10px;font:600 12px 'Space Grotesk',sans-serif;cursor:pointer}
 .vs-foot .vs-def{background:#2962ff;border-color:#2962ff}
+/* pair dropdown + bias chip; pair button row hidden on the Trade page */
+#page-chart .trade-head{display:none}
+.pair-dd{position:relative}
+.pdd-btn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 12px;border-radius:10px;border:1px solid var(--line,rgba(255,255,255,.12));background:rgba(255,255,255,.05);color:var(--text);cursor:pointer}
+.pdd-btn strong{font:700 17px 'Space Grotesk',sans-serif;letter-spacing:.4px}.pdd-btn i{font-style:normal;font-size:12px;opacity:.75}
+.pdd-btn:hover{background:rgba(255,255,255,.1)}
+.pdd-list{position:absolute;top:44px;left:0;z-index:60;width:330px;max-height:min(70vh,520px);overflow:auto;background:#121826;border:1px solid rgba(255,255,255,.12);border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.55);padding:6px}
+.pdd-item{display:grid;grid-template-columns:1fr 92px 64px 42px;gap:8px;align-items:center;width:100%;padding:9px 10px;border:none;border-radius:8px;background:none;color:var(--text);cursor:pointer;text-align:left;font-size:13px}
+.pdd-item:hover{background:rgba(255,255,255,.07)}.pdd-item.on{background:rgba(41,98,255,.18)}
+.pdd-item .bias-badge{padding:2px 6px;font-size:11px;text-align:center}
+.pdd-add{display:block;padding:9px 10px;font-size:12.5px;color:var(--muted);text-decoration:none;border-top:1px solid rgba(255,255,255,.08);margin-top:4px}
+.hd-bias{display:none!important}#page-chart.fs-on .hd-bias{display:inline-flex!important}
+.hd-bias{align-items:center;gap:7px;height:32px;padding:0 10px!important;border-radius:9px!important;font-size:12px!important;white-space:nowrap}
+.hd-bias b{font:800 15px 'Space Grotesk',sans-serif}
+/* full screen = TradingView: one slim header, icon rail, chart takes the rest */
+#page-chart.fs-on .bias-banner{display:none}
+#page-chart.fs-on .tv-head{flex-wrap:nowrap;gap:10px}
+#page-chart.fs-on .tv-head .ct-tfs{margin-left:0}
+#page-chart.fs-on .hd-btn span{display:none}
+#page-chart.fs-on .rail-btn{width:40px;padding:8px 0}#page-chart.fs-on .rail-btn span{display:none}
+#page-chart.fs-on .chart-container{padding:8px;gap:8px}
+#page-chart.fs-on{padding:6px 8px}
+@media(max-width:900px){ .pdd-list{width:calc(100vw - 40px)} #page-chart.fs-on .tv-head{flex-wrap:wrap} .hd-bias span{display:none} }
+/* ===== compact chart UI (smaller buttons, smaller level labels — still readable) ===== */
+.hd-bias,#page-chart.fs-on .hd-bias{display:none!important}
+.tv-head{gap:10px}
+.pdd-btn{height:32px;padding:0 10px}.pdd-btn strong{font-size:15px}
+.tvh-px .ct-price{font-size:16px}.tvh-px #ct-chg{font-size:12px}
+.tv-head .feed-tag{font-size:9px;padding:3px 7px}
+.tv-head .ct-tfs{padding:3px;gap:2px;border-radius:9px}
+.tv-head .ct-tfs button{padding:4px 9px;font-size:12px;border-radius:7px}
+.tv-head .ct-tfs button.active{box-shadow:none}
+.hd-btn,.hd-sel{height:30px;padding:0 9px;gap:6px;font-size:12px;border-radius:8px}
+.hd-btn i,.hd-sel i{font-size:13px}.hd-sel select{font-size:12px}
+.rail-btn{width:44px;padding:6px 0 5px}.rail-btn i{font-size:15px}.rail-btn span{font-size:9px}
+#page-chart.fs-on .rail-btn{width:34px;padding:6px 0}
+.quick-trade{top:8px;left:8px;border-radius:7px;gap:1px;box-shadow:0 3px 12px rgba(0,0,0,.3)}
+.qt-btn{min-width:64px;padding:3px 8px 4px;gap:0}
+.qt-btn small{font-size:8.5px;letter-spacing:1px}.qt-btn b{font-size:12px}
+.pt-line.fbc .pt-pill{padding:2px 7px;font:600 9px 'Space Grotesk',sans-serif;letter-spacing:.8px;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.pt-line.fbc .pt-pill.pos-below{top:16px}.pt-line.fbc .pt-pill.pos-above{top:-13px}
+.pt-line.fbc .pt-pill::after{left:7px;border-left-width:4px;border-right-width:4px}
+.pt-line.fbc .pt-pill.pos-below::after{top:-4px;border-bottom-width:4px}.pt-line.fbc .pt-pill.pos-above::after{bottom:-4px;border-top-width:4px}
+.pt-axis-tag{font-size:10.5px!important;padding:2px 5px!important;margin-top:-8px!important}
+.pt-bar{font-size:11px}.pb-row{gap:5px;padding:3px 6px}.pb-btn{padding:3px 8px;font-size:11px}
+.pt-bar .live-tag{font-size:9px;padding:1px 5px}.pb-openr{font-size:11px;padding:1px 5px}
+.rp-bar{padding:4px 6px;gap:4px;border-radius:10px}.rp-bar button{height:26px;min-width:28px;padding:0 7px;font-size:11.5px}.rp-badge{font-size:9.5px;padding:3px 6px}.rp-time{font-size:11.5px}
 </style>
 </head>
 <body>
@@ -1292,6 +1339,13 @@ function startBinance(){
   bnWs.onclose=()=>{ bnStatus='offline'; updateFeedBadgeSafe(); setTimeout(startBinance,Math.min(30000,1000*2**(bnRetry++))); };
 }
 function updateFeedBadgeSafe(){ try{ updateFeedUI(); }catch(e){} }
+// N candles that closed before `before` (epoch s) — used to keep loading history as you scroll left
+async function fetchOlder(inst,g,before,count){
+  if(isBinance(inst)){ const iv=BN_TF[g]||BN_IV[g]; if(!iv) return []; const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=${iv}&endTime=${before*1000-1}&limit=${Math.min(1000,count)}`); if(!r.ok) throw new Error('Binance HTTP '+r.status); const k=await r.json(); return k.map(c=>({time:Math.floor(c[0]/1000),open:+c[1],high:+c[2],low:+c[3],close:+c[4]})).filter(c=>c.time<before); }
+  const d=getDerivSymbol(inst); if(feedMode!=='live'||!d) return [];
+  const r=await wsSend({ticks_history:d,end:before-1,count:Math.min(5000,count),style:'candles',granularity:g},20000);
+  return (r.candles||[]).map(c=>({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close})).filter(c=>c.time<before);
+}
 async function binanceCandles(inst,gran,count){ const k=await bnKlines(binanceSym(inst),BN_TF[gran]||'15m',Math.min(count,1000)); return k.map(c=>({time:Math.floor(c[0]/1000),open:+c[1],high:+c[2],low:+c[3],close:+c[4]})); }
 // Replay BTC trades that were open while the page was closed (1-minute candles since entry)
 async function recheckBinanceTrades(){
@@ -2055,7 +2109,7 @@ function renderPanel(){
   $p('#pt-addtp')?.addEventListener('click',addExtraTP);
   $p('#pt-cancel')?.addEventListener('click',()=>{ clearTool(); toast('Setup removed'); });
   $p('#pt-confirm')?.addEventListener('click',()=>{ if(!tool.setupTag){ tool.barMin=false; renderPanel(); toast('Pick your entry model first: FRVP or Engulfing sweep'); overlay.querySelector('.pb-sub')?.classList.add('need'); return; } confirmTrade(); });
-  $p('#pt-close')?.addEventListener('click',()=>closeTrade(tool.tradeId,tool.status==='PENDING'?'CANCELLED':'MANUAL CLOSE',mkt(tool.inst),rp.active?{exitTime:new Date((rp.time+rp.g)*1000).toISOString()}:{}));
+  $p('#pt-close')?.addEventListener('click',()=>closeTrade(tool.tradeId,tool.status==='PENDING'?'CANCELLED':'MANUAL CLOSE',mkt(tool.inst),rp.active?{exitTime:new Date(rp.now*1000).toISOString()}:{}));
   $p('#pt-stopbonus')?.addEventListener('click',async()=>{ const t=(await idbAll('journal')).find(x=>x.id===tool.tradeId); if(t){ t.bonusTracking=false; await idbPut('journal',t); } clearTool(); toast('Bonus tracking stopped — result saved'); });
   repositionOnly();
 }
@@ -2118,7 +2172,7 @@ function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo
 async function confirmTrade(){
   if(!tool||tool.locked) return;
   const m=calcMoney(); const inst=tool.inst; const {rate,source}=getUSDZAR();
-  const bias=(rp.active&&rp.sym===inst.symbol)?(()=>{ const d=new Date((rp.time+rp.g)*1000).toLocaleDateString('en-CA',{timeZone:'Africa/Johannesburg'}); const h=biasHistory&&biasHistory.days&&biasHistory.days[d]&&biasHistory.days[d][inst.symbol]; return h?{score:h.score,label:labelFor(h.score),reason:'Score from that day',date:d}:null; })():getBias(inst.symbol);
+  const bias=(rp.active&&rp.sym===inst.symbol)?(()=>{ const d=new Date(rp.now*1000).toLocaleDateString('en-CA',{timeZone:'Africa/Johannesburg'}); const h=biasHistory&&biasHistory.days&&biasHistory.days[d]&&biasHistory.days[d][inst.symbol]; return h?{score:h.score,label:labelFor(h.score),reason:'Score from that day',date:d}:null; })():getBias(inst.symbol);
   const balance=parseFloat(lsGet('bd_balance',10000))||10000;
   const market=mkt(inst); const practice=!!(rp.active&&rp.sym===inst.symbol);
   // Market entry: key level = current price; invalidation stays exactly where you put it, target re-set to 1:2.5
@@ -2131,7 +2185,7 @@ async function confirmTrade(){
   { const lb=lastBarTime(); if(lb!==null) tool.t0=lb; }
   tool.risk0=Math.abs(tool.entry-tool.sl); tool.locked=true; tool.status=filledNow?'OPEN':'PENDING'; tool.tradeId=tool.id;
   const screenshot=await takeScreenshotWithOverlay();
-  const entryTime=practice?new Date((rp.time+rp.g)*1000).toISOString():new Date().toISOString();
+  const entryTime=practice?new Date(rp.now*1000).toISOString():new Date().toISOString();
   const list=getInstruments(); const it=list.find(i=>i.symbol===inst.symbol);
   const prevGroup=it?it.group:inst.group;
   const entry={t0:tool.t0,wBars:tool.wBars,id:tool.id,symbol:inst.symbol,name:inst.name,direction:tool.direction,tradeType:tool.tradeType||'Intraday',setupTag:tool.setupTag||'',customTags:tool.customTags||[],session:sessionFor(entryTime),
@@ -2272,9 +2326,10 @@ function buildChartShell(){
   wrap.innerHTML=`
   <div id="bias-banner" class="bias-banner bias-none" aria-label="Daily bias banner">${gaugeSVG('banner-gauge',true)}<span id="bias-banner-score" class="bias-score">—</span><div class="bias-banner-main"><span id="bias-banner-label" class="bias-banner-label">NO SCORE YET FOR TODAY</span><span id="bias-banner-text" class="bias-reason"></span></div><span id="bias-banner-date" class="bias-date"></span><span id="bias-banner-badge" class="bias-badge bias-none">No score yet for today</span></div>
   <div class="tv-head">
-    <div class="tvh-sym"><strong id="ct-name">—</strong><span id="ct-feed" class="feed-tag">—</span></div>
-    <div class="tvh-px"><span id="ct-price" class="mono ct-price">—</span><span id="ct-chg" class="mono">—</span></div>
+    <div class="pair-dd" id="pair-dd"><button id="pair-dd-btn" class="pdd-btn" title="Change pair" aria-haspopup="listbox"><strong id="ct-name">—</strong><i>▾</i></button><div id="pair-dd-list" class="pdd-list" role="listbox" hidden></div></div>
+    <div class="tvh-px"><span id="ct-price" class="mono ct-price">—</span><span id="ct-chg" class="mono">—</span><span id="ct-feed" class="feed-tag">—</span></div>
     <div class="ct-tfs" id="ct-tfs">${TIMEFRAMES.map(t=>`<button data-tf="${t.label}" class="${t.label===currentTF?'active':''}">${t.label}</button>`).join('')}</div>
+    <div id="hd-bias" class="bias-badge hd-bias bias-none" title="Today's fundamental bias for this pair">—</div>
     <div class="tvh-right">
       <button id="ct-replay" class="hd-btn" title="Bar replay — practise on past candles"><i>⏮</i><span>Replay</span></button>
       <button id="ct-journal" class="hd-btn" title="Trades on this pair"><i>☰</i><span>Journal</span></button>
@@ -2300,7 +2355,7 @@ function buildChartShell(){
   </div>
   <button id="ct-tp" hidden disabled></button>
   <div id="chart-status" class="chart-status">Loading candles…</div>`;
-  $('ct-tfs').addEventListener('click',e=>{ const b=e.target.closest('button[data-tf]'); if(!b) return; if(rp.active||rp.picking){ endReplay({noReload:true,quiet:true}); toast('Replay ended — timeframe changed'); } currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); loadCandles();  });
+  $('ct-tfs').addEventListener('click',e=>{ const b=e.target.closest('button[data-tf]'); if(!b) return; if(rp.picking){ endReplay({noReload:true,quiet:true}); } currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); if(rp.active){ rpSetTF(currentTF); return; } loadCandles();  });
 
   $('ct-theme').addEventListener('change',e=>{ applyTheme(e.target.value); toast(`Theme: ${e.target.selectedOptions[0].text} 🎨`); });
   $('ct-buy').addEventListener('click',()=>chartCreateSetup('buy'));
@@ -2310,6 +2365,9 @@ function buildChartShell(){
   $('ct-line').addEventListener('click',()=>tlSetMode(!tlMode));
   $('ct-vp').addEventListener('click',()=>vpSetMode(!vpMode));
   $('ct-replay').addEventListener('click',()=>{ if(rp.active||rp.picking) endReplay(); else startReplayPick(); });
+  $('pair-dd-btn').addEventListener('click',e=>{ e.stopPropagation(); const l=$('pair-dd-list'); if(!l.hidden){ l.hidden=true; return; } renderPairDD(); l.hidden=false; });
+  document.addEventListener('click',e=>{ const l=$('pair-dd-list'); if(l&&!l.hidden&&!e.target.closest('#pair-dd')) l.hidden=true; });
+  document.addEventListener('keydown',e=>{ const l=$('pair-dd-list'); if(e.key==='Escape'&&l&&!l.hidden) l.hidden=true; });
   $('ct-cursor').addEventListener('click',()=>{ tlSetMode(false); vpSetMode(false); tlRender(); vpRender(); });
   $('ct-clear').addEventListener('click',()=>{ if(!tlLines.length&&!vpList.length){ toast('Nothing drawn on this pair'); return; } if(!confirm(`Remove all ${tlLines.length} line(s) and ${vpList.length} volume profile(s) on ${currentInst.name}?`)) return; tlLines=[]; tlSel=null; tlSave(); vpList=[]; vpSel=null; vpCache.clear(); vpSave(); vpCloseSettings(); tlRender(); vpRender(); toast('Drawings cleared'); });
   $('ct-fs').addEventListener('click',toggleFs);
@@ -2344,9 +2402,10 @@ async function loadCandles(){
   const gran=TIMEFRAMES.find(t=>t.label===currentTF)?.gran||900;
   if(chartView==='trade') $('chart-status').textContent='Loading candles…';
   try{
-    const candles=await getCandles(currentInst,gran,300);
+    let candles=await getCandles(currentInst,gran,isBinance(currentInst)?1000:2000);
+    histDone=false;
     candleMap=new Map(candles.map(c=>[c.time,c]));
-    if(series && ensureChartLib()){ series.setData(candles); chart.timeScale().fitContent(); }
+    if(series && ensureChartLib()){ series.setData(candles); const n=candles.length; try{ if(n>200) chart.timeScale().setVisibleLogicalRange({from:n-170,to:n+14}); else chart.timeScale().fitContent(); }catch(e){ chart.timeScale().fitContent(); } }
     tlTimesKey=''; tlRender(); vpRender();
     if(series && ensureChartLib() && !candles.length) series.setData([]);
     const cw=$('chart-wait'); if(cw){ cw.hidden=!!candles.length; if(!candles.length) cw.innerHTML=`<span class="spinner"></span><div><b>Waiting for live prices</b><small>${esc(getFeedMode()==='offline'?(getFeedError()||'Price feed offline — retrying'):'Connecting to the live price feed…')}</small></div>`; }
@@ -2354,6 +2413,18 @@ async function loadCandles(){
     $('chart-status').textContent=candles.length?`${candles.length} candles · ${currentTF} · ${getFeedMode().toUpperCase()}`:(getFeedMode()==='live'?'No candles returned for this symbol/timeframe':`Waiting for live data — feed is ${getFeedMode().toUpperCase()}${getFeedError()?' · '+getFeedError():''}`);
     updateHeader();
   }catch(e){ console.warn(e); $('chart-status').textContent='Candle load failed — demo data continues'; }
+}
+var histBusy=false, histDone=false;
+async function loadOlderCandles(){
+  if(histBusy||histDone||rp.active||rp.picking||!currentInst||!series) return; const T=barTimes(); if(!T.length) return;
+  histBusy=true; const inst=currentInst, tf=currentTF, g=granForLabel(tf), oldest=T[0];
+  try{
+    const older=await fetchOlder(inst,g,oldest,isBinance(inst)?1000:3000); if(inst!==currentInst||tf!==currentTF||rp.active) return;
+    const add=older.filter(c=>c.time<oldest&&!candleMap.has(c.time)); if(!add.length){ histDone=true; return; }
+    const ts=chart.timeScale(); const vr=ts.getVisibleLogicalRange(); add.forEach(c=>candleMap.set(c.time,c));
+    const all=[...candleMap.values()].sort((a,b)=>a.time-b.time); tlTimesKey=''; series.setData(all); if(vr) ts.setVisibleLogicalRange({from:vr.from+add.length,to:vr.to+add.length});
+    const st=$('chart-status'); if(st) st.textContent=`${all.length} candles · ${currentTF} · scroll left for more`; if(all.length>=40000) histDone=true;
+  }catch(e){ console.warn('history',e); } finally{ histBusy=false; }
 }
 function updateHeader(){
   if(!currentInst) return;
@@ -2372,6 +2443,7 @@ function updateHeader(){
   const b=biasBadge(currentInst.symbol); const banner=$('bias-banner'); setGauge('banner-gauge',b.score);
   if(b.score===null){ banner.className='bias-banner bias-none'; $('bias-banner-badge').textContent='No score yet for today'; $('bias-banner-badge').className='bias-badge bias-none'; $('bias-banner-text').textContent='No score yet for today — check Settings for the scores URL'; $('bias-banner-score').textContent='—'; $('bias-banner-label').textContent='NO SCORE YET FOR TODAY'; }
   else { banner.className='bias-banner '+b.cls; $('bias-banner-badge').textContent=b.text; $('bias-banner-badge').className='bias-badge '+b.cls; $('bias-banner-text').textContent=b.reason||''; $('bias-banner-score').textContent=(b.score>0?'+':'')+b.score; $('bias-banner-label').textContent=b.label; $('bias-banner-date').textContent=b.date+(accuracyShort(currentInst.symbol)?' · 🎯 '+accuracyShort(currentInst.symbol):''); }
+  const hc=$('hd-bias'); if(hc){ hc.className='bias-badge hd-bias '+(b.score===null?'bias-none':b.cls); hc.innerHTML=b.score===null?'<span>No bias score today</span>':`<b>${b.score>0?'+':''}${b.score}</b><span>${esc(b.text)}</span>`; if(b.reason) hc.title='Bias reason: '+b.reason; }
   const hb=$('chart-head-bias'); if(hb){ hb.textContent=b.score===null?'No score yet for today':b.text; hb.className='bias-badge '+b.cls; }
   $('chart-title').textContent=currentInst.name;
   $('chart-sub').textContent=`${currentInst.symbol} · ${priceText(currentInst)} · ${chgText(currentInst)} · ${sourceLabel(currentInst)}`;
@@ -2389,6 +2461,8 @@ function initChart(){
   // Keep every position-tool level inside the visible price range (like TradingView)
   series.applyOptions({autoscaleInfoProvider:orig=>{ const r=orig(); if(!r||!tool||!r.priceRange) return r; const lv=[tool.entry,tool.sl,tool.tp1,...tool.extraTPs.map(t=>t.price)].filter(v=>isFinite(v)); return {...r,priceRange:{minValue:Math.min(r.priceRange.minValue,...lv),maxValue:Math.max(r.priceRange.maxValue,...lv)}}; }});
   bindChart(chart,series,$('chart-wrap'));
+  // TradingView-style history: scroll near the oldest candle and older candles load in
+  try{ chart.timeScale().subscribeVisibleLogicalRangeChange(r=>{ if(r&&r.from<60) loadOlderCandles(); }); }catch(e){}
   // Price flash on tick: update header + live candle
   if(unsubCandle) unsubCandle();
   unsubCandle=onCandle(p=>{
@@ -2473,6 +2547,11 @@ function tlSetup(){
     if(e.altKey&&(e.key==='t'||e.key==='T'||e.code==='KeyT')){ e.preventDefault(); tlSetMode(!tlMode); }
   });
   window.addEventListener('hashchange',()=>setTimeout(()=>{ if(document.body.dataset.page!=='chart'){ if(cssFs()) toggleFs(); tlSetMode(false); vpSetMode(false); if(rp.playing) replayPlay(false); } else tlKick(); },30));
+}
+// pair picker: current pair with ▾ — opens a vertical list (price, change, bias) instead of a row of buttons
+function renderPairDD(){ const l=$('pair-dd-list'); if(!l) return;
+  l.innerHTML=getInstruments().map(i=>{ const b=biasBadge(i.symbol), c=getChange(i); return `<button class="pdd-item${currentInst&&currentInst.symbol===i.symbol?' on':''}" data-sym="${esc(i.symbol)}" role="option"><strong>${esc(i.name)}</strong><span class="mono">${hasPrice(i)?fmtPrice(i,getState(i).price):'—'}</span><span class="mono ${c>=0?'up':'down'}">${hasPrice(i)?chgText(i):''}</span><span class="bias-badge ${b.score===null?'bias-none':b.cls}">${b.score===null?'—':(b.score>0?'+':'')+b.score}</span></button>`; }).join('')+`<a class="pdd-add" href="#/markets">＋ Add / manage pairs</a>`;
+  l.querySelectorAll('.pdd-item').forEach(x=>x.addEventListener('click',()=>{ l.hidden=true; location.hash='#/trade/'+encodeURIComponent(x.dataset.sym); }));
 }
 function railSync(){ $('ct-cursor')?.classList.toggle('active',!tlMode&&!vpMode); }
 function tlSetMode(on){
@@ -2835,78 +2914,108 @@ async function buildTradePics(t,{save=true}={}){
 let picQueue=Promise.resolve();
 function queueTradePics(id){ picQueue=picQueue.then(async()=>{ try{ const t=(await idbAll('journal')).find(x=>x.id===id); if(t&&t.status==='CLOSED'&&!(t.pics&&t.pics.after&&t.pics.v>=2)) await buildTradePics(t); }catch(e){ console.warn('pics',e); } }); return picQueue; }
 
-// ===== Bar replay — practise on past candles. Trades placed here are PRACTICE trades: own win rate, never mixed with real ones =====
+// ===== Bar replay — runs on a market clock like TradingView: candles build up minute by minute at your speed.
+// Change timeframe any time; trades placed here are PRACTICE trades (own win rate, never mixed with real ones).
 var rp={active:false};
 function mkt(inst){ return (rp.active&&inst&&inst.symbol===rp.sym)?rp.price:getState(inst).price; }
-const RP_SPEEDS=[1,2,5,10];
+const RP_SPEEDS=[0.5,1,3,10,30,100]; // 1× = one minute of market time per second
+async function rpFetch1m(inst,start,end){ // 1-minute candles = the replay's engine (the price path inside every bigger candle)
+  const out=[]; const now=Math.floor(Date.now()/1000); end=Math.min(end,now);
+  if(isBinance(inst)){ let from=start*1000; for(let n=0;n<12&&from<=end*1000;n++){ const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=1m&startTime=${from}&endTime=${end*1000}&limit=1000`); if(!r.ok) break; const k=await r.json(); if(!k.length) break; k.forEach(c=>out.push({time:Math.floor(c[0]/1000),open:+c[1],high:+c[2],low:+c[3],close:+c[4]})); from=k[k.length-1][0]+60000; if(k.length<1000) break; } }
+  else { const d=getDerivSymbol(inst); if(feedMode!=='live'||!d) return []; for(let s=start,n=0;s<=end&&n<6;n++){ const e=Math.min(end,s+4980*60); const r=await wsSend({ticks_history:d,start:s,end:e,style:'candles',granularity:60,count:5000},20000); (r.candles||[]).forEach(c=>out.push({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close})); s=e+1; } }
+  const m=new Map(); out.forEach(c=>m.set(c.time,c)); return [...m.values()].sort((a,b)=>a.time-b.time);
+}
+// price path inside one minute: up candle O→L→H→C, down candle O→H→L→C
+function rpPath(c){ return c.close>=c.open?[c.open,c.low,c.high,c.close]:[c.open,c.high,c.low,c.close]; }
+function rpPriceAt(c,f){ const p=rpPath(c); if(f<=0) return p[0]; if(f>=1) return p[3]; const x=f*3, i=Math.floor(x), r=x-i; return p[i]+(p[i+1]-p[i])*r; }
+function rpRange(c,f0,f1){ const p=rpPath(c); let lo=Math.min(rpPriceAt(c,f0),rpPriceAt(c,f1)), hi=Math.max(rpPriceAt(c,f0),rpPriceAt(c,f1)); for(let i=1;i<3;i++){ const fi=i/3; if(fi>f0&&fi<f1){ lo=Math.min(lo,p[i]); hi=Math.max(hi,p[i]); } } return [lo,hi]; }
+function rpIdx(t){ const a=rp.m1; let lo=0,hi=a.length-1,ans=-1; while(lo<=hi){ const m=(lo+hi)>>1; if(a[m].time<=t){ ans=m; lo=m+1; } else hi=m-1; } return ans; } // last minute starting at or before t
+// one bar [b, min(b+g, now)) built from the minutes — the last minute only as far as the clock has reached
+function rpBar(b,now){ const g=rp.g, end=Math.min(b+g,now); let i=rpIdx(b-1)+1, bar=null;
+  for(;i<rp.m1.length;i++){ const m=rp.m1[i]; if(m.time>=end) break; if(m.time<b) continue; const f=Math.min(1,(end-m.time)/60); let o=m.open,h,l,c;
+    if(f>=1){ h=m.high; l=m.low; c=m.close; } else { const r=rpRange(m,0,f); l=r[0]; h=r[1]; c=rpPriceAt(m,f); }
+    if(!bar) bar={time:b,open:o,high:h,low:l,close:c}; else { bar.high=Math.max(bar.high,h); bar.low=Math.min(bar.low,l); bar.close=c; } }
+  return bar; }
+async function rpHistory(g,before){ rp.hist=rp.hist||{}; const k=g+':'+before; if(!rp.hist[k]){ let h=[]; try{ h=await fetchOlder(rp.inst,g,before,isBinance(rp.inst)?1000:1500); }catch(e){} rp.hist[k]=h; } return rp.hist[k]; }
+async function rpBuildChart(){ // history before the replay window + bars made from the 1-minute engine up to the clock
+  const g=rp.g, Wb=Math.floor(rp.S/g)*g; const hist=(await rpHistory(g,Wb)).filter(c=>c.time<Wb); const bars=[];
+  for(let b=Wb;b<=rp.now;b+=g){ const x=rpBar(b,rp.now); if(x) bars.push(x); }
+  const all=[...hist,...bars]; candleMap=new Map(all.map(c=>[c.time,c])); tlTimesKey=''; series.setData(all); rp.curB=Math.floor(rp.now/g)*g;
+  const last=all[all.length-1]; if(last) rp.price=last.close; return all.length; }
 async function startReplayPick(){
-  if(!currentInst||!chart) return; if(rp.active){ endReplay(); return; }
-  const inst=currentInst, g=granForLabel(currentTF); const now=Math.floor(Date.now()/1000);
-  $('ct-replay').querySelector('span').textContent='Loading…';
-  let all=[]; try{ all=await fetchRange(inst,g,now-1500*g,now); }catch(e){}
-  if(all.length<60){ all=[...candleMap.values()].sort((a,b)=>a.time-b.time); }
-  $('ct-replay').querySelector('span').textContent='Replay';
-  if(all.length<60){ toast('Not enough price history for a replay on this timeframe'); return; }
+  if(!currentInst||!chart) return; if(rp.active||rp.picking){ endReplay(); return; }
   clearTool(); tlSetMode(false); vpSetMode(false);
-  candleMap=new Map(all.map(c=>[c.time,c])); tlTimesKey=''; series.setData(all); try{ chart.timeScale().fitContent(); }catch(e){}
-  rp={active:false,picking:true,sym:inst.symbol,inst,g,all};
+  rp={active:false,picking:true,sym:currentInst.symbol,inst:currentInst,g:granForLabel(currentTF),speed:(rp&&rp.speed)||1};
   const w=tlWrap(); let cap=w.querySelector('.rp-capture'); if(!cap){ cap=document.createElement('div'); cap.className='rp-capture'; w.appendChild(cap);
-    const hint=document.createElement('div'); hint.className='tl-hint rp-hint'; hint.textContent='Bar replay: click the candle where the replay should start · Esc cancels'; w.appendChild(hint);
+    const hint=document.createElement('div'); hint.className='tl-hint rp-hint'; hint.textContent='Bar replay: scroll back if you like, then click the candle where the replay should start · Esc cancels'; w.appendChild(hint);
     cap.addEventListener('pointermove',e=>{ const r=w.getBoundingClientRect(); cap.style.setProperty('--x',(e.clientX-r.left)+'px'); });
-    cap.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); const a=tlAnchor(); if(!a||!rp.picking) return; const r=w.getBoundingClientRect(); const L=Math.round((a.n-1)+(e.clientX-r.left-a.x)/a.bs); beginReplay(Math.max(30,Math.min(rp.all.length-2,L))); }); }
+    cap.addEventListener('wheel',e=>{ cap.style.pointerEvents='none'; clearTimeout(cap._t); cap._t=setTimeout(()=>cap.style.pointerEvents='',250); },{passive:true});
+    cap.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); if(!rp.picking) return; const a=tlAnchor(); if(!a) return; const r=w.getBoundingClientRect(); const T=barTimes(); const L=Math.round((a.n-1)+(e.clientX-r.left-a.x)/a.bs); const i=Math.max(20,Math.min(T.length-2,L)); beginReplay(T[i]+rp.g); }); }
   cap.hidden=false; w.querySelector('.rp-hint').hidden=false; $('ct-replay').classList.add('active');
 }
-function beginReplay(idx){
-  const w=tlWrap(); w.querySelector('.rp-capture').hidden=true; w.querySelector('.rp-hint').hidden=true;
-  rp.picking=false; rp.active=true; rp.idx=idx; rp.playing=false; rp.speed=rp.speed||1; const c=rp.all[idx]; rp.price=c.close; rp.time=c.time;
-  const shown=rp.all.slice(0,idx+1); candleMap=new Map(shown.map(k=>[k.time,k])); tlTimesKey=''; series.setData(shown);
-  try{ chart.timeScale().setVisibleLogicalRange({from:Math.max(0,idx-120),to:idx+18}); }catch(e){}
+async function beginReplay(S){
+  const w=tlWrap(); w.querySelector('.rp-capture').hidden=true; w.querySelector('.rp-hint').hidden=true; rp.picking=false;
+  $('ct-replay').querySelector('span').textContent='Loading…';
+  const D0=Math.floor(S/86400)*86400; const m1=await rpFetch1m(rp.inst,D0,S+3*86400);
+  $('ct-replay').querySelector('span').textContent='Replay';
+  if(m1.length<30){ toast('No 1-minute data for that date — pick a more recent candle'); rp={active:false}; $('ct-replay').classList.remove('active'); openChart(currentInst); return; }
+  rp.m1=m1; rp.m1End=m1[m1.length-1].time+60; rp.S=S; rp.now=S; rp.active=true; rp.playing=false; rp.hist={};
+  await rpBuildChart(); try{ const n=barTimes().length; chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-130),to:n+20}); }catch(e){}
   document.body.classList.add('replaying'); renderReplayBar(); updateHeader(); tlRender(); vpRender();
-  toast('Replay started — press ▶ or → to move forward. Trades here are practice only.');
+  toast('Replay ready — press ▶. 1× = one minute of market per second. Trades here are practice only.');
 }
+async function rpSetTF(tf){ if(!rp.active) return; replayPlay(false); rp.g=granForLabel(tf); await rpBuildChart(); try{ const n=barTimes().length; chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-130),to:n+20}); }catch(e){} tlRender(); vpRender(); renderReplayBar(); updateHeader(); }
 function renderReplayBar(){
-  const w=tlWrap(); let bar=w.querySelector('.rp-bar');
+  const w=tlWrap(); if(!w) return; let bar=w.querySelector('.rp-bar');
   if(!bar){ bar=document.createElement('div'); bar.className='rp-bar'; w.appendChild(bar);
     bar.addEventListener('pointerdown',e=>e.stopPropagation());
     bar.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; const a=b.dataset.a;
-      if(a==='play') replayPlay(!rp.playing); else if(a==='step') replayStep(); else if(a==='exit') endReplay(); else if(a==='restart'){ replayPlay(false); startReplayPick(); } else if(b.dataset.sp){ rp.speed=+b.dataset.sp; if(rp.playing){ replayPlay(false); replayPlay(true); } renderReplayBar(); } }); }
+      if(a==='play') replayPlay(!rp.playing); else if(a==='step') replayStep(); else if(a==='exit') endReplay(); else if(a==='restart'){ replayPlay(false); startReplayPick(); } else if(b.dataset.sp){ rp.speed=+b.dataset.sp; renderReplayBar(); } }); }
   bar.hidden=!rp.active; if(!rp.active) return;
-  bar.innerHTML=`<span class="rp-badge">REPLAY</span><span class="rp-time mono">${sastFmt(rp.time+rp.g,true)}</span>
-    <button data-a="restart" title="Pick a new start candle">⏮</button><button data-a="play" class="rp-play" title="Play / pause (Space)">${rp.playing?'⏸':'▶'}</button><button data-a="step" title="Next candle (→)">⏭</button>
-    <span class="rp-sp">${RP_SPEEDS.map(s=>`<button data-sp="${s}" class="${rp.speed===s?'on':''}">${s}×</button>`).join('')}</span><button data-a="exit" class="rp-exit" title="Back to live prices">✕ Exit replay</button>`;
+  bar.innerHTML=`<span class="rp-badge">REPLAY</span><span class="rp-time mono">${sastFmt(rp.now,true)}</span>
+    <button data-a="restart" title="Pick a new start candle">⏮</button><button data-a="play" class="rp-play" title="Play / pause (Space)">${rp.playing?'⏸':'▶'}</button><button data-a="step" title="Jump to the next candle close (→)">⏭</button>
+    <span class="rp-sp" title="1× = one minute of market per second">${RP_SPEEDS.map(s=>`<button data-sp="${s}" class="${rp.speed===s?'on':''}">${s}×</button>`).join('')}</span><button data-a="exit" class="rp-exit" title="Back to live prices">✕ Exit</button>`;
 }
-function replayPlay(on){ rp.playing=!!on&&rp.active; clearInterval(rp.timer); if(rp.playing) rp.timer=setInterval(()=>{ if(!rp.busy) replayStep(); },1000/rp.speed); renderReplayBar(); }
-async function replayStep(){
-  if(!rp.active||rp.busy) return; if(rp.idx>=rp.all.length-1){ replayPlay(false); toast('Replay reached the latest candle'); return; }
-  rp.busy=true;
-  try{
-    rp.idx++; const c=rp.all[rp.idx]; candleMap.set(c.time,c); series.update(c); rp.price=c.close; rp.time=c.time; updateHeader();
-    const t0=document.querySelector('.rp-time'); if(t0) t0.textContent=sastFmt(rp.time+rp.g,true);
-    // practice trades are judged by each new candle's high and low
-    const all=await idbAll('journal'); const ms=c.time*1000, exitIso=new Date((c.time+rp.g)*1000).toISOString();
+function replayPlay(on){ rp.playing=!!on&&rp.active; cancelAnimationFrame(rp.raf); rp.lastF=0; if(rp.playing){ const loop=ts=>{ if(!rp.playing) return; const dt=rp.lastF?Math.min(0.25,(ts-rp.lastF)/1000):0; rp.lastF=ts; rpAdvance(dt*rp.speed*60); rp.raf=requestAnimationFrame(loop); }; rp.raf=requestAnimationFrame(loop); } renderReplayBar(); }
+function replayStep(){ if(!rp.active) return; const target=Math.floor(rp.now/rp.g)*rp.g+rp.g; rpAdvance(target-rp.now); }
+async function rpMore(){ if(rp.loadingMore||!rp.active) return; rp.loadingMore=true; try{ const more=await rpFetch1m(rp.inst,rp.m1End,rp.m1End+3*86400); const add=more.filter(c=>c.time>=rp.m1End); if(add.length){ rp.m1.push(...add); rp.m1End=add[add.length-1].time+60; } else rp.noMore=true; }catch(e){} rp.loadingMore=false; }
+function rpAdvance(sec){
+  if(!rp.active||sec<=0) return; const prev=rp.now; let now=prev+sec;
+  // jump over weekends / market breaks: no minute data between → go straight to the next minute that exists
+  const i=rpIdx(prev); const curEnd=i>=0?rp.m1[i].time+60:prev; const nx=rp.m1[i+1]; if(nx&&nx.time>curEnd&&now>curEnd&&now<nx.time) now=nx.time;
+  if(now>=rp.m1End){ now=rp.m1End; if(!rp.noMore){ rpMore(); } if(rp.noMore||now<=prev){ if(rp.noMore){ replayPlay(false); toast('Replay reached the present — Exit to go back to live'); } if(now<=prev) return; } }
+  if(rp.m1End-now<6*3600&&!rp.noMore) rpMore();
+  rp.now=now; const g=rp.g, cb=Math.floor(now/g)*g;
+  if(cb!==rp.curB){ for(let b=rp.curB;b<cb;b+=g){ const x=rpBar(b,b+g); if(x){ series.update(x); candleMap.set(x.time,x); } } rp.curB=cb; }
+  const cur=rpBar(cb,now); if(cur){ series.update(cur); candleMap.set(cur.time,cur); rp.price=cur.close; }
+  // price range travelled since the last frame — this is what practice trades are judged on
+  let lo=Infinity,hi=-Infinity; for(let k=Math.max(0,rpIdx(prev));k<rp.m1.length;k++){ const m=rp.m1[k]; if(m.time>=now) break; const f0=Math.max(0,(prev-m.time)/60), f1=Math.min(1,(now-m.time)/60); if(f1<=0||f0>=1) continue; const r=rpRange(m,f0,f1); lo=Math.min(lo,r[0]); hi=Math.max(hi,r[1]); }
+  if(isFinite(lo)){ rp.pLo=Math.min(rp.pLo??Infinity,lo); rp.pHi=Math.max(rp.pHi??-Infinity,hi); rpJudge(); }
+  const ms=performance.now(); if(!rp.hdrAt||ms-rp.hdrAt>120){ rp.hdrAt=ms; const t=document.querySelector('.rp-time'); if(t) t.textContent=sastFmt(now,true); updateHeader(); }
+}
+async function rpJudge(){
+  if(rp.judging||!isFinite(rp.pLo)) return; rp.judging=true; const lo=rp.pLo, hi=rp.pHi, at=rp.now; rp.pLo=Infinity; rp.pHi=-Infinity;
+  try{ const all=await idbAll('journal'); const iso=new Date(at*1000).toISOString();
     for(const t of all.filter(x=>x.practice&&x.symbol===rp.sym)){
-      if(t.status==='OPEN'||t.status==='PENDING'){ const r=evaluateTrade(t,c.high,c.low,ms);
-        if(r==='LOSS') await closeTrade(t.id,'LOSS',slAt(t,ms),{exitTime:exitIso}); else if(r==='WIN') await closeTrade(t.id,'WIN',t.tp1,{exitTime:exitIso}); }
-      else if(t.result==='WIN'&&t.bonusTracking) await applyBonus(t,c.high,c.low);
-    }
-  } finally { rp.busy=false; }
+      if(t.status==='OPEN'||t.status==='PENDING'){ const r=evaluateTrade(t,hi,lo,at*1000); if(r==='LOSS') await closeTrade(t.id,'LOSS',slAt(t,at*1000),{exitTime:iso}); else if(r==='WIN') await closeTrade(t.id,'WIN',t.tp1,{exitTime:iso}); }
+      else if(t.result==='WIN'&&t.bonusTracking) await applyBonus(t,hi,lo); } }
+  catch(e){ console.warn(e); } finally{ rp.judging=false; }
 }
 async function endReplay(opts={}){
   replayPlay(false); const w=tlWrap();
-  if(rp.picking){ w.querySelector('.rp-capture').hidden=true; w.querySelector('.rp-hint').hidden=true; }
-  const was=rp.active||rp.picking; const sym=rp.sym, price=rp.price, at=rp.time&&rp.g?new Date((rp.time+rp.g)*1000).toISOString():null;
-  rp={active:false}; document.body.classList.remove('replaying'); $('ct-replay')?.classList.remove('active'); renderReplayBar();
+  if(w&&rp.picking){ w.querySelector('.rp-capture').hidden=true; w.querySelector('.rp-hint').hidden=true; }
+  const was=rp.active||rp.picking; const sym=rp.sym, price=rp.price, at=rp.now?new Date(rp.now*1000).toISOString():null;
+  rp={active:false,speed:rp.speed}; document.body.classList.remove('replaying'); $('ct-replay')?.classList.remove('active'); renderReplayBar();
   if(sym){ const all=await idbAll('journal'); for(const t of all.filter(x=>x.practice&&x.symbol===sym)){
       if((t.status==='OPEN'||t.status==='PENDING')&&price) await closeTrade(t.id,t.status==='PENDING'?'CANCELLED':'MANUAL CLOSE',price,{exitTime:at,silent:true});
       else if(t.bonusTracking){ t.bonusTracking=false; await idbPut('journal',t); } } }
   if(was&&!opts.noReload&&currentInst) openChart(currentInst);
   if(was&&!opts.quiet) toast('Back to live prices');
 }
-// a practice trade left open when the site was closed mid-replay can't be judged any more
 async function cleanupPractice(){ const all=await idbAll('journal'); for(const t of all.filter(x=>x.practice&&(x.status==='OPEN'||x.status==='PENDING'||x.bonusTracking))){ if(t.bonusTracking) t.bonusTracking=false; else { t.status='CANCELLED'; t.result='CANCELLED'; t.exitTime=t.exitTime||new Date().toISOString(); t.notes=(t.notes?t.notes+'\n':'')+'Replay was closed before this practice trade finished.'; } await idbPut('journal',t); } }
 document.addEventListener('keydown',e=>{ if(!rp.active||document.body.dataset.page!=='chart') return; if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||[...document.querySelectorAll('.shot-viewer,.modal-overlay')].some(el=>!el.hidden&&el.offsetParent!==null)) return;
   if(e.key==='ArrowRight'){ e.preventDefault(); replayStep(); } else if(e.key===' '){ e.preventDefault(); replayPlay(!rp.playing); } else if(e.key==='Escape'&&!tlMode&&!vpMode&&!tlSel&&!vpSel) endReplay(); });
-document.addEventListener('keydown',e=>{ if(rp.picking&&e.key==='Escape'){ endReplay(); } });
+document.addEventListener('keydown',e=>{ if(rp.picking&&e.key==='Escape') endReplay(); });
 
 // ===== Full screen chart (pair tabs + bias + chart). Native full screen, CSS fallback on phones that block it =====
 function fsEl(){ return $('page-chart'); }
