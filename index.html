@@ -1070,6 +1070,38 @@ input::placeholder,textarea::placeholder{color:#93a0b6;opacity:1}
   #page-chart.fs-on .rail-btn .ico svg{width:17px;height:17px}
 }
 @media(max-width:480px){ #page-chart.fs-on .hd-news b{display:none} #page-chart.fs-on .hd-btn{padding:0 6px!important} }
+/* multi-chart */
+.mc-grid{flex:1;min-width:0;min-height:0;display:grid;gap:6px;grid-template-columns:1fr;grid-template-rows:1fr}
+.mc-grid .chart-wrap{min-width:0}
+.mc-grid:not([data-layout="1"]) .chart-wrap{min-height:0}
+.mc-grid:not([data-layout="1"]) .mc-main{box-shadow:inset 0 0 0 1.5px var(--accent),0 10px 30px rgba(0,0,0,.35)}
+.mc-mini{position:relative;min-width:0;min-height:0;overflow:hidden;border-radius:12px;box-shadow:inset 0 0 0 1px var(--border)}
+.mc-chart{position:absolute;inset:0}
+.mc-draw{position:absolute;left:0;top:0;pointer-events:none;z-index:2;overflow:hidden}
+.mc-head{position:absolute;top:6px;left:6px;z-index:4;display:flex;align-items:center;gap:4px}
+.mc-head button{display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 8px;border-radius:7px;border:1px solid rgba(255,255,255,.14);background:rgba(14,18,28,.88);color:#f1f5fb;font:700 12px 'Space Grotesk',sans-serif;cursor:pointer;backdrop-filter:blur(4px)}
+.mc-head button:hover{border-color:var(--accent)}.mc-head i{font-style:normal;font-size:9px;opacity:.75}
+.mc-head .mc-main{padding:0 7px;font-size:13px}
+.mc-px{font-size:12px;font-weight:700;color:#f1f5fb;padding:0 4px;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.mc-pop{position:absolute;top:36px;z-index:6;display:flex;flex-direction:column;min-width:120px;max-height:calc(100% - 46px);overflow:auto;padding:4px;background:rgba(18,22,32,.98);border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.6)}
+.mc-pop[hidden]{display:none}
+.mc-pop button{display:flex;justify-content:space-between;gap:12px;padding:8px 10px;border:none;border-radius:7px;background:none;color:#e6ebf5;font:600 12.5px 'Space Grotesk',sans-serif;text-align:left;cursor:pointer;white-space:nowrap}
+.mc-pop button:hover{background:rgba(255,255,255,.08)}.mc-pop button.on{background:var(--accent);color:#fff}.mc-pop button span{opacity:.75;font-size:11.5px}
+.lp-dd{position:relative;display:none}#page-chart.fs-on .lp-dd{display:block}
+#ct-layout .mc-cur{display:inline-flex}#ct-layout .mc-ico{width:22px;height:15px}
+.mc-ico rect{fill:rgba(255,255,255,.18);stroke:rgba(255,255,255,.55);stroke-width:1}.mc-ico rect.m{fill:color-mix(in srgb,var(--accent) 45%,transparent);stroke:var(--accent)}
+.layout-pop{position:absolute;right:0;top:calc(100% + 8px);z-index:95;width:268px;padding:12px;background:rgba(18,22,32,.98);border:1px solid rgba(255,255,255,.12);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.layout-pop[hidden]{display:none}
+.lp-cap{margin:8px 2px 6px;font:700 10.5px 'Space Grotesk',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#aab4c6}.lp-cap:first-child{margin-top:0}
+.lp-row{display:flex;flex-wrap:wrap;gap:6px}
+.lp-btn{padding:6px;border-radius:9px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);cursor:pointer;line-height:0;transition:border-color .15s,transform .15s}
+.lp-btn:hover{border-color:rgba(255,255,255,.35);transform:translateY(-1px)}.lp-btn.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.lp-btn .mc-ico{width:44px;height:30px}
+.lp-mode{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lp-mode button{display:flex;flex-direction:column;gap:2px;padding:8px;border-radius:9px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#f1f5fb;font:700 12px 'Space Grotesk',sans-serif;text-align:left;cursor:pointer}
+.lp-mode button small{font-weight:500;font-size:10.5px;color:#b8c2d3}.lp-mode button.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.lp-tip{margin:10px 2px 0;font-size:11.5px;line-height:1.45;color:#c3cbd8}
+@media(max-width:900px){ .mc-grid{gap:4px} .mc-head{top:4px;left:4px;gap:3px} .mc-head button{height:24px;padding:0 6px;font-size:11px} .mc-px{display:none} .layout-pop{position:fixed;right:8px;left:auto;top:44px} }
 </style>
 </head>
 <body>
@@ -1208,7 +1240,7 @@ input::placeholder,textarea::placeholder{color:#93a0b6;opacity:1}
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>"};
-const BUILD='2026-11-12.11';
+const BUILD='2026-11-12.12';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1217,7 +1249,7 @@ async function checkForUpdate(){
 }
 setTimeout(checkForUpdate,6000); setInterval(checkForUpdate,3*60*1000); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) checkForUpdate(); });
 // settings that travel between devices (Sync)
-const SYNC_KEYS=['bd_instruments','bd_groups','bd_labels','bd_ratios','bd_rules','bd_mot_custom','bd_mot_pin','bd_theme','bd_bias_manual','bd_scores_url','bd_frvp_defaults','bd_rules_auto','bd_alerts','bd_alert_cfg'];
+const SYNC_KEYS=['bd_instruments','bd_groups','bd_labels','bd_ratios','bd_rules','bd_mot_custom','bd_mot_pin','bd_theme','bd_bias_manual','bd_scores_url','bd_frvp_defaults','bd_rules_auto','bd_alerts','bd_alert_cfg','bd_draw_defaults','bd_multi'];
 function isSyncKey(k){ return SYNC_KEYS.includes(k)||k.startsWith('bd_lines_')||k.startsWith('bd_frvp_'); }
 var syncApplying=false;
 function syncSoon(){ try{ const c=JSON.parse(localStorage.getItem('bd_sync_cfg')||'null'); if(!c||!c.repo||!c.token) return; clearTimeout(window.__bdSyncT); window.__bdSyncT=setTimeout(()=>{ try{ syncNow(); }catch(e){} },4000); }catch(e){} }
@@ -2525,6 +2557,7 @@ function buildChartShell(){
       <button id="ct-replay" class="hd-btn" title="Bar replay — practise on past candles"><i>⏮</i><span>Replay</span></button>
       <button id="ct-journal" class="hd-btn" title="Trades on this pair"><i>☰</i><span>Journal</span></button>
       <div class="th-dd"><button id="ct-theme" class="hd-btn th-btn" title="Candle design"><span class="th-mini"></span><span class="th-name"></span><b class="th-caret">▾</b></button><div id="theme-pop" class="theme-pop" hidden></div></div>
+      <div class="lp-dd"><button id="ct-layout" class="hd-btn" title="Chart layout — 1, 2, 3 or 4 charts"><i class="mc-cur"></i></button><div id="layout-pop" class="layout-pop" hidden></div></div>
       <button id="ct-fs" class="hd-btn" title="Full screen (Esc to exit)"><i>⛶</i><span>Full screen</span></button>
     </div>
   </div>
@@ -2538,13 +2571,13 @@ function buildChartShell(){
       <span class="rail-sep"></span>
       <button id="ct-clear" class="rail-btn" title="Remove all drawings and volume profiles on this pair"><i class="ico">${ICON.trash}</i><span>Clear</span></button>
     </nav>
-    <div class="chart-wrap" id="chart-wrap">
+    <div class="mc-grid" id="mc-grid" data-layout="1"><div class="chart-wrap mc-cell mc-main" id="chart-wrap">
       <div class="quick-trade" id="quick-trade">
         <button id="ct-sell" class="qt-btn qt-sell" title="Place a SELL setup at the current price"><small>SELL</small><b id="qt-sell-px" class="mono">—</b></button>
         <button id="ct-buy" class="qt-btn qt-buy" title="Place a BUY setup at the current price"><small>BUY</small><b id="qt-buy-px" class="mono">—</b></button>
       </div>
       <div id="lw-container" class="lw-container"></div><div id="chart-wait" class="chart-wait" hidden></div>
-    </div>
+    </div></div>
   </div>
   <button id="ct-tp" hidden disabled></button>
   <div id="alert-panel" class="alert-panel" hidden></div>
@@ -2575,7 +2608,7 @@ function buildChartShell(){
   document.addEventListener('click',e=>{ const p=$('alert-panel'); if(!p||p.hidden) return; const path=e.composedPath(); if(path.includes(p)||path.some(el=>el&&el.id==='ct-bell'||el&&el.id==='alarm-stop')) return; p.hidden=true; });
   $('ct-clear').addEventListener('click',()=>{ if(!tlLines.length&&!vpList.length){ toast('Nothing drawn on this pair'); return; } if(!confirm(`Remove all ${tlLines.length} drawing(s) and ${vpList.length} volume profile(s) on ${currentInst.name}?`)) return; tlLines=[]; tlSel=null; tlSave(); vpList=[]; vpSel=null; vpCache.clear(); vpSave(); vpCloseSettings(); tlRender(); vpRender(); toast('Drawings cleared'); });
   $('ct-fs').addEventListener('click',toggleFs);
-  tlSetup(); vpSetup(); alSetup(); renderAlertBadge();
+  tlSetup(); vpSetup(); alSetup(); renderAlertBadge(); mcSetup();
   onFeedModeChange(m=>{ if(currentInst&&$('page-chart').classList.contains('active')&&(m==='live'||m==='demo')) loadCandles().then(()=>{ if(!tool) restoreToolForInst(currentInst); }); });
   window.addEventListener('bd:tool-cleared',()=>{ $('ct-tp').disabled=true; $('ct-buy').classList.remove('active-setup'); $('ct-sell').classList.remove('active-setup'); });
   onThemeChange(def=>{ if(chart){ chart.applyOptions(chartOptionsForTheme(def)); } if(series){ series.applyOptions(seriesOptionsForTheme(def)); } });
@@ -2683,7 +2716,7 @@ function initChart(){
 function openChart(inst){
   if(rp.active||rp.picking) endReplay({noReload:true,quiet:true});
   currentInst=inst; setupState=null; clearTool(); renderPairTabs();
-  buildChartShell(); initChart(); updateHeader(); tlLoad(inst.symbol); vpLoad(inst.symbol); alRender(); renderNewsChip();
+  buildChartShell(); initChart(); updateHeader(); tlLoad(inst.symbol); vpLoad(inst.symbol); alRender(); renderNewsChip(); mcCharts.splice(0).forEach(mcDestroy); mcRender();
   setChartView(chartView);
   loadCandles().then(async()=>{ await restoreToolForInst(inst); if(tool&&chartView!=='trade') setChartView('trade'); });
   renderThemeBtn();
@@ -3469,6 +3502,119 @@ function renderAlertPanel(){ const p=$('alert-panel'); if(!p||p.hidden) return; 
   p.querySelectorAll('[data-c]').forEach(x=>x.addEventListener('change',()=>{ lsSet('bd_alert_cfg',{...alertCfg(),[x.dataset.c]:x.checked}); }));
   p.querySelectorAll('[data-del]').forEach(x=>x.addEventListener('click',()=>{ setAlerts(getAlerts().filter(a=>a.id!==x.dataset.del)); alRender(); tlRender(); renderAlertPanel(); })); }
 
+// ===== Multi-chart (full screen): 1 · 2 · 3 · 4 charts in different layouts. Chart 1 is the main chart (all tools);
+// the others are live charts with their own pair + timeframe — "same pair, other timeframes" or "different pairs". =====
+const MC_LAYOUTS=[
+ {id:'1',n:1,c:'1fr',r:'1fr',a:['a'],name:'Single chart'},
+ {id:'2v',n:2,c:'1fr 1fr',r:'1fr',a:['a b'],name:'Side by side'},
+ {id:'2h',n:2,c:'1fr',r:'1fr 1fr',a:['a','b'],name:'Top and bottom'},
+ {id:'3l',n:3,c:'1.5fr 1fr',r:'1fr 1fr',a:['a b','a c'],name:'Big left'},
+ {id:'3t',n:3,c:'1fr 1fr',r:'1.5fr 1fr',a:['a a','b c'],name:'Big top'},
+ {id:'3v',n:3,c:'1fr 1fr 1fr',r:'1fr',a:['a b c'],name:'3 columns'},
+ {id:'3h',n:3,c:'1fr',r:'1fr 1fr 1fr',a:['a','b','c'],name:'3 rows'},
+ {id:'4g',n:4,c:'1fr 1fr',r:'1fr 1fr',a:['a b','c d'],name:'Grid'},
+ {id:'4l',n:4,c:'1.7fr 1fr',r:'1fr 1fr 1fr',a:['a b','a c','a d'],name:'Big left'},
+ {id:'4t',n:4,c:'1fr 1fr 1fr',r:'1.6fr 1fr',a:['a a a','b c d'],name:'Big top'},
+ {id:'4v',n:4,c:'1fr 1fr 1fr 1fr',r:'1fr',a:['a b c d'],name:'4 columns'},
+];
+const mcCharts=[]; let mcThemeHooked=false;
+function mcCfg(){ const c=lsGet('bd_multi',null)||{}; return {layout:'1',mode:'same',panels:[],...c}; }
+function mcSave(c){ lsSet('bd_multi',c); }
+function mcLayout(){ const c=mcCfg(); return (isFs()&&MC_LAYOUTS.find(l=>l.id===c.layout))||MC_LAYOUTS[0]; }
+function mcDefaultPanels(mode){ const ins=getInstruments(), main=currentInst, i=TIMEFRAMES.findIndex(t=>t.label===currentTF);
+  if(mode==='mixed'){ const pref=['XAUUSD','GBPUSD','BTCUSD','US30','EURUSD','US100','GER30']; const others=[...pref.map(s=>ins.find(x=>x.symbol===s)).filter(Boolean),...ins].filter((x,k,arr)=>x&&(!main||x.symbol!==main.symbol)&&arr.indexOf(x)===k);
+    return [0,1,2].map(k=>({link:false,sym:(others[k]||main||ins[0]).symbol,tf:currentTF})); }
+  const pick=[i+2,i+1,i-1,i+3,i-2,i+4].filter(k=>k>=0&&k<TIMEFRAMES.length&&k!==i); return [0,1,2].map(k=>({link:true,sym:main?main.symbol:'',tf:TIMEFRAMES[pick[k]%TIMEFRAMES.length].label})); }
+function mcPanels(){ const c=mcCfg(); let p=Array.isArray(c.panels)?c.panels.slice(0,3):[]; const d=mcDefaultPanels(c.mode); while(p.length<3) p.push(d[p.length]); return p; }
+function mcInst(p){ return (!p.link&&getInstruments().find(i=>i.symbol===p.sym))||currentInst; }
+function mcLayoutIcon(l,w=44,h=30){ const cols=l.c.split(' ').map(parseFloat), rows=l.r.split(' ').map(parseFloat), g=2, cw=cols.reduce((a,b)=>a+b,0), rh=rows.reduce((a,b)=>a+b,0);
+  const X=[0]; cols.forEach(v=>X.push(X[X.length-1]+v/cw*(w-g*(cols.length-1)))); const Y=[0]; rows.forEach(v=>Y.push(Y[Y.length-1]+v/rh*(h-g*(rows.length-1))));
+  const seen={}; l.a.forEach((row,ri)=>row.split(' ').forEach((n,ci)=>{ const s=seen[n]||(seen[n]={r0:ri,r1:ri,c0:ci,c1:ci}); s.r1=Math.max(s.r1,ri); s.c1=Math.max(s.c1,ci); }));
+  return `<svg viewBox="0 0 ${w} ${h}" class="mc-ico">${Object.entries(seen).map(([n,s])=>{ const x=X[s.c0]+g*s.c0, y=Y[s.r0]+g*s.r0, ww=X[s.c1+1]-X[s.c0]+g*(s.c1-s.c0), hh=Y[s.r1+1]-Y[s.r0]+g*(s.r1-s.r0); return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${ww.toFixed(1)}" height="${hh.toFixed(1)}" rx="2" class="${n==='a'?'m':''}"/>`; }).join('')}</svg>`; }
+// build / rebuild the grid for the current layout
+function mcRender(){
+  const grid=$('mc-grid'); if(!grid) return; const L=mcLayout(); grid.dataset.layout=L.id;
+  grid.style.gridTemplateColumns=L.c; grid.style.gridTemplateRows=L.r; grid.style.gridTemplateAreas=L.a.map(x=>`"${x}"`).join(' ');
+  const main=$('chart-wrap'); if(main) main.style.gridArea='a';
+  const P=mcPanels(); const want=L.n-1;
+  while(mcCharts.length>want){ mcDestroy(mcCharts.pop()); }
+  for(let k=0;k<want;k++){ const cfg=P[k]; const ex=mcCharts[k]; if(ex){ ex.cell.style.gridArea='bcd'[k]; const inst=mcInst(cfg); if(ex.inst!==inst||ex.cfg.tf!==cfg.tf){ ex.cfg=cfg; mcLoad(ex); } continue; } mcCharts.push(mcCreate(grid,k,cfg)); }
+  $('ct-layout')?.querySelector('.mc-cur')?.replaceChildren(); const lb=$('ct-layout'); if(lb) lb.querySelector('.mc-cur').innerHTML=mcLayoutIcon(L,22,15);
+  requestAnimationFrame(()=>{ const c=$('lw-container'); if(chart&&c&&c.clientWidth) chart.resize(c.clientWidth,c.clientHeight); try{ tlPosition(); vpPosition(); alPosition(); }catch(e){} });
+}
+function mcCreate(grid,k,cfg){
+  const cell=document.createElement('div'); cell.className='mc-cell mc-mini'; cell.style.gridArea='bcd'[k];
+  cell.innerHTML=`<div class="mc-chart"></div><svg class="mc-draw"></svg>
+    <div class="mc-head"><button class="mc-sym" title="Pair"><b></b><i>▾</i></button><button class="mc-tf" title="Timeframe"><b></b><i>▾</i></button><span class="mc-px mono"></span><button class="mc-main" title="Make this the main chart (double-click works too)">⤢</button></div>
+    <div class="mc-pop" hidden></div>`;
+  grid.appendChild(cell);
+  const m={k,cell,cfg,inst:null,g:0,chart:null,series:null,bar:null,times:[],key:'',ro:null};
+  if(ensureChartLib()){ const def=getThemeDef(); m.chart=window.LightweightCharts.createChart(cell.querySelector('.mc-chart'),{...chartOptionsForTheme(def),autoSize:true});
+    m.chart.applyOptions({layout:{fontSize:11},timeScale:{rightOffset:6}}); m.series=m.chart.addCandlestickSeries(seriesOptionsForTheme(def));
+    try{ m.chart.timeScale().subscribeVisibleLogicalRangeChange(()=>mcDraw(m)); }catch(e){}
+    m.ro=new ResizeObserver(()=>mcDraw(m)); m.ro.observe(cell); }
+  const pop=cell.querySelector('.mc-pop');
+  const openPop=kind=>{ if(!pop.hidden&&pop.dataset.k===kind){ pop.hidden=true; return; } pop.dataset.k=kind; pop.hidden=false; const c=m.cfg;
+    if(kind==='sym') pop.innerHTML=`<button data-link="1" class="${c.link?'on':''}">🔗 Same as main chart</button>`+getInstruments().map(i=>`<button data-sym="${esc(i.symbol)}" class="${!c.link&&c.sym===i.symbol?'on':''}"><b>${esc(i.name)}</b><span class="mono">${hasPrice(i)?fmtPrice(i,getState(i).price):''}</span></button>`).join('');
+    else pop.innerHTML=TIMEFRAMES.map(t=>`<button data-tf="${t.label}" class="${c.tf===t.label?'on':''}">${t.label}</button>`).join('');
+    pop.style.left=(kind==='sym'?cell.querySelector('.mc-sym'):cell.querySelector('.mc-tf')).offsetLeft+6+'px'; };
+  cell.querySelector('.mc-sym').addEventListener('click',e=>{ e.stopPropagation(); openPop('sym'); });
+  cell.querySelector('.mc-tf').addEventListener('click',e=>{ e.stopPropagation(); openPop('tf'); });
+  pop.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('button'); if(!b) return; pop.hidden=true;
+    if(b.dataset.link) m.cfg={...m.cfg,link:true}; else if(b.dataset.sym) m.cfg={...m.cfg,link:false,sym:b.dataset.sym}; else if(b.dataset.tf) m.cfg={...m.cfg,tf:b.dataset.tf};
+    mcStorePanel(m.k,m.cfg); mcLoad(m); });
+  const toMain=()=>mcToMain(m);
+  cell.querySelector('.mc-main').addEventListener('click',e=>{ e.stopPropagation(); toMain(); });
+  cell.addEventListener('dblclick',e=>{ if(e.target.closest('.mc-head,.mc-pop')) return; toMain(); });
+  mcLoad(m); return m;
+}
+function mcStorePanel(k,cfg){ const c=mcCfg(); const p=mcPanels(); p[k]=cfg; c.panels=p; mcSave(c); }
+function mcDestroy(m){ try{ m.ro&&m.ro.disconnect(); }catch(e){} try{ m.chart&&m.chart.remove(); }catch(e){} m.cell.remove(); }
+async function mcLoad(m){
+  const inst=mcInst(m.cfg); if(!inst) return; const g=granForLabel(m.cfg.tf); m.inst=inst; m.g=g; const key=inst.symbol+'|'+g+'|'+Date.now(); m.key=key; m.bar=null; m.times=[];
+  m.cell.querySelector('.mc-sym b').textContent=(m.cfg.link?'🔗 ':'')+inst.name; m.cell.querySelector('.mc-tf b').textContent=m.cfg.tf; m.cell.querySelector('.mc-px').textContent=hasPrice(inst)?fmtPrice(inst,getState(inst).price):'';
+  if(!m.series) return; try{ m.series.applyOptions({priceFormat:priceFormatFor(inst)}); m.series.setData([]); }catch(e){}
+  const c=(await fetchCandlesOnce(inst,g,700))||[]; if(m.key!==key||!m.series) return;
+  try{ m.series.setData(c); m.times=c.map(x=>x.time); m.bar=c.length?{...c[c.length-1]}:null;
+    const w=Math.max(160,m.cell.clientWidth-60), vis=Math.max(24,Math.min(140,Math.round(w/8))); if(c.length>vis+10) m.chart.timeScale().setVisibleLogicalRange({from:c.length-vis,to:c.length+Math.max(3,Math.round(vis*0.08))}); else m.chart.timeScale().fitContent(); }catch(e){}
+  mcDraw(m);
+}
+// live candles from the tick stream (same way the Overview chart updates)
+function mcTick(){ for(const m of mcCharts){ if(!m.inst||!m.bar||!m.series) continue; const s=getState(m.inst); const last=s.ticks&&s.ticks[s.ticks.length-1]; if(!last) continue;
+  const b=Math.floor(last.time/m.g)*m.g; if(b<m.bar.time) continue; if(b>m.bar.time){ m.bar={time:b,open:m.bar.close,high:last.value,low:last.value,close:last.value}; m.times.push(b); }
+  m.bar.high=Math.max(m.bar.high,last.value); m.bar.low=Math.min(m.bar.low,last.value); m.bar.close=last.value; try{ m.series.update({...m.bar}); }catch(e){}
+  const px=m.cell.querySelector('.mc-px'); const t=fmtPrice(m.inst,last.value); if(px.textContent!==t){ px.classList.toggle('up',parseFloat(t)>=parseFloat(px.textContent||t)); px.textContent=t; } mcDraw(m); } }
+// your saved trendlines + rectangles for that pair, drawn on the extra charts too
+function mcX(m,t){ const T=m.times, n=T.length; if(!n) return null; const g=m.g; let L; if(t<=T[0]) L=(t-T[0])/g; else if(t>=T[n-1]) L=n-1+(t-T[n-1])/g; else { let lo=0,hi=n-1; while(hi-lo>1){ const md=(lo+hi)>>1; if(T[md]<=t) lo=md; else hi=md; } L=lo+(t-T[lo])/((T[hi]-T[lo])||g); }
+  try{ const x=m.chart.timeScale().logicalToCoordinate(L); return x===null||x===undefined?null:x; }catch(e){ return null; } }
+function mcDraw(m){ const svg=m.cell.querySelector('.mc-draw'); if(!svg||!m.inst||!m.series) return; const lines=lsGet('bd_lines_'+m.inst.symbol,[])||[];
+  let aw=0; try{ aw=m.chart.priceScale('right').width()||0; }catch(e){} const W=Math.max(0,m.cell.clientWidth-aw); let th=0; try{ th=m.chart.timeScale().height()||0; }catch(e){} svg.style.width=W+'px'; svg.style.height=Math.max(0,m.cell.clientHeight-th)+'px';
+  if(!lines.length){ if(svg.innerHTML) svg.innerHTML=''; return; } const Y=p=>{ try{ const y=m.series.priceToCoordinate(p); return y===null||y===undefined?null:y; }catch(e){ return null; } };
+  svg.innerHTML=lines.map(l=>{ const st=tlStyleOf(l), x1=mcX(m,l.t1), x2=mcX(m,l.t2), y1=Y(l.p1), y2=Y(l.p2); if([x1,x2,y1,y2].some(v=>v===null||!isFinite(v))) return ''; const da=TL_DASH[st.style]||'none';
+    if(l.kind==='rect'){ const L=Math.min(x1,x2), R=st.ext?Math.max(W,Math.max(x1,x2)):Math.max(x1,x2); return `<rect x="${L}" y="${Math.min(y1,y2)}" width="${Math.max(1,R-L)}" height="${Math.max(1,Math.abs(y2-y1))}" fill="${st.color}" fill-opacity="${st.fill}" stroke="${st.color}" stroke-width="${st.width}" stroke-dasharray="${da}" shape-rendering="crispEdges"/>`; }
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st.color}" stroke-width="${st.width}" stroke-dasharray="${da}" stroke-linecap="round"/>`; }).join(''); }
+// swap: the extra chart becomes the main chart (tools, setups, replay), the main chart takes its place
+function mcToMain(m){ const inst=mcInst(m.cfg), tf=m.cfg.tf; const old={link:false,sym:currentInst?currentInst.symbol:inst.symbol,tf:currentTF};
+  if(old.sym===inst.symbol) old.link=true; mcStorePanel(m.k,old); currentTF=tf;
+  if(currentInst&&inst.symbol===currentInst.symbol){ document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x.dataset.tf===tf)); syncTfDD(); loadCandles(); m.cfg=old; mcLoad(m); }
+  else location.hash='#/trade/'+encodeURIComponent(inst.symbol);
+  toast(`${inst.name} ${tf} is now the main chart`); }
+// layout picker
+function renderLayoutPop(){ const p=$('layout-pop'); if(!p) return; const c=mcCfg();
+  p.innerHTML=[1,2,3,4].map(n=>`<div class="lp-cap">${n} chart${n>1?'s':''}</div><div class="lp-row">${MC_LAYOUTS.filter(l=>l.n===n).map(l=>`<button class="lp-btn${c.layout===l.id?' on':''}" data-lay="${l.id}" title="${l.name}">${mcLayoutIcon(l)}</button>`).join('')}</div>`).join('')+
+    `<div class="lp-cap">Extra charts show</div><div class="lp-mode"><button data-mode="same" class="${c.mode!=='mixed'?'on':''}">Same pair<small>other timeframes</small></button><button data-mode="mixed" class="${c.mode==='mixed'?'on':''}">Different pairs<small>same timeframe</small></button></div>
+    <p class="lp-tip">Chart 1 (coloured edge) has all the tools. Tap a pair or timeframe on any other chart to change it, or ⤢ to make it the main chart.</p>`; }
+function mcSetup(){
+  const b=$('ct-layout'), p=$('layout-pop'); if(!b||!p) return;
+  b.addEventListener('click',e=>{ e.stopPropagation(); p.hidden=!p.hidden; if(!p.hidden) renderLayoutPop(); });
+  p.addEventListener('click',e=>{ e.stopPropagation(); const x=e.target.closest('button'); if(!x) return; const c=mcCfg();
+    if(x.dataset.lay){ c.layout=x.dataset.lay; mcSave(c); }
+    else if(x.dataset.mode){ c.mode=x.dataset.mode; c.panels=mcDefaultPanels(c.mode); mcSave(c); mcCharts.forEach((m,k)=>{ m.cfg=c.panels[k]; mcLoad(m); }); }
+    renderLayoutPop(); mcRender(); });
+  if(!mcThemeHooked){ mcThemeHooked=true; onThemeChange(def=>{ for(const m of mcCharts){ try{ m.chart.applyOptions(chartOptionsForTheme(def)); m.chart.applyOptions({layout:{fontSize:11}}); m.series.applyOptions(seriesOptionsForTheme(def)); }catch(e){} } });
+    onTick(mcTick); document.addEventListener('click',e=>{ const lp=$('layout-pop'); if(lp&&!lp.hidden&&!e.target.closest('#layout-pop,#ct-layout')) lp.hidden=true; document.querySelectorAll('.mc-pop').forEach(x=>{ if(!x.hidden&&!x.parentElement.contains(e.target)) x.hidden=true; }); }); }
+}
+
 // ===== Full screen chart (pair tabs + bias + chart). Native full screen, CSS fallback on phones that block it =====
 function fsEl(){ return $('page-chart'); }
 function nativeFs(){ return document.fullscreenElement||document.webkitFullscreenElement||null; }
@@ -3486,6 +3632,7 @@ function fsSync(){
   el.classList.toggle('fs-on',on); document.body.classList.toggle('chart-fs',on);
   const b=$('ct-fs'); if(b){ b.classList.toggle('active',on); b.innerHTML=on?'<i>⤡</i><span>Exit full screen</span>':'<i>⛶</i><span>Full screen</span>'; }
   const t=$('toast'); if(t){ const host=on?el:document.body; if(t.parentElement!==host) host.appendChild(t); }
+  try{ mcRender(); }catch(e){ console.warn(e); }
   requestAnimationFrame(()=>{ const c=$('lw-container'); if(chart&&c&&c.clientWidth) chart.resize(c.clientWidth,c.clientHeight); tlPosition(); });
 }
 document.addEventListener('fullscreenchange',fsSync); document.addEventListener('webkitfullscreenchange',fsSync);
