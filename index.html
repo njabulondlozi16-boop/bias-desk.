@@ -1102,6 +1102,15 @@ input::placeholder,textarea::placeholder{color:#93a0b6;opacity:1}
 .lp-mode button small{font-weight:500;font-size:10.5px;color:#b8c2d3}.lp-mode button.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent)}
 .lp-tip{margin:10px 2px 0;font-size:11.5px;line-height:1.45;color:#c3cbd8}
 @media(max-width:900px){ .mc-grid{gap:4px} .mc-head{top:4px;left:4px;gap:3px} .mc-head button{height:24px;padding:0 6px;font-size:11px} .mc-px{display:none} .layout-pop{position:fixed;right:8px;left:auto;top:44px} }
+/* trade colours follow the candle design */
+.qt-sell{background:linear-gradient(180deg,var(--down,#f23645),color-mix(in srgb,var(--down,#f23645) 78%,#000))!important;color:var(--down-ink,#fff)!important}
+.qt-buy{background:linear-gradient(180deg,var(--up,#16a34a),color-mix(in srgb,var(--up,#16a34a) 78%,#000))!important;color:var(--up-ink,#fff)!important}
+.qt-btn small{opacity:.9}
+.pt-bar .pb-dir.up{color:var(--up,#22c55e)}.pt-bar .pb-dir.down{color:var(--down,#f23645)}
+body.light-chart .pt-bar .pb-dir.up{color:color-mix(in srgb,var(--up) 85%,#000)}
+.pb-btn.confirm{background:var(--accent)!important;border-color:var(--accent)!important;color:var(--accent-ink,#fff)!important}.pb-btn.confirm:hover{filter:brightness(1.1)}
+.pb-chip.active{background:var(--accent)!important;border-color:var(--accent)!important;color:var(--accent-ink,#fff)!important}
+.rg-rule input{accent-color:var(--accent)!important}
 </style>
 </head>
 <body>
@@ -1240,7 +1249,7 @@ input::placeholder,textarea::placeholder{color:#93a0b6;opacity:1}
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>"};
-const BUILD='2026-11-12.12';
+const BUILD='2026-11-12.13';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1594,13 +1603,13 @@ const THEMES=[
  {id:'tv-dark',name:'TradingView Dark',accent:'#2962ff',bg:'#0c0e15',bg2:'#131722',chartBg:'#131722',grid:'#1c2030',text:'#f0f3f8',axisText:'#e1e4ea',up:'#00d9a3',down:'#ff2448',wickUp:'#00d9a3',wickDown:'#ff2448',borderUp:'#00d9a3',borderDown:'#ff2448',crosshair:'#9aa6b8',priceLine:'#758696',light:false},
  {id:'hollow-pro',name:'Hollow Pro',accent:'#26a69a',bg:'#07090e',bg2:'#121826',chartBg:'#111622',chartBg2:'#06080d',grid:'transparent',text:'#f0f3f8',axisText:'#dfe5ee',up:'#00ffc6',down:'#ff2a4f',wickUp:'#00ffc6',wickDown:'#ff2a4f',borderUp:'#00ffc6',borderDown:'#ff2a4f',hollowUp:true,crosshair:'#93a3ba',priceLine:'#6b7a90',light:false},
  {id:'deep-ocean',name:'Deep Ocean',accent:'#22d3ee',bg:'#040b18',bg2:'#0b1e3d',chartBg:'#0b1f3f',chartBg2:'#030812',grid:'transparent',text:'#effaff',axisText:'#cfe6ff',up:'#00e5ff',down:'#ff2d87',wickUp:'#00e5ff',wickDown:'#ff2d87',borderUp:'#00e5ff',borderDown:'#ff2d87',crosshair:'#4fc3ff',priceLine:'#38bdf8',light:false},
- {id:'gold-luxe',name:'Gold Luxe',accent:'#e9b949',bg:'#080705',bg2:'#1a160d',chartBg:'#14110a',chartBg2:'#040302',grid:'transparent',text:'#fbf3e0',axisText:'#eadcb4',up:'#ffc400',down:'#e8edf5',wickUp:'#ffc400',wickDown:'#e8edf5',borderUp:'#ffd22e',borderDown:'#e8edf5',crosshair:'#e0b84a',priceLine:'#c9a443',light:false},
- {id:'mono',name:'Monochrome',accent:'#3b82f6',bg:'#050505',bg2:'#141414',chartBg:'#0b0b0b',grid:'transparent',text:'#f7f7f7',axisText:'#d9d9d9',up:'#ffffff',down:'#b0b0b0',wickUp:'#ffffff',wickDown:'#b0b0b0',borderUp:'#ffffff',borderDown:'#b0b0b0',hollowUp:true,crosshair:'#a3a3a3',priceLine:'#a3a3a3',light:false},
+ {id:'gold-luxe',name:'Gold Luxe',accent:'#e9b949',bg:'#080705',bg2:'#1a160d',chartBg:'#14110a',chartBg2:'#040302',grid:'transparent',text:'#fbf3e0',axisText:'#eadcb4',up:'#ffc400',down:'#e8edf5',wickUp:'#ffc400',wickDown:'#e8edf5',borderUp:'#ffd22e',borderDown:'#e8edf5',crosshair:'#e0b84a',priceLine:'#c9a443',tp:'#e08a3c',light:false},
+ {id:'mono',name:'Monochrome',accent:'#3b82f6',bg:'#050505',bg2:'#141414',chartBg:'#0b0b0b',grid:'transparent',text:'#f7f7f7',axisText:'#d9d9d9',up:'#ffffff',down:'#b0b0b0',wickUp:'#ffffff',wickDown:'#b0b0b0',borderUp:'#ffffff',borderDown:'#b0b0b0',hollowUp:true,crosshair:'#a3a3a3',priceLine:'#a3a3a3',tp:'#60a5fa',light:false},
  {id:'nord',name:'Nord',accent:'#88c0d0',bg:'#242933',bg2:'#2e3440',chartBg:'#2e3440',grid:'#363c48',text:'#f3f5f9',axisText:'#eceff4',up:'#8cf55a',down:'#ff4f5e',wickUp:'#8cf55a',wickDown:'#ff4f5e',borderUp:'#8cf55a',borderDown:'#ff4f5e',crosshair:'#9ab5d6',priceLine:'#81a1c1',light:false},
  {id:'dracula',name:'Dracula',accent:'#bd93f9',bg:'#1e1f29',bg2:'#282a36',chartBg:'#282a36',chartBg2:'#1d1e27',grid:'transparent',text:'#fbfbf6',axisText:'#e6e6f5',up:'#39ff6a',down:'#ff3333',wickUp:'#39ff6a',wickDown:'#ff3333',borderUp:'#39ff6a',borderDown:'#ff3333',crosshair:'#8b9bd6',priceLine:'#bd93f9',light:false},
  {id:'sunset',name:'Sunset Glow',accent:'#f97316',bg:'#0b0614',bg2:'#1f1033',chartBg:'#1f1033',chartBg2:'#09040f',grid:'transparent',text:'#fff0f8',axisText:'#f7d3e8',up:'#ffc400',down:'#ff1a4b',wickUp:'#ffc400',wickDown:'#ff1a4b',borderUp:'#ffc400',borderDown:'#ff1a4b',crosshair:'#d39bff',priceLine:'#c084fc',light:false},
  {id:'mt5-black',name:'MT5 Black',accent:'#00c853',bg:'#05070a',bg2:'#0d1117',chartBg:'#000000',grid:'transparent',text:'#eef2f6',up:'#00ff3b',down:'#d60000',wickUp:'#00ff3b',wickDown:'#d60000',borderUp:'#00ff3b',borderDown:'#d60000',crosshair:'#a3acb7',priceLine:'#8b949e',axisText:'#e6edf3',light:false},
- {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#eef5ff',up:'#1f7aff',down:'#ffffff',wickUp:'#1f7aff',wickDown:'#ffffff',borderUp:'#1f7aff',borderDown:'#ffffff',crosshair:'#4de6ff',priceLine:'#38e1ff',axisText:'#e6f0ff',light:false},
+ {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#eef5ff',up:'#1f7aff',down:'#ffffff',wickUp:'#1f7aff',wickDown:'#ffffff',borderUp:'#1f7aff',borderDown:'#ffffff',crosshair:'#4de6ff',priceLine:'#38e1ff',axisText:'#e6f0ff',tp:'#38e1ff',light:false},
  {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'transparent',text:'#ecfff8',up:'#00ff9c',down:'#ff1a8c',wickUp:'#00ff9c',wickDown:'#ff1a8c',borderUp:'#00ff9c',borderDown:'#ff1a8c',crosshair:'#00ff9c',priceLine:'#00ff9c',axisText:'#e0fff5',light:false},
  {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f8f5e8',axisText:'#1b1a14',up:'#5200a3',down:'#ff0000',wickUp:'#5200a3',wickDown:'#ff0000',borderUp:'#5200a3',borderDown:'#ff0000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
  {id:'tv-light',name:'TradingView Light',accent:'#2962ff',bg:'#eef1f7',bg2:'#ffffff',chartBg:'#ffffff',grid:'#f0f3fa',text:'#131722',axisText:'#131722',up:'#00b386',down:'#ff1f3d',wickUp:'#00b386',wickDown:'#ff1f3d',borderUp:'#00b386',borderDown:'#ff1f3d',crosshair:'#7d818c',priceLine:'#9598a1',light:true},
@@ -1620,6 +1629,7 @@ function applyTheme(id){
   const site=def.light?{bg:'#0c0e15',bg2:'#131722',text:'#d1d4dc'}:def;
   root.setProperty('--accent',def.accent); root.setProperty('--bg',site.bg); root.setProperty('--bg2',site.bg2);
   root.setProperty('--blue',def.accent); root.setProperty('--text',site.text);
+  { const tc=tradeColors(def); root.setProperty('--up',def.up); root.setProperty('--down',def.down); root.setProperty('--up-ink',tc.buyInk); root.setProperty('--down-ink',tc.sellInk); root.setProperty('--accent-ink',tc.accentInk); }
   document.body.className=document.body.className.replace(/theme-\S+/g,'').trim();
   document.body.classList.add('theme-'+def.id);
   document.body.classList.remove('light'); document.body.classList.toggle('light-chart',!!def.light);
@@ -2215,17 +2225,23 @@ async function saveMovedStop(){
   const r=slR(t,t.risk0); toast(Math.abs(r)<=0.1?'Stop moved to breakeven ✓':r>0?`Stop moved — +${r.toFixed(1)}R locked ✓`:`Stop moved — risk now ${Math.abs(r).toFixed(2)}R ✓`);
   window.dispatchEvent(new CustomEvent('bd:trade-updated',{detail:t}));
 }
+// trade colours follow the candle design: BUY / key level = up-candle colour, SELL / invalidation = down-candle colour,
+// target = the design's bright neutral (or its own colour); text on each is black or white, whichever reads better
+function lumOf(hex){ try{ const h=String(hex||'#000').replace('#',''); const n=parseInt(h.length===3?h.split('').map(x=>x+x).join(''):h.slice(0,6),16); const f=v=>{ v/=255; return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4); }; return 0.2126*f(n>>16&255)+0.7152*f(n>>8&255)+0.0722*f(n&255); }catch(e){ return 0; } }
+function inkFor(hex){ return lumOf(hex)>0.36?'#0b0f17':'#ffffff'; }
+function tradeColors(def){ const t=def||getThemeDef(); const light=lumOf(t.chartBg)>0.45; const tp=t.tp||(light?'#111827':'#ffffff');
+  return {buy:t.up,sell:t.down,entry:t.entry||t.up,sl:t.sl||t.down,tp,buyInk:inkFor(t.up),sellInk:inkFor(t.down),entryInk:inkFor(t.entry||t.up),slInk:inkFor(t.sl||t.down),tpInk:inkFor(tp),accentInk:inkFor(t.accent)}; }
 function lightChart(){ try{ const h=(getThemeDef().chartBg||'#000').replace('#',''); const n=parseInt(h.length===3?h.split('').map(x=>x+x).join(''):h.slice(0,6),16); const r=(n>>16&255)/255,g=(n>>8&255)/255,b=(n&255)/255; return 0.2126*r+0.7152*g+0.0722*b>0.45; }catch(e){ return false; } }
 function levelDefs(){
   const L=getLabels(); const fin=tool.status==='WIN';
   // FBC Ultra look: thin line from the setup to the price axis, name pill under the line at its start
-  const tgt=lightChart()?{c:'#111827',t:'#ffffff'}:{c:'#ffffff',t:'#0b1220'};
+  const tc=tradeColors();
   const defs=[
-    {key:'entry',price:tool.entry,label:L.entry,color:'#00a651',text:'#fff',draggable:false,pos:'below'},
-    {key:'sl',price:tool.sl,label:L.sl+slTag(),color:'#e3193b',text:'#fff',draggable:tool.status!=='WIN',pos:slNearOrPastEntry()?'above':'below'},
-    {key:'tp1',price:tool.tp1,label:L.tp1+(fin?' ✓':''),color:tgt.c,text:tgt.t,draggable:!tool.locked,pos:'below'},
+    {key:'entry',price:tool.entry,label:L.entry,color:tc.entry,text:tc.entryInk,draggable:false,pos:'below'},
+    {key:'sl',price:tool.sl,label:L.sl+slTag(),color:tc.sl,text:tc.slInk,draggable:tool.status!=='WIN',pos:slNearOrPastEntry()?'above':'below'},
+    {key:'tp1',price:tool.tp1,label:L.tp1+(fin?' ✓':''),color:tc.tp,text:tc.tpInk,draggable:!tool.locked,pos:'below'},
   ];
-  tool.extraTPs.forEach((t,i)=>{ const hit=(tool.bonusHits||[]).includes(t.ratio); defs.push({key:'tp'+(i+2),price:t.price,label:(t.label||('POTENTIAL TARGET '+(i+2)))+(hit?' ✓':''),color:TP_COLORS[(i+1)%TP_COLORS.length],text:'#0a1a3f',draggable:!tool.locked,ratio:t.ratio,pos:'below'}); });
+  tool.extraTPs.forEach((t,i)=>{ const hit=(tool.bonusHits||[]).includes(t.ratio); defs.push({key:'tp'+(i+2),price:t.price,label:(t.label||('POTENTIAL TARGET '+(i+2)))+(hit?' ✓':''),color:TP_COLORS[(i+1)%TP_COLORS.length],text:inkFor(TP_COLORS[(i+1)%TP_COLORS.length]),draggable:!tool.locked,ratio:t.ratio,pos:'below'}); });
   return defs;
 }
 // Build lines, TradingView-style boxes + labels, handles and axis tags once; repositionOnly() moves them every frame
@@ -3201,20 +3217,20 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   shown.forEach((k,i)=>{ const col=k.close>=k.open?up:dn; x2.fillStyle=col; const x=X(i); x2.fillRect(Math.round(x)-0.5,Y(k.high),1,Math.max(1,Y(k.low)-Y(k.high))); const yo=Y(k.open), yc=Y(k.close); const bx=x-Math.max(1,bw*0.35), by=Math.min(yo,yc), bW=Math.max(2,bw*0.7), bH=Math.max(1,Math.abs(yc-yo)); if(k.close>=k.open&&th.hollowUp&&bW>3){ x2.fillStyle=bg; x2.fillRect(bx,by,bW,bH); x2.strokeStyle=th.borderUp||col; x2.lineWidth=1; x2.strokeRect(Math.round(bx)+0.5,Math.round(by)+0.5,Math.round(bW)-1,Math.max(1,Math.round(bH)-1)); } else x2.fillRect(bx,by,bW,bH); });
   // levels — FBC style, starting on the entry candle
   const lvEnd=Math.min(R-6,Math.max(X(iE)+Math.max(14*bw,230),mode==='after'?X(iX)+Math.max(4*bw,40):0));
-  const tg=light?{c:'#111827',t:'#fff'}:{c:'#ffffff',t:'#0b1220'}; const Lb=getLabels();
+  const TC=tradeColors(th); const tg={c:TC.tp,t:TC.tpInk}; const Lb=getLabels();
   const pill=(y,label,col,tc,below)=>{ x2.font="600 12px 'Space Grotesk',sans-serif"; const w=x2.measureText(label).width+20, h=21, px=X(iE)-bw/2, py=below?y+8:y-8-h;
     x2.fillStyle=col; x2.beginPath(); x2.roundRect?x2.roundRect(px,py,w,h,3):x2.rect(px,py,w,h); x2.fill(); x2.beginPath(); if(below){ x2.moveTo(px+9,py); x2.lineTo(px+14,py-5); x2.lineTo(px+19,py); } else { x2.moveTo(px+9,py+h); x2.lineTo(px+14,py+h+5); x2.lineTo(px+19,py+h); } x2.fill(); x2.fillStyle=tc; x2.textAlign='left'; x2.fillText(label,px+10,py+15); };
   const line=(p,col,dash)=>{ const y=Math.round(Y(p))+0.5; x2.strokeStyle=col; x2.lineWidth=dash?1:1.5; x2.setLineDash(dash?[5,4]:[]); x2.beginPath(); x2.moveTo(X(iE)-bw/2,y); x2.lineTo(lvEnd,y); x2.stroke(); x2.setLineDash([]); return y; };
   const moved=mode==='after'&&t.slHistory&&t.slHistory.length;
-  if(moved){ const y=line(slOrig,'rgba(227,25,59,.55)',true); }
-  const yS=line(mode==='after'?slFinal:slOrig,'#e3193b'); const yE=line(t.entry,'#00a651'); const yT=line(t.tp1,tg.c);
+  if(moved){ x2.globalAlpha=.55; line(slOrig,TC.sl,true); x2.globalAlpha=1; }
+  const yS=line(mode==='after'?slFinal:slOrig,TC.sl); const yE=line(t.entry,TC.entry); const yT=line(t.tp1,tg.c);
   (t.extraTPs||[]).forEach((e,i)=>line(e.price,TP_COLORS[(i+1)%TP_COLORS.length]));
   const nearBE=moved&&Math.abs(slFinal-t.entry)<Math.abs(t.entry-slOrig)*0.15;
-  pill(yS,(Lb.sl||'INVALIDATION LEVEL')+(moved?' · MOVED':''),'#e3193b','#fff',!nearBE); pill(yE,Lb.entry||'POTENTIAL KEY LEVEL','#00a651','#fff',true); pill(yT,Lb.tp1||'POTENTIAL TARGET',tg.c,tg.t,true);
+  pill(yS,(Lb.sl||'INVALIDATION LEVEL')+(moved?' · MOVED':''),TC.sl,TC.slInk,!nearBE); pill(yE,Lb.entry||'POTENTIAL KEY LEVEL',TC.entry,TC.entryInk,true); pill(yT,Lb.tp1||'POTENTIAL TARGET',tg.c,tg.t,true);
   (t.extraTPs||[]).forEach((e,i)=>pill(Y(e.price),`${e.label||'POTENTIAL TARGET '+(i+2)} · 1:${e.ratio}`,TP_COLORS[(i+1)%TP_COLORS.length],'#0a1a3f',true));
   // entry marker
   const ex=X(iE), ey=Y(t.entry); x2.fillStyle=buy?'#22c55e':'#f23645'; x2.beginPath(); if(buy){ x2.moveTo(ex,ey+8); x2.lineTo(ex-7,ey+20); x2.lineTo(ex+7,ey+20); } else { x2.moveTo(ex,ey-8); x2.lineTo(ex-7,ey-20); x2.lineTo(ex+7,ey-20); } x2.fill();
-  x2.beginPath(); x2.arc(ex,ey,4.5,0,Math.PI*2); x2.fillStyle='#fff'; x2.fill(); x2.strokeStyle='#00a651'; x2.lineWidth=2; x2.stroke();
+  x2.beginPath(); x2.arc(ex,ey,4.5,0,Math.PI*2); x2.fillStyle='#fff'; x2.fill(); x2.strokeStyle=TC.entry; x2.lineWidth=2; x2.stroke();
   // exit marker
   if(mode==='after'){
     const open=t.status==='OPEN'||t.status==='PENDING'; const xp=open?shown[n-1].close:t.exitPrice; const xx=X(iX), xy=Y(xp);
