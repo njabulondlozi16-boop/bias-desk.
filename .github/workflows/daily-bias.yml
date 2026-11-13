@@ -2,9 +2,21 @@ name: Daily bias scores
 
 on:
   schedule:
-    - cron: '7 2 * * *'    # 02:07 UTC = 04:07 SAST - early, because GitHub often starts scheduled runs late
-    - cron: '41 2 * * *'   # backup at 04:41 SAST - skips if today's scores already exist
-  workflow_dispatch: {}     # "Run workflow" button for an on-demand update
+    # GitHub often starts scheduled runs late (hours, on busy days) or skips them, so there are
+    # several backups. Each one skips if today's scores already exist, so only the first one scores.
+    - cron: '7 2 * * *'    # 04:07 SAST
+    - cron: '41 2 * * *'   # 04:41 SAST
+    - cron: '13 3 * * *'   # 05:13 SAST
+    - cron: '47 3 * * *'   # 05:47 SAST
+    - cron: '23 4 * * *'   # 06:23 SAST
+    - cron: '17 5 * * *'   # 07:17 SAST
+    - cron: '37 6 * * *'   # 08:37 SAST
+  workflow_dispatch:        # "Run workflow" button for an on-demand update
+    inputs:
+      auto:
+        description: 'Started by the website - skip if today already has scores'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -26,6 +38,7 @@ jobs:
       - name: Collect news and score every pair
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BD_AUTO: ${{ inputs.auto }}
         run: python scripts/score.py
       - name: Save scores.json and history
         run: |

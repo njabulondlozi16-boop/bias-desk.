@@ -219,9 +219,14 @@ def save_history(date, at, scores):
         json.dump(hist, f, indent=1, sort_keys=True)
 
 
+def automatic():
+    """True for scheduled runs and for runs the website starts (they must never replace existing scores)."""
+    return os.environ.get("GITHUB_EVENT_NAME") == "schedule" or os.environ.get("BD_AUTO", "").lower() == "true"
+
+
 def already_done(date):
-    """A scheduled run skips if today's scores already exist (so a late or backup run never changes them)."""
-    if os.environ.get("GITHUB_EVENT_NAME") != "schedule":
+    """An automatic run skips if today's scores already exist (so a late or backup run never changes them)."""
+    if not automatic():
         return False
     try:
         with open(OUT) as f:
@@ -236,6 +241,10 @@ def main():
     date = now.strftime("%Y-%m-%d")
     if already_done(date):
         print(f"Scores for {date} already exist - nothing to do.")
+        return
+    if automatic() and not (4 <= now.hour < 15):
+        # a scheduled run GitHub started hours late (e.g. after midnight) must not score the next day early
+        print(f"{now:%H:%M} SAST is outside the 04:00-15:00 window for automatic runs - nothing to do.")
         return
     news, status = collect()
     total = sum(len(d["paragraphs"]) + len(d["headlines"]) for d in news.values())
