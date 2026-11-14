@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-13",
-  "generated_at": "06:58 SAST",
+  "date": "2026-11-14",
+  "generated_at": "10:54 SAST",
   "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Greenback dominance drives euro down to multi-month lows."
+      "reason": "Euro weakens against a strongly supported, hawkishly driven US dollar."
     },
     "GBPUSD": {
       "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Solid UK growth offset by strong Fed-driven dollar rally."
+      "reason": "Pound drifts lower as surging US rate expectations dominate."
     },
     "AUDUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Aussie pressured by surging US yields and strong dollar."
+      "reason": "Aussie slumps as surging US yields and strong dollar take control."
     },
     "NZDUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "New Zealand dollar drops sharply as Fed rate bets mount."
+      "reason": "Kiwi tests multi-month lows pressured by robust US greenback strength."
     },
     "USDCHF": {
-      "score": 5,
-      "label": "Moderately Bullish",
-      "reason": "US dollar strength pushes pair higher against the franc."
+      "score": 7,
+      "label": "Strong Bullish",
+      "reason": "Dollar climbs against the Swiss franc on expanding rate differentials."
     },
     "XAUUSD": {
-      "score": -8,
+      "score": -6,
       "label": "Strong Bearish",
-      "reason": "Gold plunges due to strong dollar and rising Treasury yields."
+      "reason": "Gold drops as surging Treasury yields and a strong dollar weigh heavily."
     },
     "US30": {
       "score": -2,
       "label": "Neutral",
-      "reason": "Weighed down by rising yields and Nvidia leadership uncertainty."
+      "reason": "Wavering on tech selloffs and chipmaker routs despite defensive gains."
     },
     "US100": {
-      "score": -3,
+      "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Tech stocks suffer from rising yields and Nvidia selloff."
+      "reason": "Tech index slides sharply amid chipmaker selloffs and Nvidia leadership crisis."
     },
     "GER30": {
-      "score": 3,
-      "label": "Moderately Bullish",
-      "reason": "DAX hits record highs supported by strong corporate earnings."
+      "score": -1,
+      "label": "Neutral",
+      "reason": "DAX hovers near record levels as earnings offset global tech and rate concerns."
     },
     "BTCUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Bitcoin tumbles below $70k on rising yields and risk-off."
+      "reason": "Bitcoin plunges below key thresholds on surging bond yields and risk-off sentiment."
     }
   },
   "currencies": {
     "USD": {
       "score": 8,
-      "reason": "Stronger inflation and hawkish Fed rate hike expectations boost dollar."
+      "reason": "Strong inflation data and hawkish Fed rate hike expectations boost dollar."
     },
     "EUR": {
       "score": -5,
-      "reason": "Weighed down by broad US dollar strength and weak growth."
+      "reason": "Weighed down by US dollar strength, regional growth concerns, and political risks."
     },
     "GBP": {
       "score": -3,
-      "reason": "Resilient UK GDP overshadowed by surging US dollar strength."
+      "reason": "Pressured by broad USD strength despite relatively resilient domestic GDP data."
     },
     "AUD": {
       "score": -6,
-      "reason": "Plummets on USD strength and declining domestic confidence."
+      "reason": "Weak confidence data and lower rate hike expectations weigh on Aussie."
     },
     "NZD": {
       "score": -6,
-      "reason": "Slumps to multi-month lows amid aggressive Fed repricing."
+      "reason": "Plummeting on aggressive Fed rate expectations and soft domestic factors."
     },
     "CHF": {
-      "score": -4,
-      "reason": "Weakens past 0.83 per USD due to widening rate differentials."
+      "score": -7,
+      "reason": "Weakened significantly as widening US-Swiss interest rate differentials undermine appeal."
     }
   },
   "sources": {
@@ -103,7 +103,7 @@
     },
     "NZD": {
       "paragraphs": 3,
-      "headlines": 4,
+      "headlines": 6,
       "problems": []
     },
     "CHF": {
