@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-14",
-  "generated_at": "10:54 SAST",
+  "date": "2026-11-15",
+  "generated_at": "11:13 SAST",
   "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Euro weakens against a strongly supported, hawkishly driven US dollar."
+      "reason": "EUR weakness and surging USD drive downside."
     },
     "GBPUSD": {
       "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Pound drifts lower as surging US rate expectations dominate."
+      "reason": "Strong US dollar pressures sterling lower."
     },
     "AUDUSD": {
-      "score": -7,
+      "score": -6,
       "label": "Strong Bearish",
-      "reason": "Aussie slumps as surging US yields and strong dollar take control."
+      "reason": "Softer domestic data meets aggressive US dollar strength."
     },
     "NZDUSD": {
-      "score": -7,
+      "score": -6,
       "label": "Strong Bearish",
-      "reason": "Kiwi tests multi-month lows pressured by robust US greenback strength."
+      "reason": "Hawkish Fed expectations crush kiwi currency."
     },
     "USDCHF": {
-      "score": 7,
+      "score": 6,
       "label": "Strong Bullish",
-      "reason": "Dollar climbs against the Swiss franc on expanding rate differentials."
+      "reason": "Higher US yields widen rate spread, lifting USDCHF."
     },
     "XAUUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Gold drops as surging Treasury yields and a strong dollar weigh heavily."
+      "reason": "Stronger dollar and high Treasury yields pressure gold."
     },
     "US30": {
       "score": -2,
       "label": "Neutral",
-      "reason": "Wavering on tech selloffs and chipmaker routs despite defensive gains."
+      "reason": "Weighed down by tech rout and Nvidia uncertainty."
     },
     "US100": {
-      "score": -5,
-      "label": "Moderately Bearish",
-      "reason": "Tech index slides sharply amid chipmaker selloffs and Nvidia leadership crisis."
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Nvidia crisis and AI sector selloff hit tech hard."
     },
     "GER30": {
-      "score": -1,
+      "score": 1,
       "label": "Neutral",
-      "reason": "DAX hovers near record levels as earnings offset global tech and rate concerns."
+      "reason": "Resilient earnings offset broader global tech and inflation concerns."
     },
     "BTCUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Bitcoin plunges below key thresholds on surging bond yields and risk-off sentiment."
+      "reason": "Surging yields and inflation fears crash crypto prices."
     }
   },
   "currencies": {
     "USD": {
-      "score": 8,
-      "reason": "Strong inflation data and hawkish Fed rate hike expectations boost dollar."
+      "score": 7,
+      "reason": "Strong inflation data fuels Fed rate hike expectations."
     },
     "EUR": {
-      "score": -5,
-      "reason": "Weighed down by US dollar strength, regional growth concerns, and political risks."
+      "score": -4,
+      "reason": "Weighed down by political risks and US dollar strength."
     },
     "GBP": {
-      "score": -3,
-      "reason": "Pressured by broad USD strength despite relatively resilient domestic GDP data."
+      "score": -2,
+      "reason": "Pound pressured by robust US dollar strength."
     },
     "AUD": {
-      "score": -6,
-      "reason": "Weak confidence data and lower rate hike expectations weigh on Aussie."
+      "score": -5,
+      "reason": "Weak domestic data and strong US dollar weigh heavily."
     },
     "NZD": {
-      "score": -6,
-      "reason": "Plummeting on aggressive Fed rate expectations and soft domestic factors."
+      "score": -5,
+      "reason": "Plummeted due to broad US dollar dominance."
     },
     "CHF": {
-      "score": -7,
-      "reason": "Weakened significantly as widening US-Swiss interest rate differentials undermine appeal."
+      "score": -5,
+      "reason": "Widening interest rate differential weakens the franc."
     }
   },
   "sources": {
@@ -98,7 +98,7 @@
     },
     "AUD": {
       "paragraphs": 3,
-      "headlines": 6,
+      "headlines": 4,
       "problems": []
     },
     "NZD": {
@@ -108,7 +108,7 @@
     },
     "CHF": {
       "paragraphs": 3,
-      "headlines": 6,
+      "headlines": 1,
       "problems": []
     },
     "GOLD": {
@@ -128,7 +128,7 @@
     },
     "GER30": {
       "paragraphs": 3,
-      "headlines": 6,
+      "headlines": 5,
       "problems": []
     },
     "BTC": {
