@@ -1,17 +1,209 @@
 {
  "source": "Forex Factory economic calendar",
- "fetched": "2026-11-14T17:20:30Z",
+ "fetched": "2026-11-15T08:28:47Z",
  "events": [
   {
-   "t": 1794245100,
+   "t": 1794835800,
+   "cur": "CAD",
+   "title": "CPI m/m",
+   "impact": "high",
+   "forecast": "0.3%",
+   "previous": "0.1%"
+  },
+  {
+   "t": 1794835800,
+   "cur": "CAD",
+   "title": "Median CPI y/y",
+   "impact": "high",
+   "forecast": "2.0%",
+   "previous": "1.9%"
+  },
+  {
+   "t": 1794835800,
+   "cur": "CAD",
+   "title": "Trimmed CPI y/y",
+   "impact": "high",
+   "forecast": "1.9%",
+   "previous": "1.8%"
+  },
+  {
+   "t": 1794835800,
+   "cur": "CAD",
+   "title": "Common CPI y/y",
+   "impact": "medium",
+   "forecast": "2.5%",
+   "previous": "2.4%"
+  },
+  {
+   "t": 1794848400,
+   "cur": "USD",
+   "title": "Fed Chairman Warsh Speaks",
+   "impact": "high",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794869400,
+   "cur": "AUD",
+   "title": "RBA Gov Bullock Speaks",
+   "impact": "high",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794880800,
+   "cur": "NZD",
+   "title": "Inflation Expectations q/q",
+   "impact": "high",
+   "forecast": "",
+   "previous": "2.34%"
+  },
+  {
+   "t": 1794898800,
+   "cur": "GBP",
+   "title": "Average Earnings Index 3m/y",
+   "impact": "medium",
+   "forecast": "3.5%",
+   "previous": "3.7%"
+  },
+  {
+   "t": 1794922200,
+   "cur": "USD",
+   "title": "Core Retail Sales m/m",
+   "impact": "high",
+   "forecast": "0.4%",
+   "previous": "0.9%"
+  },
+  {
+   "t": 1794922200,
+   "cur": "USD",
+   "title": "Retail Sales m/m",
+   "impact": "high",
+   "forecast": "0.2%",
+   "previous": "0.8%"
+  },
+  {
+   "t": 1794961800,
+   "cur": "AUD",
+   "title": "Wage Price Index q/q",
+   "impact": "medium",
+   "forecast": "0.9%",
+   "previous": "0.8%"
+  },
+  {
+   "t": 1794985200,
+   "cur": "GBP",
+   "title": "CPI y/y",
+   "impact": "high",
+   "forecast": "3.6%",
+   "previous": "3.5%"
+  },
+  {
+   "t": 1794987000,
    "cur": "GBP",
    "title": "BOE Gov Bailey Speaks",
+   "impact": "high",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1794992400,
+   "cur": "EUR",
+   "title": "ECB Financial Stability Review",
    "impact": "medium",
    "forecast": "",
    "previous": ""
   },
   {
-   "t": 1794301200,
+   "t": 1795011900,
+   "cur": "EUR",
+   "title": "ECB President Lagarde Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1795014000,
+   "cur": "GBP",
+   "title": "BOE Gov Bailey Speaks",
+   "impact": "high",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1795024800,
+   "cur": "NZD",
+   "title": "RBNZ Gov Breman Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1795028400,
+   "cur": "USD",
+   "title": "FOMC Meeting Minutes",
+   "impact": "high",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1795048200,
+   "cur": "AUD",
+   "title": "Employment Change",
+   "impact": "high",
+   "forecast": "25.2K",
+   "previous": "-39.3K"
+  },
+  {
+   "t": 1795048200,
+   "cur": "AUD",
+   "title": "Unemployment Rate",
+   "impact": "high",
+   "forecast": "4.7%",
+   "previous": "4.7%"
+  },
+  {
+   "t": 1795095000,
+   "cur": "EUR",
+   "title": "ECB President Lagarde Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1795095000,
+   "cur": "USD",
+   "title": "Philly Fed Manufacturing Index",
+   "impact": "medium",
+   "forecast": "19.2",
+   "previous": "20.9"
+  },
+  {
+   "t": 1795095000,
+   "cur": "USD",
+   "title": "Unemployment Claims",
+   "impact": "medium",
+   "forecast": "199K",
+   "previous": "200K"
+  },
+  {
+   "t": 1795158000,
+   "cur": "GBP",
+   "title": "Retail Sales m/m",
+   "impact": "medium",
+   "forecast": "0.0%",
+   "previous": "-0.4%"
+  },
+  {
+   "t": 1795162500,
+   "cur": "EUR",
+   "title": "ECB President Lagarde Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "t": 1795181100,
    "cur": "USD",
    "title": "FOMC Member Waller Speaks",
    "impact": "medium",
@@ -19,100 +211,20 @@
    "previous": ""
   },
   {
-   "t": 1794317400,
+   "t": 1795186800,
    "cur": "USD",
-   "title": "Core CPI m/m",
-   "impact": "high",
-   "forecast": "0.2%",
-   "previous": "0.3%"
+   "title": "Revised UoM Consumer Sentiment",
+   "impact": "medium",
+   "forecast": "52.1",
+   "previous": "51.0"
   },
   {
-   "t": 1794317400,
+   "t": 1795186800,
    "cur": "USD",
-   "title": "CPI m/m",
-   "impact": "high",
-   "forecast": "0.3%",
-   "previous": "0.6%"
-  },
-  {
-   "t": 1794380460,
-   "cur": "EUR",
-   "title": "French Bank Holiday",
-   "impact": "holiday",
-   "forecast": "",
-   "previous": ""
-  },
-  {
-   "t": 1794390300,
-   "cur": "EUR",
-   "title": "ECB President Lagarde Speaks",
+   "title": "Revised UoM Inflation Expectations",
    "impact": "medium",
    "forecast": "",
-   "previous": ""
-  },
-  {
-   "t": 1794402000,
-   "cur": "CAD",
-   "title": "Bank Holiday",
-   "impact": "holiday",
-   "forecast": "",
-   "previous": ""
-  },
-  {
-   "t": 1794402000,
-   "cur": "USD",
-   "title": "Bank Holiday",
-   "impact": "holiday",
-   "forecast": "",
-   "previous": ""
-  },
-  {
-   "t": 1794466800,
-   "cur": "GBP",
-   "title": "GDP m/m",
-   "impact": "high",
-   "forecast": "0.0%",
-   "previous": "0.1%"
-  },
-  {
-   "t": 1794466800,
-   "cur": "GBP",
-   "title": "Prelim GDP q/q",
-   "impact": "medium",
-   "forecast": "0.7%",
-   "previous": "0.5%"
-  },
-  {
-   "t": 1794490200,
-   "cur": "USD",
-   "title": "Unemployment Claims",
-   "impact": "medium",
-   "forecast": "194K",
-   "previous": "189K"
-  },
-  {
-   "t": 1794511800,
-   "cur": "EUR",
-   "title": "ECB President Lagarde Speaks",
-   "impact": "medium",
-   "forecast": "",
-   "previous": ""
-  },
-  {
-   "t": 1794576600,
-   "cur": "USD",
-   "title": "Core PPI m/m",
-   "impact": "high",
-   "forecast": "0.3%",
-   "previous": "0.7%"
-  },
-  {
-   "t": 1794576600,
-   "cur": "USD",
-   "title": "PPI m/m",
-   "impact": "high",
-   "forecast": "0.4%",
-   "previous": "1.3%"
+   "previous": "4.3%"
   }
  ]
 }
