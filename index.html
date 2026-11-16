@@ -542,6 +542,8 @@ body.light .gauge-tick{fill:#475569}
 .pb-sub.need .pb-chip[data-tag]{border-color:#ff9f2e;box-shadow:0 0 8px rgba(255,159,46,.7)}
 .pb-meta{color:#dadde4}
 .pb-win{color:#22e58a;font-weight:800}
+.pb-res{font-weight:800;font-size:12px;letter-spacing:.04em;padding:5px 9px;border-radius:7px;background:rgba(148,163,184,.14);color:#cbd5e1;white-space:nowrap}.pb-res.good{background:rgba(34,197,94,.16);color:#22e58a}.pb-res.bad{background:rgba(242,54,69,.16);color:#ff6b78}
+.live-tag.done{background:rgba(148,163,184,.18);color:#cbd5e1;animation:none}
 .pb-more{position:relative;margin-left:auto}.pb-more summary{list-style:none;cursor:pointer;padding:2px 8px;border-radius:5px;color:#dadde4}.pb-more summary::-webkit-details-marker{display:none}
 .pb-more[open] summary{background:#2a2e39}
 .pb-pop{position:absolute;right:0;top:28px;width:230px;padding:8px 10px;background:#1e222d;border:1px solid rgba(255,255,255,.12);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:8}
@@ -1425,7 +1427,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-16.23';
+const BUILD='2026-11-16.24';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1765,7 +1767,7 @@ async function recheckBinanceTrades(){
           if(r==='LOSS'){ await closeTrade(t.id,'LOSS',slAt(t,+c[0]),{exitTime:when,silent:true}); break; }
           if(r==='WIN'){ await closeTrade(t.id,'WIN',t.tp1,{exitTime:when,silent:true}); const f=(await idbAll('journal')).find(x=>x.id===t.id); if(f) Object.assign(t,f); continue; }
           if(r==='FILLED'){ t.filledTime=when; await idbPut('journal',t); } }
-        else if(t.result==='WIN'&&t.bonusTracking){ await applyBonus(t,hi,lo,true); if(!t.bonusTracking) break; } } }
+        else if(t.result==='WIN'&&t.bonusTracking){ await applyBonus(t,hi,lo,true,when); if(!t.bonusTracking) break; } } }
     catch(e){ console.warn('binance recheck',e.message); }
   }
 }
@@ -2364,7 +2366,9 @@ function xForTime(t){
 }
 function plotRight(){ const W=(overlay&&overlay.clientWidth)||(wrapEl&&wrapEl.clientWidth)||0; let aw=60; try{ aw=chartRef.priceScale('right').width()||aw; }catch(e){} return Math.max(0,W-aw); }
 // lines start at the setup candle and are always long enough for their name pill
-function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null; return {x0,x1:Math.min(plotRight()-4,x0+Math.max((tool.wBars||13)*barSpacing(),190))}; }
+function segX(){ if(!tool) return null; const x0=xForTime(tool.t0); if(x0===null) return null;
+  if(tool.tEnd){ const xe=xForTime(tool.tEnd); if(xe!==null) return {x0,x1:Math.min(plotRight()-4,Math.max(x0+120,xe+2*barSpacing()))}; } // finished trade: box stops just after the deciding candle
+  return {x0,x1:Math.min(plotRight()-4,x0+Math.max((tool.wBars||13)*barSpacing(),190))}; }
 // placing a setup: scroll so there is clear space right of the current candle for the levels
 function ensureRightRoom(px){ try{ const ts=tsApi(); const T=barTimes(); if(!ts||!T.length) return; const xl=ts.timeToCoordinate(T[T.length-1]); if(xl==null) return; if(plotRight()-xl<px) ts.scrollToPosition(Math.ceil(px/barSpacing())+1,false); }catch(e){} }
 function defaultT0(){ const g=currentGranularity(); return lastBarTime()||Math.floor(Date.now()/1000/g)*g; }
@@ -2470,13 +2474,13 @@ function tradeColors(def){ const t=def||getThemeDef(); const light=lumOf(t.chart
   return {buy:t.up,sell:t.down,entry:t.entry||t.up,sl:t.sl||t.down,tp,buyInk:inkFor(t.up),sellInk:inkFor(t.down),entryInk:inkFor(t.entry||t.up),slInk:inkFor(t.sl||t.down),tpInk:inkFor(tp),accentInk:inkFor(t.accent)}; }
 function lightChart(){ try{ const h=(getThemeDef().chartBg||'#000').replace('#',''); const n=parseInt(h.length===3?h.split('').map(x=>x+x).join(''):h.slice(0,6),16); const r=(n>>16&255)/255,g=(n>>8&255)/255,b=(n&255)/255; return 0.2126*r+0.7152*g+0.0722*b>0.45; }catch(e){ return false; } }
 function levelDefs(){
-  const L=getLabels(); const fin=tool.status==='WIN';
+  const L=getLabels(); const fin=tool.status==='WIN'||tool.status==='CLOSED'; const won=tool.status==='WIN'||(tool.status==='CLOSED'&&tool.result==='WIN');
   // FBC Ultra look: thin line from the setup to the price axis, name pill under the line at its start
   const tc=tradeColors();
   const defs=[
     {key:'entry',price:tool.entry,label:L.entry,color:tc.entry,text:tc.entryInk,draggable:false,pos:'below'},
-    {key:'sl',price:tool.sl,label:L.sl+slTag(),color:tc.sl,text:tc.slInk,draggable:tool.status!=='WIN',pos:slNearOrPastEntry()?'above':'below'},
-    {key:'tp1',price:tool.tp1,label:L.tp1+(fin?' ✓':''),color:tc.tp,text:tc.tpInk,draggable:!tool.locked,pos:'below'},
+    {key:'sl',price:tool.sl,label:L.sl+slTag()+(tool.status==='CLOSED'&&tool.result==='LOSS'?' ✗':''),color:tc.sl,text:tc.slInk,draggable:!fin,pos:slNearOrPastEntry()?'above':'below'},
+    {key:'tp1',price:tool.tp1,label:L.tp1+(won?' ✓':''),color:tc.tp,text:tc.tpInk,draggable:!tool.locked,pos:'below'},
   ];
   tool.extraTPs.forEach((t,i)=>{ const hit=(tool.bonusHits||[]).includes(t.ratio); defs.push({key:'tp'+(i+2),price:t.price,label:(t.label||('POTENTIAL TARGET '+(i+2)))+(hit?' ✓':''),color:TP_COLORS[(i+1)%TP_COLORS.length],text:inkFor(TP_COLORS[(i+1)%TP_COLORS.length]),draggable:!tool.locked,ratio:t.ratio,pos:'below'}); });
   return defs;
@@ -2537,14 +2541,16 @@ function renderPanel(){
   const lk=tool.locked; const dir=tool.direction==='buy';
   let actions;
   if(tool.status==='PENDING') actions=`<button id="pt-close" class="pb-btn danger">Cancel order</button>`;
-  else if(tool.status==='WIN') actions=`<span class="pb-win">WIN ✓${tool.bonusHits&&tool.bonusHits.length?' · bonus 1:'+Math.max(...tool.bonusHits):''}</span><button id="pt-stopbonus" class="pb-btn">Stop bonus</button>`;
+  else if(tool.status==='WIN') actions=`<span class="pb-win">WIN ✓${tool.bonusHits&&tool.bonusHits.length?' · bonus 1:'+Math.max(...tool.bonusHits):''} · tracking full target</span><button id="pt-stopbonus" class="pb-btn">Stop bonus</button>`;
+  else if(tool.status==='CLOSED'){ const r=tool.result, good=r==='WIN'||r==='STOPPED IN PROFIT', left=Math.max(0,SETUP_KEEP-(toolClock()-(tool.closedAt||toolClock()))); const hl=left>=3600?Math.floor(left/3600)+'h '+Math.round(left%3600/60)+'m':Math.max(1,Math.round(left/60))+'m';
+    actions=`<span class="pb-res ${good?'good':r==='LOSS'?'bad':''}">${r==='WIN'?'FULL TARGET ✓':r==='LOSS'?'INVALIDATED':esc(r)} · ${tool.R>0?'+':''}${tool.R}R</span><button id="pt-remove" class="pb-btn" title="Removes itself ${hl} from now">✕ Remove</button>`; }
   else if(lk) actions=`<button id="pt-close" class="pb-btn danger">Close now</button>`;
   else actions=`<button id="pt-confirm" class="pb-btn confirm">✓ CONFIRM</button><button id="pt-cancel" class="pb-icon" title="Remove setup">✕</button>`;
   slot.innerHTML=`<div class="pt-bar ${tool.barMin?'min':''}">
     <div class="pb-row">
       <span class="pt-grip" title="Drag toolbar">⠿</span>
       <strong class="pb-dir ${dir?'up':'down'}">${dir?'▲ BUY':'▼ SELL'} ${esc(inst.name)}</strong>
-      ${tool.status==='PENDING'?'<span class="live-tag pend">PENDING</span>':lk?'<span class="live-tag">LIVE</span>':''}
+      ${tool.status==='PENDING'?'<span class="live-tag pend">PENDING</span>':tool.status==='CLOSED'?'<span class="live-tag done">CLOSED</span>':lk?'<span class="live-tag">LIVE</span>':''}
       ${tool.status==='OPEN'?'<span class="pb-openr" data-v="openR"></span>':''}
       <span class="pb-sep"></span>
       ${lk?'':'<button id="pt-addtp" class="pb-icon" title="Add target">+TP</button>'}
@@ -2556,7 +2562,7 @@ function renderPanel(){
       <span class="pb-sep"></span>${['Scalp','Intraday','Swing'].map(x=>`<button class="pb-chip ${tool.tradeType===x?'active':''}" data-type="${x}">${x}</button>`).join('')}`}
       <details class="pb-more"><summary>⋯</summary><div class="pb-pop">
         <div class="pt-row"><span>Key level</span><input class="lv-in" data-lv="entry" type="number" step="any" value="${fmtPrice(inst,tool.entry)}" disabled title="Key level is fixed at the price where the setup was placed"></div>
-        <div class="pt-row"><span>Invalidation</span><input class="lv-in" data-lv="sl" type="number" step="any" value="${fmtPrice(inst,tool.sl)}" ${tool.status==='WIN'?'disabled':''}></div>
+        <div class="pt-row"><span>Invalidation</span><input class="lv-in" data-lv="sl" type="number" step="any" value="${fmtPrice(inst,tool.sl)}" ${tool.status==='WIN'||tool.status==='CLOSED'?'disabled':''}></div>
         ${lk&&tool.status==='OPEN'?'<div class="pt-row"><span>Stop loss</span><button id="pt-be" class="pb-chip">Move to breakeven</button></div>':''}
         <div class="pt-row"><span>Target 1:2.5</span><input class="lv-in" data-lv="tp1" type="number" step="any" value="${fmtPrice(inst,tool.tp1)}" ${lk?'disabled':''}></div>
         ${tool.extraTPs.map((t,i)=>`<div class="pt-row"><span>Target ${i+2} 1:</span><span class="pt-rgt"><input data-ratio="${i}" type="number" step="0.1" min="2.6" value="${t.ratio}" ${lk?'disabled':''} style="width:60px">${lk?'':`<button data-rmtp="${i}" title="Remove">✕</button>`}</span></div>`).join('')}
@@ -2582,7 +2588,8 @@ function renderPanel(){
   $p('#pt-cancel')?.addEventListener('click',()=>{ clearTool(); toast('Setup removed'); });
   $p('#pt-confirm')?.addEventListener('click',()=>{ if(!tool.setupTag){ tool.barMin=false; renderPanel(); toast('Pick your entry model first: FRVP or Engulfing sweep'); overlay.querySelector('.pb-sub')?.classList.add('need'); return; } openRulesGate(); });
   $p('#pt-close')?.addEventListener('click',()=>closeTrade(tool.tradeId,tool.status==='PENDING'?'CANCELLED':'MANUAL CLOSE',mkt(tool.inst),rp.active?{exitTime:new Date(rp.now*1000).toISOString()}:{}));
-  $p('#pt-stopbonus')?.addEventListener('click',async()=>{ const t=(await idbAll('journal')).find(x=>x.id===tool.tradeId); if(t){ t.bonusTracking=false; await idbPut('journal',t); } clearTool(); toast('Bonus tracking stopped — result saved'); });
+  $p('#pt-stopbonus')?.addEventListener('click',async()=>{ const t=(await idbAll('journal')).find(x=>x.id===tool.tradeId); if(t){ t.bonusTracking=false; t.fullTime=new Date((rp.active&&t.practice?rp.now*1000:Date.now())).toISOString(); await idbPut('journal',t); delete t.pics; queueTradePics(t.id); setToolClosed(t); renderTool(); } toast('Bonus tracking stopped — result saved'); });
+  $p('#pt-remove')?.addEventListener('click',()=>{ dismissSetup(); toast('Setup removed'); });
   repositionOnly();
 }
 // Cheap panel refresh while dragging (no rebuild, keeps pointer capture)
@@ -2594,28 +2601,37 @@ function updateLivePanel(){
 }
 function renderTool(){ if(!tool||!ensureOverlay()) return; renderLevels(); renderPanel(); startLoop(); }
 function startLoop(){ if(rafId) return; const tick=()=>{ if(!tool){ rafId=null; return; } repositionOnly(); rafId=requestAnimationFrame(tick); }; rafId=requestAnimationFrame(tick); }
+const SETUP_KEEP=5*3600; // a finished setup stays on the chart until you remove it — or 5 hours after full target / stop
+function setToolClosed(t){ if(!tool) return; tool.practice=!!t.practice; tool.status='CLOSED'; tool.locked=true; tool.result=t.result; tool.R=t.R; tool.closedAt=Math.floor(new Date(t.fullTime||t.exitTime).getTime()/1000); tool.tEnd=tool.closedAt; tool.exitPrice=t.exitPrice; }
+function toolClock(){ return tool&&rp.active&&tool.practice?rp.now:Date.now()/1000; }
+function checkSetupExpiry(){ if(tool&&tool.status==='CLOSED'&&tool.closedAt&&toolClock()-tool.closedAt>=SETUP_KEEP){ clearTool(); } }
+setInterval(checkSetupExpiry,30000);
+async function dismissSetup(){ if(!tool) return; const id=tool.tradeId; clearTool(); if(!id) return; try{ const t=(await idbAll('journal')).find(x=>x.id===id); if(t){ t.setupDismissed=true; await idbPut('journal',t); } }catch(e){} }
 function clearTool(){ tool=null; drag=null; if(overlay){ overlay.querySelector('.pt-levels').innerHTML=''; overlay.querySelector('.pt-panel-slot').innerHTML=''; } if(rafId){ cancelAnimationFrame(rafId); rafId=null; } window.dispatchEvent(new CustomEvent('bd:tool-cleared')); }
 // Show an existing open / pending / bonus-tracking trade on the chart (locked)
 async function restoreToolForInst(inst){
   if(!inst||tool) return;
   const all=await idbAll('journal');
-  const t=all.filter(x=>x.symbol===inst.symbol&&(rp.active?x.practice&&x.sessionId===rp.sid:!x.practice)&&(x.status==='OPEN'||x.status==='PENDING'||(x.result==='WIN'&&x.bonusTracking))).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0];
-  if(!t) return;
-  tool={id:t.id,tradeId:t.id,symbol:t.symbol,inst,direction:t.direction,tradeType:t.tradeType,setupTag:t.setupTag,customTags:t.customTags||[],entry:t.entry,sl:t.sl,risk0:t.risk0||Math.abs(t.entry-(t.slOriginal??t.sl)),tp1:t.tp1,extraTPs:(t.extraTPs||[]).map(x=>({...x})),lots:t.lots,riskZAR:t.riskZAR,locked:true,status:t.status==='CLOSED'?'WIN':t.status,bonusHits:(t.bonusWins||[]).map(b=>b.ratio),timeframe:t.timeframe,barMin:true,t0:t.t0||Math.floor(new Date(t.entryTime).getTime()/1000)-6*currentGranularity(),wBars:t.wBars||24};
+  const mine=all.filter(x=>x.symbol===inst.symbol&&(rp.active?x.practice&&x.sessionId===rp.sid:!x.practice)); const nowS=rp.active?rp.now:Date.now()/1000;
+  const t=mine.filter(x=>x.status==='OPEN'||x.status==='PENDING'||(x.result==='WIN'&&x.bonusTracking)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0]
+    ||mine.filter(x=>x.status==='CLOSED'&&!x.bonusTracking&&x.result!=='CANCELLED'&&!x.setupDismissed&&nowS-new Date(x.fullTime||x.exitTime).getTime()/1000<SETUP_KEEP).sort((a,b)=>new Date(b.fullTime||b.exitTime)-new Date(a.fullTime||a.exitTime))[0];
+  if(!t||tool) return;
+  tool={id:t.id,tradeId:t.id,symbol:t.symbol,inst,direction:t.direction,tradeType:t.tradeType,setupTag:t.setupTag,customTags:t.customTags||[],entry:t.entry,sl:t.sl,risk0:t.risk0||Math.abs(t.entry-(t.slOriginal??t.sl)),tp1:t.tp1,extraTPs:(t.extraTPs||[]).map(x=>({...x})),lots:t.lots,riskZAR:t.riskZAR,locked:true,status:t.status==='CLOSED'?'WIN':t.status,bonusHits:(t.bonusWins||[]).map(b=>b.ratio),timeframe:t.timeframe,barMin:true,practice:!!t.practice,t0:t.t0||Math.floor(new Date(t.entryTime).getTime()/1000)-6*currentGranularity(),wBars:t.wBars||24};
+  if(t.status==='CLOSED'&&!t.bonusTracking) setToolClosed(t);
   renderTool();
 }
 // Screenshot: chart canvas + FBC-style lines and pills drawn on top
 // zoom the chart onto the trade (context before the key level → the trade → a little space), take the picture, restore the view
-async function frameTradeForShot(){
+async function frameTradeForShot(t){
   try{ const ts=tsApi(); if(!tool||!ts||!ts.setVisibleLogicalRange||!ts.getVisibleLogicalRange) return null; const T=barTimes(); if(T.length<10) return null;
-    const prev=ts.getVisibleLogicalRange(); const L0=logicalForTime(tool.t0); if(prev===null||L0===null) return null; const last=T.length-1;
-    const from=Math.max(0,Math.min(L0,last)-70), to=Math.max(last+4,L0+(tool.wBars||13)+3);
+    const tIn=t?Math.floor(new Date(t.filledTime||t.entryTime).getTime()/1000):tool.t0; const prev=ts.getVisibleLogicalRange(); const LE=logicalForTime(tIn); if(prev===null||LE===null) return null; const last=T.length-1;
+    const from=Math.max(0,Math.min(LE,last)-25), span=last-from+1, to=last+Math.max(6,Math.round(span*0.3));
     ts.setVisibleLogicalRange({from,to}); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))); repositionOnly&&repositionOnly(); return prev; }catch(e){ return null; } }
-async function takeScreenshotWithOverlay(){
+async function takeScreenshotWithOverlay(t){
   let prevRange=null;
   try{
     if(!chartRef||!chartRef.takeScreenshot) return null;
-    prevRange=await frameTradeForShot();
+    prevRange=await frameTradeForShot(t);
     const shot=chartRef.takeScreenshot(); const c=document.createElement('canvas'); c.width=shot.width; c.height=shot.height;
     const ctx=c.getContext('2d'); ctx.drawImage(shot,0,0);
     // overlay coordinates are CSS pixels; the screenshot can be in device pixels
@@ -2696,14 +2712,15 @@ async function closeTrade(tradeId,result,exitPrice,opts={}){
   t.pnlZAR=Math.round((R*t.riskZAR-(t.spreadCostZAR||0))*100)/100;
   t.exitPrice=exitPrice; t.exitTime=opts.exitTime||new Date().toISOString();
   t.bonusTracking=result==='WIN'&&(t.extraTPs||[]).length>0;
-  if(!opts.silent){ try{ if(chartRef&&chartRef.takeScreenshot&&currentInst&&currentInst.symbol===t.symbol){ t.closeScreenshot=await takeScreenshotWithOverlay(); } }catch(e){ console.warn('close screenshot',e); } }
+  if(!t.bonusTracking) t.fullTime=t.exitTime;
+  if(!opts.silent&&!t.bonusTracking){ try{ if(chartRef&&chartRef.takeScreenshot&&currentInst&&currentInst.symbol===t.symbol){ t.closeScreenshot=await takeScreenshotWithOverlay(t); } }catch(e){ console.warn('close screenshot',e); } }
   t.balanceAfter=t.practice?null:addBalance(t.pnlZAR);
   await idbPut('journal',t); await restoreGroup(t);
   window.dispatchEvent(new CustomEvent('bd:trade-closed',{detail:t}));
   if(!opts.silent){ if(result==='WIN') playWinFX(); if(result==='LOSS') playLossFX(); }
   toast(result==='WIN'?`🎉 WIN +2.5R${t.bonusTracking?' — tracking bonus targets':''}`:result==='LOSS'?`Invalidated ${t.R}R`:result==='BREAKEVEN'?'Stopped at breakeven — not counted as a loss':result==='STOPPED IN PROFIT'?`Stopped in profit +${t.R}R`:`Manual close ${t.R}R`);
-  if(tool&&tool.tradeId===tradeId){ if(t.bonusTracking){ tool.status='WIN'; tool.bonusHits=[]; renderTool(); } else clearTool(); }
-  queueTradePics(t.id);
+  if(tool&&tool.tradeId===tradeId){ tool.bonusHits=[]; if(t.bonusTracking){ tool.status='WIN'; tool.result='WIN'; tool.R=t.R; } else setToolClosed(t); renderTool(); }
+  if(!t.bonusTracking) queueTradePics(t.id);
   if(!t.practice&&alertCfg().trades&&['WIN','LOSS','BREAKEVEN','STOPPED IN PROFIT'].includes(t.result)) fireAlert(`${(getInstruments().find(i=>i.symbol===t.symbol)||{}).name||t.symbol} ${t.result==='WIN'?'hit the target 🎉':t.result==='LOSS'?'hit the invalidation level':t.result==='BREAKEVEN'?'stopped at breakeven':'stopped in profit'}`,`${t.direction.toUpperCase()} · ${t.R>0?'+':''}${t.R}R`,t.result==='LOSS'?'bad':'ok','tr'+t.id,{noToast:!opts.silent,delay:opts.silent?0:1.5});
 }
 // Decide what a price range (hi/lo) does to an OPEN or PENDING trade. Invalidation is checked first (conservative).
@@ -2718,11 +2735,11 @@ function evaluateTrade(t,hi,lo,ms){
 }
 // Bonus wins after the 1:2.5 WIN: R becomes the highest extra target reached. Tracking stops when all targets
 // are hit, price returns to the key level, or after 7 days.
-async function applyBonus(t,hi,lo,silent){
-  const buy=t.direction==='buy'; const hits=t.bonusWins?[...t.bonusWins]:[]; let changed=false;
+async function applyBonus(t,hi,lo,silent,at){
+  const buy=t.direction==='buy'; const hits=t.bonusWins?[...t.bonusWins]:[]; let changed=false; const atIso=at||new Date().toISOString();
   for(const tp of [...(t.extraTPs||[])].sort((a,b)=>a.ratio-b.ratio)){
     if(hits.some(h=>h.ratio===tp.ratio)) continue;
-    if(buy?hi>=tp.price:lo<=tp.price){ hits.push({price:tp.price,ratio:tp.ratio,bonusR:Math.round((tp.ratio-2.5)*100)/100}); changed=true; }
+    if(buy?hi>=tp.price:lo<=tp.price){ hits.push({price:tp.price,ratio:tp.ratio,bonusR:Math.round((tp.ratio-2.5)*100)/100,time:atIso}); changed=true; }
   }
   const newMax=Math.max(2.5,...hits.map(h=>h.ratio));
   if(newMax>(t.maxRatio||2.5)){
@@ -2730,10 +2747,15 @@ async function applyBonus(t,hi,lo,silent){
     if(!silent){ toast(`🎉 BONUS WIN — target 1:${newMax} reached (+${(newMax-2.5).toFixed(1)}R extra)`); playWinFX(); }
   }
   t.bonusWins=hits;
-  const allHit=hits.length>=(t.extraTPs||[]).length; const backToEntry=buy?lo<=t.entry:hi>=t.entry; const old=Date.now()-new Date(t.exitTime).getTime()>7*86400000;
-  if(allHit||backToEntry||old){ t.bonusTracking=false; changed=true; }
-  if(changed){ await idbPut('journal',t); window.dispatchEvent(new CustomEvent('bd:trade-closed',{detail:t}));
-    if(tool&&tool.tradeId===t.id){ if(t.bonusTracking){ tool.bonusHits=hits.map(h=>h.ratio); renderTool(); } else clearTool(); } }
+  const allHit=hits.length>=(t.extraTPs||[]).length; const backToEntry=buy?lo<=t.entry:hi>=t.entry; const old=new Date(atIso).getTime()-new Date(t.exitTime).getTime()>7*86400000;
+  if(allHit||backToEntry||old){ t.bonusTracking=false; changed=true;
+    // the trade is done: the full target (the last one reached) or the moment tracking stopped
+    t.fullTime=allHit&&hits.length?hits.map(h=>h.time).filter(Boolean).sort().pop()||atIso:atIso; }
+  if(changed){
+    if(!t.bonusTracking&&!silent){ try{ if(chartRef&&chartRef.takeScreenshot&&currentInst&&currentInst.symbol===t.symbol){ const sh=await takeScreenshotWithOverlay(t); if(sh) t.closeScreenshot=sh; } }catch(e){} }
+    await idbPut('journal',t); window.dispatchEvent(new CustomEvent('bd:trade-closed',{detail:t}));
+    if(!t.bonusTracking){ delete t.pics; queueTradePics(t.id); } // review picture waits for the full target
+    if(tool&&tool.tradeId===t.id){ tool.bonusHits=hits.map(h=>h.ratio); if(!t.bonusTracking) setToolClosed(t); renderTool(); } }
 }
 // Live tracking on every tick. Trades placed on the live feed are only tracked by live prices (and demo by demo).
 function startOutcomeTracking(){
@@ -2776,7 +2798,7 @@ async function recheckOpenTradesOnLoad(){
           if(r==='LOSS'){ await closeTrade(t.id,'LOSS',slAt(t,c.epoch*1000),{exitTime:when,silent:true}); break; }
           if(r==='WIN'){ await closeTrade(t.id,'WIN',t.tp1,{exitTime:when,silent:true}); const fresh=(await idbAll('journal')).find(x=>x.id===t.id); if(fresh) Object.assign(t,fresh); continue; }
           if(r==='FILLED'){ t.filledTime=when; await idbPut('journal',t); }
-        } else if(t.result==='WIN'&&t.bonusTracking){ await applyBonus(t,c.high,c.low,true); if(!t.bonusTracking) break; }
+        } else if(t.result==='WIN'&&t.bonusTracking){ await applyBonus(t,c.high,c.low,true,when); if(!t.bonusTracking) break; }
       }
     }catch(e){ console.warn('recheck',e); }
   }
@@ -3572,7 +3594,7 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   // BEFORE shows only candles that had closed when you pressed CONFIRM — nothing from the future
   const decide=mode==='after'&&tOut?Math.floor(tOut/g)*g:null; // the candle that hit the target / invalidation (or where you closed)
   const shown=mode==='before'?candles.filter(k=>k.time+g<=tIn+1):candles.filter(k=>decide===null||k.time<=decide); const n=shown.length; if(n<3) return null;
-  const extra=Math.max(18,Math.round(n*0.22)); const bw=(R-L)/(n+extra);
+  const extra=mode==='before'?Math.max(16,Math.round(n*0.4)):Math.max(6,Math.round(n*0.28)); const bw=(R-L)/(n+extra);
   const iE=mode==='before'?n:Math.max(0,shown.findIndex(k=>k.time>tIn-g&&k.time<=tIn)>=0?shown.findIndex(k=>k.time>tIn-g&&k.time<=tIn):shown.filter(k=>k.time<=tIn).length-1); const X=i=>L+(i+0.5)*bw;
   const iX=mode==='after'?n-1:-1;
   const slFinal=t.sl, slOrig=t.slOriginal??t.sl; const lv=[t.entry,slOrig,slFinal,t.tp1,...(t.extraTPs||[]).map(e=>e.price)]; if(mode==='after'&&t.exitPrice!=null) lv.push(t.exitPrice);
@@ -3589,7 +3611,7 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   // candles
   shown.forEach((k,i)=>{ const col=k.close>=k.open?up:dn; x2.fillStyle=col; const x=X(i); x2.fillRect(Math.round(x)-0.5,Y(k.high),1,Math.max(1,Y(k.low)-Y(k.high))); const yo=Y(k.open), yc=Y(k.close); const bx=x-Math.max(1,bw*0.35), by=Math.min(yo,yc), bW=Math.max(2,bw*0.7), bH=Math.max(1,Math.abs(yc-yo)); if(k.close>=k.open&&th.hollowUp&&bW>3){ x2.fillStyle=bg; x2.fillRect(bx,by,bW,bH); x2.strokeStyle=th.borderUp||col; x2.lineWidth=1; x2.strokeRect(Math.round(bx)+0.5,Math.round(by)+0.5,Math.round(bW)-1,Math.max(1,Math.round(bH)-1)); } else x2.fillRect(bx,by,bW,bH); });
   // levels — FBC style, starting on the entry candle
-  const lvEnd=Math.min(R-6,Math.max(X(iE)+Math.max(14*bw,230),mode==='after'?X(iX)+Math.max(4*bw,40):0));
+  const lvEnd=Math.min(R-6,mode==='after'?Math.max(X(iE)+120,X(iX)+1.5*bw):X(iE)+Math.max(14*bw,230)); // after: ends just past the deciding candle, like a TradingView position box
   const TC=tradeColors(th); const tg={c:TC.tp,t:TC.tpInk}; const Lb=getLabels();
   const pill=(y,label,col,tc,below)=>{ x2.font="600 12px 'Space Grotesk',sans-serif"; const w=x2.measureText(label).width+20, h=21, px=X(iE)-bw/2, py=below?y+8:y-8-h;
     x2.fillStyle=col; x2.beginPath(); x2.roundRect?x2.roundRect(px,py,w,h,3):x2.rect(px,py,w,h); x2.fill(); x2.beginPath(); if(below){ x2.moveTo(px+9,py); x2.lineTo(px+14,py-5); x2.lineTo(px+19,py); } else { x2.moveTo(px+9,py+h); x2.lineTo(px+14,py+h+5); x2.lineTo(px+19,py+h); } x2.fill(); x2.fillStyle=tc; x2.textAlign='left'; x2.fillText(label,px+10,py+15); };
@@ -3606,7 +3628,7 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   x2.beginPath(); x2.arc(ex,ey,4.5,0,Math.PI*2); x2.fillStyle='#fff'; x2.fill(); x2.strokeStyle=TC.entry; x2.lineWidth=2; x2.stroke();
   // exit marker
   if(mode==='after'){
-    const open=t.status==='OPEN'||t.status==='PENDING'; const xp=open?shown[n-1].close:t.exitPrice; const xx=X(iX), xy=Y(xp);
+    const open=t.status==='OPEN'||t.status==='PENDING'; const best=(t.bonusWins||[]).reduce((a,b)=>!a||b.ratio>a.ratio?b:a,null); const xp=open?shown[n-1].close:best?best.price:t.exitPrice; const xx=X(iX), xy=Y(xp);
     const res=open?'OPEN':resultOf(t); const rr=open?((xp-t.entry)/(t.risk0||Math.abs(t.entry-slOrig)||1e-9))*(buy?1:-1):t.R;
     const col=res==='WIN'?'#089981':res==='LOSS'?'#f23645':'#64748b';
     x2.beginPath(); x2.arc(xx,xy,6,0,Math.PI*2); x2.fillStyle=col; x2.fill(); x2.strokeStyle='#fff'; x2.lineWidth=2; x2.stroke();
@@ -3618,7 +3640,7 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   x2.textAlign='left'; x2.font="700 18px 'Space Grotesk',sans-serif"; x2.fillStyle=buy?'#22c55e':'#f23645'; const head=`${buy?'▲ BUY':'▼ SELL'} ${t.name||t.symbol}`; x2.fillText(head,16,29);
   const hw=x2.measureText(head).width; x2.font="600 14px 'Space Grotesk',sans-serif"; x2.fillStyle=light?'#111827':'#e6ebf5';
   const tfLab=(TIMEFRAMES.find(f=>f.gran===g)||{}).label||(g%604800===0?g/604800+'W':g%86400===0?g/86400+'D':g>=3600?g/3600+'h':g/60+'m');
-  const why=t.status!=='CLOSED'?'so far':t.result==='WIN'?'until the candle that hit the target':t.result==='LOSS'||t.result==='BREAKEVEN'||t.result==='STOPPED IN PROFIT'?'until the candle that hit the stop':'until you closed it';
+  const why=t.status!=='CLOSED'?'so far':t.result==='WIN'?((t.bonusWins||[]).length?'until the candle that hit the full target':'until the candle that hit the target'):t.result==='LOSS'||t.result==='BREAKEVEN'||t.result==='STOPPED IN PROFIT'?'until the candle that hit the stop':'until you closed it';
   x2.fillText(`${mode==='before'?'BEFORE — the moment you entered':'AFTER — '+why} · ${tfLab}${t.practice?' · PRACTICE (replay)':''}`,16+hw+16,29);
   x2.textAlign='right'; x2.fillStyle=muted; x2.font="500 13px 'Space Grotesk',sans-serif";
   x2.fillText((mode==='before'?`Entry ${sastFmt(tIn,true)} SAST`:`${sastFmt(tIn,true)} → ${tOut?sastFmt(tOut,true):'now'} SAST`)+` · ${isBinance(inst)?'Binance':'Deriv'} prices`,W-14,29);
@@ -3627,19 +3649,19 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
 // Build (and save) both pictures for a trade. Open trades get an AFTER "so far" picture that is not saved.
 async function buildTradePics(t,{save=true}={}){
   const inst=getInstruments().find(i=>i.symbol===t.symbol); if(!inst) return null;
-  const tIn=Math.floor(new Date(t.filledTime||t.entryTime).getTime()/1000); const closed=t.status==='CLOSED'; const tOut=closed&&t.exitTime?Math.floor(new Date(t.exitTime).getTime()/1000):null;
-  const gB=granForLabel(t.timeframe||'15m'); const out={v:2};
-  const b=await fetchRange(inst,gB,tIn-90*gB,tIn+gB); out.before=b.length?drawPicture(t,inst,b,gB,'before',tIn,null):null;
+  const tIn=Math.floor(new Date(t.filledTime||t.entryTime).getTime()/1000); const closed=t.status==='CLOSED'; const fin=closed&&(t.fullTime||t.exitTime); const tOut=fin?Math.floor(new Date(fin).getTime()/1000):null;
+  const gB=granForLabel(t.timeframe||'15m'); const out={v:3};
+  const b=await fetchRange(inst,gB,tIn-40*gB,tIn+gB); out.before=b.length?drawPicture(t,inst,b,gB,'before',tIn,null):null;
   if(t.status==='CLOSED'||t.status==='OPEN'){
     const end=tOut||Math.floor(Date.now()/1000); const GR=[60,120,180,300,600,900,1800,3600,7200,14400,28800,86400];
-    const gA=GR.find(g=>g>=gB&&(end-tIn)/g<=160)||86400; const tradeBars=Math.ceil((end-tIn)/gA)+1; const ctx=tradeBars<=110?90:Math.max(30,200-tradeBars);
+    const gA=GR.find(g=>g>=gB&&(end-tIn)/g<=40)||86400; const ctx=25; // like your TradingView: ~25 candles of context, then the trade
     const a=await fetchRange(inst,gA,tIn-ctx*gA,Math.floor(end/gA)*gA+1); out.after=a.length?drawPicture(t,inst,a,gA,'after',tIn,tOut):null;
   }
   if(save&&closed&&out.before&&out.after){ const all=await idbAll('journal'); const cur=all.find(x=>x.id===t.id); if(cur){ cur.pics=out; await idbPut('journal',cur); } }
   return out;
 }
 let picQueue=Promise.resolve();
-function queueTradePics(id){ picQueue=picQueue.then(async()=>{ try{ const t=(await idbAll('journal')).find(x=>x.id===id); if(t&&t.status==='CLOSED'&&!(t.pics&&t.pics.after&&t.pics.v>=2)) await buildTradePics(t); }catch(e){ console.warn('pics',e); } }); return picQueue; }
+function queueTradePics(id){ picQueue=picQueue.then(async()=>{ try{ const t=(await idbAll('journal')).find(x=>x.id===id); if(t&&t.status==='CLOSED'&&!t.bonusTracking&&!(t.pics&&t.pics.after&&t.pics.v>=3)) await buildTradePics(t); }catch(e){ console.warn('pics',e); } }); return picQueue; }
 
 // ===== Bar replay — backtest sessions in the style of FX Replay =====
 // Pick a date and time; the future stays hidden and every chart in your layout runs on ONE market clock,
@@ -3799,8 +3821,11 @@ function rpAdvance(sec,force){
   if(now>=cap){ now=cap; live.forEach(D=>{ if(D.m1End<=cap+1) rpMore(D); }); if(now<=prev){ if(!live.length){ replayPlay(false); toast('The replay reached the present — End the session to see your results'); } return; } }
   Ds.forEach(D=>{ if(D.m1End-now<6*3600&&!D.noMore) rpMore(D); });
   rp.now=now;
-  for(const D of Ds){ let lo=Infinity,hi=-Infinity; for(let k=Math.max(0,rpIdx(D,prev));k<D.m1.length;k++){ const m=D.m1[k]; if(m.time>=now) break; const f0=Math.max(0,(prev-m.time)/60), f1=Math.min(1,(now-m.time)/60); if(f1<=0||f0>=1) continue; const r=rpRange(m,f0,f1); lo=Math.min(lo,r[0]); hi=Math.max(hi,r[1]); }
-    if(isFinite(lo)){ D.pLo=Math.min(D.pLo,lo); D.pHi=Math.max(D.pHi,hi); } D.price=rpPriceNow(D,now); }
+  const watch=new Set((rp.open||[]).map(t=>t.symbol));
+  for(const D of Ds){ const seg=watch.has(D.sym); // open practice trades are judged minute by minute, so exits get the exact minute
+    for(let k=Math.max(0,rpIdx(D,prev));k<D.m1.length;k++){ const m=D.m1[k]; if(m.time>=now) break; const f0=Math.max(0,(prev-m.time)/60), f1=Math.min(1,(now-m.time)/60); if(f1<=0||f0>=1) continue; const r=rpRange(m,f0,f1);
+      if(seg) (D.seg||(D.seg=[])).push([Math.floor(Math.max(m.time,prev)),r[0],r[1]]); }
+    D.price=rpPriceNow(D,now); }
   const D=rpD(rp.sym);
   if(D&&series&&!rp.building){ const g=rp.g, cb=bucketOf(now,g);
     if(cb!==rp.curB){ for(let b=rp.curB;b<cb;b+=g){ const x=rpBar(D,g,b,b+g); if(x){ try{ series.update(x); }catch(e){} candleMap.set(x.time,x); } } rp.curB=cb; }
@@ -3811,18 +3836,22 @@ function rpAdvance(sec,force){
   if(rp.open&&rp.open.length) rpJudge();
   const ms=performance.now(); if(force||!rp.hdrAt||ms-rp.hdrAt>120){ rp.hdrAt=ms; const t=document.querySelector('.rp-time'); if(t) t.textContent=rpClockText(now); updateHeader();
     for(const m of mcCharts){ if(!m.rp) continue; rpMiniPrice(m); if(m.rpNew){ m.rpNew=false; mcMsUpdate(m); } mcDraw(m); } }
-  if(!rp.sessAt||ms-rp.sessAt>5000){ rp.sessAt=ms; rpSessUpdate({last:now}); rpRefreshOpen(); }
+  if(!rp.sessAt||ms-rp.sessAt>5000){ rp.sessAt=ms; rpSessUpdate({last:now}); rpRefreshOpen(); checkSetupExpiry(); }
 }
 // the session's open practice trades, cached so judging never reads the journal on every frame
 async function rpRefreshOpen(){ if(!rp.active) return; const sid=rp.sid; try{ const all=await idbAll('journal'); if(rp.sid!==sid) return; rp.open=all.filter(t=>t.practice&&t.sessionId===sid&&(t.status==='OPEN'||t.status==='PENDING'||(t.result==='WIN'&&t.bonusTracking))); runTrades=rp.open.filter(t=>isFinite(t.entry)&&isFinite(t.sl)); rtRender(); for(const m of mcCharts) mcDraw(m); }catch(e){} }
 for(const ev of ['bd:trade-confirmed','bd:trade-closed','bd:trade-updated','bd:tool-cleared']) window.addEventListener(ev,()=>{ if(rp.active) setTimeout(rpRefreshOpen,40); });
-async function rpJudge(){ if(rp.judging||!rp.open||!rp.open.length) return; const ks=[]; for(const D of Object.values(rp.data)){ if(!isFinite(D.pLo)) continue; if(rp.open.some(t=>t.symbol===D.sym)) ks.push({sym:D.sym,lo:D.pLo,hi:D.pHi}); D.pLo=Infinity; D.pHi=-Infinity; }
-  if(!ks.length) return; rp.judging=true; const at=rp.now, iso=new Date(at*1000).toISOString(), sid=rp.sid; let changed=false;
-  try{ for(const k of ks){ for(const t of rp.open.filter(x=>x.symbol===k.sym)){ if(rp.sid!==sid) return;
-      if(t.status==='OPEN'||t.status==='PENDING'){ const wasP=t.status==='PENDING'; const r=evaluateTrade(t,k.hi,k.lo,at*1000);
-        if(wasP&&t.status==='OPEN'){ t.filledTime=iso; await idbPut('journal',t); changed=true; if(r==='FILLED'){ toast(`${t.symbol}: key level reached — practice trade is live`); if(tool&&tool.tradeId===t.id){ tool.status='OPEN'; renderTool(); } } }
-        if(r==='LOSS'){ await closeTrade(t.id,'LOSS',slAt(t,at*1000),{exitTime:iso}); t.status='CLOSED'; changed=true; } else if(r==='WIN'){ await closeTrade(t.id,'WIN',t.tp1,{exitTime:iso}); t.status='CLOSED'; changed=true; } }
-      else if(t.result==='WIN'&&t.bonusTracking){ await applyBonus(t,k.hi,k.lo); changed=true; } } } }
+async function rpJudge(){ if(rp.judging||!rp.open||!rp.open.length) return; const ks=[]; for(const D of Object.values(rp.data)){ if(!D.seg||!D.seg.length) continue; const seg=D.seg; D.seg=[]; if(rp.open.some(t=>t.symbol===D.sym)) ks.push({sym:D.sym,seg}); }
+  if(!ks.length) return; rp.judging=true; const sid=rp.sid; let changed=false;
+  try{ for(const k of ks){ for(const [ts,lo,hi] of k.seg){ const iso=new Date(ts*1000).toISOString(); let any=false;
+      for(const t of rp.open.filter(x=>x.symbol===k.sym)){ if(rp.sid!==sid) return;
+        const live=t.status==='OPEN'||t.status==='PENDING'||(t.result==='WIN'&&t.bonusTracking); if(live) any=true;
+        if(live&&ts<Math.floor(Date.parse((t.status==='CLOSED'?t.exitTime:t.entryTime)||0)/1000)) continue; // movement from before this trade existed
+        if(t.status==='OPEN'||t.status==='PENDING'){ const wasP=t.status==='PENDING'; const r=evaluateTrade(t,hi,lo,ts*1000);
+          if(wasP&&t.status==='OPEN'){ t.filledTime=iso; await idbPut('journal',t); changed=true; if(r==='FILLED'){ toast(`${t.symbol}: key level reached — practice trade is live`); if(tool&&tool.tradeId===t.id){ tool.status='OPEN'; renderTool(); } } }
+          if(r==='LOSS'){ await closeTrade(t.id,'LOSS',slAt(t,ts*1000),{exitTime:iso}); t.status='CLOSED'; changed=true; } else if(r==='WIN'){ await closeTrade(t.id,'WIN',t.tp1,{exitTime:iso}); const f=(await idbAll('journal')).find(x=>x.id===t.id); if(f) Object.assign(t,f); changed=true; } }
+        else if(t.result==='WIN'&&t.bonusTracking){ await applyBonus(t,hi,lo,false,iso); changed=true; } }
+      if(!any) break; } } }
   catch(e){ console.warn(e); } finally{ rp.judging=false; if(changed) rpRefreshOpen(); } }
 async function endReplay(opts={}){
   if(rp.picking&&!rp.active){ rpCancelPick(); return; }
