@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '53 1 * * *'    # 03:53 SAST - before the 04:07 bias scores
     - cron: '53 11 * * *'   # 13:53 SAST - picks up any time changes
+    - cron: '53 18 * * *'   # GitHub has been starting schedules ~7h late here - this one tends to land before the morning scores
+    - cron: '53 4 * * *'    # same, lands around midday
   workflow_dispatch: {}
 
 permissions:

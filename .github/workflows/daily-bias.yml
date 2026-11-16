@@ -4,6 +4,15 @@ on:
   schedule:
     # GitHub often starts scheduled runs late (hours, on busy days) or skips them, so there are
     # several backups. Each one skips if today's scores already exist, so only the first one scores.
+    # In Nov 2026 GitHub ran this repo's schedules ~7 hours late, so these evening times usually land
+    # around 04:00-06:00 SAST. If one arrives on time (evening) it does nothing: automatic runs only
+    # score between 04:00 and 15:00 SAST.
+    - cron: '7 19 * * *'
+    - cron: '41 19 * * *'
+    - cron: '13 20 * * *'
+    - cron: '47 20 * * *'
+    - cron: '23 21 * * *'
+    - cron: '17 22 * * *'
     - cron: '7 2 * * *'    # 04:07 SAST
     - cron: '41 2 * * *'   # 04:41 SAST
     - cron: '13 3 * * *'   # 05:13 SAST
