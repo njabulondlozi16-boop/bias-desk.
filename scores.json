@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-15",
-  "generated_at": "11:13 SAST",
-  "model": "gemini-3.5-flash-lite",
+  "date": "2026-11-16",
+  "generated_at": "05:43 SAST",
+  "model": "gemini-3.8-flash",
   "scores": {
     "EURUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "EUR weakness and surging USD drive downside."
+      "reason": "Diverging economic outlooks and hawkish Fed rate hike bets keep EURUSD pressured downward."
     },
     "GBPUSD": {
       "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Strong US dollar pressures sterling lower."
+      "reason": "Firm dollar dominates despite UK growth surprise and BoE tightening bets."
     },
     "AUDUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Softer domestic data meets aggressive US dollar strength."
+      "reason": "RBA pause bets combined with hawkish Fed push the pair toward key lows."
     },
     "NZDUSD": {
-      "score": -6,
+      "score": -7,
       "label": "Strong Bearish",
-      "reason": "Hawkish Fed expectations crush kiwi currency."
+      "reason": "Broad dollar rally and weak domestic New Zealand fundamentals weigh heavily on pair."
     },
     "USDCHF": {
       "score": 6,
       "label": "Strong Bullish",
-      "reason": "Higher US yields widen rate spread, lifting USDCHF."
+      "reason": "Expanding interest rate gap heavily favors the dollar over the zero-yielding franc."
     },
     "XAUUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Stronger dollar and high Treasury yields pressure gold."
+      "reason": "Surging Treasury yields and increased Fed tightening expectations weigh heavily on bullion."
     },
     "US30": {
-      "score": -2,
-      "label": "Neutral",
-      "reason": "Weighed down by tech rout and Nvidia uncertainty."
-    },
-    "US100": {
-      "score": -6,
-      "label": "Strong Bearish",
-      "reason": "Nvidia crisis and AI sector selloff hit tech hard."
-    },
-    "GER30": {
       "score": 1,
       "label": "Neutral",
-      "reason": "Resilient earnings offset broader global tech and inflation concerns."
+      "reason": "Defensive value components and slight futures bounce offset broader rate hike pressure."
+    },
+    "US100": {
+      "score": -3,
+      "label": "Moderately Bearish",
+      "reason": "Rising yields and ongoing leadership/regulatory turmoil in Nvidia dampen tech appetite."
+    },
+    "GER30": {
+      "score": -1,
+      "label": "Neutral",
+      "reason": "Solid earnings offset rate jitters, keeping index slightly muted near recent highs."
     },
     "BTCUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Surging yields and inflation fears crash crypto prices."
+      "reason": "Spiking yields, aggressive Fed hike bets, and regulatory concerns spark heavy crypto selling."
     }
   },
   "currencies": {
     "USD": {
       "score": 7,
-      "reason": "Strong inflation data fuels Fed rate hike expectations."
+      "reason": "Strong inflation data and hawkish Fed commentary fuel bets for larger rate hikes."
     },
     "EUR": {
       "score": -4,
-      "reason": "Weighed down by political risks and US dollar strength."
+      "reason": "Weak regional growth outlook, French political uncertainty, and strong dollar pressure the euro."
     },
     "GBP": {
       "score": -2,
-      "reason": "Pound pressured by robust US dollar strength."
+      "reason": "Resilient UK GDP and BoE hike expectations partly buffer against broad dollar strength."
     },
     "AUD": {
       "score": -5,
-      "reason": "Weak domestic data and strong US dollar weigh heavily."
+      "reason": "Weak domestic housing, falling confidence, and ruled-out RBA hikes undermine the aussie."
     },
     "NZD": {
-      "score": -5,
-      "reason": "Plummeted due to broad US dollar dominance."
+      "score": -6,
+      "reason": "Sluggish growth, soft retail and jobs, and timid RBNZ widen rate differentials negatively."
     },
     "CHF": {
-      "score": -5,
-      "reason": "Widening interest rate differential weakens the franc."
+      "score": -4,
+      "reason": "Zero-rate environment cements franc as a funding currency amid surging US yields."
     }
   },
   "sources": {
@@ -98,7 +98,7 @@
     },
     "AUD": {
       "paragraphs": 3,
-      "headlines": 4,
+      "headlines": 6,
       "problems": []
     },
     "NZD": {
@@ -108,7 +108,7 @@
     },
     "CHF": {
       "paragraphs": 3,
-      "headlines": 1,
+      "headlines": 0,
       "problems": []
     },
     "GOLD": {
@@ -128,7 +128,7 @@
     },
     "GER30": {
       "paragraphs": 3,
-      "headlines": 5,
+      "headlines": 6,
       "problems": []
     },
     "BTC": {
