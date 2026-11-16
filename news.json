@@ -1,6 +1,6 @@
 {
  "source": "Forex Factory economic calendar",
- "fetched": "2026-11-15T18:01:40Z",
+ "fetched": "2026-11-16T08:39:00Z",
  "events": [
   {
    "t": 1794835800,
@@ -102,7 +102,7 @@
    "t": 1794987000,
    "cur": "GBP",
    "title": "BOE Gov Bailey Speaks",
-   "impact": "high",
+   "impact": "medium",
    "forecast": "",
    "previous": ""
   },
@@ -198,14 +198,6 @@
    "t": 1795162500,
    "cur": "EUR",
    "title": "ECB President Lagarde Speaks",
-   "impact": "medium",
-   "forecast": "",
-   "previous": ""
-  },
-  {
-   "t": 1795181100,
-   "cur": "USD",
-   "title": "FOMC Member Waller Speaks",
    "impact": "medium",
    "forecast": "",
    "previous": ""
