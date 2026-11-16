@@ -911,6 +911,11 @@ body.replaying .quick-trade{box-shadow:0 0 0 2px #6d5efc}
 .pt-bar{font-size:11px}.pb-row{gap:5px;padding:3px 6px}.pb-btn{padding:3px 8px;font-size:11px}
 .pt-bar .live-tag{font-size:9px;padding:1px 5px}.pb-openr{font-size:11px;padding:1px 5px}
 /* ===== FRVP settings — TradingView's dialog ===== */
+.th-custom{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin:0 0 10px;padding:10px 12px;border-radius:10px;border:1px dashed color-mix(in srgb,var(--accent) 55%,transparent);background:color-mix(in srgb,var(--accent) 10%,transparent);color:#fff;font:600 13px 'Space Grotesk',sans-serif;cursor:pointer;text-align:left}
+.th-custom small{font:500 11px 'Space Grotesk',sans-serif;opacity:.65}.th-custom:hover{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.th-custom-set{margin:0 0 12px}
+.ccd-pair{display:flex;align-items:center;gap:8px}.ccd .vpd-row select{width:120px}
+.ccd-prev{margin:12px 20px 0;border-radius:8px;overflow:hidden;border:1px solid #2a2e39;height:74px}.ccd-prev svg{display:block;width:100%;height:100%}
 .vpd-ov{position:fixed;inset:0;z-index:2600;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .vpd{pointer-events:auto;position:relative;width:360px;max-width:calc(100vw - 20px);max-height:calc(100vh - 30px);display:flex;flex-direction:column;background:#1e222d;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.3),0 16px 48px rgba(0,0,0,.6);color:#d1d4dc;font:14px -apple-system,BlinkMacSystemFont,'Trebuchet MS',Roboto,Ubuntu,sans-serif}
 .vpd-h{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 10px;cursor:move;user-select:none}
@@ -1426,8 +1431,8 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 // storage.js — safe localStorage + IndexedDB wrappers (all try/catch)
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
-const ICON={"cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-16.24';
+const ICON={"hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
+const BUILD='2026-11-16.25';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1436,7 +1441,7 @@ async function checkForUpdate(){
 }
 setTimeout(checkForUpdate,6000); setInterval(checkForUpdate,3*60*1000); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) checkForUpdate(); });
 // settings that travel between devices (Sync)
-const SYNC_KEYS=['bd_instruments','bd_groups','bd_labels','bd_ratios','bd_rules','bd_mot_custom','bd_mot_pin','bd_theme','bd_bias_manual','bd_scores_url','bd_frvp_defaults','bd_rules_auto','bd_alerts','bd_alert_cfg','bd_draw_defaults','bd_multi','bd_qt','bd_ms_on','bd_ms_cfg','bd_tfs','bd_rp_sessions','bd_rp_speed'];
+const SYNC_KEYS=['bd_instruments','bd_groups','bd_labels','bd_ratios','bd_rules','bd_mot_custom','bd_mot_pin','bd_theme','bd_theme_custom','bd_bias_manual','bd_scores_url','bd_frvp_defaults','bd_rules_auto','bd_alerts','bd_alert_cfg','bd_draw_defaults','bd_multi','bd_qt','bd_ms_on','bd_ms_cfg','bd_tfs','bd_rp_sessions','bd_rp_speed'];
 function isSyncKey(k){ return SYNC_KEYS.includes(k)||k.startsWith('bd_lines_')||k.startsWith('bd_frvp_'); }
 var syncApplying=false;
 function syncSoon(){ try{ const c=JSON.parse(localStorage.getItem('bd_sync_cfg')||'null'); if(!c||!c.repo||!c.token) return; clearTimeout(window.__bdSyncT); window.__bdSyncT=setTimeout(()=>{ try{ syncNow(); }catch(e){} },4000); }catch(e){} }
@@ -1827,10 +1832,20 @@ const THEMES=[
 const themeListeners=new Set();
 function onThemeChange(fn){ themeListeners.add(fn); return ()=>themeListeners.delete(fn); }
 function getTheme(){ const t=lsGet('bd_theme','mt5-black'); return THEMES.some(x=>x.id===t)?t:'mt5-black'; }
-function getThemeDef(){ return THEMES.find(x=>x.id===getTheme())||THEMES[0]; }
+function getThemeDef(){ return themeWithCustom(THEMES.find(x=>x.id===getTheme())||THEMES[0]); }
+// Your own candle / background colours — kept per design, on top of it (like TradingView's Symbol + Canvas settings)
+const TH_CUSTOM='bd_theme_custom';
+function themeCustomAll(){ const a=lsGet(TH_CUSTOM,{}); return a&&typeof a==='object'&&!Array.isArray(a)?a:{}; }
+function contrastOf(a,b){ const x=lumOf(a), y=lumOf(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
+function themeWithCustom(def){ const c=themeCustomAll()[def.id]; if(!c) return def; const t={...def,...c,customised:true};
+  if(c.chartBg&&c.chartBg!==def.chartBg){ const lightBg=lumOf(c.chartBg)>0.3; t.light=lightBg;
+    if(contrastOf(t.axisText||t.text,c.chartBg)<3) t.axisText=lightBg?'#131722':'#e1e4ea';
+    if(contrastOf(t.crosshair||'#9aa6b8',c.chartBg)<2) t.crosshair=lightBg?'#7d818c':'#9aa6b8';
+    if(contrastOf(t.priceLine||'#8b949e',c.chartBg)<2) t.priceLine=lightBg?'#9598a1':'#8b949e'; }
+  return t; }
 // Apply theme to site (CSS vars + body class) with smooth transition, persist, notify chart
-function applyTheme(id){
-  const def=THEMES.find(x=>x.id===id)||THEMES[0];
+function applyTheme(id,quiet){
+  const def=themeWithCustom(THEMES.find(x=>x.id===id)||THEMES[0]);
   lsSet('bd_theme',def.id);
   const root=document.documentElement.style;
   // light designs only change the chart — the site itself stays dark so every label stays readable
@@ -1842,7 +1857,7 @@ function applyTheme(id){
   document.body.classList.add('theme-'+def.id);
   document.body.classList.remove('light'); document.body.classList.toggle('light-chart',!!def.light);
   // Smooth animated transition: brief fade on chart container
-  const cc=document.getElementById('chart-container'); if(cc){ cc.style.transition='opacity .45s ease'; cc.style.opacity='0.35'; setTimeout(()=>{ cc.style.opacity='1'; },180); }
+  const cc=quiet?null:document.getElementById('chart-container'); if(cc){ cc.style.transition='opacity .45s ease'; cc.style.opacity='0.35'; setTimeout(()=>{ cc.style.opacity='1'; },180); }
   themeListeners.forEach(fn=>{ try{fn(def);}catch(e){console.warn(e);} });
   // Sync any theme selects
   document.querySelectorAll('[data-theme-select]').forEach(s=>{ s.value=def.id; }); try{ renderThemeBtn(); }catch(e){}
@@ -1854,12 +1869,12 @@ function themePreview(t,W=132,H=64){ const pad=7, bw=(W-2*pad)/TH_PREV.length, Y
   const bg=t.chartBg2?`<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${t.chartBg}"/><stop offset="1" stop-color="${t.chartBg2}"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#${gid})"/>`:`<rect width="${W}" height="${H}" fill="${t.chartBg}"/>`;
   const grid=t.grid&&t.grid!=='transparent'?[1,2,3].map(i=>`<line x1="0" x2="${W}" y1="${(H*i/4).toFixed(1)}" y2="${(H*i/4).toFixed(1)}" stroke="${t.grid}" stroke-width="1"/>`).join(''):'';
   const c=TH_PREV.map(([o,h,l,cl],i)=>{ const up=cl>=o, x=pad+bw*i+bw/2, w=Math.max(3,bw*0.62), top=Y(Math.max(o,cl)), bot=Y(Math.min(o,cl)), col=up?t.up:t.down, bc=up?(t.borderUp||col):(t.borderDown||col), wc=up?(t.wickUp||col):(t.wickDown||col), hol=up?t.hollowUp:t.hollowDown;
-    return `<line x1="${x}" x2="${x}" y1="${Y(h)}" y2="${top}" stroke="${wc}" stroke-width="1"/><line x1="${x}" x2="${x}" y1="${bot}" y2="${Y(l)}" stroke="${wc}" stroke-width="1"/><rect x="${(x-w/2).toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(1,bot-top).toFixed(1)}" fill="${hol?'none':col}" stroke="${bc}" stroke-width="${hol?1.2:0.6}" rx="0.6"/>`; }).join('');
+    return `${t.wickOff?'':`<line x1="${x}" x2="${x}" y1="${Y(h)}" y2="${top}" stroke="${wc}" stroke-width="1"/><line x1="${x}" x2="${x}" y1="${bot}" y2="${Y(l)}" stroke="${wc}" stroke-width="1"/>`}<rect x="${(x-w/2).toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(1,bot-top).toFixed(1)}" fill="${hol?'none':col}" stroke="${t.borderOff?'none':bc}" stroke-width="${hol?1.2:0.6}" rx="0.6"/>`; }).join('');
   return `<svg class="th-prev" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bg}${grid}${c}</svg>`; }
 function renderThemeBtn(){ const b=$('ct-theme'); if(!b) return; const t=getThemeDef(); b.querySelector('.th-mini').innerHTML=themePreview(t,30,18); b.querySelector('.th-name').textContent=t.name; }
 function renderThemePop(){ const p=$('theme-pop'); if(!p) return; const cur=getTheme();
-  const tile=t=>`<button class="th-tile${t.id===cur?' on':''}" data-th="${t.id}">${themePreview(t)}<span>${esc(t.name)}${t.hollowUp?' <i>hollow</i>':''}</span></button>`;
-  p.innerHTML=`<div class="th-cap">Dark</div><div class="th-grid">${THEMES.filter(t=>!t.light).map(tile).join('')}</div><div class="th-cap">Light</div><div class="th-grid">${THEMES.filter(t=>t.light).map(tile).join('')}</div>`; }
+  const tile=t0=>{ const t=themeWithCustom(t0); return `<button class="th-tile${t.id===cur?' on':''}" data-th="${t.id}">${themePreview(t)}<span>${esc(t.name)}${t.customised?' <i>your colours</i>':t.hollowUp?' <i>hollow</i>':''}</span></button>`; };
+  p.innerHTML=`<button class="th-custom" type="button" data-cc>🎨 Candle &amp; background colours…<small>set your own for ${esc(getThemeDef().name)}</small></button><div class="th-cap">Dark</div><div class="th-grid">${THEMES.filter(t=>!t.light).map(tile).join('')}</div><div class="th-cap">Light</div><div class="th-grid">${THEMES.filter(t=>t.light).map(tile).join('')}</div>`; }
 function cycleTheme(){ const cur=getTheme(); const idx=THEMES.findIndex(x=>x.id===cur); const next=THEMES[(idx+1)%THEMES.length]; applyTheme(next.id); return next; }
 // Lightweight Charts options derived from theme
 function chartOptionsForTheme(def){
@@ -1875,7 +1890,7 @@ function chartOptionsForTheme(def){
 }
 function seriesOptionsForTheme(def){
   const t=def||getThemeDef();
-  return {upColor:t.hollowUp?'rgba(0,0,0,0)':t.up,downColor:t.hollowDown?'rgba(0,0,0,0)':t.down,borderUpColor:t.borderUp,borderDownColor:t.borderDown,borderVisible:true,wickUpColor:t.wickUp,wickDownColor:t.wickDown,priceLineColor:t.priceLine,priceLineWidth:1,priceLineStyle:2};
+  return {upColor:t.hollowUp?'rgba(0,0,0,0)':t.up,downColor:t.hollowDown?'rgba(0,0,0,0)':t.down,borderUpColor:t.borderUp||t.up,borderDownColor:t.borderDown||t.down,borderVisible:!t.borderOff,wickVisible:!t.wickOff,wickUpColor:t.wickUp||t.up,wickDownColor:t.wickDown||t.down,priceLineColor:t.priceLine,priceLineWidth:1,priceLineStyle:2};
 }
 
 // ===== js/scores.js (merged, imports/exports resolved) =====
@@ -2642,7 +2657,7 @@ async function takeScreenshotWithOverlay(t){
         if(C.values&&R.label>0&&hh>=8){ ctx.fillStyle=C.cValues; ctx.font=`${Math.min(12,Math.max(9,hh*0.72)).toFixed(0)}px -apple-system,Trebuchet MS,Roboto,sans-serif`; ctx.textBaseline='middle'; ctx.textAlign=left?'left':'right'; ctx.fillText(vpFmtVol(R.label),left?an+4:an-4,y+hh/2); } }
       const L=(on,p,c,w,st)=>{ if(!on) return; const yy=yAtPrice(p); if(yy===null) return; ctx.strokeStyle=c; ctx.lineWidth=w; ctx.setLineDash(st==='dashed'?[w*3,w*2]:st==='dotted'?[w,w*1.6]:[]); ctx.beginPath(); ctx.moveTo(x0,yy); ctx.lineTo(x1,yy); ctx.stroke(); ctx.setLineDash([]); };
       L(C.vah,P.vahP,C.cVah,C.wVah,C.sVah); L(C.val,P.valP,C.cVal,C.wVal,C.sVal); L(C.poc,P.pocP,C.cPoc,C.wPoc,C.sPoc); } }catch(e){}
-    try{ const a=tlAnchor(); if(a){ ctx.strokeStyle='#2f80ff'; ctx.lineWidth=2; ctx.lineCap='round'; for(const l of tlLines){ const x1=tlX(l.t1,a),x2=tlX(l.t2,a),y1=yAtPrice(l.p1),y2=yAtPrice(l.p2); if(![x1,x2,y1,y2].every(v=>v!==null&&Number.isFinite(v))) continue; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); } } }catch(e){}
+    try{ const a=tlAnchor(); if(a){ ctx.strokeStyle='#2f80ff'; ctx.lineWidth=2; ctx.lineCap='round'; for(const l of tlLines){ const x1=tlX(l.t1,a),x2=l.kind==='hray'?cssW-(()=>{ try{ return chart.priceScale('right').width()||0; }catch(e){ return 0; } })():tlX(l.t2,a),y1=yAtPrice(l.p1),y2=yAtPrice(l.p2); if(![x1,x2,y1,y2].every(v=>v!==null&&Number.isFinite(v))) continue; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); } } }catch(e){}
     if(tool){
       const seg=segX()||{x0:40,x1:cssW*0.8}; const X0=Math.max(0,seg.x0), X1=Math.min(cssW,seg.x1);
       for(const d of levelDefs()){ const y=yAtPrice(d.price); if(y===null) continue;
@@ -2842,6 +2857,7 @@ function buildChartShell(){
     <nav class="tool-rail" aria-label="Drawing tools">
       <button id="ct-cursor" class="rail-btn active" title="Cursor — stop drawing (Esc)"><i class="ico">${ICON.cursor}</i><span>Cursor</span></button>
       <button id="ct-line" class="rail-btn" title="Trendline — click two points (Alt+T). Click a line to change its colour, thickness and style."><i class="ico">${ICON.line}</i><span>Line</span></button>
+      <button id="ct-hray" class="rail-btn" title="Horizontal ray — click once where it should start; it runs to the right edge. Click it to change colour, thickness, style or set an alert."><i class="ico">${ICON.hray}</i><span>H-Ray</span></button>
       <button id="ct-rect" class="rail-btn" title="Rectangle — drag a box (Alt+R). Great for zones. Click it to change colour, fill, or extend it right."><i class="ico">${ICON.rect}</i><span>Rect</span></button>
       <button id="ct-vp" class="rail-btn" title="Fixed Range Volume Profile — drag across the candles you want measured"><i class="ico">${ICON.vp}</i><span>FRVP</span></button>
  <button id="ct-alert" class="rail-btn" title="Price alert — click the price you want to be alerted at"><i class="ico">${ICON.bell}</i><span>Alert</span></button>
@@ -2874,7 +2890,7 @@ function buildChartShell(){
   $('ct-tfs').addEventListener('click',e=>{ if(e.target.closest('[data-tfadd]')){ e.stopPropagation(); openTfPicker(); return; } const b=e.target.closest('button[data-tf]'); if(!b) return; if(rp.picking) rpCancelPick(); currentTF=b.dataset.tf; document.querySelectorAll('#ct-tfs button').forEach(x=>x.classList.toggle('active',x===b)); syncTfDD(); loadCandles();  });
 
   $('ct-theme').addEventListener('click',e=>{ e.stopPropagation(); const p=$('theme-pop'); p.hidden=!p.hidden; if(!p.hidden) renderThemePop(); });
-  $('theme-pop').addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('[data-th]'); if(!b) return; const d=applyTheme(b.dataset.th); renderThemePop(); renderThemeBtn(); toast(`Candles: ${d.name} 🎨`); });
+  $('theme-pop').addEventListener('click',e=>{ e.stopPropagation(); if(e.target.closest('[data-cc]')){ $('theme-pop').hidden=true; openChartColors(); return; } const b=e.target.closest('[data-th]'); if(!b) return; const d=applyTheme(b.dataset.th); renderThemePop(); renderThemeBtn(); toast(`Candles: ${d.name} 🎨`); });
   document.addEventListener('click',e=>{ const p=$('theme-pop'); if(p&&!p.hidden&&!e.composedPath().some(el=>el&&el.classList&&el.classList.contains('th-dd'))) p.hidden=true; });
   renderThemeBtn();
   $('ct-buy').addEventListener('click',()=>chartCreateSetup('buy'));
@@ -2883,6 +2899,7 @@ function buildChartShell(){
   $('ct-journal').addEventListener('click',()=>{ if(isFs()) toggleFs(); showPairJournal(); });
   $('ct-line').addEventListener('click',()=>tlSetMode(!(tlMode&&tlKind==='line'),'line'));
   $('ct-rect').addEventListener('click',()=>tlSetMode(!(tlMode&&tlKind==='rect'),'rect'));
+  $('ct-hray').addEventListener('click',()=>tlSetMode(!(tlMode&&tlKind==='hray'),'hray'));
   $('ct-vp').addEventListener('click',()=>vpSetMode(!vpMode));
   $('ct-replay').addEventListener('click',startReplayPick);
   $('pair-dd-btn').addEventListener('click',e=>{ e.stopPropagation(); const l=$('pair-dd-list'); if(!l.hidden){ l.hidden=true; return; } renderPairDD(); l.hidden=false; });
@@ -3042,9 +3059,12 @@ function getSeries(){ return series; }
 let tlLines=[], tlSym=null, tlMode=false, tlKind='line', tlDraft=null, tlSel=null, tlDrag=null, tlRaf=null, tlPop=null;
 // drawing styles — every line / rectangle keeps its own; new drawings start with the last style you picked (like TradingView)
 const TL_COLORS=['#ffffff','#d1d4dc','#9598a1','#5d606b','#000000','#f23645','#ff9800','#ffeb3b','#4caf50','#089981','#00bcd4','#2962ff','#673ab7','#9c27b0','#e91e63','#f7525f','#ffb74d','#81c784'];
-const DRAW_DEF={line:{color:'#2962ff',width:2,style:'solid'},rect:{color:'#9c27b0',width:1,style:'solid',fill:0.2,ext:false}};
+const DRAW_DEF={line:{color:'#2962ff',width:2,style:'solid'},hray:{color:'#2962ff',width:1,style:'solid'},rect:{color:'#9c27b0',width:1,style:'solid',fill:0.2,ext:false}};
 function drawDef(kind){ const sv=(lsGet('bd_draw_defaults',{})||{})[kind]||{}; return {...DRAW_DEF[kind],...sv}; }
-function tlStyleOf(l){ return {...DRAW_DEF[l.kind==='rect'?'rect':'line'],...l}; }
+function tlStyleOf(l){ return {...DRAW_DEF[l.kind==='rect'?'rect':l.kind==='hray'?'hray':'line'],...l}; }
+function drawName(l){ return l&&l.kind==='rect'?'Rectangle':l&&l.kind==='hray'?'Horizontal ray':'Trendline'; }
+// a new horizontal ray where you clicked (its two points are the same — it is drawn to the right edge)
+function hrayNew(pt){ const st=drawDef('hray'); return {id:'H'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),kind:'hray',t1:pt.t,p1:pt.p,t2:pt.t,p2:pt.p,color:st.color,width:st.width,style:st.style}; }
 const TL_DASH={solid:'none',dashed:'8 5',dotted:'1.5 4.5'};
 const TL_NS='http://www.w3.org/2000/svg';
 function tlKey(sym){ return 'bd_lines_'+sym; }
@@ -3093,7 +3113,7 @@ function tlSetup(){
     if(b.classList.contains('tb-ext')){ tlUpdate({ext:!tlStyleOf(l).ext}); return; }
     if(b.classList.contains('tl-del')){ if(mSel) mdDelete(); else tlDelete(l.id); return; }
     if(b.classList.contains('tl-bell')&&selSym()){ const al=getAlerts(); const ex=al.find(a=>a.kind==='line'&&a.lineId===l.id&&a.active);
-      if(ex){ setAlerts(al.filter(a=>a!==ex)); toast('Trendline alert removed'); } else { al.push({id:'A'+Date.now().toString(36),sym:selSym(),kind:'line',lineId:l.id,active:true,created:Date.now()}); setAlerts(al); askNotify(); toast('Trendline alert on — the dotted part shows where the line continues'); }
+      if(ex){ setAlerts(al.filter(a=>a!==ex)); toast(drawName(l)+' alert removed'); } else { al.push({id:'A'+Date.now().toString(36),sym:selSym(),kind:'line',lineId:l.id,active:true,created:Date.now()}); setAlerts(al); askNotify(); toast(l.kind==='hray'?'Alert on — you get told when price touches this level':'Trendline alert on — the dotted part shows where the line continues'); }
       drawChanged(selSym()); if(mSel) mdRender(mSel.m); else tlRender(); } });
   pop.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('button'); if(!b) return;
     if(b.dataset.c) tlUpdate({color:b.dataset.c}); else if(b.dataset.w) tlUpdate({width:+b.dataset.w}); else if(b.dataset.s) tlUpdate({style:b.dataset.s}); else return; tlPopRender(); });
@@ -3101,6 +3121,7 @@ function tlSetup(){
   pop.addEventListener('change',e=>{ if(e.target.type==='color'||e.target.type==='range'){ tlUpdate({},false); tlPopRender(); } });
   // drawing: click two points / corners (or press-drag-release)
   cap.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); const pt=tlPoint(e); if(!pt) return;
+    if(tlKind==='hray'){ const l=hrayNew(pt); tlLines.push(l); tlSave(); tlSel=l.id; tlSetMode(false); tlRender(); return; }
     if(!tlDraft){ tlDraft={...drawDef(tlKind),kind:tlKind,ext:false,t1:pt.t,p1:pt.p,t2:pt.t,p2:pt.p,dx:e.clientX,dy:e.clientY}; tlRender(); try{ cap.setPointerCapture(e.pointerId); }catch(_){} }
     else tlFinish(pt); });
   cap.addEventListener('pointermove',e=>{ if(!tlDraft) return; const pt=tlPoint(e); if(!pt) return; tlDraft.t2=pt.t; tlDraft.p2=pt.p; tlPosition(); });
@@ -3114,7 +3135,7 @@ function tlSetup(){
     const r=w.getBoundingClientRect(); const x=e.clientX-r.left, y=e.clientY-r.top; const p=priceAtY(y); if(p===null) return; const h=tlDrag.h;
     if(h){ const tt=tlT(x,a); if(h[0]==='t') l['t'+h[1]]=tt; else if(h[0]==='p') l['p'+h[1]]=p; else { l['t'+h[0]]=tt; l['p'+h[1]]=p; } }
     else { if(tlDrag.py0===null||tlDrag.L1===null||tlDrag.L2===null) return; const dL=(e.clientX-tlDrag.x0)/a.bs, dp=p-tlDrag.py0; l.t1=timeForLogical(tlDrag.L1+dL); l.t2=timeForLogical(tlDrag.L2+dL); l.p1=tlDrag.p1+dp; l.p2=tlDrag.p2+dp; }
-    tlDrag.moved=true; tlPosition(); });
+    if(l.kind==='hray'){ l.t2=l.t1; l.p2=l.p1; } tlDrag.moved=true; tlPosition(); });
   window.addEventListener('pointerup',()=>{ if(!tlDrag) return; const moved=tlDrag.moved; tlSvg()?.querySelector('g.dragging')?.classList.remove('dragging'); tlDrag=null; if(moved) tlSave(); });
   // the chart must not pan while a drawing is being dragged (mouse + touch)
   for(const ev of ['mousedown','touchstart']) w.addEventListener(ev,e=>{ if(tlDrag) e.stopPropagation(); },{capture:true,passive:true});
@@ -3146,8 +3167,8 @@ function renderPairDD(){ const l=$('pair-dd-list'); if(!l) return;
 function railSync(){ $('ct-cursor')?.classList.toggle('active',!tlMode&&!vpMode&&!alMode); }
 function tlSetMode(on,kind){
   tlMode=!!on; if(kind) tlKind=kind; if(!tlMode) tlDraft=null; if(tlMode&&vpMode) vpSetMode(false); if(tlMode&&alMode) alSetMode(false);
-  const w=tlWrap(); if(w){ const cap=w.querySelector('.tl-capture'), hint=w.querySelector('.tl-hint'); if(cap) cap.hidden=!tlMode; if(hint){ hint.hidden=!tlMode; hint.textContent=(tlKind==='rect'?'Rectangle: click one corner, then the opposite corner (or drag)':'Trendline: click the first point, then the second')+(mcCharts.length?' — on any chart':'')+' · Esc cancels'; } }
-  $('ct-line')?.classList.toggle('active',tlMode&&tlKind==='line'); $('ct-rect')?.classList.toggle('active',tlMode&&tlKind==='rect'); railSync();
+  const w=tlWrap(); if(w){ const cap=w.querySelector('.tl-capture'), hint=w.querySelector('.tl-hint'); if(cap) cap.hidden=!tlMode; if(hint){ hint.hidden=!tlMode; hint.textContent=(tlKind==='rect'?'Rectangle: click one corner, then the opposite corner (or drag)':tlKind==='hray'?'Horizontal ray: click where it should start — it runs to the right':'Trendline: click the first point, then the second')+(mcCharts.length?' — on any chart':'')+' · Esc cancels'; } }
+  $('ct-line')?.classList.toggle('active',tlMode&&tlKind==='line'); $('ct-rect')?.classList.toggle('active',tlMode&&tlKind==='rect'); $('ct-hray')?.classList.toggle('active',tlMode&&tlKind==='hray'); railSync();
   mcCharts.forEach(m=>{ if(m.cap) m.cap.hidden=!(tlMode||alMode||vpMode); }); if(!tlMode&&mdDraft){ const mm=mdDraft.m; mdDraft=null; mdRender(mm); } if(tlMode&&mSel) mdSelect(null);
   if(tlMode) tlSelect(null);
 }
@@ -3160,7 +3181,7 @@ function tlFinish(pt){
   tlLines.push(l); tlSave(); tlSel=l.id; tlSetMode(false); tlRender();
 }
 function tlDelete(id){ const l=tlLines.find(x=>x.id===id); tlLines=tlLines.filter(x=>x.id!==id); if(tlSel===id){ tlSel=null; tlPop=null; } tlSave();
-  const al=getAlerts(); if(al.some(a=>a.lineId===id)) setAlerts(al.filter(a=>a.lineId!==id)); tlRender(); toast(l&&l.kind==='rect'?'Rectangle deleted':'Trendline deleted'); }
+  const al=getAlerts(); if(al.some(a=>a.lineId===id)) setAlerts(al.filter(a=>a.lineId!==id)); tlRender(); toast(drawName(l)+' deleted'); }
 function tlSelect(id){
   if(id&&mSel) mdSelect(null);
   if(tlSel!==id) tlPop=null; tlSel=id; const svg=tlSvg(); if(svg) svg.querySelectorAll('g.tl').forEach(g=>{ g.classList.toggle('sel',g.dataset.id===id); g.dataset.k=''; });
@@ -3170,7 +3191,7 @@ function tlSelect(id){
 function tlUpdate(patch,live){ const l=selLine(); if(!l) return; Object.assign(l,patch);
   if(mSel){ const g=mSel.m.tl?.querySelector(`g[data-id="${l.id}"]`); if(g) tlApplyStyle(g,l); tlSyncTb(); mdPosition(mSel.m); if(!live) drawChanged(selSym()); }
   else { const g=tlSvg()?.querySelector(`g[data-id="${l.id}"]`); if(g){ tlApplyStyle(g,l); g.dataset.k=''; } tlSyncTb(); tlPosition(); }
-  if(!live){ if(!mSel) tlSave(); const k=l.kind==='rect'?'rect':'line', st=tlStyleOf(l), d=lsGet('bd_draw_defaults',{})||{}; d[k]={color:st.color,width:st.width,style:st.style,...(k==='rect'?{fill:st.fill}:{})}; lsSet('bd_draw_defaults',d); } }
+  if(!live){ if(!mSel) tlSave(); const k=l.kind==='rect'?'rect':l.kind==='hray'?'hray':'line', st=tlStyleOf(l), d=lsGet('bd_draw_defaults',{})||{}; d[k]={color:st.color,width:st.width,style:st.style,...(k==='rect'?{fill:st.fill}:{})}; lsSet('bd_draw_defaults',d); } }
 function tlSyncTb(){ const tb=document.querySelector('.tl-tb'); if(!tb) return; const l=selLine(); tb.hidden=!l; if(!l) return; const st=tlStyleOf(l), rect=l.kind==='rect';
   tb.querySelector('.tb-sw').style.setProperty('--sw',st.color); tb.querySelector('.tb-wl').style.height=Math.max(1,st.width)+'px'; tb.querySelector('.tb-wn').textContent=st.width+'px';
   tb.querySelector('.tb-ls line').setAttribute('stroke-dasharray',st.style==='dashed'?'5 3':st.style==='dotted'?'1 3':'none');
@@ -3191,6 +3212,7 @@ function tlRender(){
   const alIds=new Set(getAlerts().filter(a=>a.kind==='line'&&a.active).map(a=>a.lineId));
   svg.innerHTML=all.map(l=>{ const cls=`tl${l.kind==='rect'?' rc':''}${l.id===tlSel?' sel':''}${l.id==='__draft'?' draft':''}${alIds.has(l.id)?' alert':''}`;
     if(l.kind==='rect') return `<g class="${cls}" data-id="${l.id}"><rect class="rc-body"></rect><rect class="rc-hit"></rect>${['11','22','12','21','t1','t2','p1','p2'].map(h=>`<circle class="tl-end${isNaN(h)?' mid':''}" data-h="${h}" r="${isNaN(h)?4:5}"></circle>`).join('')}</g>`;
+    if(l.kind==='hray') return `<g class="${cls} hr" data-id="${l.id}"><line class="tl-hit"></line><line class="tl-stroke"></line><circle class="tl-end" data-h="11" r="5"></circle></g>`;
     return `<g class="${cls}" data-id="${l.id}"><line class="tl-ext"></line><line class="tl-hit"></line><line class="tl-stroke"></line><circle class="tl-end" data-h="11" r="5"></circle><circle class="tl-end" data-h="22" r="5"></circle></g>`; }).join('');
   svg.querySelectorAll('g.tl').forEach(g=>{ const l=all.find(x=>x.id===g.dataset.id); if(l) tlApplyStyle(g,l); });
   tlSyncTb(); tlPosition(); tlKick();
@@ -3212,6 +3234,7 @@ function tlPosition(){
       g.querySelectorAll('.tl-end').forEach(c=>{ const q=P[c.dataset.h]; c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); });
       continue;
     }
+    if(l.kind==='hray'){ const x1=a?tlX(l.t1,a):null, y1=yAtPrice(l.p1); if(!hrayPlace(g,x1,y1,W)){ g.style.display='none'; continue; } if(l.id===tlSel) selBox={x:Math.max(0,x1),y:y1,w:W-Math.max(0,x1),h:0}; continue; }
     const x1=a?tlX(l.t1,a):null, x2=a?tlX(l.t2,a):null, y1=yAtPrice(l.p1), y2=yAtPrice(l.p2);
     if(![x1,y1,x2,y2].every(v=>v!==null&&Number.isFinite(v))){ g.style.display='none'; continue; }
     g.style.display=''; if(l.id===tlSel) selBox={x:Math.min(x1,x2),y:Math.min(y1,y2),w:Math.abs(x2-x1),h:Math.abs(y2-y1)};
@@ -3230,6 +3253,10 @@ function tlPosition(){
     if(pop&&!pop.hidden){ pop.style.visibility=''; const ph=pop.offsetHeight||120, pw=pop.offsetWidth||200; const btn=tb.querySelector(`[data-pop="${tlPop}"]`); const bx=btn?btn.offsetLeft:0;
       let pt=top+tH+6; if(pt+ph>H-4) pt=Math.max(4,top-ph-6); pop.style.top=pt+'px'; pop.style.left=Math.max(6,Math.min(W-pw-6,left+bx-6))+'px'; } }
 }
+function hrayPlace(g,x1,y1,W){ if(x1===null||y1===null||!Number.isFinite(x1)||!Number.isFinite(y1)||x1>=W) return false; g.style.display='';
+  const k=`${x1.toFixed(1)},${y1.toFixed(1)},${W}`; if(g.dataset.k===k) return true; g.dataset.k=k;
+  for(const ln of g.querySelectorAll('line')){ ln.setAttribute('x1',x1); ln.setAttribute('y1',y1); ln.setAttribute('x2',W); ln.setAttribute('y2',y1); }
+  const c=g.querySelector('circle'); if(c){ c.setAttribute('cx',x1); c.setAttribute('cy',y1); } return true; }
 // keep lines glued to the candles while you scroll / zoom (only runs on the Trade page when lines exist)
 function tlKick(){ if(tlRaf) return; const tick=()=>{ tlRaf=null; if(document.body.dataset.page!=='chart'||document.hidden||(!tlLines.length&&!tlDraft&&!vpList.length&&!vpDraft&&!(tlWrap()?.querySelector('.al-line'))&&!rtTradesForMain().length&&!msOn())) return; tlPosition(); vpPosition(); alPosition(); rtPosition(); msPosition(); tlRaf=requestAnimationFrame(tick); }; tlRaf=requestAnimationFrame(tick); }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tlKick(); });
@@ -3540,6 +3567,57 @@ function vpColorPop(btn,host,st,onChange){ document.querySelector('.vpc')?.remov
   p.addEventListener('input',e=>{ if(e.target.type==='color'){ cur.color=e.target.value; p.querySelector('.vpc-hex').textContent=cur.color.toUpperCase(); emit(); } else if(e.target.type==='range'){ cur.opacity=+e.target.value; p.querySelector('.vpc-op b').textContent=cur.opacity+'%'; emit(); } });
   p.addEventListener('change',e=>{ if(e.target.type==='color') draw(); });
 }
+// ---- Candle & background colours — laid out like TradingView's chart settings (Symbol · Canvas), live preview, Cancel / Ok ----
+let ccDlg=null, ccTab='sym';
+function ccHex(c,f){ c=String(c||''); if(/^#[0-9a-f]{6}$/i.test(c)) return c; if(/^#[0-9a-f]{3}$/i.test(c)) return '#'+c.slice(1).split('').map(x=>x+x).join(''); const m=c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/); return m?'#'+[m[1],m[2],m[3]].map(v=>(+v).toString(16).padStart(2,'0')).join(''):f; }
+function ccFrom(t){ return {up:ccHex(t.up,'#26a69a'),down:ccHex(t.down,'#ef5350'),borderUp:ccHex(t.borderUp||t.up,'#26a69a'),borderDown:ccHex(t.borderDown||t.down,'#ef5350'),wickUp:ccHex(t.wickUp||t.up,'#26a69a'),wickDown:ccHex(t.wickDown||t.down,'#ef5350'),
+  body:!t.hollowDown, hollowUp:!!t.hollowUp&&!t.hollowDown, border:!t.borderOff, wick:!t.wickOff, bgMode:t.chartBg2?'gradient':'solid', bg1:ccHex(t.chartBg,'#000000'), bg2:ccHex(t.chartBg2||t.chartBg,'#000000'), gridOn:!!t.grid&&t.grid!=='transparent', grid:ccHex(t.grid&&t.grid!=='transparent'?t.grid:'',lumOf(t.chartBg)>0.3?'#e0e3eb':'#2a2e39')}; }
+function ccTo(st){ return {up:st.up,down:st.down,borderUp:st.borderUp,borderDown:st.borderDown,wickUp:st.wickUp,wickDown:st.wickDown,hollowUp:!st.body||st.hollowUp,hollowDown:!st.body,borderOff:!st.border,wickOff:!st.wick,chartBg:st.bg1,chartBg2:st.bgMode==='gradient'?st.bg2:null,grid:st.gridOn?st.grid:'transparent'}; }
+function openChartColors(){
+  if(ccDlg) ccDlg.cancel(); const id=getTheme(), base=THEMES.find(x=>x.id===id)||THEMES[0];
+  const all0=themeCustomAll(), orig=all0[id]?{...all0[id]}:null; let st=ccFrom(getThemeDef());
+  const ov=document.createElement('div'); ov.className='vpd-ov';
+  ov.innerHTML=`<div class="vpd ccd" role="dialog" aria-label="Chart colours"><div class="vpd-h"><b>Chart colours</b><button class="vpd-x" aria-label="Close">✕</button></div>
+    <div class="vpd-tabs">${[['sym','Symbol'],['can','Canvas']].map(([k,l])=>`<button data-tab="${k}">${l}</button>`).join('')}</div>
+    <div class="ccd-prev"></div><div class="vpd-body"></div>
+    <div class="vpd-f"><div class="vpd-tpl"><button class="vpd-tplb" type="button">Template <span>▾</span></button><div class="vpd-tplm" hidden><button data-t="reset">Reset to ${esc(base.name)} colours</button><button data-t="tv">TradingView default colours</button></div></div><span class="vpd-sp"></span><button class="vpd-cancel" type="button">Cancel</button><button class="vpd-ok" type="button">Ok</button></div></div>`;
+  rpHost().appendChild(ov); const dlg=ov.querySelector('.vpd'), body=ov.querySelector('.vpd-body'), prev=ov.querySelector('.ccd-prev');
+  const sw=k=>`<button type="button" class="vpd-sw" data-c="${k}" title="${k}"><i style="background:${st[k]}"></i></button>`;
+  const chk=(k,lab)=>`<label class="vpd-chk"><input type="checkbox" data-k="${k}"${st[k]?' checked':''}><span>${lab}</span></label>`;
+  const html={
+    sym:()=>`<div class="vpd-row">${chk('body','Body')}<span class="ccd-pair">${sw('up')}${sw('down')}</span></div>
+      <div class="vpd-row">${chk('border','Borders')}<span class="ccd-pair">${sw('borderUp')}${sw('borderDown')}</span></div>
+      <div class="vpd-row">${chk('wick','Wick')}<span class="ccd-pair">${sw('wickUp')}${sw('wickDown')}</span></div>
+      ${st.body?chk('hollowUp','Hollow up candles'):''}<p class="vpd-note">Left box = up (bullish) candle, right box = down (bearish) candle. Borders and wicks follow the body colour unless you set them differently. The Buy / Sell colours follow your body colours.</p>`,
+    can:()=>`<div class="vpd-row"><span>Background</span><span class="ccd-pair"><select data-k="bgMode"><option value="solid"${st.bgMode==='solid'?' selected':''}>Solid</option><option value="gradient"${st.bgMode==='gradient'?' selected':''}>Gradient</option></select>${sw('bg1')}${st.bgMode==='gradient'?sw('bg2'):''}</span></div>
+      <div class="vpd-row">${chk('gridOn','Grid lines')}${sw('grid')}</div><p class="vpd-note">Axis text switches to dark on a light background so it stays readable. Review pictures use these colours too.</p>`};
+  const paint=()=>{ prev.innerHTML=themePreview({...base,...ccTo(st),id:'cc'},320,74); };
+  const render=()=>{ ov.querySelectorAll('.vpd-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===ccTab)); body.innerHTML=html[ccTab](); paint(); };
+  const save=c=>{ const all=themeCustomAll(); if(c) all[id]=c; else delete all[id]; lsSet(TH_CUSTOM,all); };
+  const live=()=>{ save(ccTo(st)); applyTheme(id,true); paint(); };
+  body.addEventListener('change',e=>{ const el=e.target, k=el.dataset.k; if(!k) return; st[k]=el.type==='checkbox'?el.checked:el.value; live(); if(k==='body'||k==='bgMode') render(); });
+  body.addEventListener('click',e=>{ const b=e.target.closest('.vpd-sw'); if(!b) return; e.preventDefault(); const k=b.dataset.c; let old=st[k];
+    vpColorPop(b,dlg,{color:st[k],opacity:null,w:null,s:null},x=>{ st[k]=x.color; const i=b.querySelector('i'); if(i) i.style.background=x.color;
+      const side=k==='up'?'Up':k==='down'?'Down':null; if(side){ for(const f of ['border'+side,'wick'+side]){ if(st[f]===old||!st.border&&f==='border'+side){ st[f]=x.color; const si=body.querySelector(`.vpd-sw[data-c="${f}"] i`); if(si) si.style.background=x.color; } } } old=x.color;
+      if(k==='grid'&&!st.gridOn){ st.gridOn=true; const c=body.querySelector('[data-k="gridOn"]'); if(c) c.checked=true; } live(); }); });
+  ov.querySelector('.vpd-tabs').addEventListener('click',e=>{ const b=e.target.closest('[data-tab]'); if(!b) return; ccTab=b.dataset.tab; document.querySelector('.vpc')?.remove(); render(); });
+  const tplm=ov.querySelector('.vpd-tplm'); ov.querySelector('.vpd-tplb').addEventListener('click',e=>{ e.stopPropagation(); tplm.hidden=!tplm.hidden; });
+  tplm.addEventListener('click',e=>{ const b=e.target.closest('[data-t]'); if(!b) return; tplm.hidden=true;
+    if(b.dataset.t==='reset'){ save(null); applyTheme(id,true); st=ccFrom(base); }
+    else { st={...st,up:'#089981',down:'#f23645',borderUp:'#089981',borderDown:'#f23645',wickUp:'#089981',wickDown:'#f23645',body:true,hollowUp:false,border:true,wick:true,bgMode:'solid',bg1:'#131722',gridOn:true,grid:'#1e222d'}; live(); }
+    render(); });
+  const close=()=>{ document.querySelector('.vpc')?.remove(); ov.remove(); document.removeEventListener('keydown',onKey,true); ccDlg=null; try{ renderThemePop(); renderThemeBtn(); if(document.body.dataset.page==='settings') renderSettings(); }catch(e){} };
+  const ok=()=>{ close(); toast(themeCustomAll()[id]?'Your chart colours are saved ✓':'Chart colours reset ✓'); try{ syncSoon(); }catch(e){} };
+  const cancel=()=>{ save(orig); applyTheme(id,true); close(); };
+  const onKey=e=>{ if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); if(document.querySelector('.vpc')) document.querySelector('.vpc').remove(); else cancel(); } else if(e.key==='Enter'&&!/^(SELECT|TEXTAREA)$/.test(e.target.tagName)){ e.preventDefault(); ok(); } };
+  document.addEventListener('keydown',onKey,true);
+  ov.querySelector('.vpd-x').addEventListener('click',cancel); ov.querySelector('.vpd-cancel').addEventListener('click',cancel); ov.querySelector('.vpd-ok').addEventListener('click',ok);
+  dlg.addEventListener('pointerdown',e=>{ if(!e.target.closest('.vpd-tpl')) tplm.hidden=true; if(!e.target.closest('.vpc')&&!e.target.closest('.vpd-sw')) document.querySelector('.vpc')?.remove(); });
+  const hd=ov.querySelector('.vpd-h'); hd.addEventListener('pointerdown',e=>{ if(e.target.closest('button')) return; const r=dlg.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top; dlg.style.position='fixed'; dlg.style.margin='0';
+    const mv=ev=>{ dlg.style.left=Math.max(0,Math.min(innerWidth-r.width,ev.clientX-sx))+'px'; dlg.style.top=Math.max(0,Math.min(innerHeight-40,ev.clientY-sy))+'px'; };
+    const up=()=>{ window.removeEventListener('pointermove',mv); window.removeEventListener('pointerup',up); }; window.addEventListener('pointermove',mv); window.addEventListener('pointerup',up); });
+  ccDlg={cancel,ok}; render();
+}
 function vpSetup(){
   const w=tlWrap(); if(!w||w.querySelector('svg.vp-layer')) return;
   const svg=document.createElementNS(TL_NS,'svg'); svg.setAttribute('class','vp-layer'); w.appendChild(svg);
@@ -3609,7 +3687,11 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   const every=Math.max(1,Math.ceil(n/7)); x2.fillStyle=txt; x2.textAlign='center'; x2.font="500 12px 'Space Grotesk',sans-serif";
   for(let i=0;i<n;i+=every){ x2.textAlign=i===0?'left':'center'; x2.fillText(sastFmt(shown[i].time,g>=3600||i===0),i===0?Math.max(L,X(i)-bw/2):X(i),BOT+20); }
   // candles
-  shown.forEach((k,i)=>{ const col=k.close>=k.open?up:dn; x2.fillStyle=col; const x=X(i); x2.fillRect(Math.round(x)-0.5,Y(k.high),1,Math.max(1,Y(k.low)-Y(k.high))); const yo=Y(k.open), yc=Y(k.close); const bx=x-Math.max(1,bw*0.35), by=Math.min(yo,yc), bW=Math.max(2,bw*0.7), bH=Math.max(1,Math.abs(yc-yo)); if(k.close>=k.open&&th.hollowUp&&bW>3){ x2.fillStyle=bg; x2.fillRect(bx,by,bW,bH); x2.strokeStyle=th.borderUp||col; x2.lineWidth=1; x2.strokeRect(Math.round(bx)+0.5,Math.round(by)+0.5,Math.round(bW)-1,Math.max(1,Math.round(bH)-1)); } else x2.fillRect(bx,by,bW,bH); });
+  shown.forEach((k,i)=>{ const isUp=k.close>=k.open, col=isUp?up:dn, x=X(i); const wc=isUp?(th.wickUp||col):(th.wickDown||col), bc=isUp?(th.borderUp||col):(th.borderDown||col), hol=isUp?th.hollowUp:th.hollowDown;
+    if(!th.wickOff){ x2.fillStyle=wc; x2.fillRect(Math.round(x)-0.5,Y(k.high),1,Math.max(1,Y(k.low)-Y(k.high))); }
+    const yo=Y(k.open), yc=Y(k.close); const bx=x-Math.max(1,bw*0.35), by=Math.min(yo,yc), bW=Math.max(2,bw*0.7), bH=Math.max(1,Math.abs(yc-yo));
+    if(hol&&bW>3){ x2.fillStyle=bg; x2.fillRect(bx,by,bW,bH); if(!th.borderOff){ x2.strokeStyle=bc; x2.lineWidth=1; x2.strokeRect(Math.round(bx)+0.5,Math.round(by)+0.5,Math.round(bW)-1,Math.max(1,Math.round(bH)-1)); } }
+    else { x2.fillStyle=col; x2.fillRect(bx,by,bW,bH); if(!th.borderOff&&bc!==col&&bW>3){ x2.strokeStyle=bc; x2.lineWidth=1; x2.strokeRect(Math.round(bx)+0.5,Math.round(by)+0.5,Math.round(bW)-1,Math.max(1,Math.round(bH)-1)); } } });
   // levels — FBC style, starting on the entry candle
   const lvEnd=Math.min(R-6,mode==='after'?Math.max(X(iE)+120,X(iX)+1.5*bw):X(iE)+Math.max(14*bw,230)); // after: ends just past the deciding candle, like a TradingView position box
   const TC=tradeColors(th); const tg={c:TC.tp,t:TC.tpInk}; const Lb=getLabels();
@@ -4006,7 +4088,7 @@ function checkAlerts(){
   for(const a of al){ if(!a.active) continue; const inst=getInstruments().find(i=>i.symbol===a.sym); if(!inst||!hasPrice(inst)) continue; const px=getState(inst).price;
     let level=a.price; if(a.kind==='line'){ const lines=lsGet('bd_lines_'+a.sym,[])||[]; const l=lines.find(x=>x.id===a.lineId); if(!l){ a.active=false; changed=true; continue; } level=linePriceAt(l,now,a.sym); }
     const prev=alertLast[a.id]; alertLast[a.id]=px; if(prev===undefined||!isFinite(level)) continue;
-    if((prev-level)*(px-level)<=0&&prev!==px){ a.active=false; a.firedAt=Date.now(); changed=true; fireAlert(`${inst.name} ${a.kind==='line'?'touched your trendline':'reached '+fmtPrice(inst,a.price)}`,`Price ${fmtPrice(inst,px)}`,'ok','al'+a.id); } }
+    if((prev-level)*(px-level)<=0&&prev!==px){ a.active=false; a.firedAt=Date.now(); changed=true; fireAlert(`${inst.name} ${a.kind==='line'?(lsGet('bd_lines_'+a.sym,[])||[]).some(x=>x.id===a.lineId&&x.kind==='hray')?'touched your horizontal ray at '+fmtPrice(inst,level):'touched your trendline':'reached '+fmtPrice(inst,a.price)}`,`Price ${fmtPrice(inst,px)}`,'ok','al'+a.id); } }
   if(changed){ setAlerts(al); alRender(); }
 }
 let newsFired=lsGet('bd_news_fired',{})||{};
@@ -4206,6 +4288,7 @@ function mdSetup(m){
   cap.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); if(vpMode&&m.inst){ mvPointerDown(m,e,cap); return; } const pt=mPoint(m,e); if(!pt||!m.inst) return;
     if(alMode){ const al=getAlerts(); al.push({id:'A'+Date.now().toString(36),sym:m.inst.symbol,kind:'price',price:+pt.p.toFixed(instDp(m.inst)),active:true,created:Date.now()}); setAlerts(al); alSetMode(false); alRender(); mcCharts.forEach(mcDraw); askNotify(); toast(`Alert set on ${m.inst.name} at ${fmtPrice(m.inst,pt.p)}`); return; }
     if(!tlMode) return;
+    if(tlKind==='hray'){ const l=hrayNew(pt); drawLines(m.inst.symbol).push(l); tlSetMode(false); drawChanged(m.inst.symbol); mdSelect(m,l.id); return; }
     if(!mdDraft||mdDraft.m!==m){ mdDraft={m,l:{...drawDef(tlKind),kind:tlKind,ext:false,t1:pt.t,p1:pt.p,t2:pt.t,p2:pt.p,id:'__draft'},dx:e.clientX,dy:e.clientY}; mdRender(m); try{ cap.setPointerCapture(e.pointerId); }catch(_){} }
     else mdFinish(m,pt); });
   cap.addEventListener('pointermove',e=>{ if(vpMode){ mvPointerMove(m,e); return; } if(!mdDraft||mdDraft.m!==m) return; const pt=mPoint(m,e); if(!pt) return; mdDraft.l.t2=pt.t; mdDraft.l.p2=pt.p; mdPosition(m); });
@@ -4229,7 +4312,7 @@ window.addEventListener('pointermove',e=>{ if(!mdDrag) return; const {m}=mdDrag;
   const r=m.cell.getBoundingClientRect(); const x=e.clientX-r.left, y=e.clientY-r.top; const p=mP(m,y); if(p===null) return; const h=mdDrag.h;
   if(h){ const tt=mXT(m,x); if(tt===null) return; if(h[0]==='t') l['t'+h[1]]=tt; else if(h[0]==='p') l['p'+h[1]]=p; else { l['t'+h[0]]=tt; l['p'+h[1]]=p; } }
   else { if(mdDrag.py0===null||mdDrag.L1===null||mdDrag.L2===null) return; const dL=(e.clientX-mdDrag.x0)/mBS(m), dp=p-mdDrag.py0; l.t1=mTL(m,mdDrag.L1+dL); l.t2=mTL(m,mdDrag.L2+dL); l.p1=mdDrag.p1+dp; l.p2=mdDrag.p2+dp; }
-  mdDrag.moved=true; mdPosition(m); });
+  if(l.kind==='hray'){ l.t2=l.t1; l.p2=l.p1; } mdDrag.moved=true; mdPosition(m); });
 window.addEventListener('pointerup',()=>{ if(!mdDrag) return; const d=mdDrag; mdDrag=null; d.m.tl.querySelector('g.dragging')?.classList.remove('dragging'); if(d.moved) drawChanged(d.sym); });
 function mdFinish(m,pt){ const d=mdDraft; mdDraft=null; const l0=d.l, k=l0.kind==='rect'?'rect':'line'; const x1=mX(m,l0.t1), x2=mX(m,pt.t), y1=mY(m,l0.p1), y2=mY(m,pt.p);
   if(x1!==null&&y1!==null&&x2!==null&&y2!==null&&(k==='rect'?(Math.abs(x2-x1)<6||Math.abs(y2-y1)<4):Math.hypot(x2-x1,y2-y1)<5)){ mdRender(m); return; }
@@ -4240,11 +4323,12 @@ function mdSelect(m,id){ const prev=mSel; if(m&&id){ if(tlSel) tlSelect(null); m
   if(mSel&&tb){ if(tb.parentElement!==m.cell){ m.cell.appendChild(tb); if(pop) m.cell.appendChild(pop); } } else if(tb&&w&&tb.parentElement!==w){ w.appendChild(tb); if(pop) w.appendChild(pop); }
   if(prev&&prev.m!==m) mdRender(prev.m); if(m) mdRender(m); tlSyncTb(); tlPopRender(); }
 function mdDelete(){ if(!mSel) return; const {m,id}=mSel; const sym=m.inst.symbol; const ls=drawLines(sym); const i=ls.findIndex(x=>x.id===id); const l=ls[i]; if(i>=0) ls.splice(i,1);
-  const al=getAlerts(); if(al.some(a=>a.lineId===id)) setAlerts(al.filter(a=>a.lineId!==id)); mdSelect(null); drawChanged(sym); toast(l&&l.kind==='rect'?'Rectangle deleted':'Trendline deleted'); }
+  const al=getAlerts(); if(al.some(a=>a.lineId===id)) setAlerts(al.filter(a=>a.lineId!==id)); mdSelect(null); drawChanged(sym); toast(drawName(l)+' deleted'); }
 function mdRender(m){ if(!m.tl||!m.inst) return; const ls=drawLines(m.inst.symbol); const all=mdDraft&&mdDraft.m===m?[...ls,mdDraft.l]:ls;
   const alIds=new Set(getAlerts().filter(a=>a.kind==='line'&&a.active).map(a=>a.lineId)); const sel=mSel&&mSel.m===m?mSel.id:null;
   m.tl.innerHTML=all.map(l=>{ const cls=`tl${l.kind==='rect'?' rc':''}${l.id===sel?' sel':''}${l.id==='__draft'?' draft':''}${alIds.has(l.id)?' alert':''}`;
     if(l.kind==='rect') return `<g class="${cls}" data-id="${l.id}"><rect class="rc-body"></rect><rect class="rc-hit"></rect>${['11','22','12','21','t1','t2','p1','p2'].map(h=>`<circle class="tl-end${isNaN(h)?' mid':''}" data-h="${h}" r="${isNaN(h)?4:5}"></circle>`).join('')}</g>`;
+    if(l.kind==='hray') return `<g class="${cls} hr" data-id="${l.id}"><line class="tl-hit"></line><line class="tl-stroke"></line><circle class="tl-end" data-h="11" r="5"></circle></g>`;
     return `<g class="${cls}" data-id="${l.id}"><line class="tl-ext"></line><line class="tl-hit"></line><line class="tl-stroke"></line><circle class="tl-end" data-h="11" r="5"></circle><circle class="tl-end" data-h="22" r="5"></circle></g>`; }).join('');
   m.tl.querySelectorAll('g.tl').forEach(g=>{ const l=all.find(x=>x.id===g.dataset.id); if(l) tlApplyStyle(g,l); }); mdPosition(m); }
 function mdPosition(m){ if(!m.tl||!m.inst) return; const {W,H,aw,th}=mPlot(m); m.tl.style.width=W+'px'; m.tl.style.height=H+'px'; if(m.cap){ m.cap.style.right=aw+'px'; m.cap.style.bottom=th+'px'; }
@@ -4254,6 +4338,7 @@ function mdPosition(m){ if(!m.tl||!m.inst) return; const {W,H,aw,th}=mPlot(m); m
       for(const r of g.querySelectorAll('rect')){ r.setAttribute('x',b.x); r.setAttribute('y',b.y); r.setAttribute('width',b.w); r.setAttribute('height',b.h); }
       const xm=(b.x1+b.x2)/2, ym=(b.y1+b.y2)/2, P={'11':[b.x1,b.y1],'22':[b.x2,b.y2],'12':[b.x1,b.y2],'21':[b.x2,b.y1],'t1':[b.x1,ym],'t2':[b.x2,ym],'p1':[xm,b.y1],'p2':[xm,b.y2]};
       g.querySelectorAll('.tl-end').forEach(c=>{ const q=P[c.dataset.h]; c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); }); continue; }
+    if(l.kind==='hray'){ const x1=mX(m,l.t1), y1=mY(m,l.p1); g.dataset.k=''; if(!hrayPlace(g,x1,y1,W)){ g.style.display='none'; continue; } if(l.id===sel) selBox={x:Math.max(0,x1),y:y1,w:W-Math.max(0,x1),h:0}; continue; }
     const x1=mX(m,l.t1), x2=mX(m,l.t2), y1=mY(m,l.p1), y2=mY(m,l.p2); if(![x1,y1,x2,y2].every(v=>v!==null&&Number.isFinite(v))){ g.style.display='none'; continue; } g.style.display='';
     if(l.id===sel) selBox={x:Math.min(x1,x2),y:Math.min(y1,y2),w:Math.abs(x2-x1),h:Math.abs(y2-y1)};
     for(const ln of g.querySelectorAll('line:not(.tl-ext)')){ ln.setAttribute('x1',x1); ln.setAttribute('y1',y1); ln.setAttribute('x2',x2); ln.setAttribute('y2',y2); }
@@ -4636,7 +4721,7 @@ function openShotViewer(shots,start,t){
 }
 function renderSettings(){
   const g=document.getElementById('settings-grid'); const mode=getFeedMode();
-  const themeBtns=THEMES.map(t=>`<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}">${themePreview(t)}<span>${t.name}${t.hollowUp?' <i>hollow</i>':''}</span></button>`).join('');
+  const themeBtns=THEMES.map(t0=>{ const t=themeWithCustom(t0); return `<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}">${themePreview(t)}<span>${t.name}${t.customised?' <i>your colours</i>':t.hollowUp?' <i>hollow</i>':''}</span></button>`; }).join('');
   const symbolRows=getInstruments().map(i=>`<div class="symbol-row"><label>${esc(i.name)}</label><input data-deriv="${i.symbol}" value="${i.derivSymbol||''}" placeholder="${isBinance(i)?'Binance':'feed: auto'}" ${isBinance(i)?'disabled':''} title="Price-feed symbol" style="flex:1"></div>`).join('');
   const manual=getManual();
   const manualRows=getInstruments().map(i=>{ const m=manual[i.symbol]; return `<div class="symbol-row"><label>${i.name}</label><input data-mscore="${i.symbol}" type="number" min="-10" max="10" value="${m?m.score:''}" placeholder="−10…+10" style="flex:0 0 90px"><input data-mreason="${i.symbol}" value="${m?m.reason||'':''}" placeholder="reason (optional)"></div>`; }).join('');
@@ -4693,7 +4778,7 @@ function renderSettings(){
       ${chk('ms-disp','A sweep moves the boundary to the wick',o.disp)}${chk('ms-rearm','Rebuild a broken boundary from a minor swing',o.rearm)}${chk('ms-int','Let internal swings move the range',o.internal)}${chk('ms-lock','A break the other way also locks the sweep',o.lock)}
       ${chk('ms-strong','Label the range strong / weak',o.strong)}${chk('ms-table','Structure table',o.table)}${chk('ms-sweep','Show sweeps',o.sweep)}${chk('ms-riser','Draw the riser to the wick',o.riser)}`; })()}
     <div class="row"><button id="s-save-ms" class="btn-primary">Save structure settings</button></div></div>
-  <div class="setting-card card-s"><h3>🎨 Candle themes</h3><p>Changes candles, wicks, chart background, grid and site accent. Remembered across visits.</p><div class="theme-grid">${themeBtns}</div></div>
+  <div class="setting-card card-s"><h3>🎨 Candle themes</h3><p>Changes candles, wicks, chart background, grid and site accent. Remembered across visits.</p><button class="btn th-custom-set" type="button" id="set-cc">🎨 Set my own candle &amp; background colours</button><div class="theme-grid">${themeBtns}</div></div>
   <div class="setting-card card-s"><h3>📓 Rules before CONFIRM</h3><p>CONFIRM only records a trade when every automatic check passes and you have ticked each of your rules.</p>
     <label class="check-row"><input type="checkbox" id="s-r-bias" ${rulesAuto().bias?'checked':''}> Only trade with today's bias (neutral scores −2…+2 allowed)</label>
     <div class="row rules-num"><span>No trades within</span><input type="number" id="s-r-news" min="0" max="120" value="${rulesAuto().newsMin}"><span>min of high-impact news for the pair (0 = off)</span></div>
@@ -4724,6 +4809,7 @@ function renderSettings(){
   document.getElementById('s-save-symbols').addEventListener('click',()=>{ const list=getInstruments(); g.querySelectorAll('[data-tv]').forEach(inp=>{ const it=list.find(i=>i.symbol===inp.dataset.tv); if(it) it.tvSymbol=inp.value.trim().toUpperCase(); }); saveInstruments(list); g.querySelectorAll('[data-deriv]:not([disabled])').forEach(inp=>setDerivSymbol(inp.dataset.deriv,inp.value)); reconnectFeed(); const h=$('hero-tv'); if(h) h.dataset.key=''; initHeroChart(); toast('Symbols saved ✓'); renderCards(); });
   document.getElementById('s-save-url').addEventListener('click',async()=>{ setScoresUrl(document.getElementById('s-scores-url').value); const r=await fetchScores(); document.getElementById('s-scores-msg').textContent=r.ok?`✓ Scores loaded for ${r.date}`:`⚠ ${r.reason} — showing "No score yet for today"`; toast(r.ok?'Scores loaded ✓':'Scores not loaded — see message'); });
   document.getElementById('s-save-manual').addEventListener('click',()=>{ getInstruments().forEach(i=>{ const s=g.querySelector(`[data-mscore="${i.symbol}"]`), rs=g.querySelector(`[data-mreason="${i.symbol}"]`); setManualBias(i.symbol,s&&s.value!==''?s.value:null,rs?rs.value:''); }); toast('Manual scores saved for today ✓'); });
+  { const cc=g.querySelector('#set-cc'); if(cc) cc.addEventListener('click',()=>openChartColors()); }
   g.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click',()=>{ applyTheme(b.dataset.theme); g.querySelectorAll('[data-theme]').forEach(x=>x.classList.toggle('active',x===b)); toast(`Theme: ${b.textContent.trim()} ✓`); }));
   document.getElementById('s-save-mot').addEventListener('click',()=>{ setPinnedRule(document.getElementById('s-pin-rule').value); setCustomMessages(document.getElementById('s-mot-custom').value.split('\n').map(x=>x.trim()).filter(Boolean)); toast('Motivation saved ✓'); });
   document.getElementById('s-mot-preview').addEventListener('click',showNextMotivation);
