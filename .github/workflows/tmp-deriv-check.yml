@@ -1,0 +1,35 @@
+name: tmp deriv symbol check
+on:
+  push:
+    branches: [tmp-deriv-check]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install websocket-client -q
+      - shell: python
+        run: |
+          import json, websocket
+          def ask(url, payloads):
+              out = []
+              try:
+                  ws = websocket.create_connection(url, timeout=20)
+                  for p in payloads:
+                      ws.send(json.dumps(p)); out.append(json.loads(ws.recv()))
+                  ws.close()
+              except Exception as e:
+                  out.append({"connect_error": str(e)})
+              return out
+          for name, url in [("legacy", "wss://ws.derivws.com/websockets/v3?app_id=1089"), ("new-public", "wss://api.derivws.com/trading/v1/options/ws/public")]:
+              r = ask(url, [{"active_symbols": "brief"}])[0]
+              if "connect_error" in r or "error" in r:
+                  print(name, "ERROR", r); continue
+              syms = r.get("active_symbols", [])
+              rows = [(a.get("symbol") or a.get("underlying_symbol"), a.get("display_name") or a.get("underlying_symbol_name"), a.get("pip") or a.get("pip_size")) for a in syms]
+              print(f"== {name}: {len(rows)} symbols")
+              for s, d, p in sorted(rows, key=lambda x: str(x[1])):
+                  if any(k in str(d).lower() for k in ("boom", "crash", "volatility 25", "volatility 75")):
+                      print(f"   {s:14} {d:32} pip={p}")
+          probes = [{"ticks_history": c, "end": "latest", "count": 3, "style": "candles", "granularity": 60} for c in ("BOOM100", "BOOM100N", "BOOM100X", "RDBOOM100")]
+          for p, r in zip(probes, ask("wss://ws.derivws.com/websockets/v3?app_id=1089", probes)):
+              print("probe", p["ticks_history"], "->", (r.get("error") or {}).get("message") or f"{len(r.get('candles', []))} candles, last close {r.get('candles', [{}])[-1].get('close')}")
