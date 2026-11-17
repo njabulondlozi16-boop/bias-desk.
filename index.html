@@ -693,7 +693,7 @@ h1{font-size:34px;line-height:1.15;margin:0;font-weight:700;letter-spacing:-.5px
   .page{padding:24px 16px 100px}.page.chart-view{padding:12px 10px 90px}
   .bias-board{grid-template-columns:repeat(2,1fr)}.ov-grid,.an-top{grid-template-columns:1fr}
   .ov-hero{flex-direction:column;align-items:flex-start}.ov-hero h1{font-size:30px}
-  .mk-row{grid-template-columns:1fr auto auto;gap:10px}.mk-chg,.mk-bias .bz-l,.mk-spark{display:none}.mk-bias{display:none}
+  .mk-row{grid-template-columns:minmax(0,1fr) auto auto;gap:10px}.mk-pair,.mk-pair>div{min-width:0}.bs-badge{white-space:normal;flex-wrap:wrap;row-gap:1px;letter-spacing:.02em;max-width:100%}.prio-slot{margin-left:0;display:flex;margin-top:3px}.mk-chg,.mk-bias .bz-l,.mk-spark{display:none}.mk-bias{display:none}
   .feed-alert{margin:12px 16px 0}
 }
 
@@ -1261,7 +1261,13 @@ body.qt-hide .quick-trade,body.qt-hide .mc-qt{display:none!important}
 .ms-table td{padding:2px 7px;white-space:nowrap}.ms-table tr.on td{background:rgba(255,255,255,.07)}
 .ms-table b.up{color:var(--up,#22c55e)}.ms-table b.down{color:var(--down,#f23645)}
 body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0,0,.12)}body.light-chart .ms-table table{color:#111827}body.light-chart .ms-table th{color:#4b5563}
-.prio-slot{display:inline-flex;margin-left:8px;vertical-align:middle}
+.prio-slot{display:inline-flex;flex-wrap:wrap;gap:6px;margin-left:8px;vertical-align:middle}
+.bs-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:6px;background:rgba(56,139,253,.14);color:#9ecbff;border:1px solid rgba(56,139,253,.35);font:800 10px 'Space Grotesk',sans-serif;letter-spacing:.05em;white-space:nowrap;cursor:help}
+.bs-badge i{font:600 10px 'JetBrains Mono',monospace;font-style:normal;letter-spacing:0;opacity:.85}
+.bs-badge b{margin-left:2px;padding:1px 5px;border-radius:4px;background:#22e58a;color:#062b18;font-size:9px;letter-spacing:.06em}
+.bs-badge.now{background:rgba(34,229,138,.12);color:#7ff0bb;border-color:rgba(34,229,138,.45)}
+.bs-pop{position:fixed;z-index:9999;padding:10px 12px;border-radius:10px;background:#11161f;border:1px solid #2a3442;color:#dfe6ee;font:500 12px/1.5 'Space Grotesk',sans-serif;white-space:pre-line;box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.bs-badge.any{background:rgba(139,148,158,.12);color:#b7c0cb;border-color:rgba(139,148,158,.3)}
 .prio-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;background:#e11d2e;color:#fff;font:800 10px 'Space Grotesk',sans-serif;letter-spacing:.06em;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 0 14px rgba(225,29,46,.55);animation:prioPulse 2s ease-in-out infinite;white-space:nowrap}
 @keyframes prioPulse{50%{box-shadow:0 0 0 1px rgba(255,255,255,.12),0 0 22px rgba(225,29,46,.85)}}
 @media(max-width:900px){ .ms-table table{font-size:9.5px} .ms-table th,.ms-table td{padding:1px 4px} }
@@ -1432,7 +1438,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-16.25';
+const BUILD='2026-11-16.26';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -4456,10 +4462,51 @@ const msPrio={};
 async function msScanPriority(){ for(const inst of getInstruments()){ const b=getBias(inst.symbol); if(!b||Math.abs(b.score)<3){ msPrio[inst.symbol]=null; msPaintPrio(inst.symbol); continue; }
     const dir=b.score>0?1:-1; const [t4,t1]=PRIO_TFS(); const r4=await msGet(inst,t4), r1=await msGet(inst,t1); const rd=msCache.get(inst.symbol+'|86400')?.res, r15=msCache.get(inst.symbol+'|900')?.res;
     msPrio[inst.symbol]=r4&&r1&&r4.trend===dir&&r1.trend===dir?{dir,score:b.score,d:rd?rd.trend:null,m15:r15?r15.trend:null}:null; msPaintPrio(inst.symbol); } }
-function msPaintPrio(sym){ document.querySelectorAll(`[data-prio="${sym}"]`).forEach(el=>{ const p=msPrio[sym]; if(!p){ el.innerHTML=''; return; }
-  el.innerHTML=`<span class="prio-badge" title="Today's bias ${p.score>0?'+':''}${p.score} and the market structure agree: 4h and 1h trend ${p.dir>0?'up':'down'}">🔥 TOP PRIORITY</span>`; }); }
-function msPaintAllPrio(){ Object.keys(msPrio).forEach(msPaintPrio); }
-setInterval(()=>{ if(document.body.dataset.page==='markets') msScanPriority(); },5*60*1000);
+function msPaintPrio(sym){ document.querySelectorAll(`[data-prio="${sym}"]`).forEach(el=>{ const p=msPrio[sym];
+  el.innerHTML=(p?`<span class="prio-badge" title="Today's bias ${p.score>0?'+':''}${p.score} and the market structure agree: 4h and 1h trend ${p.dir>0?'up':'down'}">🔥 TOP PRIORITY</span>`:'')+bsBadge(sym); }); }
+function msPaintAllPrio(){ new Set([...Object.keys(msPrio),...Object.keys(bsAll())]).forEach(msPaintPrio); }
+// ---- best session per pair (sits next to TOP PRIORITY): the session in which the pair moved most per hour over the last ~3 weeks of 1h candles.
+// Sessions follow each market's own clock (Tokyo 09:00–18:00, London 08:00–17:00, New York 08:00–17:00, so summer/winter time is handled) and are shown in Johannesburg time (SAST).
+const BS_KEY='bd_best_sess', BS_TTL=12*3600*1000, BS_SHORT={'Asian':'ASIA','London':'LONDON','London–NY overlap':'LDN–NY','New York':'NEW YORK'};
+const bsFmt={}, bsHour=new Map();
+function bsAll(){ const a=lsGet(BS_KEY,{}); return a&&typeof a==='object'?a:{}; }
+function bsOpenIn(i,ms){ const s=SESSIONS[i], f=bsFmt[s.tz]||(bsFmt[s.tz]=new Intl.DateTimeFormat('en-GB',{timeZone:s.tz,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}));
+  const p=f.formatToParts(new Date(ms)), g=t=>p.find(x=>x.type===t).value, wd=g('weekday'); if(wd==='Sat'||wd==='Sun') return false; const m=(+g('hour')%24)*60+(+g('minute')); return m>=s.open&&m<s.close; }
+// which session a moment belongs to (London–NY overlap first, then London, New York, Asia; quiet hours = none)
+function bsBucket(ms){ const L=bsOpenIn(1,ms), N=bsOpenIn(2,ms); if(L&&N) return 'London–NY overlap'; if(L) return 'London'; if(N) return 'New York'; return bsOpenIn(0,ms)?'Asian':null; }
+function bsBucketHour(t){ if(!bsHour.has(t)){ if(bsHour.size>5000) bsHour.clear(); bsHour.set(t,bsBucket(t*1000+1800000)); } return bsHour.get(t); }
+const sastHM=ms=>new Date(ms).toLocaleTimeString('en-GB',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit',hour12:false});
+// each session's hours in SAST (on the next normal weekday) and how long until it next opens — worked out once a minute for all pairs
+let bsTT=null;
+function bsTimetable(){ const now=Date.now(); if(bsTT&&now-bsTT.at<60000) return bsTT; const Q=15*60000, day=86400000, sast=2*3600000;
+  let d0=Math.floor((now+sast)/day)*day-sast; for(let i=0;i<7;i++){ const wd=new Date(d0+sast+12*3600000).getUTCDay(); if(wd>=2&&wd<=4) break; d0+=day; }
+  const hours={}; for(const name of Object.keys(BS_SHORT)){ let a=null,b=null; for(let k=0;k<96;k++){ const t=d0+k*Q; if(bsBucket(t)===name){ if(a===null) a=t; b=t+Q; } else if(a!==null) break; } hours[name]=a===null?'':`${sastHM(a)}–${sastHM(b)}`; }
+  const cur=bsBucket(now), next={}; for(const name of Object.keys(BS_SHORT)){ if(name===cur){ next[name]=0; continue; } let t=Math.ceil(now/Q)*Q; for(let k=0;k<7*96;k++,t+=Q){ if(bsBucket(t)===name){ next[name]=Math.round((t-now)/60000); break; } } }
+  return bsTT={at:now,hours,cur,next}; }
+function bsMoveTxt(inst,v){ return inst.type==='Forex'?`${(v/(inst.pip||0.0001)).toFixed(1)} pips`:`${v.toFixed(Math.min(4,Math.max(0,instDp(inst)-1)))}`; }
+function bsBadge(sym){ const b=bsAll()[sym]; if(!b||!b.best) return ''; const inst=getInstruments().find(i=>i.symbol===sym);
+  if(b.any) return `<span class="bs-badge any" title="${esc(sym)} moves about the same in every session (last ${b.days} days of 1h candles) — no best session">⏰ ANY SESSION</span>`;
+  const tt=bsTimetable(), now=tt.cur===b.best, hrs=tt.hours[b.best], mins=tt.next[b.best];
+  const rows=Object.entries(b.avg).sort((x,y)=>y[1]-x[1]).map(([n,v])=>`${n}: ${inst?bsMoveTxt(inst,v):v.toPrecision(3)} an hour (${Math.round(v/b.avg[b.best]*100)}%)`).join('\n');
+  const mine=b.mine&&b.mine.n?`\nYour trades in this session: ${b.mine.w} won, ${b.mine.n-b.mine.w} lost`:'';
+  const when=now?'Open now':mins!=null?`Opens in ${fmtMins(mins)}`:'';
+  return `<span class="bs-badge${now?' now':''}" title="Best session for ${esc(sym)}: ${b.best} — ${hrs} Johannesburg time (SAST). ${when}.\nAverage move per hour, last ${b.days} days:\n${rows}${mine}">⏰ ${BS_SHORT[b.best]} <i>${hrs}</i>${now?'<b>NOW</b>':''}</span>`; }
+let bsBusy=false;
+async function bsScan(force){ if(bsBusy||rp.active) return; bsBusy=true; try{ const all=bsAll(); let trades=[]; try{ trades=(await idbAll('journal')).filter(t=>!t.practice&&(t.result==='WIN'||t.result==='LOSS')); }catch(e){}
+    for(const inst of getInstruments()){ const sym=inst.symbol, old=all[sym]; let b=old;
+      if(force||!old||Date.now()-old.at>BS_TTL){ let bars=[]; try{ bars=(await fetchCandlesOnce(inst,3600,500))||[]; }catch(e){}
+        const sum={}, n={}; for(const k of bars){ if(!(k.high>k.low)) continue; const name=bsBucketHour(k.time); if(!name) continue; sum[name]=(sum[name]||0)+(k.high-k.low); n[name]=(n[name]||0)+1; }
+        const avg={}; for(const name in sum) if(n[name]>=8) avg[name]=sum[name]/n[name]; const order=Object.entries(avg).sort((x,y)=>y[1]-x[1]);
+        if(order.length){ b={at:Date.now(),best:order[0][0],avg,any:order.length>1&&order[1][1]>=order[0][1]*0.92,days:Math.max(1,Math.round((bars[bars.length-1].time-bars[0].time)/86400))}; }
+        else if(old) b=old; else continue; }
+      const mt=trades.filter(t=>t.symbol===sym&&(t.session||sessionFor(t.entryTime))===b.best); b.mine={n:mt.length,w:mt.filter(t=>t.result==='WIN').length};
+      all[sym]=b; try{ localStorage.setItem(BS_KEY,JSON.stringify(all)); }catch(e){} msPaintPrio(sym); } } finally{ bsBusy=false; } }
+setInterval(()=>{ if(document.body.dataset.page==='markets'){ bsTT=null; msPaintAllPrio(); } },60000);
+// tap the badge (phones have no hover): show the details under it, without opening the chart
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('.bs-badge'); document.querySelector('.bs-pop')?.remove(); if(!b) return; e.preventDefault(); e.stopPropagation();
+  const pop=document.createElement('div'); pop.className='bs-pop'; pop.textContent=b.getAttribute('title')||''; document.body.appendChild(pop); const r=b.getBoundingClientRect(), w=Math.min(320,innerWidth-16);
+  pop.style.width=w+'px'; pop.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left))+'px'; pop.style.top=(r.bottom+6+pop.offsetHeight>innerHeight?Math.max(8,r.top-6-pop.offsetHeight):r.bottom+6)+'px'; },true);
+setInterval(()=>{ if(document.body.dataset.page==='markets'){ msScanPriority(); bsScan(); } },5*60*1000);
 
 // ===== FRVP on every chart: same profiles on every chart of the same pair, drawn / resized / deleted on any of them =====
 const vpRaw={}, vpStoreC={}, mvLoading={}; let mvSel=null, mvDraft=null, mvDrag=null;
@@ -5019,7 +5066,7 @@ function showPage(name){
   if(name==='journal') renderJournal();
   if(name==='analytics'){ renderAnalytics(); runBiasAccuracy(); }
   if(name==='overview') renderOverview();
-  if(name==='markets') setTimeout(()=>msScanPriority(),300);
+  if(name==='markets') setTimeout(()=>{ msPaintAllPrio(); msScanPriority(); bsScan(); },300);
   if(name==='markets') renderMarketsTable();
   window.scrollTo({top:0});
 }
