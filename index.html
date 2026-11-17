@@ -1438,7 +1438,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-16.26';
+const BUILD='2026-11-17.27';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -4467,7 +4467,7 @@ function msPaintPrio(sym){ document.querySelectorAll(`[data-prio="${sym}"]`).for
 function msPaintAllPrio(){ new Set([...Object.keys(msPrio),...Object.keys(bsAll())]).forEach(msPaintPrio); }
 // ---- best session per pair (sits next to TOP PRIORITY): the session in which the pair moved most per hour over the last ~3 weeks of 1h candles.
 // Sessions follow each market's own clock (Tokyo 09:00–18:00, London 08:00–17:00, New York 08:00–17:00, so summer/winter time is handled) and are shown in Johannesburg time (SAST).
-const BS_KEY='bd_best_sess', BS_TTL=12*3600*1000, BS_SHORT={'Asian':'ASIA','London':'LONDON','London–NY overlap':'LDN–NY','New York':'NEW YORK'};
+const BS_KEY='bd_best_sess2', BS_TTL=12*3600*1000, BS_SHORT={'Asian':'ASIA','London':'LONDON','London–NY overlap':'LDN–NY','New York':'NEW YORK'};
 const bsFmt={}, bsHour=new Map();
 function bsAll(){ const a=lsGet(BS_KEY,{}); return a&&typeof a==='object'?a:{}; }
 function bsOpenIn(i,ms){ const s=SESSIONS[i], f=bsFmt[s.tz]||(bsFmt[s.tz]=new Intl.DateTimeFormat('en-GB',{timeZone:s.tz,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}));
@@ -4485,20 +4485,31 @@ function bsTimetable(){ const now=Date.now(); if(bsTT&&now-bsTT.at<60000) return
   return bsTT={at:now,hours,cur,next}; }
 function bsMoveTxt(inst,v){ return inst.type==='Forex'?`${(v/(inst.pip||0.0001)).toFixed(1)} pips`:`${v.toFixed(Math.min(4,Math.max(0,instDp(inst)-1)))}`; }
 function bsBadge(sym){ const b=bsAll()[sym]; if(!b||!b.best) return ''; const inst=getInstruments().find(i=>i.symbol===sym);
-  if(b.any) return `<span class="bs-badge any" title="${esc(sym)} moves about the same in every session (last ${b.days} days of 1h candles) — no best session">⏰ ANY SESSION</span>`;
+  if(b.any) return `<span class="bs-badge any" title="${esc(sym)} is a synthetic index — it moves about the same at every hour, so no session is better than another">⏰ ANY SESSION</span>`;
   const tt=bsTimetable(), now=tt.cur===b.best, hrs=tt.hours[b.best], mins=tt.next[b.best];
   const rows=Object.entries(b.avg).sort((x,y)=>y[1]-x[1]).map(([n,v])=>`${n}: ${inst?bsMoveTxt(inst,v):v.toPrecision(3)} an hour (${Math.round(v/b.avg[b.best]*100)}%)`).join('\n');
   const mine=b.mine&&b.mine.n?`\nYour trades in this session: ${b.mine.w} won, ${b.mine.n-b.mine.w} lost`:'';
+  const moves=b.big&&b.days?`\nThe day's biggest 1h candle formed in ${b.best} on ${b.big[b.best]||0} of ${b.days} days.`:'', pk=b.peak!=null?`\nBusiest hour: ${String(b.peak).padStart(2,'0')}:00–${String((b.peak+1)%24).padStart(2,'0')}:00 SAST.`:'';
   const when=now?'Open now':mins!=null?`Opens in ${fmtMins(mins)}`:'';
-  return `<span class="bs-badge${now?' now':''}" title="Best session for ${esc(sym)}: ${b.best} — ${hrs} Johannesburg time (SAST). ${when}.\nAverage move per hour, last ${b.days} days:\n${rows}${mine}">⏰ ${BS_SHORT[b.best]} <i>${hrs}</i>${now?'<b>NOW</b>':''}</span>`; }
+  return `<span class="bs-badge${now?' now':''}" title="Best session for ${esc(sym)}: ${b.best} — ${hrs} Johannesburg time (SAST). ${when}.\nAverage move per hour, last ${b.days} days:\n${rows}${moves}${pk}${mine}">⏰ ${BS_SHORT[b.best]} <i>${hrs}</i>${now?'<b>NOW</b>':''}</span>`; }
+function bsCompute(inst,bars){ let b=null;
+        // per session: average size of a 1h candle, and how often the day's biggest 1h candle (the move of the day) formed there; busiest hour in SAST
+        const sum={}, n={}, big={}, hs=new Array(24).fill(0), hn=new Array(24).fill(0), dayMax={};
+        for(const k of bars){ if(!(k.high>k.low)) continue; const name=bsBucketHour(k.time); if(!name) continue; const r=k.high-k.low; sum[name]=(sum[name]||0)+r; n[name]=(n[name]||0)+1;
+          const h=Math.floor(((k.time+7200)%86400)/3600); hs[h]+=r; hn[h]++; const dk=Math.floor((k.time+7200)/86400); if(!dayMax[dk]||r>dayMax[dk].r) dayMax[dk]={r,name}; }
+        for(const d of Object.values(dayMax)) big[d.name]=(big[d.name]||0)+1;
+        const avg={}; for(const name in sum) if(n[name]>=8) avg[name]=sum[name]/n[name]; const order=Object.entries(avg).sort((x,y)=>y[1]-x[1]);
+        let peak=null, pv=0; for(let h=0;h<24;h++) if(hn[h]>=5&&hs[h]/hn[h]>pv){ pv=hs[h]/hn[h]; peak=h; }
+        if(order.length){ let best=order[0][0]; if(order[1]&&order[1][1]>=order[0][1]*0.95&&(big[order[1][0]]||0)>(big[best]||0)) best=order[1][0]; // nearly level: the one that makes the day's move more often
+          b={at:Date.now(),best,avg,big,days:Object.keys(dayMax).length,peak,any:inst.type==='Synthetic'&&order.length>1&&order[order.length-1][1]>=order[0][1]*0.9}; }
+        return b; }
 let bsBusy=false;
 async function bsScan(force){ if(bsBusy||rp.active) return; bsBusy=true; try{ const all=bsAll(); let trades=[]; try{ trades=(await idbAll('journal')).filter(t=>!t.practice&&(t.result==='WIN'||t.result==='LOSS')); }catch(e){}
     for(const inst of getInstruments()){ const sym=inst.symbol, old=all[sym]; let b=old;
       if(force||!old||Date.now()-old.at>BS_TTL){ let bars=[]; try{ bars=(await fetchCandlesOnce(inst,3600,500))||[]; }catch(e){}
-        const sum={}, n={}; for(const k of bars){ if(!(k.high>k.low)) continue; const name=bsBucketHour(k.time); if(!name) continue; sum[name]=(sum[name]||0)+(k.high-k.low); n[name]=(n[name]||0)+1; }
-        const avg={}; for(const name in sum) if(n[name]>=8) avg[name]=sum[name]/n[name]; const order=Object.entries(avg).sort((x,y)=>y[1]-x[1]);
-        if(order.length){ b={at:Date.now(),best:order[0][0],avg,any:order.length>1&&order[1][1]>=order[0][1]*0.92,days:Math.max(1,Math.round((bars[bars.length-1].time-bars[0].time)/86400))}; }
+        const nb=bsCompute(inst,bars); if(nb) b=nb;
         else if(old) b=old; else continue; }
+      if(!b) continue;
       const mt=trades.filter(t=>t.symbol===sym&&(t.session||sessionFor(t.entryTime))===b.best); b.mine={n:mt.length,w:mt.filter(t=>t.result==='WIN').length};
       all[sym]=b; try{ localStorage.setItem(BS_KEY,JSON.stringify(all)); }catch(e){} msPaintPrio(sym); } } finally{ bsBusy=false; } }
 setInterval(()=>{ if(document.body.dataset.page==='markets'){ bsTT=null; msPaintAllPrio(); } },60000);
