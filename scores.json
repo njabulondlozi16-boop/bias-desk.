@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-16",
-  "generated_at": "05:43 SAST",
-  "model": "gemini-3.8-flash",
+  "date": "2026-11-17",
+  "generated_at": "07:20 SAST",
+  "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Diverging economic outlooks and hawkish Fed rate hike bets keep EURUSD pressured downward."
+      "reason": "Aggressive Fed tightening expectations drive euro down against surging dollar."
     },
     "GBPUSD": {
       "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Firm dollar dominates despite UK growth surprise and BoE tightening bets."
+      "reason": "Pound underperforms as broad dollar strength dominates ahead of UK data."
     },
     "AUDUSD": {
-      "score": -6,
-      "label": "Strong Bearish",
-      "reason": "RBA pause bets combined with hawkish Fed push the pair toward key lows."
+      "score": -4,
+      "label": "Moderately Bearish",
+      "reason": "Weighed down by surging US dollar and risk-off sentiment."
     },
     "NZDUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Broad dollar rally and weak domestic New Zealand fundamentals weigh heavily on pair."
+      "reason": "Kiwi drops sharply against aggressive USD rate hike pricing."
     },
     "USDCHF": {
       "score": 6,
       "label": "Strong Bullish",
-      "reason": "Expanding interest rate gap heavily favors the dollar over the zero-yielding franc."
+      "reason": "Wider rate differential and strong dollar push USDCHF higher."
     },
     "XAUUSD": {
-      "score": -6,
-      "label": "Strong Bearish",
-      "reason": "Surging Treasury yields and increased Fed tightening expectations weigh heavily on bullion."
-    },
-    "US30": {
-      "score": 1,
-      "label": "Neutral",
-      "reason": "Defensive value components and slight futures bounce offset broader rate hike pressure."
-    },
-    "US100": {
-      "score": -3,
-      "label": "Moderately Bearish",
-      "reason": "Rising yields and ongoing leadership/regulatory turmoil in Nvidia dampen tech appetite."
-    },
-    "GER30": {
-      "score": -1,
-      "label": "Neutral",
-      "reason": "Solid earnings offset rate jitters, keeping index slightly muted near recent highs."
-    },
-    "BTCUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Spiking yields, aggressive Fed hike bets, and regulatory concerns spark heavy crypto selling."
+      "reason": "Surging Treasury yields and strong dollar heavily weigh on gold."
+    },
+    "US30": {
+      "score": -4,
+      "label": "Moderately Bearish",
+      "reason": "Dragged down by tech selloff, Nvidia turmoil, and rate hike fears."
+    },
+    "US100": {
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Heavy tech selloff driven by Nvidia leadership crisis and rate concerns."
+    },
+    "GER30": {
+      "score": -3,
+      "label": "Moderately Bearish",
+      "reason": "European equities pulled lower by global tech selloff and cautious sentiment."
+    },
+    "BTCUSD": {
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Higher bond yields and strong dollar crush demand for non-yielding crypto."
     }
   },
   "currencies": {
     "USD": {
-      "score": 7,
-      "reason": "Strong inflation data and hawkish Fed commentary fuel bets for larger rate hikes."
+      "score": 8,
+      "reason": "Stronger inflation and hawkish Fed rate hike expectations boost dollar."
     },
     "EUR": {
-      "score": -4,
-      "reason": "Weak regional growth outlook, French political uncertainty, and strong dollar pressure the euro."
+      "score": -5,
+      "reason": "Weighed down by broad dollar strength and French political uncertainty."
     },
     "GBP": {
-      "score": -2,
-      "reason": "Resilient UK GDP and BoE hike expectations partly buffer against broad dollar strength."
+      "score": -4,
+      "reason": "Slipped toward multi-month lows ahead of critical UK jobs and inflation data."
     },
     "AUD": {
-      "score": -5,
-      "reason": "Weak domestic housing, falling confidence, and ruled-out RBA hikes undermine the aussie."
+      "score": -3,
+      "reason": "Edged lower as rising US rates and safe-haven dollar demand pressure the currency."
     },
     "NZD": {
-      "score": -6,
-      "reason": "Sluggish growth, soft retail and jobs, and timid RBNZ widen rate differentials negatively."
+      "score": -5,
+      "reason": "Weak growth and severe dollar strength push kiwi to multi-year lows."
     },
     "CHF": {
       "score": -4,
-      "reason": "Zero-rate environment cements franc as a funding currency amid surging US yields."
+      "reason": "Weakened against the dollar as widening US-Swiss interest rate differentials grow."
     }
   },
   "sources": {
@@ -88,8 +88,10 @@
     },
     "EUR": {
       "paragraphs": 3,
-      "headlines": 6,
-      "problems": []
+      "headlines": 0,
+      "problems": [
+        "Google News failed: HTTP Error 429: Too Many Requests"
+      ]
     },
     "GBP": {
       "paragraphs": 3,
@@ -98,43 +100,55 @@
     },
     "AUD": {
       "paragraphs": 3,
-      "headlines": 6,
-      "problems": []
+      "headlines": 0,
+      "problems": [
+        "Google News failed: HTTP Error 429: Too Many Requests"
+      ]
     },
     "NZD": {
       "paragraphs": 3,
-      "headlines": 6,
-      "problems": []
+      "headlines": 0,
+      "problems": [
+        "Google News failed: HTTP Error 429: Too Many Requests"
+      ]
     },
     "CHF": {
       "paragraphs": 3,
       "headlines": 0,
-      "problems": []
+      "problems": [
+        "Google News failed: HTTP Error 429: Too Many Requests"
+      ]
     },
     "GOLD": {
-      "paragraphs": 3,
-      "headlines": 6,
-      "problems": []
+      "paragraphs": 2,
+      "headlines": 0,
+      "problems": [
+        "Google News failed: HTTP Error 429: Too Many Requests"
+      ]
     },
     "US30": {
-      "paragraphs": 3,
+      "paragraphs": 2,
       "headlines": 6,
       "problems": []
     },
     "US100": {
-      "paragraphs": 3,
+      "paragraphs": 2,
       "headlines": 6,
       "problems": []
     },
     "GER30": {
       "paragraphs": 3,
-      "headlines": 6,
-      "problems": []
+      "headlines": 0,
+      "problems": [
+        "Google News failed: HTTP Error 429: Too Many Requests"
+      ]
     },
     "BTC": {
       "paragraphs": 3,
-      "headlines": 6,
-      "problems": []
+      "headlines": 0,
+      "problems": [
+        "Google News failed: HTTP Error 429: Too Many Requests"
+      ]
     }
   }
 }
