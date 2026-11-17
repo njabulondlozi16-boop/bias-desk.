@@ -1,6 +1,6 @@
 {
  "source": "Forex Factory economic calendar",
- "fetched": "2026-11-16T21:16:35Z",
+ "fetched": "2026-11-17T09:45:18Z",
  "events": [
   {
    "t": 1794835800,
@@ -51,6 +51,14 @@
    "previous": ""
   },
   {
+   "t": 1794873600,
+   "cur": "NZD",
+   "title": "RBNZ Gov Breman Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
+  },
+  {
    "t": 1794880800,
    "cur": "NZD",
    "title": "Inflation Expectations q/q",
@@ -79,7 +87,7 @@
    "cur": "USD",
    "title": "Retail Sales m/m",
    "impact": "high",
-   "forecast": "0.2%",
+   "forecast": "0.1%",
    "previous": "0.8%"
   },
   {
@@ -87,7 +95,7 @@
    "cur": "AUD",
    "title": "Wage Price Index q/q",
    "impact": "medium",
-   "forecast": "0.9%",
+   "forecast": "1.0%",
    "previous": "0.8%"
   },
   {
@@ -151,7 +159,7 @@
    "cur": "AUD",
    "title": "Employment Change",
    "impact": "high",
-   "forecast": "25.2K",
+   "forecast": "25.5K",
    "previous": "-39.3K"
   },
   {
