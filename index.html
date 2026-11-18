@@ -1105,6 +1105,7 @@ body.replaying #ct-replay{color:#a5b4fc}
 .fib .fb-hit{stroke-width:9}
 .fib:hover .fb-l,.fib.sel .fb-l{stroke-width:calc(var(--w,1) * 1px + .5px)}
 .fib.draft .fb-l,.fib.draft .fb-t{opacity:.85}
+.ap-add{display:block;width:100%;margin:6px 0 8px;padding:9px 10px;border-radius:9px;border:1px solid rgba(245,158,11,.55);background:rgba(245,158,11,.12);color:#fbbf24;font:700 12px 'Space Grotesk',sans-serif;cursor:pointer;text-align:left}.ap-add:hover{background:rgba(245,158,11,.2)}
 .tl-end{fill:#131722;stroke:var(--c,#2962ff);stroke-width:2;display:none;pointer-events:all;cursor:grab;touch-action:none}
 .tl-end:hover{fill:var(--c,#2962ff)}
 .tl:not(.rc):hover .tl-end,.tl.sel .tl-end,.tl.draft .tl-end{display:inline}
@@ -1449,7 +1450,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-18.29';
+const BUILD='2026-11-18.30';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1674,7 +1675,7 @@ function connect(){
   let sock; try{ sock=new WebSocket(ep.url()); }catch(e){ epStatus[ep.id]={ok:false,noOpen:true,reason:'Browser refused: '+e.message}; if(!endpointFailed(ep,'Browser refused: '+e.message)) scheduleReconnect(); return; }
   ws=sock;
   const fail=(reason,noOpen)=>{ if(done) return; done=true; try{ sock.onclose=null; sock.close(); }catch(_){} if(ws===sock) ws=null; epStatus[ep.id]={ok:false,noOpen:!!noOpen,reason}; if(feedMode==='live') setMode('connecting'); if(!endpointFailed(ep,reason)){ scheduleReconnect(); } };
-  const openTimer=setTimeout(()=>{ if(!opened) fail('no response (blocked or unreachable)',true); },7000);
+  const openTimer=setTimeout(()=>{ if(!opened) fail('no response (blocked or unreachable)',true); },ep.id==='public26'?30000:8000); // the main feed can take 10–20 s to answer — don't give up on it early
   sock.onopen=async()=>{
     opened=true; clearTimeout(openTimer);
     try{
@@ -1686,8 +1687,10 @@ function connect(){
       if(probe){ const h=await wsSend({ticks_history:probe.deriv,adjust_start_time:1,count:2,end:'latest',style:'ticks'}); if(!h.history) throw new Error('price history not supported'); }
       done=true; epFailsThisRound=0; roundSummary=''; epStatus[ep.id]={ok:true,reason:'connected',at:Date.now()}; lsSet('bd_endpoint',ep.id);
       stopDemo(); clearTimeout(fallbackTimer); fallbackTimer=null; lastFeedError=''; reconnectAttempt=0; setMode('live');
-      await Promise.all(getInstruments().map(inst=>{ const m=mapping.get(inst.symbol); return (m&&m.found)?seedInstrument(inst,m.deriv):null; }));
-      notifyTick(); modeListeners.forEach(fn=>{ try{fn('live');}catch(e){} });
+      // charts can start loading straight away; each pair's price fills in as soon as it is ready (the current pair first)
+      const order=[...getInstruments()].sort((a,b)=>(b===currentInst)-(a===currentInst));
+      const seeds=order.map(inst=>{ const m=mapping.get(inst.symbol); return (m&&m.found)?seedInstrument(inst,m.deriv).then(()=>notifyTick()):null; });
+      modeListeners.forEach(fn=>{ try{fn('live');}catch(e){} }); await Promise.all(seeds); notifyTick();
     }catch(e){ fail('connected but '+e.message,false); }
   };
   sock.onmessage=ev=>{
@@ -4267,10 +4270,12 @@ function renderAlertPanel(){ const p=$('alert-panel'); if(!p||p.hidden) return; 
    <div class="ap-sounds">${ALARMS.map(a=>`<button class="ap-snd${(C.tone||'alarm')===a.id?' on':''}" data-tone="${a.id}"><i>${(C.tone||'alarm')===a.id?'●':'○'}</i>${a.name}</button>`).join('')}</div>
    <div class="ap-row ap-vol"><span>Volume</span><input type="range" id="ap-vol" min="20" max="100" step="5" value="${Math.round((C.vol??1)*100)}"><b>${Math.round((C.vol??1)*100)}%</b></div>
    <div class="ap-cap">Active price & trendline alerts</div>
+   <button class="ap-add" type="button" data-addal>🔔 + Add price alert — then click a price on the chart</button>
    ${al.length?al.map(a=>{ const i=getInstruments().find(x=>x.symbol===a.sym); return `<div class="ap-al"><span>${esc(i?i.name:a.sym)}</span><span class="mono">${a.kind==='line'?'trendline':fmtPrice(i||{base:1},a.price)}</span><button data-del="${a.id}">✕</button></div>`; }).join(''):'<p class="pt-muted ap-empty">None — use 🔔 Alert on the left, or the bell on a selected trendline.</p>'}
    <div class="ap-cap">Recent</div>${log.slice(0,6).map(l=>`<div class="ap-log"><small>${new Date(l.at).toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'})}</small><span>${esc(l.title)}</span></div>`).join('')||'<p class="pt-muted ap-empty">Nothing yet</p>'}
    <div class="ap-btns"><button class="ap-test" data-play>▶ Play full alarm</button><button class="ap-test" data-stop>■ Stop</button></div>`;
-  p.querySelector('.ap-x').onclick=()=>{ p.hidden=true; }; p.querySelector('.ap-perm')?.addEventListener('click',askNotify); p.querySelector('[data-play]').onclick=()=>playAlarm(alertCfg().tone,ALARM_SECS,{preview:true}); p.querySelector('[data-stop]').onclick=()=>stopAlarm();
+  p.querySelector('.ap-x').onclick=()=>{ p.hidden=true; };
+  p.querySelector('[data-addal]').onclick=()=>{ p.hidden=true; if(document.body.dataset.page!=='chart'){ toast('Open a chart first (Trade), then press + Add price alert'); return; } alSetMode(true); toast('Click the price on the chart where you want the alarm — Esc cancels'); askNotify(); }; p.querySelector('.ap-perm')?.addEventListener('click',askNotify); p.querySelector('[data-play]').onclick=()=>playAlarm(alertCfg().tone,ALARM_SECS,{preview:true}); p.querySelector('[data-stop]').onclick=()=>stopAlarm();
   p.querySelectorAll('[data-tone]').forEach(x=>x.addEventListener('click',()=>{ lsSet('bd_alert_cfg',{...alertCfg(),tone:x.dataset.tone}); renderAlertPanel(); playAlarm(x.dataset.tone,4,{preview:true}); }));
   const vol=p.querySelector('#ap-vol'); vol.addEventListener('input',()=>{ vol.nextElementSibling.textContent=vol.value+'%'; if(alarmBus&&audioCtx) alarmBus.gain.setValueAtTime(vol.value/100,audioCtx.currentTime); });
   vol.addEventListener('change',()=>{ lsSet('bd_alert_cfg',{...alertCfg(),vol:vol.value/100}); playAlarm(alertCfg().tone,2,{preview:true}); });
