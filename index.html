@@ -1451,7 +1451,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-18.31';
+const BUILD='2026-11-18.32';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1731,7 +1731,9 @@ async function getCandles(inst,granularity,count=300){ const bg=baseGran(inst,gr
   if(f===1||feedMode==='demo') return getCandlesRaw(inst,granularity,count); const raw=await getCandlesRaw(inst,bg,Math.min(5000,count*f)); _gran=granularity; return aggCandles(raw,granularity); }
 // candles up to the last traded moment (used while a market is closed)
 async function derivLastSession(deriv,gran,count){ try{ const t=await wsSend({ticks_history:deriv,count:1,end:'latest',style:'ticks'}); const last=+((t.history&&t.history.times)||[]).slice(-1)[0]; if(!last) return [];
-  const r=await wsSend({ticks_history:deriv,count,end:last+gran,style:'candles',granularity:gran}); return (r.candles||[]).map(c=>({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close})); }catch(e){ return []; } }
+  const r=await wsSend({ticks_history:deriv,count,end:last+gran,style:'candles',granularity:gran}); return dropDead(deriv,(r.candles||[]).map(c=>({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close}))); }catch(e){ return []; } }
+// Deriv's index feeds (OTC_…) print flat "dash" candles at the session close (nothing traded in them). TradingView doesn't show those — drop them.
+function dropDead(deriv,c){ return /^OTC_/i.test(deriv||'')?c.filter(x=>x.high>x.low):c; }
 const mcNoted={};
 const mktClosed={}; // symbol → time (ms) the feed says it reopens
 function closedUntilFrom(err){ const m=String(err&&err.message||err||'').match(/open at (\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)/); return m?Date.parse(m[1].replace(' ','T')+'Z')||0:0; }
@@ -1748,7 +1750,7 @@ async function getCandlesRaw(inst,granularity,count=300){
     try{
       try{ await wsSend({forget_all:'candles'}); }catch(_){}
       let res=null, err=null; try{ res=await wsSend({ticks_history:deriv,adjust_start_time:1,count,end:'latest',style:'candles',granularity,subscribe:1}); }catch(e){ err=e; }
-      if(res&&(res.candles||[]).length) return res.candles.map(c=>({time:c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close}));
+      if(res&&(res.candles||[]).length) return dropDead(deriv,res.candles.map(c=>({time:c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close})));
       // market closed (e.g. GER30 / US30 / US100 overnight): the feed refuses live candles — show the last session instead
       const old=await derivLastSession(deriv,granularity,count); if(old.length){ marketClosedNote(inst,err); return old; }
       if(err) throw err; return [];
@@ -1831,7 +1833,7 @@ async function fetchCandlesOnceRaw(inst,gran,count){
     if(isBinance(inst)) return await binanceCandles(inst,gran,count);
     const deriv=getDerivSymbol(inst);
     if(feedMode==='live'&&deriv){ let r=null; try{ r=await wsSend({ticks_history:deriv,adjust_start_time:1,count,end:'latest',style:'candles',granularity:gran}); }catch(e){}
-      if(r&&(r.candles||[]).length) return r.candles.map(c=>({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close})); return await derivLastSession(deriv,gran,count); }
+      if(r&&(r.candles||[]).length) return dropDead(deriv,r.candles.map(c=>({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close}))); return await derivLastSession(deriv,gran,count); }
     if(feedMode==='demo') return generateDemoCandles(inst,gran,count);
   }catch(e){ console.warn('candles',e.message); }
   return [];
@@ -2986,7 +2988,7 @@ async function showPairJournal(){
   openPairPanel(currentInst);
 }
 // saved candles per pair + timeframe (last 1500), so a chart opens instantly next time (like TradingView) — kept on this device only
-const CC_PREFIX='bd_cc_', CC_MAX=40; let ccShown='';
+const CC_PREFIX='bd_cc2_', CC_MAX=40; let ccShown='';
 function n0(x){ return x.toLocaleString('en-ZA'); }
 function ccKey(inst,g){ return CC_PREFIX+inst.symbol+'_'+g; }
 function ccGet(k){ try{ const v=JSON.parse(localStorage.getItem(k)||'null'); if(!v||!Array.isArray(v.c)) return null; return v.c.map(a=>({time:a[0],open:a[1],high:a[2],low:a[3],close:a[4]})); }catch(e){ return null; } }
