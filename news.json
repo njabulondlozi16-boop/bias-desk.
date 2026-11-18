@@ -1,6 +1,6 @@
 {
  "source": "Forex Factory economic calendar",
- "fetched": "2026-11-17T20:05:51Z",
+ "fetched": "2026-11-18T09:15:53Z",
  "events": [
   {
    "t": 1794835800,
@@ -183,7 +183,7 @@
    "cur": "USD",
    "title": "Philly Fed Manufacturing Index",
    "impact": "medium",
-   "forecast": "19.2",
+   "forecast": "20.6",
    "previous": "20.9"
   },
   {
@@ -191,7 +191,7 @@
    "cur": "USD",
    "title": "Unemployment Claims",
    "impact": "medium",
-   "forecast": "199K",
+   "forecast": "198K",
    "previous": "200K"
   },
   {
@@ -215,7 +215,7 @@
    "cur": "USD",
    "title": "Revised UoM Consumer Sentiment",
    "impact": "medium",
-   "forecast": "52.1",
+   "forecast": "51.7",
    "previous": "51.0"
   },
   {
