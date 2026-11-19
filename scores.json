@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-18",
-  "generated_at": "06:59 SAST",
-  "model": "gemini-3.8-flash",
+  "date": "2026-11-19",
+  "generated_at": "05:13 SAST",
+  "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Diverging monetary policy and eurozone growth concerns heavily favor the rallying US dollar."
+      "reason": "Strong Fed hawkishness versus persistent Eurozone growth concerns."
     },
     "GBPUSD": {
-      "score": -5,
-      "label": "Moderately Bearish",
-      "reason": "Bullish US rate bets overpower pound support ahead of UK CPI data release."
-    },
-    "AUDUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Overwhelming USD demand and peaked RBA rate narrative pressure the pair downward."
+      "reason": "UK inflation miss combined with aggressive Fed rate expectations."
+    },
+    "AUDUSD": {
+      "score": -9,
+      "label": "Strong Bearish",
+      "reason": "Surprise drop in employment crushes RBA rate hike outlook."
     },
     "NZDUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Sharp monetary divergence and weak domestic sentiment drive kiwi toward major support breaks."
+      "reason": "Kiwi slumps toward multi-year lows on strong greenback momentum."
     },
     "USDCHF": {
-      "score": 6,
+      "score": 7,
       "label": "Strong Bullish",
-      "reason": "Wide interest rate gap and aggressive Fed pricing boost USD against low-yielding franc."
+      "reason": "Wide interest rate differentials favor the surging US dollar."
     },
     "XAUUSD": {
-      "score": -7,
+      "score": -8,
       "label": "Strong Bearish",
-      "reason": "Surging US 10-year yields and aggressive Fed tightening bets drive gold to 1-year lows."
+      "reason": "Higher rate hike bets and a strong dollar crushed gold."
     },
     "US30": {
-      "score": 2,
-      "label": "Neutral",
-      "reason": "Modest rebound led by tech earnings beats after steep losses from tech and industrials."
-    },
-    "US100": {
-      "score": 4,
-      "label": "Moderately Bullish",
-      "reason": "Nvidia strong earnings and raised guidance spark solid tech recovery despite higher yields."
-    },
-    "GER30": {
       "score": -4,
       "label": "Moderately Bearish",
-      "reason": "Pressured by sharp drops in Deutsche Bank, SAP, and export control headwinds."
+      "reason": "Weighed down by hawkish Fed minutes and a cooling AI sector."
+    },
+    "US100": {
+      "score": -3,
+      "label": "Moderately Bearish",
+      "reason": "Tech sector volatility and shifting AI trade weighed on indices."
+    },
+    "GER30": {
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "DAX fell sharply following global tech weakness and local software drops."
     },
     "BTCUSD": {
-      "score": -6,
+      "score": -8,
       "label": "Strong Bearish",
-      "reason": "Spiking yields, aggressive Fed rate outlook, and regulatory fears pressure non-yielding crypto."
+      "reason": "Hawkish Fed outlook and risk-off sentiment drove heavy crypto liquidations."
     }
   },
   "currencies": {
     "USD": {
       "score": 8,
-      "reason": "Hawkish Fed commentary and rising rate hike expectations push dollar toward multi-month highs."
+      "reason": "Hawkish Fed minutes and Waller comments boosted rate hike bets."
     },
     "EUR": {
       "score": -5,
-      "reason": "Weighed down by policy divergence with the Fed, French political risk, and sluggish growth."
+      "reason": "Weighed down by broad dollar strength and eurozone political risks."
     },
     "GBP": {
-      "score": -2,
-      "reason": "Mixed jobs report and dollar strength offset high BoE December rate hike expectations."
+      "score": -4,
+      "reason": "Softer UK inflation data prompted trimmed BoE rate expectations."
     },
     "AUD": {
-      "score": -3,
-      "reason": "Strong wage data fails to lift currency as markets price in peaked RBA rates."
+      "score": -7,
+      "reason": "Surprise jump in unemployment ended expectations for RBA hikes."
     },
     "NZD": {
       "score": -6,
-      "reason": "Slumps to multi-year lows amid dovish RBNZ stance and risk-off geopolitical backdrop."
+      "reason": "Hit pandemic lows due to policy divergence and strong dollar."
     },
     "CHF": {
-      "score": -4,
-      "reason": "Low borrowing costs cement its funding role as widening US-Swiss yield differentials weigh."
+      "score": -5,
+      "reason": "Weakened against surging USD amid wide rate differentials."
     }
   },
   "sources": {
@@ -108,7 +108,7 @@
     },
     "CHF": {
       "paragraphs": 3,
-      "headlines": 2,
+      "headlines": 6,
       "problems": []
     },
     "GOLD": {
