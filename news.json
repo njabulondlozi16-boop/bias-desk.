@@ -1,6 +1,6 @@
 {
  "source": "Forex Factory economic calendar",
- "fetched": "2026-11-20T09:14:09Z",
+ "fetched": "2026-11-20T19:17:25Z",
  "events": [
   {
    "t": 1794835800,
@@ -225,6 +225,14 @@
    "impact": "medium",
    "forecast": "",
    "previous": "4.3%"
+  },
+  {
+   "t": 1795194000,
+   "cur": "USD",
+   "title": "President Trump Speaks",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
   }
  ]
 }
