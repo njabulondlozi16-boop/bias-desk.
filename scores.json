@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-21",
-  "generated_at": "11:38 SAST",
+  "date": "2026-11-22",
+  "generated_at": "11:40 SAST",
   "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
       "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Stronger USD combined with eurozone economic and political headwinds."
+      "reason": "Stronger USD combined with eurozone weakness pushes pair down."
     },
     "GBPUSD": {
       "score": -4,
       "label": "Moderately Bearish",
-      "reason": "Persistent greenback strength outweighs mixed domestic UK data."
+      "reason": "Hawkish Fed expectations outweigh firmer UK retail sales figures."
     },
     "AUDUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Divergent Fed-RBA outlooks and weak Australian jobs data depress the pair."
+      "reason": "Bleak Australian employment data crushes the local currency against the USD."
     },
     "NZDUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Kiwi pressures compounded by strong US rate expectations."
+      "reason": "Kiwi slumps amid safe-haven dollar demand and weak local fundamentals."
     },
     "USDCHF": {
       "score": 5,
       "label": "Moderately Bullish",
-      "reason": "Widening rate differentials favor the US dollar over the Swiss franc."
+      "reason": "Wider rate differential and strong dollar drive the pair higher."
     },
     "XAUUSD": {
-      "score": -8,
+      "score": -7,
       "label": "Strong Bearish",
-      "reason": "Hawkish Fed commentary and surging US yields crush gold demand."
+      "reason": "Soaring yields and hawkish Fed commentary batter non-yielding gold."
     },
     "US30": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Broader market correction spills over into traditional blue-chip stocks."
+      "reason": "Broad market sell-off and tech rout drag down the Dow."
     },
     "US100": {
       "score": -8,
       "label": "Strong Bearish",
-      "reason": "Severe tech rout and AI sector unwind hammer the index."
+      "reason": "Massive AI stock unraveling causes a severe Nasdaq rout."
     },
     "GER30": {
-      "score": -7,
+      "score": -6,
       "label": "Strong Bearish",
-      "reason": "Spillover from global tech sell-off and local headwinds drive heavy losses."
+      "reason": "Frankfurt DAX drops sharply amid global tech and equity sell-off."
     },
     "BTCUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Risk-off sentiment, hawkish macro backdrop, and liquidation waves sink crypto."
+      "reason": "Risk-off sentiment, regulatory fears, and ETF outflows slam crypto demand."
     }
   },
   "currencies": {
     "USD": {
       "score": 6,
-      "reason": "Hawkish Fed rate expectations and safe-haven demand support the dollar."
+      "reason": "Hawkish Fed rate expectations and safe-haven demand fuel dollar gains."
     },
     "EUR": {
       "score": -4,
-      "reason": "Weighed down by broad dollar strength and eurozone political and fiscal uncertainty."
+      "reason": "Weighed down by broad dollar strength and French political risks."
     },
     "GBP": {
       "score": -3,
-      "reason": "Softer inflation and wage growth weigh on the pound despite solid retail sales."
+      "reason": "Sterling pressured by firm US dollar and mixed UK economic data."
     },
     "AUD": {
-      "score": -7,
-      "reason": "Surprise surge in unemployment boosts expectations for RBA rate cuts."
+      "score": -6,
+      "reason": "Surprise jump in jobless rate sparks RBA rate-cut bets."
     },
     "NZD": {
-      "score": -6,
-      "reason": "Hit multi-year lows amid strong USD and weak risk sentiment."
+      "score": -5,
+      "reason": "Weighed down by global risk-off mood and relative rate disadvantage."
     },
     "CHF": {
       "score": -4,
-      "reason": "Weakened by widening interest rate differentials against a strong US dollar."
+      "reason": "Weakened by widening US-Swiss interest rate differentials."
     }
   },
   "sources": {
@@ -103,7 +103,7 @@
     },
     "NZD": {
       "paragraphs": 3,
-      "headlines": 3,
+      "headlines": 2,
       "problems": []
     },
     "CHF": {
