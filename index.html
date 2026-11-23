@@ -1533,7 +1533,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-23.2';
+const BUILD='2026-11-23.3';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -2229,9 +2229,9 @@ function computeStats(trades,practice=false){
   const byModel=groupBy(closed,t=>t.setupTag||'No model');
   const byBias=groupBy(closed,t=>t.biasAlignment||'—');
   const pairStats=Object.entries(byPair).map(([k,list])=>({key:k,...summ(list)})).sort((a,b)=>b.totalZAR-a.totalZAR);
-  // Streaks (chronological wins/losses; manual closes break streaks neutrally)
+  // Streaks (chronological; only wins and losses count, other closes are skipped)
   let curStreak={type:null,count:0}, longestWin=0, run=0;
-  for(const t of sorted){ if(isWin(t)){ run=run>0?run+1:1; longestWin=Math.max(longestWin,run); } else if(isLoss(t)){ run=run<0?run-1:-1; } else { run=0; } }
+  for(const t of sorted){ if(isWin(t)){ run=run>0?run+1:1; longestWin=Math.max(longestWin,run); } else if(isLoss(t)){ run=run<0?run-1:-1; } } // only wins and losses count — other closes are skipped
   curStreak={type:run>0?'WIN':run<0?'LOSS':null,count:Math.abs(run)};
   return {total:trades.length,closed:closed.length,open:trades.filter(t=>t.status==='OPEN'||t.status==='PENDING').length,wins:wins.length,losses:losses.length,manual:manual.length,bonusWins:bonusWins.length,winRate,totalR:Math.round(totalR*100)/100,totalZAR:Math.round(totalZAR*100)/100,equity,equityR,bySession:breakdown(bySession),byType:breakdown(byType),byModel:breakdown(byModel),byBias:breakdown(byBias),pairStats,bestPair:pairStats[0]||null,worstPair:pairStats[pairStats.length-1]||null,curStreak,longestWin};
 }
@@ -2632,7 +2632,7 @@ function onPointerMove(e){
   if(drag.kind==='w'){ tool.wBars=Math.max(6,drag.startW+bars); repositionOnly(); return; }
   const p=priceAtY(localY(e)); if(p===null) return;
   const target=p+drag.offset; const minGap=tool.inst.pip||1e-6;
-  if(drag.kind==='entry') return; // key level is fixed
+  if(drag.kind==='entry'){ if(tool.locked) return; const d=target-drag.startEntry; tool.entry=target; tool.sl=drag.startSl+d; recalcTPs(); if(tool.riskZAR>0) tool.lots=Math.max(lotsFromRisk(tool.riskZAR,tool.inst),0.0001); renderTool(); return; }
   else if(drag.kind==='sl'&&tool.locked){
     // running trade: stop can trail past the key level (breakeven / lock profit) but must stay on the right side of price
     const mk=hasPrice(tool.inst)?mkt(tool.inst):tool.entry; const ref=tool.status==='PENDING'?tool.entry:mk;
@@ -2677,12 +2677,16 @@ function inkFor(hex){ return lumOf(hex)>0.36?'#0b0f17':'#ffffff'; }
 function tradeColors(def){ const t=def||getThemeDef(); const light=lumOf(t.chartBg)>0.45; const tp=t.tp||(light?'#111827':'#ffffff');
   return {buy:t.up,sell:t.down,entry:t.entry||t.up,sl:t.sl||t.down,tp,buyInk:inkFor(t.up),sellInk:inkFor(t.down),entryInk:inkFor(t.entry||t.up),slInk:inkFor(t.sl||t.down),tpInk:inkFor(tp),accentInk:inkFor(t.accent)}; }
 function lightChart(){ try{ const h=(getThemeDef().chartBg||'#000').replace('#',''); const n=parseInt(h.length===3?h.split('').map(x=>x+x).join(''):h.slice(0,6),16); const r=(n>>16&255)/255,g=(n>>8&255)/255,b=(n&255)/255; return 0.2126*r+0.7152*g+0.0722*b>0.45; }catch(e){ return false; } }
+// where the key level sits against the market → what CONFIRM records (market order, or a pending limit / stop order)
+function entryTol(inst){ return Math.max((inst.spread||0)*(inst.pip||0)*1.5,riskDist()*0.15); }
+function entryOrderType(){ if(!tool||!tool.inst||!hasPrice(tool.inst)) return 'Market'; const mk=mkt(tool.inst); if(Math.abs(tool.entry-mk)<=entryTol(tool.inst)) return 'Market'; const below=tool.entry<mk, buy=tool.direction==='buy'; return below?(buy?'Buy limit':'Sell stop'):(buy?'Buy stop':'Sell limit'); }
+function entryTag(){ const o=entryOrderType(); return o==='Market'?' · MARKET':' · '+o.toUpperCase(); }
 function levelDefs(){
   const L=getLabels(); const fin=tool.status==='WIN'||tool.status==='CLOSED'; const won=tool.status==='WIN'||(tool.status==='CLOSED'&&tool.result==='WIN');
   // FBC Ultra look: thin line from the setup to the price axis, name pill under the line at its start
   const tc=tradeColors();
   const defs=[
-    {key:'entry',price:tool.entry,label:L.entry,color:tc.entry,text:tc.entryInk,draggable:false,pos:'below'},
+    {key:'entry',price:tool.entry,label:L.entry+(!tool.locked&&tool.inst&&hasPrice(tool.inst)?entryTag():''),color:tc.entry,text:tc.entryInk,draggable:!tool.locked,pos:'below'},
     {key:'sl',price:tool.sl,label:L.sl+slTag()+(tool.status==='CLOSED'&&tool.result==='LOSS'?' ✗':''),color:tc.sl,text:tc.slInk,draggable:!fin,pos:slNearOrPastEntry()?'above':'below'},
     {key:'tp1',price:tool.tp1,label:L.tp1+(won?' ✓':''),color:tc.tp,text:tc.tpInk,draggable:!tool.locked,pos:'below'},
   ];
@@ -2779,7 +2783,8 @@ function renderPanel(){
       ${lk?`<span class="pb-meta">${esc(tool.setupTag||'—')} · ${esc(tool.tradeType||'')}</span>`:`<span class="pb-lbl">Entry</span>${ENTRY_MODELS.map(x=>`<button class="pb-chip ${tool.setupTag===x?'active':''}" data-tag="${x}">${x}</button>`).join('')}
       <span class="pb-sep"></span>${['Scalp','Intraday','Swing'].map(x=>`<button class="pb-chip ${tool.tradeType===x?'active':''}" data-type="${x}">${x}</button>`).join('')}`}
       <details class="pb-more"><summary>⋯</summary><div class="pb-pop">
-        <div class="pt-row"><span>Key level</span><input class="lv-in" data-lv="entry" type="number" step="any" value="${fmtPrice(inst,tool.entry)}" disabled title="Key level is fixed at the price where the setup was placed"></div>
+        <div class="pt-row"><span>Key level</span><span class="pt-rgt"><input class="lv-in" data-lv="entry" type="number" step="any" value="${fmtPrice(inst,tool.entry)}" ${lk?'disabled':''} title="${lk?'Key level of this trade':'Type a price or drag the key level — away from price it becomes a pending limit / stop order'}">${lk?'':'<button id="pt-atmkt" class="pb-chip" title="Put the key level on the current price">At price</button>'}</span></div>
+        ${lk?'':`<div class="pt-row"><span>Order</span><b class="pt-ordtype">${entryOrderType()}</b></div>`}
         <div class="pt-row"><span>Invalidation</span><input class="lv-in" data-lv="sl" type="number" step="any" value="${fmtPrice(inst,tool.sl)}" ${tool.status==='WIN'||tool.status==='CLOSED'?'disabled':''}></div>
         ${lk&&tool.status==='OPEN'?'<div class="pt-row"><span>Stop loss</span><button id="pt-be" class="pb-chip">Move to breakeven</button></div>':''}
         <div class="pt-row"><span>Target 1:2.5</span><input class="lv-in" data-lv="tp1" type="number" step="any" value="${fmtPrice(inst,tool.tp1)}" ${lk?'disabled':''}></div>
@@ -2791,11 +2796,12 @@ function renderPanel(){
   $p('#pt-min')?.addEventListener('click',()=>{ tool.barMin=!tool.barMin; renderPanel(); });
   slot.querySelectorAll('.lv-in').forEach(inp=>inp.addEventListener('change',()=>{ const v=parseFloat(inp.value); if(!isFinite(v)) return; const buy=tool.direction==='buy', g=tool.inst.pip||1e-6;
     if(tool.locked){ if(inp.dataset.lv!=='sl') return; moveRunningStop(v); return; }
-    if(inp.dataset.lv==='entry') return;
+    if(inp.dataset.lv==='entry'){ const d=v-tool.entry; tool.entry=v; tool.sl+=d; recalcTPs(); if(tool.riskZAR>0) tool.lots=Math.max(lotsFromRisk(tool.riskZAR,tool.inst),0.0001); renderTool(); return; }
     else if(inp.dataset.lv==='sl'){ if(buy?v>=tool.entry-g:v<=tool.entry+g){ toast('Invalidation must be '+(buy?'below':'above')+' the key level'); renderPanel(); return; } tool.sl=v; }
     else if(inp.dataset.lv==='tp1'){ if(buy?v<=tool.entry:v>=tool.entry){ toast('Target must be '+(buy?'above':'below')+' the key level'); renderPanel(); return; } const risk=Math.abs(v-tool.entry)/2.5; tool.sl=buy?tool.entry-risk:tool.entry+risk; }
     recalcTPs(); renderTool(); }));
   $p('#pt-be')?.addEventListener('click',()=>moveRunningStop(tool.entry));
+  $p('#pt-atmkt')?.addEventListener('click',()=>{ if(!hasPrice(tool.inst)) return; const mk=mkt(tool.inst), d=mk-tool.entry; tool.entry=mk; tool.sl+=d; recalcTPs(); if(tool.riskZAR>0) tool.lots=Math.max(lotsFromRisk(tool.riskZAR,tool.inst),0.0001); renderTool(); });
   $p('#pt-lots')?.addEventListener('change',e=>{ tool.lots=Math.max(parseFloat(e.target.value)||0.01,0.0001); tool.riskZAR=calcMoney().riskZAR; renderPanel(); });
   $p('#pt-risk')?.addEventListener('change',e=>{ tool.riskZAR=Math.max(parseFloat(e.target.value)||0,0); tool.lots=Math.max(lotsFromRisk(tool.riskZAR,tool.inst),0.0001); renderPanel(); });
   slot.querySelectorAll('[data-ratio]').forEach(inp=>inp.addEventListener('change',()=>{ const i=+inp.dataset.ratio; tool.extraTPs[i].ratio=Math.max(parseFloat(inp.value)||tool.extraTPs[i].ratio,2.6); tool.extraTPs.sort((a,b)=>a.ratio-b.ratio); recalcTPs(); renderTool(); }));
@@ -2886,14 +2892,15 @@ async function confirmTrade(){
   const bias=(rp.active&&rp.sym===inst.symbol)?(()=>{ const d=new Date(rp.now*1000).toLocaleDateString('en-CA',{timeZone:'Africa/Johannesburg'}); const h=biasHistory&&biasHistory.days&&biasHistory.days[d]&&biasHistory.days[d][inst.symbol]; return h?{score:h.score,label:labelFor(h.score),reason:'Score from that day',date:d}:null; })():getBias(inst.symbol);
   const balance=parseFloat(lsGet('bd_balance',10000))||10000;
   const market=mkt(inst); const practice=!!(rp.active&&rp.sym===inst.symbol);
-  // Market entry: key level = current price; invalidation stays exactly where you put it, target re-set to 1:2.5
-  if(hasPrice(inst)&&Math.abs(market-tool.entry)>1e-12){
+  // Your key level is kept. Within a hair of price it fills now (at the market price); otherwise it waits as a
+  // pending order (buy/sell limit or stop) and goes live when price reaches it.
+  const atMarket=!hasPrice(inst)||Math.abs(market-tool.entry)<=entryTol(inst);
+  if(hasPrice(inst)&&atMarket&&Math.abs(market-tool.entry)>1e-12){
     if(tool.direction==='buy'?tool.sl>=market:tool.sl<=market){ toast('Price is already through your invalidation level — move the stop first'); return; }
     tool.entry=market; recalcTPs();
   }
   if(tool.riskZAR>0) tool.lots=Math.max(lotsFromRisk(tool.riskZAR,inst),0.0001); m=calcMoney(); tool.riskZAR=m.riskZAR;
-  const tol=Math.max(inst.spread*inst.pip*1.5,riskDist()*0.15);
-  const filledNow=Math.abs(tool.entry-market)<=tol;
+  const filledNow=!hasPrice(inst)||Math.abs(tool.entry-market)<=entryTol(inst);
   { const lb=lastBarTime(); if(lb!==null) tool.t0=lb; }
   tool.risk0=Math.abs(tool.entry-tool.sl); tool.locked=true; tool.status=filledNow?'OPEN':'PENDING'; tool.tradeId=tool.id;
   const screenshot=await takeScreenshotWithOverlay();
