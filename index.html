@@ -1111,7 +1111,7 @@ body.replaying #ct-replay{color:#a5b4fc}
 .reveal{opacity:0;transform:translateY(22px) scale(.985);transition:opacity .8s cubic-bezier(.2,.7,.2,1) var(--rd,0ms),transform .8s cubic-bezier(.2,.7,.2,1) var(--rd,0ms)}
 .reveal.in{opacity:1;transform:none}
 .kpi-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:14px 0 16px}
-@media(max-width:1100px){.kpi-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.kpi-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.kpi-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.kpi-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.kpi{padding:11px 12px 10px}.kpi strong{font-size:20px}.kpi:last-child{grid-column:span 2}}
 .kpi{position:relative;overflow:hidden;padding:14px 16px 12px;border-radius:16px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.015));border:1px solid rgba(148,163,184,.16);backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:2px;animation:kpiIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0ms);transition:transform .25s,border-color .25s}
 .kpi:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 60%,transparent)}
 .kpi small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.65}.kpi strong{font:700 24px 'Space Grotesk',sans-serif;letter-spacing:-.5px;font-variant-numeric:tabular-nums}.kpi em{font-style:normal;font-size:11.5px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1142,7 +1142,7 @@ body.replaying #ct-replay{color:#a5b4fc}
 .jcal-nav button,.jcal-kind button,.jd-head button{border:1px solid var(--line,rgba(148,163,184,.2));background:transparent;color:inherit;border-radius:8px;padding:5px 10px;cursor:pointer;font:inherit;font-size:13px}
 .jcal-kind{display:flex;gap:4px;background:rgba(148,163,184,.08);padding:3px;border-radius:10px}.jcal-kind button{border:0}.jcal-kind button.on{background:var(--accent,#2962ff);color:#fff}
 .jcal-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}.jcal-stats div{background:rgba(148,163,184,.06);border-radius:10px;padding:8px 10px}.jcal-stats small{display:block;font-size:11px;opacity:.65}.jcal-stats strong{font-size:16px}
-@media(max-width:640px){.jcal-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.jcal-stats{grid-template-columns:repeat(3,1fr);gap:6px}.jcal-stats div{padding:6px 8px}.jcal-stats strong{font-size:14px}.jcal-stats div:nth-child(5){grid-column:span 2}.jc-cell{min-height:52px;padding:4px 5px}.jc-cell small{display:none}.jc-pl{font-size:10.5px}.jc-live{font-size:8px;padding:0 3px;right:3px;top:3px}.jcal-card,.jlive-card{padding:12px}}
 .jcal-body{display:grid;grid-template-columns:1fr 84px;gap:8px}@media(max-width:640px){.jcal-body{grid-template-columns:1fr}.jcal-weeks{display:none}}
 .jcal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.jcal-weeks{display:grid;grid-auto-rows:min-content;gap:5px}
 .jc-h{font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.55;text-align:center;padding:2px 0}
@@ -1533,7 +1533,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-23.1';
+const BUILD='2026-11-23.2';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -1551,14 +1551,15 @@ function lsSet(key, value){ try{ const s=JSON.stringify(value);
   localStorage.setItem(key,s); return true;}catch(e){ console.warn('lsSet',e); return false; } }
 function lsRemove(key){ try{ localStorage.removeItem(key);}catch(e){ console.warn('lsRemove',e);} }
 // Open (or create) the Bias Desk IndexedDB database
-function openDB(){ return new Promise((resolve,reject)=>{ try{ const req=indexedDB.open('biasdesk',1); req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains('journal')) db.createObjectStore('journal',{keyPath:'id',autoIncrement:true}); if(!db.objectStoreNames.contains('screenshots')) db.createObjectStore('screenshots',{keyPath:'id',autoIncrement:true}); }; req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }catch(e){ reject(e);} }); }
+let _dbP=null;
+function openDB(){ if(_dbP) return _dbP; _dbP=new Promise((resolve,reject)=>{ try{ const req=indexedDB.open('biasdesk',1); req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains('journal')) db.createObjectStore('journal',{keyPath:'id',autoIncrement:true}); if(!db.objectStoreNames.contains('screenshots')) db.createObjectStore('screenshots',{keyPath:'id',autoIncrement:true}); }; req.onsuccess=()=>{ const db=req.result; db.onversionchange=()=>{ try{ db.close(); }catch(e){} _dbP=null; }; db.onclose=()=>{ _dbP=null; }; resolve(db); }; req.onerror=()=>{ _dbP=null; reject(req.error); }; }catch(e){ _dbP=null; reject(e);} }); return _dbP; }
 // Generic IndexedDB helpers wrapped in try/catch
 function stampTrade(store,value,opts){ if(store==='journal'&&value&&!(opts&&opts.sync)){ value.updatedAt=Date.now(); syncSoon(); } }
-async function idbAdd(store, value){ stampTrade(store,value); try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).add(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbAdd',e); return null; } }
-async function idbAll(store){ try{ const db=await openDB(); return new Promise((res,rej)=>{ const r=db.transaction(store).objectStore(store).getAll(); r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbAll',e); return []; } }
+async function idbAdd(store, value){ stampTrade(store,value); try{ const db=await openDB(); return await new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).add(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbAdd',e); return null; } }
+async function idbAll(store){ try{ const db=await openDB(); return await new Promise((res,rej)=>{ const r=db.transaction(store).objectStore(store).getAll(); r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbAll',e); return []; } }
 // Update (put) a record by keyPath id — used for trade outcome tracking
-async function idbPut(store, value, opts){ stampTrade(store,value,opts); try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).put(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbPut',e); return null; } }
-async function idbDelete(store, key, opts){ if(store==='journal'&&!(opts&&opts.sync)){ try{ const d=JSON.parse(localStorage.getItem('bd_sync_del')||'[]'); d.push(String(key)); localStorage.setItem('bd_sync_del',JSON.stringify(d)); }catch(e){} syncSoon(); } try{ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).delete(key); r.onsuccess=()=>res(true); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbDelete',e); return false; } }
+async function idbPut(store, value, opts){ stampTrade(store,value,opts); try{ const db=await openDB(); return await new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).put(value); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbPut',e); return null; } }
+async function idbDelete(store, key, opts){ if(store==='journal'&&!(opts&&opts.sync)){ try{ const d=JSON.parse(localStorage.getItem('bd_sync_del')||'[]'); d.push(String(key)); localStorage.setItem('bd_sync_del',JSON.stringify(d)); }catch(e){} syncSoon(); } try{ const db=await openDB(); return await new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const r=tx.objectStore(store).delete(key); r.onsuccess=()=>res(true); r.onerror=()=>rej(r.error); }); }catch(e){ console.warn('idbDelete',e); return false; } }
 
 // ===== js/auth.js (merged, imports/exports resolved) =====
 // auth.js — PBKDF2 salted hashing, account create/verify, lockout, idle lock
@@ -1757,7 +1758,7 @@ function connect(){
   const ep=getEndpoint(); let opened=false, done=false;
   let sock; try{ sock=new WebSocket(ep.url()); }catch(e){ epStatus[ep.id]={ok:false,noOpen:true,reason:'Browser refused: '+e.message}; if(!endpointFailed(ep,'Browser refused: '+e.message)) scheduleReconnect(); return; }
   ws=sock;
-  const fail=(reason,noOpen)=>{ if(done) return; done=true; try{ sock.onclose=null; sock.close(); }catch(_){} if(ws===sock) ws=null; epStatus[ep.id]={ok:false,noOpen:!!noOpen,reason}; if(feedMode==='live') setMode('connecting'); if(!endpointFailed(ep,reason)){ scheduleReconnect(); } };
+  const fail=(reason,noOpen)=>{ if(done) return; done=true; if(ws!==sock&&ws){ try{ sock.onclose=null; sock.close(); }catch(_){} return; } /* a replaced socket must not touch the live one */ try{ sock.onclose=null; sock.close(); }catch(_){} if(ws===sock) ws=null; epStatus[ep.id]={ok:false,noOpen:!!noOpen,reason}; if(feedMode==='live') setMode('connecting'); if(!endpointFailed(ep,reason)){ scheduleReconnect(); } };
   const openTimer=setTimeout(()=>{ if(!opened) fail('no response (blocked or unreachable)',true); },ep.id==='public26'?30000:8000); // the main feed can take 10–20 s to answer — don't give up on it early
   sock.onopen=async()=>{
     opened=true; clearTimeout(openTimer);
@@ -1768,6 +1769,7 @@ function connect(){
       matchSymbols(activeSymbolsCache);
       const probe=[...mapping.values()].find(m=>m.found);
       if(probe){ const h=await wsSend({ticks_history:probe.deriv,adjust_start_time:1,count:2,end:'latest',style:'ticks'}); if(!h.history) throw new Error('price history not supported'); }
+      if(ws!==sock){ done=true; try{ sock.close(); }catch(_){} return; }
       done=true; epFailsThisRound=0; roundSummary=''; epStatus[ep.id]={ok:true,reason:'connected',at:Date.now()}; lsSet('bd_endpoint',ep.id);
       stopDemo(); clearTimeout(fallbackTimer); fallbackTimer=null; lastFeedError=''; reconnectAttempt=0; setMode('live');
       // charts can start loading straight away; each pair's price fills in as soon as it is ready (the current pair first)
@@ -1903,7 +1905,7 @@ async function recheckBinanceTrades(){
   const all=await idbAll('journal');
   for(const t of all.filter(x=>x.feed==='live'&&(x.status==='OPEN'||x.status==='PENDING'||(x.result==='WIN'&&x.bonusTracking)))){
     const inst=getInstruments().find(i=>i.symbol===t.symbol); if(!inst||!isBinance(inst)) continue;
-    try{ const startMs=new Date(t.status==='CLOSED'?t.exitTime:t.entryTime).getTime(); const k=await bnKlines(binanceSym(inst),'1m',1000,startMs);
+    try{ const startMs=new Date(t.status==='CLOSED'?t.exitTime:t.entryTime).getTime(); const age=Date.now()-startMs, iv=age<5*86400e3?'1m':age<40*86400e3?'15m':'1h', ivMs={'1m':6e4,'15m':9e5,'1h':36e5}[iv]; const k=[]; for(let from=startMs,n=0;n<15&&from<Date.now();n++){ const part=await bnKlines(binanceSym(inst),iv,1000,from); if(!part.length) break; k.push(...part); from=part[part.length-1][0]+ivMs; if(part.length<1000) break; } // every candle since entry, not just the first 1000 minutes
       for(const c of k){ const hi=+c[2], lo=+c[3], when=new Date(c[0]).toISOString();
         if(t.status==='OPEN'||t.status==='PENDING'){ const r=evaluateTrade(t,hi,lo,+c[0]);
           if(r==='LOSS'){ await closeTrade(t.id,'LOSS',slAt(t,+c[0]),{exitTime:when,silent:true}); break; }
@@ -2310,7 +2312,7 @@ function jcalBind(el,trades){ const root=el.querySelector('.jcal-wrap'); if(!roo
     if(b.dataset.day){ const k=b.dataset.day; jcal.day=jcal.day===k?null:k; jcalRefresh(el,trades); renderTable(trades); return; }
     if(b.dataset.id) openDetail(b.dataset.id); }); }
 function jcalRefresh(el,trades){ const root=el.querySelector('.jcal-wrap'); if(root) root.innerHTML=jcalHtml(trades); }
-setInterval(()=>{ if(document.body.dataset.page!=='journal') return; document.querySelectorAll('[data-jr]').forEach(async x=>{ try{ const t=(await getTrades()).find(q=>q.id===x.dataset.jr); const r=t&&jOpenR(t); if(r!=null){ x.textContent=(r>=0?'+':'')+r.toFixed(2)+'R'; x.className='jl-r mono '+(r>=0?'up':'down'); } }catch(e){} }); },3000);
+setInterval(async()=>{ if(document.body.dataset.page!=='journal'||document.hidden) return; const els=document.querySelectorAll('[data-jr]'); if(!els.length) return; let all=[]; try{ all=await getTrades(); }catch(e){ return; } els.forEach(x=>{ try{ const t=all.find(q=>q.id===x.dataset.jr); const r=t&&jOpenR(t); if(r!=null){ x.textContent=(r>=0?'+':'')+r.toFixed(2)+'R'; x.className='jl-r mono '+(r>=0?'up':'down'); } }catch(e){} }); },3000);
 async function renderJournal(){
   const el=$('journal-list'); if(!el) return;
   const trades=(await getTrades()).map(enrich).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
@@ -2320,7 +2322,7 @@ async function renderJournal(){
     <div class="filters-row">
       <input id="f-search" placeholder="Search notes, pairs, tags…" value="${esc(filters.search)}">
       <select id="f-kind"><option value="">Real + practice</option><option value="real" ${filters.kind==='real'?'selected':''}>Real trades</option><option value="practice" ${filters.kind==='practice'?'selected':''}>Practice (replay)</option></select>
-      <select id="f-pair"><option value="">All pairs</option>${pairs.map(p=>`<option ${filters.pair===p?'selected':''}>${p}</option>`).join('')}</select>
+      <select id="f-pair"><option value="">All pairs</option>${pairs.map(p=>`<option ${filters.pair===p?'selected':''} value="${esc(p)}">${esc(p)}</option>`).join('')}</select>
       <select id="f-session"><option value="">All sessions</option>${['Asian','London','London–NY overlap','New York'].map(x=>`<option ${filters.session===x?'selected':''}>${x}</option>`).join('')}</select>
       <select id="f-result"><option value="">All results</option>${['WIN','LOSS','BREAKEVEN','STOPPED IN PROFIT','MANUAL CLOSE','OPEN','PENDING','CANCELLED'].map(x=>`<option ${filters.result===x?'selected':''}>${x}</option>`).join('')}</select>
       <select id="f-model"><option value="">All entry models</option>${ENTRY_MODELS.map(x=>`<option ${filters.model===x?'selected':''}>${x}</option>`).join('')}</select>
@@ -2391,8 +2393,7 @@ function filtered(trades){
     if(filters.model&&t.setupTag!==filters.model) return false;
     if(filters.bias&&t.biasAlignment!==filters.bias) return false;
     if(jcal.day){ const k=t.status==='CLOSED'?jDay(t.exitTime||t.entryTime):jDay(t.entryTime); if(k!==jcal.day) return false; }
-    if(filters.from&&new Date(t.entryTime)<new Date(filters.from)) return false;
-    if(filters.to&&new Date(t.entryTime)>new Date(filters.to+'T23:59:59')) return false;
+    { const dk=jDay(t.entryTime); if(filters.from&&dk&&dk<filters.from) return false; if(filters.to&&dk&&dk>filters.to) return false; }
     if(filters.search){ const hay=(t.symbol+' '+(t.name||'')+' '+(t.setupTag||'')+' '+(t.notes||'')+' '+(t.customTags||[]).join(' ')).toLowerCase(); if(!hay.includes(filters.search)) return false; }
     return true;
   });
@@ -2403,7 +2404,7 @@ function renderTable(trades){
   tb.innerHTML=list.map(t=>{
     const r=resultOf(t); const cls=r==='WIN'?'row-win':r==='LOSS'?'row-loss':(r==='MANUAL CLOSE'||r==='BREAKEVEN'||r==='STOPPED IN PROFIT')?'row-manual':'row-open';
     const bonus=(t.bonusWins||[]).length?` <span class="bonus-chip">+${t.bonusWins.length} bonus</span>`:'';
-    return `<tr class="${cls}" data-id="${t.id}"><td class="mono">${new Date(t.entryTime).toLocaleString('en-ZA')}</td><td><strong>${esc(t.name||t.symbol)}</strong>${t.feed==='demo'?' <span class="demo-chip">DEMO</span>':''}${t.practice?' <span class="practice-chip">PRACTICE</span>':''}</td><td class="${t.direction==='buy'?'up':'down'}">${t.direction.toUpperCase()}</td><td>${t.session}</td><td>${esc(t.setupTag||'—')}</td><td>${t.tradeType}</td><td>${t.biasAlignment}</td><td><strong>${r}</strong>${bonus}</td><td class="mono">${t.R!==null&&t.R!==undefined?(t.R>0?'+':'')+t.R+'R':'—'}</td><td>›</td></tr>`;
+    return `<tr class="${cls}" data-id="${t.id}"><td class="mono">${new Date(t.entryTime).toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'})}</td><td><strong>${esc(t.name||t.symbol)}</strong>${t.feed==='demo'?' <span class="demo-chip">DEMO</span>':''}${t.practice?' <span class="practice-chip">PRACTICE</span>':''}</td><td class="${t.direction==='buy'?'up':'down'}">${t.direction.toUpperCase()}</td><td>${esc(t.session)}</td><td>${esc(t.setupTag||'—')}</td><td>${esc(t.tradeType)}</td><td>${esc(t.biasAlignment)}</td><td><strong>${r}</strong>${bonus}</td><td class="mono">${t.R!==null&&t.R!==undefined?(t.R>0?'+':'')+t.R+'R':'—'}</td><td>›</td></tr>`;
   }).join('')||`<tr><td colspan="10" style="text-align:center;color:var(--muted)">No trades match these filters</td></tr>`;
   tb.querySelectorAll('tr[data-id]').forEach(tr=>tr.addEventListener('click',()=>openDetail(tr.dataset.id)));
 }
@@ -2416,24 +2417,24 @@ async function openDetail(id){
   ov.innerHTML=`<div class="modal glass detail-modal">
     <div class="modal-head"><h3>${t.direction.toUpperCase()} ${esc(t.name||t.symbol)} · ${resultOf(t)}${t.feed==='demo'?' <span class="demo-chip">DEMO</span>':''}${t.practice?' <span class="practice-chip">PRACTICE</span>':''}</h3><button class="icon-btn" id="detail-close">✕</button></div>
     <div class="detail-grid">
-      <div><small>Trade ID</small><strong class="mono">${t.id}</strong></div><div><small>Date (SAST)</small><strong>${new Date(t.entryTime).toLocaleString('en-ZA')}</strong></div>
-      <div><small>Session</small><strong>${t.session}</strong></div><div><small>Timeframe</small><strong>${t.timeframe||'—'}</strong></div>
-      <div><small>Type / Entry model</small><strong>${t.tradeType||'—'}${t.setupTag?' · '+t.setupTag:''}</strong></div><div><small>Tags</small><strong>${(t.customTags||[]).join(', ')||'—'}</strong></div>
+      <div><small>Trade ID</small><strong class="mono">${t.id}</strong></div><div><small>Date (SAST)</small><strong>${new Date(t.entryTime).toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'})}</strong></div>
+      <div><small>Session</small><strong>${esc(t.session)}</strong></div><div><small>Timeframe</small><strong>${esc(t.timeframe||'—')}</strong></div>
+      <div><small>Type / Entry model</small><strong>${esc(t.tradeType||'—')}${esc(t.setupTag?' · '+t.setupTag:'')}</strong></div><div><small>Tags</small><strong>${esc((t.customTags||[]).join(', ')||'—')}</strong></div>
       <div><small>Entry (KEY LEVEL)</small><strong class="mono">${t.entry}</strong></div><div><small>Invalidation</small><strong class="mono">${t.slHistory&&t.slHistory.length?`${t.slOriginal} → ${t.sl}`:t.sl}</strong></div>
       <div><small>Target 1:2.5</small><strong class="mono">${t.tp1}</strong></div><div><small>Extra targets</small><strong class="mono">${(t.extraTPs||[]).map(x=>x.price+' (1:'+x.ratio+')').join(', ')||'—'}</strong></div>
-      <div><small>Bias at entry</small><strong>${t.biasScore??'—'} ${t.biasLabel||''} · ${t.biasAlignment}</strong></div>
-      <div><small>Order</small><strong>${t.orderType||'Market'}</strong></div>
+      <div><small>Bias at entry</small><strong>${t.biasScore??'—'} ${esc(t.biasLabel||'')} · ${esc(t.biasAlignment)}</strong></div>
+      <div><small>Order</small><strong>${esc(t.orderType||'Market')}</strong></div>
       <div><small>Result / R</small><strong>${resultOf(t)} · ${t.R??'—'}R</strong></div>
       <div><small>Duration</small><strong>${durationStr(t)}</strong></div><div><small>Bonus wins</small><strong>${(t.bonusWins||[]).length?(t.bonusWins.map(b=>'1:'+b.ratio+' (+'+b.bonusR+'R)').join(', ')):'—'}</strong></div>
     </div>
-    ${t.biasReason?`<p class="pt-muted">Bias reason: ${t.biasReason}</p>`:''}
+    ${t.biasReason?`<p class="pt-muted">Bias reason: ${esc(t.biasReason)}</p>`:''}
     <div class="shots" id="d-shots"></div>
     <label class="field"><span>Notes</span><textarea id="d-notes" rows="2">${esc(t.notes||'')}</textarea></label>
     <label class="field"><span>Entry model</span><select id="d-tag"><option value="">—</option>${ENTRY_MODELS.map(x=>`<option ${t.setupTag===x?'selected':''}>${x}</option>`).join('')}</select></label>
     <label class="field"><span>Custom tags (comma separated)</span><input id="d-custom" value="${esc((t.customTags||[]).join(', '))}"></label>
     <div class="field"><span>Emotion before trade</span><div class="emoji-row">${['😀','😌','😤','😰','😴','🤔','🔥','😶'].map(e=>`<button class="emoji-btn ${t.emotion===e?'active':''}" data-emo="${e}">${e}</button>`).join('')}</div></div>
     ${t.autoChecks&&t.autoChecks.length?`<div class="field"><span>Checks at CONFIRM</span>${t.autoChecks.map(a=>`<div class="check-auto ${a.ok?'ok':'bad'}">${a.ok?'✓':'✕'} ${esc(a.label)} — ${esc(a.text)}</div>`).join('')}</div>`:''}
-    <div class="field"><span>Rules checklist</span>${rules.map((r,i)=>`<label class="check-row"><input type="checkbox" data-rule="${i}" ${t.rulesCheck&&t.rulesCheck[i]?'checked':''}> ${r}</label>`).join('')}</div>
+    <div class="field"><span>Rules checklist</span>${rules.map((r,i)=>`<label class="check-row"><input type="checkbox" data-rule="${i}" ${t.rulesCheck&&t.rulesCheck[i]?'checked':''}> ${esc(r)}</label>`).join('')}</div>
     <div class="field"><span>Rating</span><div class="stars">${[1,2,3,4,5].map(n=>`<button class="star ${t.rating>=n?'active':''}" data-star="${n}">★</button>`).join('')}</div></div>
     <div class="detail-actions"><button id="d-save" class="btn-primary">Save changes</button><button id="d-delete" class="btn-delete">Delete trade</button>${t.status==='OPEN'||t.status==='PENDING'?`<button id="d-close" class="btn-close-now small">${t.status==='PENDING'?'Cancel order':'Close now'}</button>`:''}</div>
   </div>`;
@@ -2443,7 +2444,7 @@ async function openDetail(id){
   const paintShots=(pics,building)=>{ const list=[];
     if(pics&&pics.before) list.push({src:pics.before,label:'Before'}); else if(!building&&t.screenshot) list.push({src:t.screenshot,label:'Before'});
     if(pics&&pics.after) list.push({src:pics.after,label:t.status==='CLOSED'?'After':'So far'}); else if(!building&&t.closeScreenshot) list.push({src:t.closeScreenshot,label:'After'});
-    shotBox.innerHTML=(building?'<div class="shot-building"><span class="spinner"></span> Building the before / after pictures from price data…</div>':'')+list.map((x,i)=>`<figure><button class="shot-open" data-shot="${i}" title="View full screen"><img src="${x.src}" alt="${x.label}"><span>⤢ View full screen</span></button><figcaption>${x.label}</figcaption></figure>`).join('');
+    shotBox.innerHTML=(building?'<div class="shot-building"><span class="spinner"></span> Building the before / after pictures from price data…</div>':'')+list.map((x,i)=>`<figure><button class="shot-open" data-shot="${i}" title="View full screen"><img src="${/^(data:image\/|blob:)/.test(String(x.src))?x.src:''}" alt="${esc(x.label)}"><span>⤢ View full screen</span></button><figcaption>${esc(x.label)}</figcaption></figure>`).join('');
     shotBox.querySelectorAll('.shot-open').forEach(b=>b.addEventListener('click',()=>openShotViewer(list,+b.dataset.shot,t))); };
   const needPics=t.status!=='CANCELLED'&&(!t.pics||t.pics.v<2||(t.status==='CLOSED'&&!t.pics.after)||t.status==='OPEN');
   paintShots(t.pics,needPics);
@@ -2453,7 +2454,7 @@ async function openDetail(id){
   ov.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',()=>{ rating=parseInt(b.dataset.star); ov.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('active',parseInt(x.dataset.star)<=rating)); }));
   $('detail-close').addEventListener('click',closeDetail);
   ov.addEventListener('click',e=>{ if(e.target===ov) closeDetail(); });
-  $('d-save').addEventListener('click',async()=>{ t.notes=$('d-notes').value; t.setupTag=$('d-tag').value; t.customTags=$('d-custom').value.split(',').map(s=>s.trim()).filter(Boolean); t.emotion=emotion; t.rating=rating; t.rulesCheck={}; ov.querySelectorAll('[data-rule]').forEach(c=>t.rulesCheck[c.dataset.rule]=c.checked); await idbPut('journal',t); toast('Trade updated ✓'); closeDetail(); renderJournal(); });
+  $('d-save').addEventListener('click',async()=>{ t.notes=$('d-notes').value; t.setupTag=$('d-tag').value; t.customTags=$('d-custom').value.split(',').map(s=>s.trim()).filter(Boolean); t.emotion=emotion; t.rating=rating; t.rulesCheck={}; ov.querySelectorAll('[data-rule]').forEach(c=>t.rulesCheck[c.dataset.rule]=c.checked); const cur=(await idbAll('journal')).find(x=>x.id===t.id)||t; Object.assign(cur,{notes:t.notes,setupTag:t.setupTag,customTags:t.customTags,emotion:t.emotion,rating:t.rating,rulesCheck:t.rulesCheck}); await idbPut('journal',cur); toast('Trade updated ✓'); closeDetail(); renderJournal(); });
   $('d-delete').addEventListener('click',async()=>{ if(!confirm('Delete this trade permanently?')) return; await idbDelete('journal',t.id); toast('Trade deleted'); closeDetail(); renderJournal(); });
   const dc=$('d-close'); if(dc) dc.addEventListener('click',()=>{ closeDetail(); window.dispatchEvent(new CustomEvent('bd:manual-close',{detail:t.id})); });
 }
@@ -2466,7 +2467,7 @@ async function openPairPanel(inst){
   const panel=document.createElement('aside'); panel.className='pair-panel glass'; panel.id='pair-panel';
   panel.innerHTML=`<div class="modal-head"><h3>📓 ${inst.name}</h3><button class="icon-btn" id="pair-close">✕</button></div>
   <div class="pair-stats"><div><small>Win rate</small><strong>${s.winRate.toFixed(0)}%</strong></div><div><small>Total R</small><strong>${s.totalR}R</strong></div><div><small>Wins / losses</small><strong>${s.wins} / ${s.losses}</strong></div><div><small>Trades</small><strong>${s.total}</strong></div></div>
-  ${trades.length?trades.map(t=>`<div class="pair-trade" data-id="${t.id}"><strong class="${t.direction==='buy'?'up':'down'}">${t.direction.toUpperCase()}</strong><span>${new Date(t.entryTime).toLocaleString('en-ZA')}</span><span>${resultOf(t)} · ${t.R??''}R · ${esc(t.setupTag||'')}</span></div>`).join(''):'<p class="pt-muted">No trades for this pair yet.</p>'}`;
+  ${trades.length?trades.map(t=>`<div class="pair-trade" data-id="${t.id}"><strong class="${t.direction==='buy'?'up':'down'}">${t.direction.toUpperCase()}</strong><span>${new Date(t.entryTime).toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'})}</span><span>${resultOf(t)} · ${t.R??''}R · ${esc(t.setupTag||'')}</span></div>`).join(''):'<p class="pt-muted">No trades for this pair yet.</p>'}`;
   document.body.appendChild(panel);
   $('pair-close').addEventListener('click',closePairPanel);
   panel.querySelectorAll('[data-id]').forEach(r=>r.addEventListener('click',()=>openDetail(r.dataset.id)));
@@ -2482,16 +2483,20 @@ function exportCSV(trades){
 async function exportFullJSON(){
   const trades=await getTrades();
   const data={exportedAt:new Date().toISOString(),trades,instruments:lsGet('bd_instruments',[]),settings:{theme:lsGet('bd_theme','ultra-blue'),balance:lsGet('bd_balance',10000),app_id:lsGet('bd_app_id','1089'),scores_url:lsGet('bd_scores_url',''),labels:lsGet('bd_labels',{}),ratios:lsGet('bd_ratios',{}),usdzar:lsGet('bd_usdzar',18.20),rules:getRules()}};
-  download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'biasdesk-backup-full.json');
+  data.keys={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&isSyncKey(k)) data.keys[k]=lsGet(k,null); }
+  download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'biasdesk-backup-full-'+sastParts(Math.floor(Date.now()/1000)).date+'.json');
 }
 async function importFullJSON(file){
-  const text=await file.text(); const data=JSON.parse(text);
-  if(data.trades){ for(const t of data.trades){ await idbPut('journal',t); } }
+  let data; try{ data=JSON.parse(await file.text()); }catch(e){ toast('That file is not a Bias Desk backup'); return; }
+  if(!data||typeof data!=='object'||(!Array.isArray(data.trades)&&!data.settings&&!data.keys)){ toast('That file is not a Bias Desk backup'); return; }
+  let added=0, kept=0; if(Array.isArray(data.trades)){ const local=new Map((await idbAll('journal')).map(t=>[String(t.id),t]));
+    for(const t of data.trades){ if(!t||t.id==null) continue; const l=local.get(String(t.id)); if(l&&(l.updatedAt||0)>=(t.updatedAt||0)){ kept++; continue; } if(!t.updatedAt) t.updatedAt=1; await idbPut('journal',t,{sync:true}); added++; } syncSoon(); }
+  if(data.keys&&typeof data.keys==='object'){ for(const [k,v] of Object.entries(data.keys)) if(isSyncKey(k)&&v!=null) lsSet(k,v); }
   if(data.instruments) lsSet('bd_instruments',data.instruments);
   if(data.settings){ const s=data.settings; if(s.theme) lsSet('bd_theme',s.theme); if(s.balance!==undefined) lsSet('bd_balance',s.balance); if(s.app_id) lsSet('bd_app_id',s.app_id); if(s.scores_url) lsSet('bd_scores_url',s.scores_url); if(s.labels) lsSet('bd_labels',s.labels); if(s.ratios) lsSet('bd_ratios',s.ratios); if(s.usdzar) lsSet('bd_usdzar',s.usdzar); if(s.rules) lsSet('bd_rules',s.rules); }
-  toast('Full backup imported — reload to apply ✓');
+  toast(`Backup imported — ${added} trade${added===1?'':'s'} restored${kept?`, ${kept} newer ones kept`:''} · reload to apply ✓`);
 }
-function download(blob,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); }
+function download(blob,name){ const a=document.createElement('a'); const u=URL.createObjectURL(blob); a.href=u; a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(u),4000); }
 function initJournal(){ /* rendered on demand */ }
 
 // ===== js/position-tool.js (rewritten) =====
@@ -2530,7 +2535,7 @@ function quoteToUSD(inst){
 function unitName(inst){ return inst.type==='Forex'?'pips':'points'; }
 // Chart accessors (set by chart.js)
 let chartRef=null, seriesRef=null, wrapEl=null;
-function bindChart(chart,series,wrap){ chartRef=chart; seriesRef=series; wrapEl=wrap; overlay=null; }
+function bindChart(chart,series,wrap){ try{ overlay?.remove(); wrap?.querySelectorAll('.pt-overlay').forEach(x=>x.remove()); }catch(e){} chartRef=chart; seriesRef=series; wrapEl=wrap; overlay=null; }
 let tool=null, overlay=null, rafId=null, tickUnsub=null, drag=null, trackBusy=false;
 function uid(){ return 'T'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 // After CONFIRM the original 1R (risk0) is kept, so moving the stop on a running trade never moves the targets
@@ -2637,7 +2642,7 @@ function onPointerMove(e){
   else if(drag.kind==='sl'){ tool.sl=tool.direction==='buy'?Math.min(target,tool.entry-minGap):Math.max(target,tool.entry+minGap); }
   else if(drag.kind==='tp1'){ const d=Math.max((tool.direction==='buy'?target-tool.entry:tool.entry-target),minGap*2.5); const risk=d/2.5; tool.sl=tool.direction==='buy'?tool.entry-risk:tool.entry+risk; }
   else if(drag.kind.startsWith('tp')){ const i=+drag.kind.slice(2)-2; const d=(tool.direction==='buy'?target-tool.entry:tool.entry-target); const r=Math.max(2.6,Math.round(d/riskDist()*10)/10); if(tool.extraTPs[i]) tool.extraTPs[i].ratio=r; }
-  recalcTPs(); tool.riskZAR=calcMoney().riskZAR; updateLivePanel(); repositionOnly();
+  recalcTPs(); if(!tool.locked&&tool.riskZAR>0) tool.lots=Math.max(lotsFromRisk(tool.riskZAR,tool.inst),0.0001); else tool.riskZAR=calcMoney().riskZAR; updateLivePanel(); repositionOnly();
 }
 function onPointerUp(){ if(!drag) return; const k=drag.kind; drag.el?.classList.remove('dragging'); drag=null;
   if(k==='sl'&&tool.locked){ saveMovedStop(); renderLevels(); renderPanel(); return; } if(k.startsWith('tp')&&k!=='tp1'){ tool.extraTPs.sort((a,b)=>a.ratio-b.ratio); recalcTPs(); renderLevels(); } if(k!=='bar') renderPanel(); }
@@ -2877,7 +2882,7 @@ async function takeScreenshotWithOverlay(t){
 function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 async function confirmTrade(){
   if(!tool||tool.locked) return;
-  const m=calcMoney(); const inst=tool.inst; const {rate,source}=getUSDZAR();
+  let m=calcMoney(); const inst=tool.inst; const {rate,source}=getUSDZAR();
   const bias=(rp.active&&rp.sym===inst.symbol)?(()=>{ const d=new Date(rp.now*1000).toLocaleDateString('en-CA',{timeZone:'Africa/Johannesburg'}); const h=biasHistory&&biasHistory.days&&biasHistory.days[d]&&biasHistory.days[d][inst.symbol]; return h?{score:h.score,label:labelFor(h.score),reason:'Score from that day',date:d}:null; })():getBias(inst.symbol);
   const balance=parseFloat(lsGet('bd_balance',10000))||10000;
   const market=mkt(inst); const practice=!!(rp.active&&rp.sym===inst.symbol);
@@ -2886,6 +2891,7 @@ async function confirmTrade(){
     if(tool.direction==='buy'?tool.sl>=market:tool.sl<=market){ toast('Price is already through your invalidation level — move the stop first'); return; }
     tool.entry=market; recalcTPs();
   }
+  if(tool.riskZAR>0) tool.lots=Math.max(lotsFromRisk(tool.riskZAR,inst),0.0001); m=calcMoney(); tool.riskZAR=m.riskZAR;
   const tol=Math.max(inst.spread*inst.pip*1.5,riskDist()*0.15);
   const filledNow=Math.abs(tool.entry-market)<=tol;
   { const lb=lastBarTime(); if(lb!==null) tool.t0=lb; }
@@ -2896,7 +2902,7 @@ async function confirmTrade(){
   const prevGroup=it?it.group:inst.group;
   const entry={t0:tool.t0,wBars:tool.wBars,id:tool.id,symbol:inst.symbol,name:inst.name,direction:tool.direction,tradeType:tool.tradeType||'Intraday',setupTag:tool.setupTag||'',customTags:tool.customTags||[],session:sessionFor(entryTime),
     biasAlignment:biasAlignmentFor({direction:tool.direction,biasScore:bias?bias.score:null}),entry:tool.entry,sl:tool.sl,slOriginal:tool.sl,risk0:tool.risk0,slHistory:[],tp1:tool.tp1,extraTPs:tool.extraTPs.map(t=>({price:t.price,ratio:t.ratio,label:t.label})),
-    lots:tool.lots,riskZAR:m.riskZAR,riskPercent:balance?m.riskZAR/balance*100:0,spreadPips:0,spreadCostZAR:0,contract:inst.contract,pipSize:inst.pip,usdzar:rate,usdzarSource:source,
+    lots:tool.lots,riskZAR:m.riskZAR,riskPercent:balance?m.riskZAR/balance*100:0,spreadPips:inst.spread||0,spreadCostZAR:Math.round((m.spreadZAR||0)*100)/100,contract:inst.contract,pipSize:inst.pip,usdzar:rate,usdzarSource:source,
     biasScore:bias?bias.score:null,biasLabel:bias?bias.label:null,biasReason:bias?bias.reason:null,timeframe:tool.timeframe,practice,sessionId:practice?rp.sid:null,autoChecks:tool.autoChecks||[],feed:practice?'replay':getState(inst).src==='live'?'live':'demo',marketAtConfirm:market,
     orderType:filledNow?'Market':(tool.entry<market?(tool.direction==='buy'?'Buy limit':'Sell stop'):(tool.direction==='buy'?'Buy stop':'Sell limit')),pendingSide:tool.entry<market?'below':'above',
     entryTime,filledTime:filledNow?entryTime:null,status:tool.status,result:null,R:null,maxRatio:null,pnlZAR:null,exitPrice:null,exitTime:null,balanceAfter:null,bonusWins:[],bonusTracking:false,prevGroup,
@@ -2918,6 +2924,7 @@ function getBalance(){ return parseFloat(lsGet('bd_balance',10000))||10000; }
 function addBalance(delta){ const b=Math.round((getBalance()+delta)*100)/100; lsSet('bd_balance',b); window.dispatchEvent(new CustomEvent('bd:balance-changed',{detail:{balance:b}})); return b; }
 async function closeTrade(tradeId,result,exitPrice,opts={}){
   const all=await idbAll('journal'); const t=all.find(x=>x.id===tradeId); if(!t||(t.status!=='OPEN'&&t.status!=='PENDING')) return;
+  if(t.status==='PENDING'&&(result==='WIN'||result==='LOSS')){ t.status='OPEN'; t.filledTime=t.filledTime||opts.exitTime||new Date().toISOString(); } // filled and resolved on the same candle / tick
   if(t.status==='PENDING'){ // pending order cancelled — no money moves, not counted in stats
     t.status='CANCELLED'; t.result='CANCELLED'; t.exitTime=opts.exitTime||new Date().toISOString(); await idbPut('journal',t); await restoreGroup(t);
     if(tool&&tool.tradeId===tradeId) clearTool(); toast('Pending order cancelled'); window.dispatchEvent(new CustomEvent('bd:trade-closed',{detail:t})); return;
@@ -3008,12 +3015,12 @@ async function recheckOpenTradesOnLoad(){
       const age=Date.now()/1000-startTs; const gran=age<3*86400?60:age<30*86400?900:3600;
       const res=await wsSend({ticks_history:deriv,start:startTs,end:'latest',style:'candles',granularity:gran,count:5000,adjust_start_time:1});
       for(const c of (res.candles||[])){
-        if(c.epoch+gran<=startTs) continue;
+        if(c.epoch<startTs) continue; // a candle that began before entry holds prices from before the trade existed
         const when=new Date(c.epoch*1000).toISOString();
         if(t.status==='OPEN'||t.status==='PENDING'){
           const r=evaluateTrade(t,c.high,c.low,c.epoch*1000);
           if(r==='LOSS'){ await closeTrade(t.id,'LOSS',slAt(t,c.epoch*1000),{exitTime:when,silent:true}); break; }
-          if(r==='WIN'){ await closeTrade(t.id,'WIN',t.tp1,{exitTime:when,silent:true}); const fresh=(await idbAll('journal')).find(x=>x.id===t.id); if(fresh) Object.assign(t,fresh); continue; }
+          if(r==='WIN'){ await closeTrade(t.id,'WIN',t.tp1,{exitTime:when,silent:true}); const fresh=(await idbAll('journal')).find(x=>x.id===t.id); if(fresh) Object.assign(t,fresh); if(t.bonusTracking){ await applyBonus(t,c.high,c.low,true,when); if(!t.bonusTracking) break; } continue; }
           if(r==='FILLED'){ t.filledTime=when; await idbPut('journal',t); }
         } else if(t.result==='WIN'&&t.bonusTracking){ await applyBonus(t,c.high,c.low,true,when); if(!t.bonusTracking) break; }
       }
@@ -3122,7 +3129,7 @@ function buildChartShell(){
   $('ct-ms').addEventListener('click',()=>{ const on=!msOn(); lsSet('bd_ms_on',on); msUpdate(true); mcCharts.forEach(m=>{ m.ms=null; mcMsUpdate(m); mcMsTable(m); mcDraw(m); }); toast(on?'Market structure on — table shows 1D · 4h · 1h · 15m':'Market structure off'); });
   $('ct-bell').addEventListener('click',e=>{ e.stopPropagation(); const p=$('alert-panel'); p.hidden=!p.hidden; renderAlertPanel(); });
   document.addEventListener('click',e=>{ const p=$('alert-panel'); if(!p||p.hidden) return; const path=e.composedPath(); if(path.includes(p)||path.some(el=>el&&el.id==='ct-bell'||el&&el.id==='alarm-stop')) return; p.hidden=true; });
-  $('ct-clear').addEventListener('click',()=>{ if(!tlLines.length&&!vpList.length){ toast('Nothing drawn on this pair'); return; } if(!confirm(`Remove all ${tlLines.length} drawing(s) and ${vpList.length} volume profile(s) on ${currentInst.name}?`)) return; tlLines=[]; tlSel=null; tlSave(); vpList=[]; vpSel=null; vpCache.clear(); vpSave(); vpCloseSettings(); tlRender(); vpRender(); toast('Drawings cleared'); });
+  $('ct-clear').addEventListener('click',()=>{ if(!tlLines.length&&!vpList.length){ toast('Nothing drawn on this pair'); return; } if(!confirm(`Remove all ${tlLines.length} drawing(s) and ${vpList.length} volume profile(s) on ${currentInst.name}?`)) return; { const ids=new Set(tlLines.map(l=>l.id)); const al=getAlerts(); if(al.some(x=>ids.has(x.lineId))) setAlerts(al.filter(x=>!ids.has(x.lineId))); } tlLines=[]; tlSel=null; tlSave(); vpList=[]; vpSel=null; vpCache.clear(); vpSave(); vpCloseSettings(); tlRender(); vpRender(); toast('Drawings cleared'); });
   $('ct-fs').addEventListener('click',toggleFs);
   tlSetup(); vpSetup(); alSetup(); renderAlertBadge(); mcSetup();
   onFeedModeChange(m=>{ if(currentInst&&$('page-chart').classList.contains('active')&&(m==='live'||m==='demo')) loadCandles().then(()=>{ if(!tool) restoreToolForInst(currentInst); }); });
@@ -3152,7 +3159,7 @@ async function showPairJournal(){
 }
 // saved candles per pair + timeframe (last 1500), so a chart opens instantly next time (like TradingView) — kept on this device only
 const CC_PREFIX='bd_cc2_', CC_MAX=40; let ccShown='';
-function n0(x){ return x.toLocaleString('en-ZA'); }
+function n0(x){ return x.toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'}); }
 function ccKey(inst,g){ return CC_PREFIX+inst.symbol+'_'+g; }
 function ccGet(k){ try{ const v=JSON.parse(localStorage.getItem(k)||'null'); if(!v||!Array.isArray(v.c)) return null; return v.c.map(a=>({time:a[0],open:a[1],high:a[2],low:a[3],close:a[4]})); }catch(e){ return null; } }
 function ccPut(k,candles){ const c=candles.slice(-1500).map(x=>[x.time,+x.open,+x.high,+x.low,+x.close]); const val=JSON.stringify({at:Date.now(),c});
@@ -3240,7 +3247,8 @@ function initChart(){
     const gran=granForLabel(currentTF), bg=baseGran(currentInst,gran);
     if(gran && p.granularity && p.granularity!==gran && p.granularity!==bg) return;
     const bt=p.granularity===gran?p.time:bucketOf(p.time,gran);
-    if(series && ensureChartLib()){ const existing=candleMap.get(bt); if(existing){ candleMap.set(bt,{time:bt,open:existing.open,high:Math.max(existing.high,p.high),low:Math.min(existing.low,p.low),close:p.close}); } else { candleMap.set(bt,{time:bt,open:p.open,high:p.high,low:p.low,close:p.close}); } series.update(candleMap.get(bt)); }
+    { const lt=lastBarTime(); if(lt!=null&&bt<lt) return; } // a candle from the timeframe we just left — never write it behind the newest bar
+    if(series && ensureChartLib()){ const existing=candleMap.get(bt); if(existing){ candleMap.set(bt,{time:bt,open:existing.open,high:Math.max(existing.high,p.high),low:Math.min(existing.low,p.low),close:p.close}); } else { candleMap.set(bt,{time:bt,open:p.open,high:p.high,low:p.low,close:p.close}); } try{ series.update(candleMap.get(bt)); }catch(e){} }
     updateHeader();
   });
   if(chartRO) chartRO.disconnect();
@@ -4111,7 +4119,7 @@ function mkt(inst){ const D=inst&&rpD(inst.symbol); return D&&D.price!=null?D.pr
 function rpSpeed(){ const s=+lsGet('bd_rp_speed',5); return RP_SPEEDS.includes(s)?s:5; }
 async function rpFetch1m(inst,start,end){ // 1-minute candles = the replay's engine (the price path inside every bigger candle)
   const out=[]; const now=Math.floor(Date.now()/1000); end=Math.min(end,now);
-  if(isBinance(inst)){ let from=start*1000; for(let n=0;n<20&&from<=end*1000;n++){ const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=1m&startTime=${from}&endTime=${end*1000}&limit=1000`); if(!r.ok) break; const k=await r.json(); if(!k.length) break; k.forEach(c=>out.push({time:Math.floor(c[0]/1000),open:+c[1],high:+c[2],low:+c[3],close:+c[4]})); from=k[k.length-1][0]+60000; if(k.length<1000) break; } }
+  if(isBinance(inst)){ let from=start*1000; for(let n=0;n<20&&from<=end*1000;n++){ const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=1m&startTime=${from}&endTime=${end*1000}&limit=1000`); if(!r.ok) throw new Error('Binance HTTP '+r.status); const k=await r.json(); if(!k.length) break; k.forEach(c=>out.push({time:Math.floor(c[0]/1000),open:+c[1],high:+c[2],low:+c[3],close:+c[4]})); from=k[k.length-1][0]+60000; if(k.length<1000) break; } }
   else { const d=getDerivSymbol(inst); if(feedMode!=='live'||!d) return []; for(let s=start,n=0;s<=end&&n<8;n++){ const e=Math.min(end,s+4980*60); const r=await wsSend({ticks_history:d,start:s,end:e,style:'candles',granularity:60,count:5000},20000); (r.candles||[]).forEach(c=>out.push({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close})); s=e+1; } }
   const m=new Map(); out.forEach(c=>m.set(c.time,c)); let arr=[...m.values()].sort((a,b)=>a.time-b.time);
   if(isBinance(inst)) return arr; // Binance prints are exchange trades — kept exactly as they are
@@ -4137,7 +4145,7 @@ async function rpEnsure(inst){ if(!rp.active||!inst) return null; rp.data=rp.dat
     const D={inst,sym,m1,from,m1End:m1[m1.length-1].time+60,noMore:false,loading:false,price:null,pLo:Infinity,pHi:-Infinity,hist:{}}; D.price=rpPriceNow(D,rp.now); rp.data[sym]=D; return D; })();
   rp.wait[sym]=p; try{ return await p; } finally{ delete rp.wait[sym]; } }
 async function rpMore(D){ if(!D||D.loading||D.noMore||!rp.active||(D.retryAt&&Date.now()<D.retryAt)) return; D.loading=true; const sid=rp.sid;
-  try{ const more=await rpFetch1m(D.inst,D.m1End,D.m1End+3*86400); if(rp.sid!==sid) return; const add=more.filter(c=>c.time>=D.m1End); if(add.length){ D.m1.push(...add); D.m1End=add[add.length-1].time+60; D.fail=0; } else D.noMore=true; }
+  try{ const more=await rpFetch1m(D.inst,D.m1End,D.m1End+3*86400); if(rp.sid!==sid) return; const add=more.filter(c=>c.time>=D.m1End); if(add.length){ D.m1.push(...add); D.m1End=add[add.length-1].time+60; D.fail=0; D.gapSkips=0; } else if(D.m1End+3*86400<Date.now()/1000-3600){ D.m1End+=3*86400; D.gapSkips=(D.gapSkips||0)+1; if(D.gapSkips>6) D.noMore=true; } else D.noMore=true; }
   catch(e){ D.fail=(D.fail||0)+1; D.retryAt=Date.now()+3000; if(D.fail>=4) D.noMore=true; } finally{ D.loading=false; } }
 // candles for one chart up to the clock: real history before the engine starts + bars built from the minutes
 async function rpCandles(D,g){ const Wb=bucketOf(D.from,g), k=g+':'+Wb;
@@ -4153,7 +4161,7 @@ async function rpLoadMain(){ const inst=currentInst; if(!inst||!series) return; 
     const {all,curB}=await rpCandles(D,rp.g); if(!rp.active||currentInst!==inst) return;
     candleMap=new Map(all.map(c=>[c.time,c])); tlTimesKey=''; series.setData(all); rp.curB=curB; D.price=rpPriceNow(D,rp.now);
     const n=all.length; try{ const v=defaultBars(); chart.timeScale().setVisibleLogicalRange({from:Math.max(0,n-v),to:n+Math.max(4,Math.round(v*0.08))}); }catch(e){}
-    const cw=$('chart-wait'); if(cw) cw.hidden=true; tlRender(); vpRender(); msDraw=null; msRender();
+    const cw=$('chart-wait'); if(cw) cw.hidden=true; tlRender(); vpRender(); msDraw=null; msTable={}; msSig=''; if(msOn()) msUpdate(true); else msRender();
     if(chartView==='trade') $('chart-status').textContent=`Replay · ${n} candles · ${currentTF}`; updateHeader();
   } finally{ rp.building=false; renderReplayBar(); if(was&&rp.active) replayPlay(true); } }
 // an extra chart of the layout (called from mcLoad while a replay runs)
@@ -4297,7 +4305,7 @@ async function endReplay(opts={}){
     if((t.status==='OPEN'||t.status==='PENDING')&&prices[t.symbol]!=null) await closeTrade(t.id,t.status==='PENDING'?'CANCELLED':'MANUAL CLOSE',prices[t.symbol],{exitTime:iso,silent:true});
     else if(t.bonusTracking){ t.bonusTracking=false; await idbPut('journal',t); } }
   rp={active:false}; runTrades=[]; for(const k of [...msCache.keys()]) if(k.startsWith('rp|')) msCache.delete(k); msSig=''; msDraw=null; msTable={}; document.body.classList.remove('replaying'); $('ct-replay')?.classList.remove('active'); renderReplayBar(); clearTool(); refreshRunTrades();
-  if(!opts.noReload&&currentInst) openChart(currentInst);
+  if(!opts.noReload&&currentInst){ openChart(currentInst); setTimeout(()=>{ try{ mcCharts.forEach(m=>{ m.rp=false; mcLoad(m); }); }catch(e){} },60); }
   if(!opts.noResults) openRpResults(sid,true); else if(!opts.quiet) toast('Back to live prices');
 }
 async function cleanupPractice(){ const all=await idbAll('journal'); for(const t of all.filter(x=>x.practice&&(x.status==='OPEN'||x.status==='PENDING'||x.bonusTracking))){ if(t.bonusTracking) t.bonusTracking=false; else { t.status='CANCELLED'; t.result='CANCELLED'; t.exitTime=t.exitTime||new Date().toISOString(); t.notes=(t.notes?t.notes+'\n':'')+'Replay was closed before this practice trade finished.'; } await idbPut('journal',t); } }
@@ -4437,7 +4445,7 @@ function fireAlert(title,body,kind='ok',tag,opts={}){
   try{ if('Notification' in window&&Notification.permission==='granted'){ const n=new Notification(title,{body,tag:tag||title,renotify:true,icon:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2962ff"/><text x="32" y="44" font-size="34" text-anchor="middle" fill="#fff">◆</text></svg>')}); n.onclick=()=>{ window.focus(); if(opts.sym) location.hash='#/trade/'+encodeURIComponent(opts.sym); n.close(); }; } }catch(e){}
   renderAlertPanel(); }
 function getAlerts(){ return (lsGet('bd_alerts',[])||[]).filter(a=>a&&a.id); } function setAlerts(a){ lsSet('bd_alerts',a); renderAlertBadge(); }
-function linePriceAt(l,t,sym){ if(currentInst&&currentInst.symbol===sym){ const L1=logicalForTime(l.t1), L2=logicalForTime(l.t2), L=logicalForTime(t); if(L1!==null&&L2!==null&&L!==null&&L2!==L1) return l.p1+(l.p2-l.p1)*(L-L1)/(L2-L1); } return l.t2===l.t1?l.p1:l.p1+(l.p2-l.p1)*(t-l.t1)/(l.t2-l.t1); }
+function linePriceAt(l,t,sym){ if(!rp.active&&currentInst&&currentInst.symbol===sym){ const L1=logicalForTime(l.t1), L2=logicalForTime(l.t2), L=logicalForTime(t); if(L1!==null&&L2!==null&&L!==null&&L2!==L1) return l.p1+(l.p2-l.p1)*(L-L1)/(L2-L1); } return l.t2===l.t1?l.p1:l.p1+(l.p2-l.p1)*(t-l.t1)/(l.t2-l.t1); }
 const alertLast={};
 function checkAlerts(){
   const al=getAlerts(); if(!al.length) return; const now=Date.now()/1000; let changed=false;
@@ -4771,19 +4779,19 @@ const msCache=new Map(); let msQueue=Promise.resolve();
 function msTTL(g){ return g>=86400?30*60e3:g>=14400?10*60e3:g>=3600?5*60e3:3*60e3; }
 // structure for one pair + timeframe (fetched, cached; one request at a time so the price feed is never flooded)
 function msGet(inst,tf,force){ const key=msKey(inst,tf.g), c=msCache.get(key); if(c&&!force&&Date.now()-c.at<msTTL(tf.g)) return Promise.resolve(c.res);
-  const job=msQueue.then(async()=>{ const c2=msCache.get(key); if(c2&&!force&&Date.now()-c2.at<msTTL(tf.g)) return c2.res; let bars=[]; try{ if(rp.active){ const D=rpD(inst.symbol)||await rpEnsure(inst); if(D){ const {all}=await rpCandles(D,tf.g); bars=all.slice(-600); } } else bars=(await fetchCandlesOnce(inst,tf.g,500))||[]; }catch(e){}
-    if(!bars.length) return c2?c2.res:null; const o=msOpt(); const res=msRun(msClosed(bars,tf.g),tf.len,o); msCache.set(key,{at:Date.now(),res}); return res; });
+  const mode=rp.active?rp.sid:'live'; const job=msQueue.then(async()=>{ if((rp.active?rp.sid:'live')!==mode) return null; const c2=msCache.get(key); if(c2&&!force&&Date.now()-c2.at<msTTL(tf.g)) return c2.res; let bars=[]; try{ if(rp.active){ const D=rpD(inst.symbol); if(D){ const {all}=await rpCandles(D,tf.g); bars=all.slice(-600); } } else bars=(await fetchCandlesOnce(inst,tf.g,500))||[]; }catch(e){}
+    if((rp.active?rp.sid:'live')!==mode) return null; if(!bars.length) return c2?c2.res:null; const o=msOpt(); const res=msRun(msClosed(bars,tf.g),tf.len,o); msCache.set(key,{at:Date.now(),res}); return res; });
   msQueue=job.catch(()=>{}); return job; }
 // ---- on the main chart
 let msDraw=null, msTable={}, msBusy=false, msSig='';
 function msDrawTF(){ return msTFfor(currentGranularity()); }
-async function msUpdate(force){ if(!msOn()||!currentInst){ msRender(); return; } if(msBusy) return; msBusy=true;
+async function msUpdate(force){ if(!msOn()||!currentInst){ msRender(); return; } if(msBusy) return; msBusy=true; const mode=rp.active?rp.sid:'live';
   try{ const inst=currentInst, tf=msDrawTF(), o=msOpt(); let res;
     if(tf.g===currentGranularity()){ const bars=msClosed([...candleMap.values()].sort((a,b)=>a.time-b.time),tf.g); const sig=inst.symbol+'|'+tf.g+'|'+bars.length+'|'+(bars.length?bars[bars.length-1].time:0)+'|'+JSON.stringify(o);
       if(sig!==msSig||force){ msSig=sig; res=msRun(bars,tf.len,o); msCache.set(msKey(inst,tf.g),{at:Date.now(),res}); } else res=msDraw&&msDraw.res; }
     else res=await msGet(inst,tf,force);
-    if(inst!==currentInst) return; msDraw={tf,res,sym:inst.symbol};
-    for(const t of msTFs()){ if(t.g===tf.g&&res){ msTable[t.tag]=res; continue; } msGet(inst,t).then(r=>{ if(r&&inst===currentInst){ msTable[t.tag]=r; msRenderTable(); } }); }
+    if(inst!==currentInst||(rp.active?rp.sid:'live')!==mode) return; msDraw={tf,res,sym:inst.symbol};
+    for(const t of msTFs()){ if(t.g===tf.g&&res){ msTable[t.tag]=res; continue; } msGet(inst,t).then(r=>{ if(r&&inst===currentInst&&(rp.active?rp.sid:'live')===mode){ msTable[t.tag]=r; msRenderTable(); } }); }
   }finally{ msBusy=false; } msRender(); }
 function msInk(){ const c=toolColors().ms; if(c) return c; return lightChart()?'#111827':(getThemeDef().axisText||'#e6edf3'); }
 function msRender(){ const w=tlWrap(); if(!w) return; let svg=w.querySelector('svg.ms-layer'); if(!svg){ svg=document.createElementNS(TL_NS,'svg'); svg.setAttribute('class','ms-layer'); w.appendChild(svg); }
@@ -4817,7 +4825,7 @@ function mcMsTable(m){ let tb=m.cell.querySelector('.ms-table'); const show=fals
   const sym=m.inst.symbol; tb.innerHTML=msTableHtml(t=>msCache.get(sym+'|'+t.g)?.res,m.ms.tf.tag); }
 // ---- top priority on the Markets page: today's bias and the 4h + 1h structure point the same way
 const msPrio={};
-async function msScanPriority(){ for(const inst of getInstruments()){ const b=getBias(inst.symbol); if(!b||Math.abs(b.score)<3){ msPrio[inst.symbol]=null; msPaintPrio(inst.symbol); continue; }
+async function msScanPriority(){ if(rp.active) return; for(const inst of getInstruments()){ const b=getBias(inst.symbol); if(!b||Math.abs(b.score)<3){ msPrio[inst.symbol]=null; msPaintPrio(inst.symbol); continue; }
     const dir=b.score>0?1:-1; const [t4,t1]=PRIO_TFS(); const r4=await msGet(inst,t4), r1=await msGet(inst,t1); const rd=msCache.get(inst.symbol+'|86400')?.res, r15=msCache.get(inst.symbol+'|900')?.res;
     msPrio[inst.symbol]=r4&&r1&&r4.trend===dir&&r1.trend===dir?{dir,score:b.score,d:rd?rd.trend:null,m15:r15?r15.trend:null}:null; msPaintPrio(inst.symbol); } }
 function msPaintPrio(sym){ document.querySelectorAll(`[data-prio="${sym}"]`).forEach(el=>{ const p=msPrio[sym];
@@ -4954,7 +4962,7 @@ function mcTradesFor(m){ if(!m.inst) return []; const out=runTrades.filter(t=>t.
   if(tool&&tool.locked&&tool.inst&&tool.inst.symbol===m.inst.symbol) out.push({id:'__tool',direction:tool.direction,entry:tool.entry,sl:tool.sl,tp1:tool.tp1,extraTPs:tool.extraTPs||[],t0:tool.t0,status:tool.locked?(tool.status==='WIN'?'CLOSED':tool.status):'SETUP',result:tool.status==='WIN'?'WIN':null,bonusTracking:tool.status==='WIN',risk0:tool.risk0});
   return out; }
 function mcBadge(m){ const b=m.cell.querySelector('.mc-trade'); if(!b||!m.inst) return; const list=runTrades.filter(t=>t.symbol===m.inst.symbol); if(!list.length){ b.hidden=true; return; }
-  const px=hasPrice(m.inst)?getState(m.inst).price:NaN; const t=list[list.length-1]; const r=tradeR(t,px); b.hidden=false; b.className='mc-trade '+(r===null?'':r>=0?'pos':'neg');
+  const px=rp.active?mkt(m.inst):hasPrice(m.inst)?getState(m.inst).price:NaN; const t=list[list.length-1]; const r=tradeR(t,px); b.hidden=false; b.className='mc-trade '+(r===null?'':r>=0?'pos':'neg');
   b.textContent=`${t.direction==='buy'?'▲':'▼'} ${t.status==='PENDING'?'PENDING':'LIVE'}${r===null||t.status==='PENDING'?'':' '+(r>=0?'+':'')+r.toFixed(2)+'R'}${list.length>1?' · '+list.length+' trades':''}`; }
 // BUY / SELL on an extra chart: same pair → setup on the main chart; other pair → that chart becomes the main chart, then the setup is placed
 function mcTrade(m,dir){ if(!mcInst(m.cfg)) return; mcActivate(m,()=>chartCreateSetup(dir)); }
@@ -5034,7 +5042,8 @@ async function syncNow(){
   try{
     if(st.repo!==c.repo||!st.branch){ const r=await gh(c,`/repos/${c.repo}`); if(!r.ok) throw ghErr(r,'open the repo'); const j=await r.json(); if(st.repo!==c.repo){ st.shas={}; st.pushed={}; st.first=true; } st.repo=c.repo; st.branch=j.default_branch||'main'; if(j.private===false) st.publicWarn=true; else delete st.publicWarn; }
     // 1) what is in the repo now
-    const remote={}; { const r=await gh(c,`/repos/${c.repo}/git/trees/${encodeURIComponent(st.branch)}?recursive=1`); if(r.ok){ const j=await r.json(); (j.tree||[]).forEach(e=>{ if(e.type==='blob') remote[e.path]=e.sha; }); } else if(r.status!==409&&r.status!==404) throw ghErr(r,'list files'); }
+    const remote={}; { const r=await gh(c,`/repos/${c.repo}/git/trees/${encodeURIComponent(st.branch)}?recursive=1`); if(r.ok){ const j=await r.json(); if(j.truncated) throw new Error('The sync repo is too big to list in one go — sync paused so nothing is deleted by mistake'); (j.tree||[]).forEach(e=>{ if(e.type==='blob') remote[e.path]=e.sha; }); } else if(r.status===409){ /* brand-new empty repo */ } else { st.branch=null; throw ghErr(r,'list files'); } }
+    { const known=Object.keys(st.shas).filter(k=>k.startsWith('journal/')).length, seen=Object.keys(remote).filter(k=>k.startsWith('journal/')).length; if(known>=3&&seen===0) throw new Error('The sync repo shows no trades although '+known+' were synced before — nothing deleted. Check the repo name and token in Settings → Sync'); }
     const blob=async sha=>{ const r=await gh(c,`/repos/${c.repo}/git/blobs/${sha}`,{accept:'application/vnd.github.raw+json'}); if(!r.ok) throw ghErr(r,'read a file'); return r.text(); };
     let writes=0; const MAXW=60;
     const put=async(path,text,sha,msg)=>{ if(writes>=MAXW) return null; writes++; const r=await gh(c,`/repos/${c.repo}/contents/${path}`,{method:'PUT',body:{message:msg,content:b64utf8(text),...(sha?{sha}:{})}}); if(r.status===409) return null; if(r.status===422){ let m=''; try{ m=(await r.json()).message||''; }catch(e){} if(/sha/i.test(m)) return null; throw new Error('GitHub refused '+path+' ('+(m||'422')+')'); } if(!r.ok) throw ghErr(r,'save files'); const j=await r.json(); return j.content&&j.content.sha; };
@@ -5087,7 +5096,7 @@ async function syncNow(){
 }
 function updateSyncCard(){ const m=$('s-sync-msg'); if(!m) return; const c=syncCfg(); const st=lsGet(SYNC_STATE,{});
   m.className='sync-msg '+(!c?'':syncLast.ok===false?'err':'ok');
-  m.textContent=!c?'Not connected yet.':syncLast.ok===false?'⚠ '+syncLast.msg:st.last?`✓ Last synced ${new Date(st.last).toLocaleString('en-ZA',{hour:'2-digit',minute:'2-digit',day:'numeric',month:'short'})} · ${syncLast.msg||((st.count||0)+' trades')}`+(st.publicWarn?' · ⚠ this repo is PUBLIC — make it private':''):'Connected — first sync running…'; }
+  m.textContent=!c?'Not connected yet.':syncLast.ok===false?'⚠ '+syncLast.msg:st.last?`✓ Last synced ${new Date(st.last).toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit',day:'numeric',month:'short'})} · ${syncLast.msg||((st.count||0)+' trades')}`+(st.publicWarn?' · ⚠ this repo is PUBLIC — make it private':''):'Connected — first sync running…'; }
 let syncTimerStarted=false;
 function startSyncLoop(){ if(syncTimerStarted) return; syncTimerStarted=true; setSyncChip('ok','');
   if(syncCfg()) setTimeout(syncNow,2500);
@@ -5105,7 +5114,7 @@ function openShotViewer(shots,start,t){
       <a class="sv-dl" title="Download picture">⤓</a><button class="sv-x" title="Close (Esc)">✕</button></div></div>
     <div class="sv-stage"><img alt="Trade screenshot" draggable="false"><span class="sv-hint">Scroll or pinch to zoom · drag to move · double-click to zoom in</span></div>
     <div class="sv-info">
-      <span><small>Date</small>${new Date(t.entryTime).toLocaleString('en-ZA',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</span>
+      <span><small>Date</small>${new Date(t.entryTime).toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</span>
       <span><small>Session</small>${esc(t.session||'—')}</span><span><small>TF</small>${esc(t.timeframe||'—')}</span>
       <span><small>Model</small>${esc(t.setupTag||'—')} · ${esc(t.tradeType||'')}</span>
       <span><small>Key level</small><b class="mono">${fp(t.entry)}</b></span>
@@ -5141,10 +5150,10 @@ function openShotViewer(shots,start,t){
 function renderSettings(){
   const g=document.getElementById('settings-grid'); const mode=getFeedMode();
   const themeBtns=THEMES.map(t0=>{ const t=themeWithCustom(t0); return `<button class="theme-btn ${getTheme()===t.id?'active':''}" data-theme="${t.id}">${themePreview(t)}<span>${t.name}${t.customised?' <i>your colours</i>':t.hollowUp?' <i>hollow</i>':''}</span></button>`; }).join('');
-  const symbolRows=getInstruments().map(i=>`<div class="symbol-row"><label>${esc(i.name)}</label><input data-deriv="${i.symbol}" value="${i.derivSymbol||''}" placeholder="${isBinance(i)?'Binance':'feed: auto'}" ${isBinance(i)?'disabled':''} title="Price-feed symbol" style="flex:1"></div>`).join('');
+  const symbolRows=getInstruments().map(i=>`<div class="symbol-row"><label>${esc(i.name)}</label><input data-deriv="${i.symbol}" value="${esc(i.derivSymbol||'')}" placeholder="${isBinance(i)?'Binance':'feed: auto'}" ${isBinance(i)?'disabled':''} title="Price-feed symbol" style="flex:1"></div>`).join('');
   const manual=getManual();
-  const manualRows=getInstruments().map(i=>{ const m=manual[i.symbol]; return `<div class="symbol-row"><label>${i.name}</label><input data-mscore="${i.symbol}" type="number" min="-10" max="10" value="${m?m.score:''}" placeholder="−10…+10" style="flex:0 0 90px"><input data-mreason="${i.symbol}" value="${m?m.reason||'':''}" placeholder="reason (optional)"></div>`; }).join('');
-  const moneyRows=getInstruments().map(i=>`<div class="symbol-row"><label>${i.name}</label><input data-spread="${i.symbol}" type="number" step="0.1" value="${i.spread}" title="Spread (pips)" style="flex:0 0 80px"><input data-contract="${i.symbol}" type="number" value="${i.contract}" title="Contract size" style="flex:0 0 110px"><input data-pip="${i.symbol}" type="number" step="any" value="${i.pip}" title="Pip/point size"></div>`).join('');
+  const manualRows=getInstruments().map(i=>{ const m=manual[i.symbol]; return `<div class="symbol-row"><label>${esc(i.name)}</label><input data-mscore="${i.symbol}" type="number" min="-10" max="10" value="${m?m.score:''}" placeholder="−10…+10" style="flex:0 0 90px"><input data-mreason="${i.symbol}" value="${esc(m?m.reason||'':'')}" placeholder="reason (optional)"></div>`; }).join('');
+  const moneyRows=getInstruments().map(i=>`<div class="symbol-row"><label>${esc(i.name)}</label><input data-spread="${i.symbol}" type="number" step="0.1" value="${i.spread}" title="Spread (pips)" style="flex:0 0 80px"><input data-contract="${i.symbol}" type="number" value="${i.contract}" title="Contract size" style="flex:0 0 110px"><input data-pip="${i.symbol}" type="number" step="any" value="${i.pip}" title="Pip/point size"></div>`).join('');
   const L=getLabels(), R=getRatios(); const {rate,source}=getUSDZAR();
   g.innerHTML=`
   <p class="pt-muted" style="grid-column:1/-1;margin:0 0 -6px;font-size:12px">Bias Desk version ${BUILD}</p>
@@ -5170,17 +5179,17 @@ function renderSettings(){
     <p class="pt-muted" style="margin-top:8px">Page opened from: <b>${location.protocol==='file:'?'a local file (file://)':esc(location.origin)}</b></p></div>
   <div class="setting-card card-s"><h3>📊 Bias scores</h3><p>Your GitHub job scores every pair each morning from about 04:10 SAST (backups until 08:37, in case GitHub starts it late) and writes <em>scores.json</em> — leave the link empty to use your own repository. Only today's (SAST) scores show — never yesterday's; while they're missing the site checks every 2 minutes.</p>
     <p class="pt-muted">If they're still missing after 04:45, the Overview shows <b>⟳ Get today's scores</b>. To let the site start the job by itself: GitHub → Settings → Developer settings → Fine-grained tokens → open your sync token → <b>Edit</b> → Repository access: add <b>${esc((siteRepo()||{repo:'bias-desk'}).repo)}</b> → Permissions → <b>Actions: Read and write</b> → Update. The token stays the same, nothing to re-enter. ${(()=>{ const k=kickState(); return k?(k.ok?'<b>Today: the site started the job ✓</b>':k.why==='no-permission'?'<b>Today: the token has no Actions access yet.</b>':''):''; })()}</p>
-    <div class="row"><input id="s-scores-url" placeholder="https://raw.githubusercontent.com/.../scores.json" value="${getScoresUrl()}" style="flex:1"><button id="s-save-url" class="btn-primary">Save &amp; fetch</button></div>
+    <div class="row"><input id="s-scores-url" placeholder="https://raw.githubusercontent.com/.../scores.json" value="${esc(getScoresUrl())}" style="flex:1"><button id="s-save-url" class="btn-primary">Save &amp; fetch</button></div>
     <p id="s-scores-msg" style="margin-top:8px;color:var(--muted);font-size:13px">Today (SAST): ${todaySAST()}</p>
     <div style="margin-top:12px;max-height:220px;overflow-y:auto;padding-right:4px">${manualRows}</div>
     <div class="row" style="margin-top:10px"><button id="s-save-manual" class="btn-primary">Save manual scores (today only)</button></div></div>
   <div class="setting-card card-s"><h3>📐 Position tool</h3><p>Level label names (UPPERCASE on chart) and extra-TP risk ratios. TP1 is always locked at 1:2.5.</p>
-    <div class="symbol-row"><label>Entry label</label><input data-label="entry" value="${L.entry}"></div>
-    <div class="symbol-row"><label>Stop label</label><input data-label="sl" value="${L.sl}"></div>
-    <div class="symbol-row"><label>TP1 label</label><input data-label="tp1" value="${L.tp1}"></div>
-    <div class="symbol-row"><label>TP2 label</label><input data-label="tp2" value="${L.tp2}"></div>
-    <div class="symbol-row"><label>TP3 label</label><input data-label="tp3" value="${L.tp3}"></div>
-    <div class="symbol-row"><label>TP4 label</label><input data-label="tp4" value="${L.tp4}"></div>
+    <div class="symbol-row"><label>Entry label</label><input data-label="entry" value="${esc(L.entry)}"></div>
+    <div class="symbol-row"><label>Stop label</label><input data-label="sl" value="${esc(L.sl)}"></div>
+    <div class="symbol-row"><label>TP1 label</label><input data-label="tp1" value="${esc(L.tp1)}"></div>
+    <div class="symbol-row"><label>TP2 label</label><input data-label="tp2" value="${esc(L.tp2)}"></div>
+    <div class="symbol-row"><label>TP3 label</label><input data-label="tp3" value="${esc(L.tp3)}"></div>
+    <div class="symbol-row"><label>TP4 label</label><input data-label="tp4" value="${esc(L.tp4)}"></div>
     <div class="symbol-row"><label>TP2 ratio</label><input data-ratio="tp2" type="number" step="0.1" value="${R.tp2}"></div>
     <div class="symbol-row"><label>TP3 ratio</label><input data-ratio="tp3" type="number" step="0.1" value="${R.tp3}"></div>
     <div class="symbol-row"><label>TP4 ratio</label><input data-ratio="tp4" type="number" step="0.1" value="${R.tp4}"></div>
@@ -5203,7 +5212,7 @@ function renderSettings(){
     <div class="row rules-num"><span>No trades within</span><input type="number" id="s-r-news" min="0" max="120" value="${rulesAuto().newsMin}"><span>min of high-impact news for the pair (0 = off)</span></div>
     <div class="row rules-num"><span>Max losses per day</span><input type="number" id="s-r-loss" min="0" max="20" value="${rulesAuto().maxLoss}"><span>(0 = off)</span></div>
     <div class="row rules-num"><span>Max trades per day</span><input type="number" id="s-r-trades" min="0" max="50" value="${rulesAuto().maxTrades}"><span>(0 = off)</span></div>
-    <p style="margin-top:10px">Your own rules — one per line. You tick each before CONFIRM.</p><textarea id="s-rules" rows="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:rgba(0,0,0,.35);color:var(--text)">${getRules().join('\n')}</textarea><div class="row" style="margin-top:8px"><button id="s-save-rules" class="btn-primary">Save rules</button></div></div>
+    <p style="margin-top:10px">Your own rules — one per line. You tick each before CONFIRM.</p><textarea id="s-rules" rows="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:rgba(0,0,0,.35);color:var(--text)">${esc(getRules().join('\n'))}</textarea><div class="row" style="margin-top:8px"><button id="s-save-rules" class="btn-primary">Save rules</button></div></div>
   <div class="setting-card card-s"><h3>💾 Backup</h3><p>Export journal to CSV, or a full JSON backup including screenshots, instruments and settings. Import restores everything.</p><div class="row"><button id="s-export-csv" class="btn-primary">Export CSV</button><button id="s-export" class="btn-primary">Export full JSON</button><label class="btn-primary" style="display:inline-block;text-align:center">Import JSON<input id="s-import" type="file" accept=".json" hidden></label></div></div>
   <div class="setting-card glass danger"><h3>⚠️ Reset everything</h3><p>Deletes your account, PIN, journal, screenshots, instruments and settings on this device. Export a backup first.</p><div class="row"><button id="s-reset-all" class="btn-delete">Reset everything</button></div></div>`;
   document.getElementById('s-sync-go').addEventListener('click',async()=>{
@@ -5331,9 +5340,12 @@ function enterApp(){
   renderCards(); route(); resetIdle(); initMotivation(); renderSessions();
   if(!window.__sessTimer) window.__sessTimer=setInterval(()=>{ renderSessions(); const c=$('tb-clock'); if(c) c.textContent=new Intl.DateTimeFormat('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()); const sc=$('ov-session-chip'); if(sc) sc.innerHTML='<span class="live-ring"></span>'+esc(sessionFor(new Date()))+' session'; },1000);
 }
-function lockApp(){ $('app-shell').hidden=true; $('login-screen').hidden=false; $('password-input').value=''; pinBuf=''; renderPinDots(); refreshLoginUI(); clearTimeout(idleTimer); toast('Desk locked 🔒'); }
-function resetIdle(){ clearTimeout(idleTimer); idleTimer=setTimeout(lockApp, getIdleMinutes()*60*1000); }
-['click','keydown','mousemove'].forEach(ev=>document.addEventListener(ev,()=>{ if(!$('app-shell').hidden) resetIdle(); },{passive:true}));
+function lockApp(){ document.querySelectorAll('.shot-viewer,.modal-overlay:not(#modal-overlay),.tf-pick,.tc-pop,#detail-overlay').forEach(x=>x.remove()); const mo=$('modal-overlay'); if(mo) mo.hidden=true; try{ if(rp.playing) replayPlay(false); tlSelect(null); tlSetMode(false); if(typeof mdSelect==='function') mdSelect(null); }catch(e){} try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){} document.body.dataset.page='locked'; $('app-shell').hidden=true; $('login-screen').hidden=false; $('password-input').value=''; pinBuf=''; renderPinDots(); refreshLoginUI(); clearTimeout(idleTimer); toast('Desk locked 🔒'); }
+let lastActive=Date.now();
+function resetIdle(){ lastActive=Date.now(); clearTimeout(idleTimer); idleTimer=setTimeout(lockApp, getIdleMinutes()*60*1000); }
+function idleCheck(){ if(!$('app-shell').hidden&&Date.now()-lastActive>getIdleMinutes()*60*1000) lockApp(); }
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) idleCheck(); }); addEventListener('pageshow',idleCheck);
+['click','keydown','mousemove','touchstart','wheel','scroll'].forEach(ev=>document.addEventListener(ev,()=>{ if(!$('app-shell').hidden&&Date.now()-lastActive>2000) resetIdle(); },{passive:true,capture:true}));
 
 // ---------- MARKETS TABLE (grouped like your watchlist; prices update quietly, no flashing) ----------
 function biasCell(sym){ const b=biasBadge(sym); return b.score===null?'<span class="bz bz-none">—</span>':`<span class="bz ${b.cls}">${b.score>0?'+':''}${b.score}</span><span class="bz-l">${esc(b.label)}</span>`; }
@@ -5380,7 +5392,7 @@ function refreshCards(){
     if(p){ const t=priceText(inst); if(p.textContent!==t) p.textContent=t; }
     if(ch){ const t=chgText(inst); if(ch.textContent!==t){ ch.textContent=t; ch.className=`mk-chg mono ${getChange(inst)>=0?'up':'down'}`; } }
   }
-  drawSparklines(false); updateOverviewOpen();
+  const pg=document.body.dataset.page; if(pg==='markets'||pg==='overview') drawSparklines(false); if(pg==='overview') updateOverviewOpen();
 }
 function removeInstrument(sym){ const inst=getInstruments().find(i=>i.symbol===sym); if(!confirm(`Remove ${inst?inst.name:sym}?`)) return; saveInstruments(getInstruments().filter(i=>i.symbol!==sym)); renderCards(); toast('Removed ✓'); }
 
@@ -5395,7 +5407,7 @@ async function renderKpis(){ const el=$('ov-kpis'); if(!el) return; const all=(a
   const bal=getBalance(); let best=null; for(const i of getInstruments()){ const b=biasBadge(i.symbol); if(b.score!=null&&(!best||Math.abs(b.score)>Math.abs(best.s))) best={n:i.name,s:b.score,cls:b.cls}; }
   if(!el.dataset.built){ el.dataset.built='1'; el.innerHTML=[['bal','Balance','💼'],['day','Today’s P/L','📅'],['wr','Win rate','🎯'],['live','Live trades','⚡'],['best','Strongest bias','🧭']].map(([k,n,ic],i)=>`<div class="kpi" style="--d:${i*80}ms"><span class="kpi-ic">${ic}</span><small>${n}</small><strong data-k="${k}">—</strong><em data-ks="${k}"></em><i class="kpi-glow"></i></div>`).join(''); }
   const q=k=>el.querySelector(`[data-k="${k}"]`), qs=k=>el.querySelector(`[data-ks="${k}"]`);
-  countUp(q('bal'),bal,v=>'R'+Math.round(v).toLocaleString('en-ZA')); qs('bal').textContent='Account balance';
+  countUp(q('bal'),bal,v=>'R'+Math.round(v).toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'})); qs('bal').textContent='Account balance';
   countUp(q('day'),pnl,v=>(v<0?'−':'+')+'R'+Math.abs(v).toFixed(2)); q('day').className=pnl>0?'up':pnl<0?'down':''; qs('day').textContent=closedToday.length?`${closedToday.length} closed · ${rT>0?'+':''}${rT.toFixed(1)}R`:'No closed trades yet';
   const wr=s.wins+s.losses?Math.round(s.winRate):null; if(wr==null) q('wr').textContent='—'; else countUp(q('wr'),wr,v=>Math.round(v)+'%'); qs('wr').textContent=`${s.wins}W · ${s.losses}L`;
   countUp(q('live'),live,v=>String(Math.round(v))); qs('live').textContent=live?'Being tracked live':'Nothing running';
@@ -5547,15 +5559,16 @@ function renderSessions(){
 // ---------- BACKGROUND: "AI trading system" — slow parallax candle streams, data nodes and drifting quotes ----------
 function initFX(){
   const cv=$('fx-canvas'); if(!cv) return; const ctx=cv.getContext('2d'); const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const DPR=Math.min(devicePixelRatio||1,1.5); let W=0,H=0,layers=[],nodes=[],quotes=[],ribbons=[],t=0,mx=-999,my=-999;
+  const lite=matchMedia('(pointer: coarse)').matches||innerWidth<820; // phones / tablets: lighter scene, 15 fps
+  const DPR=Math.min(devicePixelRatio||1,lite?1:1.5); let W=0,H=0,layers=[],nodes=[],quotes=[],ribbons=[],t=0,mx=-999,my=-999,still=false;
   const SYMS=['EURUSD','XAUUSD','GBPUSD','US30','US100','GER30','AUDUSD','NZDUSD','USDCHF','BTCUSD'];
   function makeLayer(depth){ const n=Math.ceil(W/(10+depth*6))+40; let p=0.5; const c=[]; for(let i=0;i<n;i++){ const o=p; p=Math.max(.15,Math.min(.85,p+(Math.random()-.5)*.06)); c.push({o,cl:p,h:Math.max(o,p)+Math.random()*.03,l:Math.min(o,p)-Math.random()*.03}); }
     return {depth,candles:c,off:0,speed:.05+depth*.06,bw:4+depth*3,gap:6+depth*4,y:H*(.26+depth*.2),amp:H*(.09+depth*.04),alpha:.035+depth*.035}; }
   const resize=()=>{ W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px'; ctx.setTransform(DPR,0,0,DPR,0,0);
     layers=[makeLayer(0),makeLayer(1),makeLayer(2)];
-    nodes=Array.from({length:Math.round(Math.min(70,W*H/22000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.5+.6,ph:Math.random()*6.28}));
+    nodes=Array.from({length:Math.round(Math.min(lite?28:70,W*H/(lite?40000:22000)))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.5+.6,ph:Math.random()*6.28}));
     ribbons=[0,1,2].map(i=>({y:H*(.38+i*.14),amp:H*(.05+i*.02),f:.0022+i*.0009,sp:.006+i*.003,ph:Math.random()*6,w:1.2+i*.5,hue:i})); };
-  resize(); addEventListener('resize',resize);
+  resize(); addEventListener('resize',()=>{ resize(); still=false; });
   addEventListener('pointermove',e=>{ mx=e.clientX; my=e.clientY; },{passive:true}); addEventListener('pointerleave',()=>{ mx=my=-999; });
   const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   let up='#22c58a', dn='#f0506e', acc='#1e6bff', frame=0;
@@ -5564,7 +5577,8 @@ function initFX(){
   const draw=()=>{
     requestAnimationFrame(draw);
     const onChart=document.body.dataset.page==='chart';
-    if(document.hidden||onChart||(frame++&1)) return;
+    if(document.hidden||onChart||still||(frame++%(lite?4:2))) return;
+    if(reduce) still=true; // reduced motion: one calm frame, no animation
     if(frame%240===0){ acc=css('--accent')||acc; }
     t+=1; ctx.clearRect(0,0,W,H); const light=document.body.classList.contains('light');
     // perspective grid floor — a horizon the market runs towards
@@ -5584,7 +5598,7 @@ function initFX(){
     ctx.save(); ctx.globalCompositeOperation=light?'source-over':'lighter';
     for(const R of ribbons){ const ph=R.ph+(reduce?0:t*R.sp); const g=ctx.createLinearGradient(0,0,W,0); const cA=R.hue===0?'56,225,255':R.hue===1?'124,92,255':'34,229,138';
       g.addColorStop(0,`rgba(${cA},0)`); g.addColorStop(.25,`rgba(${cA},${light?.18:.32})`); g.addColorStop(.75,`rgba(${cA},${light?.14:.26})`); g.addColorStop(1,`rgba(${cA},0)`);
-      ctx.strokeStyle=g; ctx.lineWidth=R.w; ctx.shadowColor=`rgba(${cA},.8)`; ctx.shadowBlur=light?0:12; ctx.beginPath();
+      ctx.strokeStyle=g; ctx.lineWidth=R.w; ctx.shadowColor=`rgba(${cA},.8)`; ctx.shadowBlur=light||lite?0:12; ctx.beginPath();
       for(let x=0;x<=W;x+=8){ const y=R.y+noise(x+ph*120,R.f)*R.amp; x?ctx.lineTo(x,y):ctx.moveTo(x,y); } ctx.stroke();
       const hx=((t*1.6*(1+R.hue*.3))%(W+200))-100, hy=R.y+noise(hx+ph*120,R.f)*R.amp; const rg=ctx.createRadialGradient(hx,hy,0,hx,hy,18); rg.addColorStop(0,`rgba(${cA},.9)`); rg.addColorStop(1,`rgba(${cA},0)`); ctx.shadowBlur=0; ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(hx,hy,18,0,6.283); ctx.fill(); }
     ctx.restore();
