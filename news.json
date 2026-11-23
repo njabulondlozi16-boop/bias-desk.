@@ -1,6 +1,6 @@
 {
  "source": "Forex Factory economic calendar",
- "fetched": "2026-11-23T09:52:07Z",
+ "fetched": "2026-11-23T22:56:13Z",
  "events": [
   {
    "t": 1795392000,
@@ -79,7 +79,7 @@
    "cur": "USD",
    "title": "CB Consumer Confidence",
    "impact": "medium",
-   "forecast": "92.1",
+   "forecast": "92.4",
    "previous": "91.7"
   },
   {
@@ -103,7 +103,7 @@
    "cur": "AUD",
    "title": "CPI y/y",
    "impact": "high",
-   "forecast": "4.8%",
+   "forecast": "4.7%",
    "previous": "4.3%"
   },
   {
@@ -139,14 +139,6 @@
    "previous": "2.3%"
   },
   {
-   "t": 1795613400,
-   "cur": "USD",
-   "title": "Unemployment Claims",
-   "impact": "medium",
-   "forecast": "201K",
-   "previous": "203K"
-  },
-  {
    "t": 1795698000,
    "cur": "USD",
    "title": "Bank Holiday",
@@ -159,7 +151,7 @@
    "cur": "JPY",
    "title": "Tokyo Core CPI y/y",
    "impact": "medium",
-   "forecast": "2.9%",
+   "forecast": "3.0%",
    "previous": "2.6%"
   }
  ]
