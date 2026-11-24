@@ -1,0 +1,26 @@
+name: Send phone alert
+
+# Lets the website, a scheduled check or Claude send you a phone alert: Actions -> Send phone alert -> Run workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      title: { description: 'Title', required: true, default: 'Bias Desk test alert' }
+      message: { description: 'Message', required: true, default: 'Alerts are working. You will get the morning brief and investor alerts here.' }
+      priority: { description: 'min, low, default, high or urgent', required: false, default: 'default' }
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TITLE: ${{ inputs.title }}
+          MESSAGE: ${{ inputs.message }}
+          PRIORITY: ${{ inputs.priority }}
+        run: python scripts/notify.py --title "$TITLE" --message "$MESSAGE" --priority "$PRIORITY" --tags bell

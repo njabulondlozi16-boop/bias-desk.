@@ -1,0 +1,807 @@
+{
+ "_note": "Instruments the investor desk scans. Add tickers here (Yahoo symbols). market: US, ETF, JSE, Crypto, Commodity, Index, FX.",
+ "benchmarks": {
+  "US": "SPY",
+  "JSE": "STX40.JO",
+  "ZAR": "ZAR=X"
+ },
+ "instruments": [
+  {
+   "ticker": "AAPL",
+   "market": "US"
+  },
+  {
+   "ticker": "ABBV",
+   "market": "US"
+  },
+  {
+   "ticker": "ABT",
+   "market": "US"
+  },
+  {
+   "ticker": "ACN",
+   "market": "US"
+  },
+  {
+   "ticker": "ADBE",
+   "market": "US"
+  },
+  {
+   "ticker": "AIG",
+   "market": "US"
+  },
+  {
+   "ticker": "AMD",
+   "market": "US"
+  },
+  {
+   "ticker": "AMGN",
+   "market": "US"
+  },
+  {
+   "ticker": "AMT",
+   "market": "US"
+  },
+  {
+   "ticker": "AMZN",
+   "market": "US"
+  },
+  {
+   "ticker": "AVGO",
+   "market": "US"
+  },
+  {
+   "ticker": "AXP",
+   "market": "US"
+  },
+  {
+   "ticker": "BA",
+   "market": "US"
+  },
+  {
+   "ticker": "BAC",
+   "market": "US"
+  },
+  {
+   "ticker": "BK",
+   "market": "US"
+  },
+  {
+   "ticker": "BKNG",
+   "market": "US"
+  },
+  {
+   "ticker": "BLK",
+   "market": "US"
+  },
+  {
+   "ticker": "BMY",
+   "market": "US"
+  },
+  {
+   "ticker": "BRK-B",
+   "market": "US"
+  },
+  {
+   "ticker": "C",
+   "market": "US"
+  },
+  {
+   "ticker": "CAT",
+   "market": "US"
+  },
+  {
+   "ticker": "CHTR",
+   "market": "US"
+  },
+  {
+   "ticker": "CL",
+   "market": "US"
+  },
+  {
+   "ticker": "CMCSA",
+   "market": "US"
+  },
+  {
+   "ticker": "COF",
+   "market": "US"
+  },
+  {
+   "ticker": "COP",
+   "market": "US"
+  },
+  {
+   "ticker": "COST",
+   "market": "US"
+  },
+  {
+   "ticker": "CRM",
+   "market": "US"
+  },
+  {
+   "ticker": "CSCO",
+   "market": "US"
+  },
+  {
+   "ticker": "CVS",
+   "market": "US"
+  },
+  {
+   "ticker": "CVX",
+   "market": "US"
+  },
+  {
+   "ticker": "DE",
+   "market": "US"
+  },
+  {
+   "ticker": "DHR",
+   "market": "US"
+  },
+  {
+   "ticker": "DIS",
+   "market": "US"
+  },
+  {
+   "ticker": "DUK",
+   "market": "US"
+  },
+  {
+   "ticker": "EMR",
+   "market": "US"
+  },
+  {
+   "ticker": "F",
+   "market": "US"
+  },
+  {
+   "ticker": "FDX",
+   "market": "US"
+  },
+  {
+   "ticker": "GD",
+   "market": "US"
+  },
+  {
+   "ticker": "GE",
+   "market": "US"
+  },
+  {
+   "ticker": "GILD",
+   "market": "US"
+  },
+  {
+   "ticker": "GM",
+   "market": "US"
+  },
+  {
+   "ticker": "GOOG",
+   "market": "US"
+  },
+  {
+   "ticker": "GOOGL",
+   "market": "US"
+  },
+  {
+   "ticker": "GS",
+   "market": "US"
+  },
+  {
+   "ticker": "HD",
+   "market": "US"
+  },
+  {
+   "ticker": "HON",
+   "market": "US"
+  },
+  {
+   "ticker": "IBM",
+   "market": "US"
+  },
+  {
+   "ticker": "INTC",
+   "market": "US"
+  },
+  {
+   "ticker": "INTU",
+   "market": "US"
+  },
+  {
+   "ticker": "ISRG",
+   "market": "US"
+  },
+  {
+   "ticker": "JNJ",
+   "market": "US"
+  },
+  {
+   "ticker": "JPM",
+   "market": "US"
+  },
+  {
+   "ticker": "KO",
+   "market": "US"
+  },
+  {
+   "ticker": "LIN",
+   "market": "US"
+  },
+  {
+   "ticker": "LLY",
+   "market": "US"
+  },
+  {
+   "ticker": "LMT",
+   "market": "US"
+  },
+  {
+   "ticker": "LOW",
+   "market": "US"
+  },
+  {
+   "ticker": "MA",
+   "market": "US"
+  },
+  {
+   "ticker": "MCD",
+   "market": "US"
+  },
+  {
+   "ticker": "MDLZ",
+   "market": "US"
+  },
+  {
+   "ticker": "MDT",
+   "market": "US"
+  },
+  {
+   "ticker": "MET",
+   "market": "US"
+  },
+  {
+   "ticker": "META",
+   "market": "US"
+  },
+  {
+   "ticker": "MMM",
+   "market": "US"
+  },
+  {
+   "ticker": "MO",
+   "market": "US"
+  },
+  {
+   "ticker": "MRK",
+   "market": "US"
+  },
+  {
+   "ticker": "MS",
+   "market": "US"
+  },
+  {
+   "ticker": "MSFT",
+   "market": "US"
+  },
+  {
+   "ticker": "NEE",
+   "market": "US"
+  },
+  {
+   "ticker": "NFLX",
+   "market": "US"
+  },
+  {
+   "ticker": "NKE",
+   "market": "US"
+  },
+  {
+   "ticker": "NOW",
+   "market": "US"
+  },
+  {
+   "ticker": "NVDA",
+   "market": "US"
+  },
+  {
+   "ticker": "ORCL",
+   "market": "US"
+  },
+  {
+   "ticker": "PEP",
+   "market": "US"
+  },
+  {
+   "ticker": "PFE",
+   "market": "US"
+  },
+  {
+   "ticker": "PG",
+   "market": "US"
+  },
+  {
+   "ticker": "PLTR",
+   "market": "US"
+  },
+  {
+   "ticker": "PM",
+   "market": "US"
+  },
+  {
+   "ticker": "PYPL",
+   "market": "US"
+  },
+  {
+   "ticker": "QCOM",
+   "market": "US"
+  },
+  {
+   "ticker": "RTX",
+   "market": "US"
+  },
+  {
+   "ticker": "SBUX",
+   "market": "US"
+  },
+  {
+   "ticker": "SCHW",
+   "market": "US"
+  },
+  {
+   "ticker": "SO",
+   "market": "US"
+  },
+  {
+   "ticker": "SPG",
+   "market": "US"
+  },
+  {
+   "ticker": "T",
+   "market": "US"
+  },
+  {
+   "ticker": "TGT",
+   "market": "US"
+  },
+  {
+   "ticker": "TMO",
+   "market": "US"
+  },
+  {
+   "ticker": "TMUS",
+   "market": "US"
+  },
+  {
+   "ticker": "TSLA",
+   "market": "US"
+  },
+  {
+   "ticker": "TXN",
+   "market": "US"
+  },
+  {
+   "ticker": "UBER",
+   "market": "US"
+  },
+  {
+   "ticker": "UNH",
+   "market": "US"
+  },
+  {
+   "ticker": "UNP",
+   "market": "US"
+  },
+  {
+   "ticker": "UPS",
+   "market": "US"
+  },
+  {
+   "ticker": "USB",
+   "market": "US"
+  },
+  {
+   "ticker": "V",
+   "market": "US"
+  },
+  {
+   "ticker": "VZ",
+   "market": "US"
+  },
+  {
+   "ticker": "WFC",
+   "market": "US"
+  },
+  {
+   "ticker": "WMT",
+   "market": "US"
+  },
+  {
+   "ticker": "XOM",
+   "market": "US"
+  },
+  {
+   "ticker": "XLK",
+   "market": "ETF",
+   "sector": "Technology",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLF",
+   "market": "ETF",
+   "sector": "Financials",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLE",
+   "market": "ETF",
+   "sector": "Energy",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLV",
+   "market": "ETF",
+   "sector": "Health Care",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLI",
+   "market": "ETF",
+   "sector": "Industrials",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLY",
+   "market": "ETF",
+   "sector": "Consumer Discretionary",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLP",
+   "market": "ETF",
+   "sector": "Consumer Staples",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLU",
+   "market": "ETF",
+   "sector": "Utilities",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLB",
+   "market": "ETF",
+   "sector": "Materials",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLRE",
+   "market": "ETF",
+   "sector": "Real Estate",
+   "sector_etf": true
+  },
+  {
+   "ticker": "XLC",
+   "market": "ETF",
+   "sector": "Communication Services",
+   "sector_etf": true
+  },
+  {
+   "ticker": "SPY",
+   "market": "ETF",
+   "name": "S&P 500"
+  },
+  {
+   "ticker": "QQQ",
+   "market": "ETF",
+   "name": "Nasdaq 100"
+  },
+  {
+   "ticker": "IWM",
+   "market": "ETF",
+   "name": "Russell 2000"
+  },
+  {
+   "ticker": "DIA",
+   "market": "ETF",
+   "name": "Dow Jones 30"
+  },
+  {
+   "ticker": "EFA",
+   "market": "ETF",
+   "name": "Developed ex-US"
+  },
+  {
+   "ticker": "EEM",
+   "market": "ETF",
+   "name": "Emerging markets"
+  },
+  {
+   "ticker": "GLD",
+   "market": "Commodity",
+   "name": "Gold"
+  },
+  {
+   "ticker": "SLV",
+   "market": "Commodity",
+   "name": "Silver"
+  },
+  {
+   "ticker": "USO",
+   "market": "Commodity",
+   "name": "Oil"
+  },
+  {
+   "ticker": "TLT",
+   "market": "ETF",
+   "name": "US 20y+ bonds"
+  },
+  {
+   "ticker": "IEF",
+   "market": "ETF",
+   "name": "US 7-10y bonds"
+  },
+  {
+   "ticker": "DBC",
+   "market": "Commodity",
+   "name": "Commodities"
+  },
+  {
+   "ticker": "NPN.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "PRX.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "CFR.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "BTI.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "AGL.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "FSR.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "SBK.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "CPI.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "MTN.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "ABG.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "NED.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "SLM.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "BHG.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "GLN.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "VAL.JO",
+   "market": "JSE",
+   "name": "Valterra Platinum (was Anglo American Platinum)"
+  },
+  {
+   "ticker": "ANG.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "GFI.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "IMP.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "SOL.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "VOD.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "SHP.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "BID.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "BVT.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "CLS.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "WHL.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "MNP.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "REM.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "OMU.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "DSY.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "INL.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "INP.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "NRP.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "GRT.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "APN.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "HAR.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "NPH.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "SSW.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "EXX.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "PPH.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "ANH.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "MRP.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "OUT.JO",
+   "market": "JSE"
+  },
+  {
+   "ticker": "STX40.JO",
+   "market": "JSE",
+   "name": "Satrix 40 (JSE Top 40)",
+   "etf": true
+  },
+  {
+   "ticker": "STXIND.JO",
+   "market": "JSE",
+   "name": "Satrix Indi",
+   "etf": true
+  },
+  {
+   "ticker": "STXRES.JO",
+   "market": "JSE",
+   "name": "Satrix Resi",
+   "etf": true
+  },
+  {
+   "ticker": "STXFIN.JO",
+   "market": "JSE",
+   "name": "Satrix Fini",
+   "etf": true
+  },
+  {
+   "ticker": "BTC-USD",
+   "market": "Crypto",
+   "name": "Bitcoin"
+  },
+  {
+   "ticker": "ETH-USD",
+   "market": "Crypto",
+   "name": "Ethereum"
+  },
+  {
+   "ticker": "SOL-USD",
+   "market": "Crypto",
+   "name": "Solana"
+  },
+  {
+   "ticker": "ZAR=X",
+   "market": "FX",
+   "name": "USD/ZAR",
+   "context": true
+  },
+  {
+   "ticker": "^GSPC",
+   "market": "Index",
+   "name": "S&P 500 index",
+   "context": true
+  },
+  {
+   "ticker": "^VIX",
+   "market": "Index",
+   "name": "VIX",
+   "context": true
+  },
+  {
+   "ticker": "DX-Y.NYB",
+   "market": "Index",
+   "name": "US dollar index",
+   "context": true
+  },
+  {
+   "ticker": "GC=F",
+   "market": "Index",
+   "name": "Gold futures",
+   "context": true
+  },
+  {
+   "ticker": "CL=F",
+   "market": "Index",
+   "name": "Oil futures",
+   "context": true
+  }
+ ],
+ "fred": [
+  "CPIAUCSL",
+  "UNRATE",
+  "ICSA",
+  "DFF",
+  "DGS10",
+  "DGS2",
+  "T10Y2Y",
+  "BAMLH0A0HYM2",
+  "VIXCLS",
+  "DTWEXBGS",
+  "DCOILWTICO",
+  "INDPRO",
+  "UMCSENT"
+ ]
+}
