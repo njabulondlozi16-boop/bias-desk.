@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-24 15:21 SAST",
+ "generated_at": "2026-11-24 16:22 SAST",
  "instruments": [
   {
    "ticker": "AAPL",
@@ -2106,6 +2106,16 @@
    "age_days": 0,
    "problems": [],
    "status": "ok"
+  },
+  {
+   "ticker": "HYG",
+   "market": "ETF",
+   "rows": 2512,
+   "first": "2016-11-25",
+   "last": "2026-11-23",
+   "age_days": 1,
+   "problems": [],
+   "status": "ok"
   }
  ],
  "fred": [
@@ -2160,8 +2170,8 @@
   }
  ],
  "summary": {
-  "instruments": 181,
-  "ok": 175,
+  "instruments": 182,
+  "ok": 176,
   "warnings": 5,
   "failed": 1,
   "fred_ok": 7,

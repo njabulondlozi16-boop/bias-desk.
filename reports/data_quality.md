@@ -1,6 +1,6 @@
-# Investor desk - data quality (2026-11-24 15:21 SAST)
+# Investor desk - data quality (2026-11-24 16:22 SAST)
 
-Instruments: **175 ok**, 5 with warnings, **1 failed** (of 181). Economy series: 7 ok, 0 failed.
+Instruments: **176 ok**, 5 with warnings, **1 failed** (of 182). Economy series: 7 ok, 0 failed.
 
 | Ticker | Market | Status | Rows | Last bar | Source | Problems |
 |---|---|---|---|---|---|---|
@@ -84,6 +84,7 @@ Instruments: **175 ok**, 5 with warnings, **1 failed** (of 181). Economy series:
 | HAR.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
 | HD | US | ok | 2512 | 2026-11-23 |  |  |
 | HON | US | ok | 2512 | 2026-11-23 |  |  |
+| HYG | ETF | ok | 2512 | 2026-11-23 |  |  |
 | IBM | US | ok | 2512 | 2026-11-23 |  |  |
 | IEF | ETF | ok | 2512 | 2026-11-23 |  |  |
 | IMP.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
