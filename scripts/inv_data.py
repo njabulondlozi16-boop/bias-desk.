@@ -134,13 +134,34 @@ def treasury():
     return {k: sorted(v.items()) for k, v in out.items()}
 
 
-def check(rows, market):
+def clean(rows):
+    """Fix Yahoo's known glitches. JSE prices are in cents, but Yahoo sometimes prints a day in rand
+    (a one-day -99% then +9900% spike): those days are scaled back x100. A one-day spike that reverses
+    (>60% away from both neighbours) is dropped. Returns (rows, notes)."""
+    notes = []
+    if len(rows) < 3:
+        return rows, notes
+    out = [rows[0]]
+    for i in range(1, len(rows) - 1):
+        p, c, n = rows[i - 1][4], rows[i][4], rows[i + 1][4]
+        if c and p and n and c > 0:
+            if 0.005 < c / p < 0.02 and 0.005 < c / n < 0.02:  # one day quoted in rand instead of cents
+                r = list(rows[i]); r[1:6] = [x * 100 if x else x for x in r[1:6]]; out.append(r)
+                notes.append(f"{r[0]} x100 (rand/cents glitch)"); continue
+            if (c / p > 1.6 and c / n > 1.6) or (c / p < 0.4 and c / n < 0.4):
+                notes.append(f"{rows[i][0]} dropped (one-day spike)"); continue
+        out.append(rows[i])
+    out.append(rows[-1])
+    return out, notes
+
+
+def check(rows, market, ticker=""):
     """Data-quality checks on one price file. Returns (ok, problems list, stats)."""
     probs = []
     n = len(rows)
     if n < 120:
         probs.append(f"only {n} rows")
-    bad = sum(1 for r in rows if not (r[4] and r[4] > 0))
+    bad = 0 if ticker == "CL=F" else sum(1 for r in rows if not (r[4] and r[4] > 0))  # oil futures really went negative in April 2020
     if bad:
         probs.append(f"{bad} zero/negative closes")
     hl = sum(1 for r in rows if r[2] is not None and r[3] is not None and r[2] < r[3])
@@ -148,6 +169,8 @@ def check(rows, market):
         probs.append(f"{hl} rows with high < low")
     jumps = []
     lim = 0.6 if market == "Crypto" else 0.35
+    if ticker in ("^VIX", "CL=F"):
+        lim = 9e9  # these really do jump
     for a, b in zip(rows, rows[1:]):
         if a[5] and b[5] and abs(b[5] / a[5] - 1) > lim:
             jumps.append(f"{b[0]} {b[5] / a[5] - 1:+.0%}")
@@ -225,8 +248,14 @@ def main():
                         rows, meta = yahoo(t, "query2"); src = "yahoo"
                     except Exception as e2:
                         errs.append(f"yahoo2: {e2}")
+            if rows is not None and not rows:
+                errs.append("yahoo returned no price rows")
+                rows = None
             if rows:
-                good, probs, st = check(rows, mkt)
+                rows, fixes = clean(rows)
+                if fixes:
+                    (meta or {}).setdefault("cleaned", fixes[-10:])
+                good, probs, st = check(rows, mkt, t)
                 if good or not old:
                     save(path, {"ticker": t, "market": mkt, "fetched": today, "source": src, "meta": meta, "rows": rows})
                 else:  # new download looks broken: keep yesterday's copy
@@ -239,8 +268,10 @@ def main():
                 entry.update({"status": "failed", "problems": errs}); fail += 1
                 print(f"{t:10s} FAILED {'; '.join(errs)}", flush=True)
                 report["instruments"].append(entry); continue
-        good, probs, st = check(rows, mkt)
-        entry.update(st); entry["source"] = src; entry["name"] = (meta or {}).get("name") or ins.get("name"); entry["currency"] = (meta or {}).get("currency")
+        good, probs, st = check(rows, mkt, t)
+        entry.update(st)
+        if (meta or {}).get("cleaned"):
+            entry["cleaned"] = meta["cleaned"]; entry["source"] = src; entry["name"] = (meta or {}).get("name") or ins.get("name"); entry["currency"] = (meta or {}).get("currency")
         if (meta or {}).get("splits"):
             entry["splits"] = meta["splits"][-3:]
         entry["problems"] = probs
@@ -297,7 +328,7 @@ def main():
              f"Instruments: **{ok} ok**, {warn} with warnings, **{fail} failed** (of {len(uni['instruments'])}). Economy series: {fok} ok, {ffail} failed.", "",
              "| Ticker | Market | Status | Rows | Last bar | Source | Problems |", "|---|---|---|---|---|---|---|"]
     for x in sorted(report["instruments"], key=lambda x: ({"failed": 0, "warning": 1, "ok": 2}[x.get("status", "failed")], x["ticker"])):
-        lines.append(f"| {x['ticker']} | {x['market']} | {x.get('status')} | {x.get('rows', '')} | {x.get('last', '')} | {x.get('source', '')} | {'; '.join(x.get('problems') or []) or x.get('note', '')} |")
+        lines.append(f"| {x['ticker']} | {x['market']} | {x.get('status')} | {x.get('rows', '')} | {x.get('last', '')} | {x.get('source', '')} | {'; '.join(x.get('problems') or []) or x.get('note', '')}{(' (fixed: ' + ', '.join(x['cleaned'][:3]) + ')') if x.get('cleaned') else ''} |")
     lines += ["", "| Economy series | Status | Rows | Last value date |", "|---|---|---|---|"] + [f"| {e['series']} | {e['status']} | {e.get('rows', '')} | {e.get('last', '')} |" for e in report["fred"]]
     open(os.path.join(a.cache, "reports", "data_quality.md"), "w").write("\n".join(lines) + "\n")
     print("\n".join(lines[:3]))

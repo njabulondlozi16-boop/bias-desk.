@@ -601,8 +601,9 @@
    "market": "JSE"
   },
   {
-   "ticker": "AMS.JO",
-   "market": "JSE"
+   "ticker": "VAL.JO",
+   "market": "JSE",
+   "name": "Valterra Platinum (was Anglo American Platinum)"
   },
   {
    "ticker": "ANG.JO",
