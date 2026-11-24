@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-24 15:17 SAST",
+ "generated_at": "2026-11-24 15:20 SAST",
  "instruments": [
   {
    "ticker": "AAPL",
@@ -8,9 +8,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Apple Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2020-08-31",
@@ -27,9 +24,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "AbbVie Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -40,9 +34,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Abbott Laboratories",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -53,9 +44,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Accenture plc",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -66,9 +54,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Adobe Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -79,9 +64,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "American International Group, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -92,9 +74,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Advanced Micro Devices, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -105,9 +84,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Amgen Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -118,9 +94,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "American Tower Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -131,9 +104,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Amazon.com, Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2022-06-06",
@@ -150,9 +120,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Broadcom Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2024-07-15",
@@ -169,9 +136,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "American Express Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -182,9 +146,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Boeing Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -195,9 +156,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Bank of America Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -205,7 +163,9 @@
    "ticker": "BK",
    "market": "US",
    "status": "failed",
-   "problems": []
+   "problems": [
+    "yahoo returned no price rows"
+   ]
   },
   {
    "ticker": "BKNG",
@@ -214,9 +174,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Booking Holdings Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2026-04-06",
@@ -233,9 +190,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "BlackRock, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -246,9 +200,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Bristol-Myers Squibb Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -259,9 +210,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Berkshire Hathaway Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -272,9 +220,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Citigroup Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -285,9 +230,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Caterpillar Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -298,9 +240,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Charter Communications, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -311,9 +250,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Colgate-Palmolive Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -324,9 +260,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Comcast Corporation",
-   "currency": "USD",
    "splits": [
     {
      "date": "2017-02-21",
@@ -347,9 +280,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Capital One Financial Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -360,9 +290,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "ConocoPhillips",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -373,9 +300,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Costco Wholesale Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -386,9 +310,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Salesforce, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -399,9 +320,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Cisco Systems, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -412,9 +330,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "CVS Health Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -425,9 +340,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Chevron Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -438,9 +350,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Deere & Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -451,9 +360,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Danaher Corporation",
-   "currency": "USD",
    "splits": [
     {
      "date": "2023-10-02",
@@ -470,9 +376,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Walt Disney Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -483,9 +386,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Duke Energy Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -496,9 +396,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Emerson Electric Co.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -509,9 +406,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Ford Motor Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -522,9 +416,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "FedEx Corporation",
-   "currency": "USD",
    "splits": [
     {
      "date": "2026-06-01",
@@ -541,9 +432,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "General Dynamics Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -554,9 +442,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "GE Aerospace",
-   "currency": "USD",
    "splits": [
     {
      "date": "2021-08-02",
@@ -581,9 +466,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Gilead Sciences, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -594,9 +476,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "General Motors Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -607,9 +486,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Alphabet Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2022-07-18",
@@ -626,9 +502,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Alphabet Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2022-07-18",
@@ -645,9 +518,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Goldman Sachs Group, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -658,9 +528,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Home Depot, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -671,9 +538,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Honeywell International Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2018-10-29",
@@ -698,9 +562,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "International Business Machines Corporation",
-   "currency": "USD",
    "splits": [
     {
      "date": "2021-11-04",
@@ -717,9 +578,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Intel Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -730,9 +588,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Intuit Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -743,9 +598,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Intuitive Surgical, Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2017-10-06",
@@ -766,9 +618,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Johnson & Johnson",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -779,9 +628,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "JPMorgan Chase & Co.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -792,9 +638,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Coca-Cola Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -805,9 +648,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Linde plc",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -818,9 +658,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Eli Lilly and Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -831,9 +668,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Lockheed Martin Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -844,9 +678,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Lowe's Companies, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -857,9 +688,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Mastercard Incorporated",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -870,9 +698,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "McDonald's Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -883,9 +708,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Mondelez International, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -896,9 +718,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Medtronic plc",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -909,9 +728,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "MetLife, Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2017-08-07",
@@ -928,9 +744,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Meta Platforms, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -941,9 +754,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "3M Company",
-   "currency": "USD",
    "splits": [
     {
      "date": "2024-04-01",
@@ -960,9 +770,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Altria Group, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -973,9 +780,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Merck & Co., Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2021-06-03",
@@ -992,9 +796,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Morgan Stanley",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1005,9 +806,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Microsoft Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1018,9 +816,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "NextEra Energy, Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2020-10-27",
@@ -1037,9 +832,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Netflix, Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2025-11-17",
@@ -1058,9 +850,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "NIKE, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1071,9 +860,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "ServiceNow, Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2025-12-18",
@@ -1090,9 +876,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "NVIDIA Corporation",
-   "currency": "USD",
    "splits": [
     {
      "date": "2021-07-20",
@@ -1113,9 +896,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Oracle Corporation",
-   "currency": "USD",
    "problems": [
     "1 big one-day jumps (check splits): 2025-09-10 +36%"
    ],
@@ -1128,9 +908,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "PepsiCo, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1141,9 +918,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Pfizer Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2020-11-17",
@@ -1160,9 +934,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Procter & Gamble Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1173,9 +944,6 @@
    "first": "2020-09-30",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Palantir Technologies Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1186,9 +954,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Philip Morris International Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1199,9 +964,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "PayPal Holdings, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1212,9 +974,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "QUALCOMM Incorporated",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1225,9 +984,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "RTX Corporation",
-   "currency": "USD",
    "splits": [
     {
      "date": "2020-04-03",
@@ -1244,9 +1000,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Starbucks Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1257,9 +1010,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Charles Schwab Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1270,9 +1020,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "The Southern Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1283,9 +1030,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Simon Property Group, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1296,9 +1040,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "AT&T Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2022-04-11",
@@ -1315,9 +1056,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Target Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1328,9 +1066,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Thermo Fisher Scientific Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1341,9 +1076,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "T-Mobile US, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1354,9 +1086,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Tesla, Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2020-08-31",
@@ -1377,9 +1106,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Texas Instruments Incorporated",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1390,9 +1116,6 @@
    "first": "2019-05-10",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Uber Technologies, Inc.",
-   "currency": "USD",
    "problems": [
     "1 big one-day jumps (check splits): 2020-03-19 +38%"
    ],
@@ -1405,9 +1128,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "UnitedHealth Group Incorporated",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1418,9 +1138,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Union Pacific Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1431,9 +1148,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "United Parcel Service, Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1444,9 +1158,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "U.S. Bancorp",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1457,9 +1168,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Visa Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1470,9 +1178,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Verizon Communications Inc.",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1483,9 +1188,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Wells Fargo & Company",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1496,9 +1198,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Walmart Inc.",
-   "currency": "USD",
    "splits": [
     {
      "date": "2024-02-26",
@@ -1515,9 +1214,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "ExxonMobil Holdings Corporation",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1528,9 +1224,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Technology Select Sector SPDR ETF",
-   "currency": "USD",
    "splits": [
     {
      "date": "2025-12-05",
@@ -1547,9 +1240,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Financial Select Sector SPDR ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1560,9 +1250,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Energy Select Sector SPDR ETF",
-   "currency": "USD",
    "splits": [
     {
      "date": "2025-12-05",
@@ -1579,9 +1266,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Health Care Select Sector SPDR ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1592,9 +1276,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Industrial Select Sector SPDR ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1605,9 +1286,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Consumer Discretionary Select Sector SPDR ETF",
-   "currency": "USD",
    "splits": [
     {
      "date": "2025-12-05",
@@ -1624,9 +1302,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Consumer Staples Select Sector SPDR ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1637,9 +1312,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Utilities Select Sector SPDR ETF",
-   "currency": "USD",
    "splits": [
     {
      "date": "2025-12-05",
@@ -1656,9 +1328,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Materials Select Sector SPDR ETF",
-   "currency": "USD",
    "splits": [
     {
      "date": "2025-12-05",
@@ -1675,9 +1344,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Real Estate Select Sector SPDR ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1688,9 +1354,6 @@
    "first": "2018-06-19",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street Communication Services Select Sector SPDR ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1701,9 +1364,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street SPDR S&P 500 ETF Trust",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1714,9 +1374,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Invesco QQQ Trust",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1727,9 +1384,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "iShares Russell 2000 ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1740,9 +1394,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "State Street SPDR Dow Jones Industrial Average ETF Trust",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1753,9 +1404,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "iShares MSCI EAFE ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1766,9 +1414,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "iShares MSCI Emerging Markets ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1779,9 +1424,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "SPDR Gold Shares",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1792,9 +1434,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "iShares Silver Trust",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1805,9 +1444,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "United States Oil Fund, LP",
-   "currency": "USD",
    "splits": [
     {
      "date": "2020-04-29",
@@ -1824,9 +1460,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "iShares 20+ Year Treasury Bond ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1837,9 +1470,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "iShares 7-10 Year Treasury Bond ETF",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1850,9 +1480,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "Invesco DB Commodity Index Tracking Fund",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -1863,9 +1490,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Naspers Limited",
-   "currency": "ZAc",
    "splits": [
     {
      "date": "2023-09-13",
@@ -1886,9 +1510,6 @@
    "first": "2019-09-11",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Prosus N.V.",
-   "currency": "ZAc",
    "splits": [
     {
      "date": "2023-09-13",
@@ -1905,9 +1526,6 @@
    "first": "2023-04-19",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Compagnie Financi\u00e8re Richemont SA",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -1918,9 +1536,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "British American Tobacco p.l.c.",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -1931,9 +1546,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Anglo American plc",
-   "currency": "ZAc",
    "splits": [
     {
      "date": "2025-06-02",
@@ -1950,9 +1562,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "FirstRand Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -1963,9 +1572,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Standard Bank Group Limited",
-   "currency": "ZAc",
    "problems": [
     "2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +10090%"
    ],
@@ -1978,9 +1584,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Capitec Limited",
-   "currency": "ZAc",
    "problems": [
     "1 big one-day jumps (check splits): 2020-03-20 +42%"
    ],
@@ -1993,9 +1596,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "MTN Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2006,9 +1606,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Absa Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2019,9 +1616,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Nedbank Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2032,9 +1626,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Sanlam Limited",
-   "currency": "ZAc",
    "problems": [
     "2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9898%"
    ],
@@ -2047,9 +1638,6 @@
    "first": "2022-01-31",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "BHP Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2060,20 +1648,18 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Glencore plc",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
   {
-   "ticker": "AMS.JO",
+   "ticker": "VAL.JO",
    "market": "JSE",
-   "status": "failed",
-   "problems": [
-    "yahoo: HTTP Error 404: Not Found",
-    "yahoo2: HTTP Error 404: Not Found"
-   ]
+   "rows": 2507,
+   "first": "2016-11-24",
+   "last": "2026-11-24",
+   "age_days": 0,
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "ANG.JO",
@@ -2082,9 +1668,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "AngloGold Ashanti plc",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2095,9 +1678,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Gold Fields Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2108,9 +1688,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Impala Platinum Holdings Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2121,9 +1698,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Sasol Limited",
-   "currency": "ZAc",
    "problems": [
     "3 big one-day jumps (check splits): 2020-03-09 -47%, 2020-03-13 +36%, 2020-04-07 +53%"
    ],
@@ -2136,9 +1710,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Vodacom Group Limited",
-   "currency": "ZAc",
    "problems": [
     "2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9785%"
    ],
@@ -2151,9 +1722,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Shoprite Holdings Ltd",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2164,9 +1732,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Bid Corporation Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2177,9 +1742,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "The Bidvest Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2190,9 +1752,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Clicks Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2203,9 +1762,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Woolworths Holdings Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2216,9 +1772,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Mondi plc",
-   "currency": "ZAc",
    "splits": [
     {
      "date": "2024-01-24",
@@ -2235,9 +1788,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Remgro Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2248,9 +1798,6 @@
    "first": "2018-06-27",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Old Mutual Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2261,9 +1808,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Discovery Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2274,9 +1818,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Investec Group",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2287,9 +1828,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Investec Group",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2300,9 +1838,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "NEPI Rockcastle N.V.",
-   "currency": "ZAc",
    "splits": [
     {
      "date": "2020-09-09",
@@ -2319,9 +1854,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Growthpoint Properties Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2332,9 +1864,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Aspen Pharmacare Holdings Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2345,9 +1874,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Harmony Gold Mining Company Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2358,9 +1884,6 @@
    "first": "2021-09-16",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Northam Platinum Holdings Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2371,9 +1894,6 @@
    "first": "2020-02-21",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Sibanye Stillwater Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2384,9 +1904,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Exxaro Resources Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2397,9 +1914,6 @@
    "first": "2017-09-20",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Pepkor Holdings Limited",
-   "currency": "ZAc",
    "problems": [
     "2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9693%"
    ],
@@ -2412,9 +1926,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Anheuser-Busch InBev SA/NV",
-   "currency": "ZAc",
    "problems": [
     "2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +9724%"
    ],
@@ -2427,9 +1938,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Mr Price Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2440,9 +1948,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "OUTsurance Group Limited",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2453,9 +1958,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Satrix 40 ETF",
-   "currency": "ZAc",
    "problems": [
     "2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +9972%"
    ],
@@ -2468,9 +1970,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Satrix Indi ETF",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2481,9 +1980,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Satrix Resi ETF",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2494,9 +1990,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Satrix Fini ETF",
-   "currency": "ZAc",
    "problems": [],
    "status": "ok"
   },
@@ -2507,9 +2000,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Bitcoin USD",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -2520,9 +2010,6 @@
    "first": "2017-11-09",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Ethereum USD",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -2533,9 +2020,6 @@
    "first": "2020-04-10",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Solana USD",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -2546,9 +2030,6 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "USD/ZAR",
-   "currency": "ZAR",
    "problems": [],
    "status": "ok"
   },
@@ -2559,9 +2040,6 @@
    "first": "2016-11-25",
    "last": "2026-11-23",
    "age_days": 1,
-   "source": "yahoo",
-   "name": "S&P 500",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -2572,13 +2050,8 @@
    "first": "2016-11-25",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "CBOE Volatility Index",
-   "currency": "USD",
-   "problems": [
-    "21 big one-day jumps (check splits): 2017-05-17 +46%, 2017-08-10 +44%, 2018-02-05 +116%"
-   ],
-   "status": "warning"
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "DX-Y.NYB",
@@ -2587,9 +2060,6 @@
    "first": "2016-11-25",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "US Dollar Index",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -2600,9 +2070,6 @@
    "first": "2016-11-25",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Gold Dec 26",
-   "currency": "USD",
    "problems": [],
    "status": "ok"
   },
@@ -2613,14 +2080,8 @@
    "first": "2016-11-25",
    "last": "2026-11-24",
    "age_days": 0,
-   "source": "yahoo",
-   "name": "Crude Oil Jan 27",
-   "currency": "USD",
-   "problems": [
-    "1 zero/negative closes",
-    "3 big one-day jumps (check splits): 2020-04-20 -306%, 2020-04-21 -127%, 2020-04-22 +38%"
-   ],
-   "status": "failed"
+   "problems": [],
+   "status": "ok"
   }
  ],
  "fred": [
@@ -2676,13 +2137,13 @@
  ],
  "summary": {
   "instruments": 181,
-  "ok": 166,
-  "warnings": 12,
-  "failed": 3,
+  "ok": 169,
+  "warnings": 11,
+  "failed": 1,
   "fred_ok": 7,
   "fred_failed": 0,
   "sources": {
-   "yahoo": 179,
+   "yahoo": 0,
    "stooq": 0,
    "cache": 0,
    "mock": 0
