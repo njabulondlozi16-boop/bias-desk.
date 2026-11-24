@@ -5,7 +5,7 @@ name: Investor data (prices + economy)
 on:
   push:
     branches: ['invest/**']
-    paths: ['scripts/inv_data.py', 'config/universe.json', '.github/workflows/investor-data.yml', 'scripts/inv_go']
+    paths: ['scripts/inv_data.py', 'config/universe.json', '.github/workflows/investor-data.yml']
   schedule:
     - cron: '23 22 * * 1-5'   # 00:23 SAST, after the US close (backups below: GitHub often starts late)
     - cron: '51 1 * * 2-6'    # 03:51 SAST
