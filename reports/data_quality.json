@@ -1572,10 +1572,14 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "problems": [
-    "2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +10090%"
+   "cleaned": [
+    "2025-04-25 x100 (rand/cents glitch)"
    ],
-   "status": "warning"
+   "source": "yahoo",
+   "name": "Standard Bank Group Limited",
+   "currency": "ZAc",
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "CPI.JO",
@@ -1626,10 +1630,14 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "problems": [
-    "2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9898%"
+   "cleaned": [
+    "2025-01-10 x100 (rand/cents glitch)"
    ],
-   "status": "warning"
+   "source": "yahoo",
+   "name": "Sanlam Limited",
+   "currency": "ZAc",
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "BHG.JO",
@@ -1710,10 +1718,14 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "problems": [
-    "2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9785%"
+   "cleaned": [
+    "2025-01-10 x100 (rand/cents glitch)"
    ],
-   "status": "warning"
+   "source": "yahoo",
+   "name": "Vodacom Group Limited",
+   "currency": "ZAc",
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "SHP.JO",
@@ -1914,10 +1926,14 @@
    "first": "2017-09-20",
    "last": "2026-11-24",
    "age_days": 0,
-   "problems": [
-    "2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9693%"
+   "cleaned": [
+    "2025-01-10 x100 (rand/cents glitch)"
    ],
-   "status": "warning"
+   "source": "yahoo",
+   "name": "Pepkor Holdings Limited",
+   "currency": "ZAc",
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "ANH.JO",
@@ -1926,10 +1942,14 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "problems": [
-    "2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +9724%"
+   "cleaned": [
+    "2025-04-25 x100 (rand/cents glitch)"
    ],
-   "status": "warning"
+   "source": "yahoo",
+   "name": "Anheuser-Busch InBev SA/NV",
+   "currency": "ZAc",
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "MRP.JO",
@@ -1958,10 +1978,14 @@
    "first": "2016-11-24",
    "last": "2026-11-24",
    "age_days": 0,
-   "problems": [
-    "2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +9972%"
+   "cleaned": [
+    "2025-04-25 x100 (rand/cents glitch)"
    ],
-   "status": "warning"
+   "source": "yahoo",
+   "name": "Satrix 40 ETF",
+   "currency": "ZAc",
+   "problems": [],
+   "status": "ok"
   },
   {
    "ticker": "STXIND.JO",
@@ -2137,13 +2161,13 @@
  ],
  "summary": {
   "instruments": 181,
-  "ok": 169,
-  "warnings": 11,
+  "ok": 175,
+  "warnings": 5,
   "failed": 1,
   "fred_ok": 7,
   "fred_failed": 0,
   "sources": {
-   "yahoo": 0,
+   "yahoo": 6,
    "stooq": 0,
    "cache": 0,
    "mock": 0

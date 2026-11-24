@@ -1,21 +1,15 @@
 # Investor desk - data quality (2026-11-24 15:20 SAST)
 
-Instruments: **169 ok**, 11 with warnings, **1 failed** (of 181). Economy series: 7 ok, 0 failed.
+Instruments: **175 ok**, 5 with warnings, **1 failed** (of 181). Economy series: 7 ok, 0 failed.
 
 | Ticker | Market | Status | Rows | Last bar | Source | Problems |
 |---|---|---|---|---|---|---|
 | BK | US | failed |  |  |  | yahoo returned no price rows |
-| ANH.JO | JSE | warning | 2507 | 2026-11-24 |  | 2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +9724% |
 | CPI.JO | JSE | warning | 2507 | 2026-11-24 |  | 1 big one-day jumps (check splits): 2020-03-20 +42% |
 | NFLX | US | warning | 2512 | 2026-11-23 |  | 1 big one-day jumps (check splits): 2022-04-20 -35% |
 | ORCL | US | warning | 2512 | 2026-11-23 |  | 1 big one-day jumps (check splits): 2025-09-10 +36% |
-| PPH.JO | JSE | warning | 2297 | 2026-11-24 |  | 2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9693% |
-| SBK.JO | JSE | warning | 2507 | 2026-11-24 |  | 2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +10090% |
-| SLM.JO | JSE | warning | 2507 | 2026-11-24 |  | 2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9898% |
 | SOL.JO | JSE | warning | 2507 | 2026-11-24 |  | 3 big one-day jumps (check splits): 2020-03-09 -47%, 2020-03-13 +36%, 2020-04-07 +53% |
-| STX40.JO | JSE | warning | 2495 | 2026-11-24 |  | 2 big one-day jumps (check splits): 2025-04-25 -99%, 2025-04-29 +9972% |
 | UBER | US | warning | 1896 | 2026-11-23 |  | 1 big one-day jumps (check splits): 2020-03-19 +38% |
-| VOD.JO | JSE | warning | 2507 | 2026-11-24 |  | 2 big one-day jumps (check splits): 2025-01-10 -99%, 2025-01-13 +9785% |
 | AAPL | US | ok | 2512 | 2026-11-23 |  |  |
 | ABBV | US | ok | 2512 | 2026-11-23 |  |  |
 | ABG.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
@@ -29,6 +23,7 @@ Instruments: **169 ok**, 11 with warnings, **1 failed** (of 181). Economy series
 | AMT | US | ok | 2512 | 2026-11-23 |  |  |
 | AMZN | US | ok | 2512 | 2026-11-23 |  |  |
 | ANG.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
+| ANH.JO | JSE | ok | 2507 | 2026-11-24 | yahoo |  (fixed: 2025-04-25 x100 (rand/cents glitch)) |
 | APN.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
 | AVGO | US | ok | 2512 | 2026-11-23 |  |  |
 | AXP | US | ok | 2512 | 2026-11-23 |  |  |
@@ -134,21 +129,25 @@ Instruments: **169 ok**, 11 with warnings, **1 failed** (of 181). Economy series
 | PG | US | ok | 2512 | 2026-11-23 |  |  |
 | PLTR | US | ok | 1545 | 2026-11-23 |  |  |
 | PM | US | ok | 2512 | 2026-11-23 |  |  |
+| PPH.JO | JSE | ok | 2297 | 2026-11-24 | yahoo |  (fixed: 2025-01-10 x100 (rand/cents glitch)) |
 | PRX.JO | JSE | ok | 1801 | 2026-11-24 |  |  |
 | PYPL | US | ok | 2512 | 2026-11-23 |  |  |
 | QCOM | US | ok | 2512 | 2026-11-23 |  |  |
 | QQQ | ETF | ok | 2512 | 2026-11-23 |  |  |
 | REM.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
 | RTX | US | ok | 2512 | 2026-11-23 |  |  |
+| SBK.JO | JSE | ok | 2507 | 2026-11-24 | yahoo |  (fixed: 2025-04-25 x100 (rand/cents glitch)) |
 | SBUX | US | ok | 2512 | 2026-11-23 |  |  |
 | SCHW | US | ok | 2512 | 2026-11-23 |  |  |
 | SHP.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
+| SLM.JO | JSE | ok | 2507 | 2026-11-24 | yahoo |  (fixed: 2025-01-10 x100 (rand/cents glitch)) |
 | SLV | Commodity | ok | 2512 | 2026-11-23 |  |  |
 | SO | US | ok | 2512 | 2026-11-23 |  |  |
 | SOL-USD | Crypto | ok | 2420 | 2026-11-24 |  |  |
 | SPG | US | ok | 2512 | 2026-11-23 |  |  |
 | SPY | ETF | ok | 2512 | 2026-11-23 |  |  |
 | SSW.JO | JSE | ok | 1689 | 2026-11-24 |  |  |
+| STX40.JO | JSE | ok | 2495 | 2026-11-24 | yahoo |  (fixed: 2025-04-25 x100 (rand/cents glitch)) |
 | STXFIN.JO | JSE | ok | 2495 | 2026-11-24 |  |  |
 | STXIND.JO | JSE | ok | 2495 | 2026-11-24 |  |  |
 | STXRES.JO | JSE | ok | 2502 | 2026-11-24 |  |  |
@@ -166,6 +165,7 @@ Instruments: **169 ok**, 11 with warnings, **1 failed** (of 181). Economy series
 | USO | Commodity | ok | 2512 | 2026-11-23 |  |  |
 | V | US | ok | 2512 | 2026-11-23 |  |  |
 | VAL.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
+| VOD.JO | JSE | ok | 2507 | 2026-11-24 | yahoo |  (fixed: 2025-01-10 x100 (rand/cents glitch)) |
 | VZ | US | ok | 2512 | 2026-11-23 |  |  |
 | WFC | US | ok | 2512 | 2026-11-23 |  |  |
 | WHL.JO | JSE | ok | 2507 | 2026-11-24 |  |  |
