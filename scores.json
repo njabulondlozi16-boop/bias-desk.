@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-23",
+  "date": "2026-11-24",
   "generated_at": "05:09 SAST",
   "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
-      "score": 1,
-      "label": "Neutral",
-      "reason": "Mild dollar pullback helps the euro edge slightly higher off recent lows."
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Strong USD and weak Euro fundamentals weigh heavily."
     },
     "GBPUSD": {
-      "score": 2,
-      "label": "Neutral",
-      "reason": "Stronger UK retail sales data combine with a softer US dollar to lift cable."
-    },
-    "AUDUSD": {
       "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Poor Australian employment data severely undermines the currency against the USD."
+      "reason": "Hawkish Fed expectations outweighing resilient UK data."
+    },
+    "AUDUSD": {
+      "score": -8,
+      "label": "Strong Bearish",
+      "reason": "Weak Australian employment data crushes currency."
     },
     "NZDUSD": {
-      "score": -4,
-      "label": "Moderately Bearish",
-      "reason": "Weak domestic sentiment and soft yield appeal keep the kiwi pressured versus USD."
+      "score": -7,
+      "label": "Strong Bearish",
+      "reason": "Persistent domestic weakness and strong US dollar."
     },
     "USDCHF": {
-      "score": 1,
-      "label": "Neutral",
-      "reason": "Widening US-Swiss interest rate differentials support the pair slightly."
-    },
-    "XAUUSD": {
       "score": 5,
       "label": "Moderately Bullish",
-      "reason": "Gold jumps as fading aggressive Fed hike bets and equity selloffs spark safe-haven demand."
+      "reason": "Widening interest rate differential favors USD."
+    },
+    "XAUUSD": {
+      "score": 3,
+      "label": "Moderately Bullish",
+      "reason": "Rebound from lows despite hawkish Fed rate bets."
     },
     "US30": {
-      "score": 3,
-      "label": "Moderately Bullish",
-      "reason": "Stock futures bounce modestly following last week's sharp AI-led correction."
+      "score": 6,
+      "label": "Strong Bullish",
+      "reason": "Strong market bounce led by tech and Nvidia."
     },
     "US100": {
-      "score": 3,
-      "label": "Moderately Bullish",
-      "reason": "Nasdaq futures rebound as dip buyers step in after plunging into correction territory."
+      "score": 8,
+      "label": "Strong Bullish",
+      "reason": "Massive tech rally following Jensen Huang's return."
     },
     "GER30": {
-      "score": -4,
-      "label": "Moderately Bearish",
-      "reason": "DAX extends losses as tech sector weakness and cooling demand weigh heavily."
+      "score": 6,
+      "label": "Strong Bullish",
+      "reason": "DAX rallies sharply on AI optimism and strong PMIs."
     },
     "BTCUSD": {
-      "score": -3,
+      "score": -4,
       "label": "Moderately Bearish",
-      "reason": "Risk-off sentiment, regulatory fears, and institutional outflows keep crypto under pressure."
+      "reason": "Crypto headwinds and risk sentiment limit gains."
     }
   },
   "currencies": {
     "USD": {
-      "score": -2,
-      "reason": "Dollar retreats from highs as aggressive Fed rate hike bets scale back."
+      "score": 7,
+      "reason": "Strong data, hawkish Fed bets, and DXY strength."
     },
     "EUR": {
-      "score": -3,
-      "reason": "Weighed down by broad dollar strength and French political and fiscal uncertainty."
+      "score": -5,
+      "reason": "Political uncertainty, weak PMIs, and soft growth."
     },
     "GBP": {
-      "score": 1,
-      "reason": "Sterling supported slightly by upbeat retail sales despite broad US dollar resilience."
+      "score": -4,
+      "reason": "Slowing private sector growth and strong USD pressure."
     },
     "AUD": {
-      "score": -6,
-      "reason": "Surge in unemployment and sharp job losses boost RBA rate cut bets."
+      "score": -7,
+      "reason": "Surprise jump in jobless rate, RBA rate cut bets."
     },
     "NZD": {
-      "score": -5,
-      "reason": "Sluggish economy and low relative interest rates keep kiwi near multi-year lows."
+      "score": -6,
+      "reason": "Sluggish economy, low interest rates, and soft sentiment."
     },
     "CHF": {
-      "score": -3,
-      "reason": "Weakens against the dollar on widening rate differentials and carry trade appeal."
+      "score": -2,
+      "reason": "Low borrowing costs and wider yield differential with US."
     }
   },
   "sources": {
