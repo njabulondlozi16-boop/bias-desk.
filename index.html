@@ -1381,6 +1381,53 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 .tp-add button{padding:0 16px;border-radius:9px;border:none;background:var(--accent);color:var(--accent-ink,#fff);font:700 13px 'Space Grotesk',sans-serif;cursor:pointer}
 .ms-slots{display:flex;flex-direction:column;gap:6px;margin:6px 0 10px}.ms-sh,.ms-slot{display:grid;grid-template-columns:24px 1fr 80px;gap:8px;align-items:center}.ms-sh span{font-size:11px;color:var(--muted)}
 .ms-slot input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}.ms-slot input:not([type=checkbox]){width:100%!important}
+
+/* Invest page */
+.iv-econ{padding:22px 24px;margin-bottom:18px}
+.iv-econ-h{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.iv-reg{display:flex;gap:14px;align-items:center}.iv-reg-ic{font-size:34px;filter:saturate(.8)}
+.iv-reg h2{margin:2px 0 0;font:700 26px 'Space Grotesk',sans-serif;letter-spacing:.01em}.iv-reg small{color:var(--muted)}
+.iv-sum{margin:0;color:var(--text);line-height:1.55;max-width:70ch}
+.iv-wells{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.iv-chip{display:inline-flex;gap:6px;align-items:center;margin:6px 6px 0 0;padding:5px 10px;border-radius:999px;font:600 12px 'Space Grotesk',sans-serif;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.iv-chip.pos b{color:var(--up)}.iv-chip.neg b{color:var(--down)}
+.iv-sigs{margin-top:16px}.iv-sigs summary{cursor:pointer;color:var(--muted);font:600 12px 'Space Grotesk',sans-serif}
+.iv-sig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:12px}
+.iv-sig{display:flex;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.025);border:1px solid var(--line)}
+.iv-sig b{display:block;font:600 12.5px 'Space Grotesk',sans-serif}.iv-sig span{display:block;font-size:12px;margin:2px 0}.iv-sig small{color:var(--muted);font-size:11.5px}
+.iv-dot{flex:none;width:9px;height:9px;border-radius:50%;margin-top:5px;background:#6b7280}.iv-dot.good{background:color-mix(in srgb,var(--up) 80%,var(--text));box-shadow:0 0 8px color-mix(in srgb,var(--up) 50%,transparent)}.iv-dot.bad{background:color-mix(in srgb,var(--down) 80%,var(--text));box-shadow:0 0 8px color-mix(in srgb,var(--down) 45%,transparent)}
+.iv-note,.iv-disc{color:var(--muted);font-size:12px;line-height:1.5}.iv-disc{margin-top:22px;text-align:center}
+.iv-h{margin:22px 0 12px;font:600 15px 'Space Grotesk',sans-serif}
+.iv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.iv-card{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.iv-card.big{border-color:color-mix(in srgb,var(--accent,#2962ff) 35%,transparent)}
+.iv-top{display:flex;gap:12px;align-items:center}.iv-id{flex:1;min-width:0}
+.iv-tk{font:700 16px 'Space Grotesk',sans-serif}.iv-tk small{font:600 10px 'Space Grotesk',sans-serif;color:var(--muted);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:1px 5px;margin-left:4px;vertical-align:2px}
+.iv-nm{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iv-px{text-align:right}.iv-px b{display:block;font:600 15px 'JetBrains Mono',monospace}.iv-px small{font:500 11px 'JetBrains Mono',monospace}
+.iv-ring{--p:50;flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent,#2962ff) calc(var(--p)*1%),rgba(255,255,255,.07) 0)}
+.iv-ring span{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--bg2,#0d1220);font:700 12px 'JetBrains Mono',monospace}
+.iv-setup{font:600 12.5px 'Space Grotesk',sans-serif;color:color-mix(in srgb,var(--accent,#2962ff) 80%,#fff)}.iv-setup.avoid{color:color-mix(in srgb,var(--down) 80%,var(--text))}
+.iv-why{margin:0;padding-left:18px;color:var(--text);font-size:12.5px;line-height:1.55}
+.iv-lvls{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:6px}
+.iv-lv{padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--line)}.iv-lv span{display:block;font-size:10.5px;color:var(--muted)}.iv-lv b{font:600 12.5px 'JetBrains Mono',monospace}
+.iv-cc{display:grid;gap:4px;font-size:12px;color:var(--text)}.iv-cc i{font-style:normal;display:inline-block;width:14px;color:color-mix(in srgb,var(--up) 80%,var(--text))}.iv-cc div+div i{color:color-mix(in srgb,var(--down) 80%,var(--text))}
+.iv-hist{font-size:11.5px;color:var(--muted);line-height:1.5;padding-top:8px;border-top:1px solid var(--line)}
+.iv-edge{display:inline-block;margin-left:4px;padding:1px 6px;border-radius:5px;font-weight:600}.iv-edge.pos{color:color-mix(in srgb,var(--up) 80%,var(--text));background:color-mix(in srgb,var(--up) 12%,transparent)}.iv-edge.neg{color:color-mix(in srgb,var(--down) 80%,var(--text));background:color-mix(in srgb,var(--down) 12%,transparent)}
+.iv-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}.iv-tv{text-decoration:none;font-size:12px}.iv-date{font-size:11px;color:var(--muted)}
+.iv-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin:24px 0 14px}
+.iv-tabs,.iv-filt{display:flex;flex-wrap:wrap;gap:6px}
+.iv-tabs button,.iv-filt button{border:1px solid var(--line);background:rgba(255,255,255,.03);color:inherit;border-radius:9px;padding:7px 12px;font:600 12.5px 'Space Grotesk',sans-serif;cursor:pointer}
+.iv-tabs button.on,.iv-filt button.on{background:color-mix(in srgb,var(--accent,#2962ff) 18%,transparent);border-color:color-mix(in srgb,var(--accent,#2962ff) 45%,transparent)}
+.iv-tabs small{opacity:.6;margin-left:3px}
+.iv-sect,.iv-stats{padding:18px 20px}.iv-sect h3 small,.iv-stats h3 small{color:var(--muted);font-weight:500;font-size:12px}
+.iv-sec{display:grid;grid-template-columns:28px 1fr 90px 90px 110px 50px;gap:8px;align-items:center;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px}
+.iv-sec.fav{background:color-mix(in srgb,var(--up) 6%,transparent)}.iv-sec em{font-style:normal;font-size:10.5px;color:color-mix(in srgb,var(--up) 80%,var(--text));margin-left:6px}.iv-sec small{color:var(--muted)}
+.iv-rk{font:700 12px 'JetBrains Mono',monospace;color:var(--muted)}.iv-tr.up{color:color-mix(in srgb,var(--up) 80%,var(--text))}.iv-tr.down{color:color-mix(in srgb,var(--down) 80%,var(--text))}.iv-sec a{font-size:12px;color:var(--accent,#2962ff);text-decoration:none}
+.iv-tbl{overflow-x:auto}.iv-stats table{width:100%;border-collapse:collapse;font-size:12.5px}.iv-stats th,.iv-stats td{padding:8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}.iv-stats th{color:var(--muted);font-weight:600}
+#page-invest .pos{color:color-mix(in srgb,var(--up) 80%,var(--text))}#page-invest .neg{color:color-mix(in srgb,var(--down) 80%,var(--text))}
+.iv-wait{padding:22px;display:flex;gap:10px;align-items:center;color:var(--muted)}
+@media (max-width:760px){ .iv-econ-h,.iv-wells{grid-template-columns:1fr} .iv-grid{grid-template-columns:1fr} .iv-sec{grid-template-columns:24px 1fr 70px 70px;font-size:12px} .iv-sec .iv-tr,.iv-sec a{display:none} }
 </style>
 </head>
 <body>
@@ -1417,6 +1464,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
     <nav class="sn-links">
       <a href="#/overview" data-page="overview"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 9h8V3h-8z"/></svg><span>Overview</span></a>
       <a href="#/markets" data-page="markets"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Markets</span></a>
+      <a href="#/invest" data-page="invest"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 16l4-5 3 3 5-7"/><circle cx="18" cy="7" r="1.6"/></svg><span>Invest</span></a>
       <a href="#/trade" data-page="chart"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="3" height="10"/><path d="M6.5 4v3M6.5 17v3"/><rect x="15" y="5" width="3" height="8"/><path d="M16.5 2v3M16.5 13v5"/></svg><span>Trade</span></a>
       <a href="#/journal" data-page="journal"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><span>Journal</span></a>
       <a href="#/analytics" data-page="analytics"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.5 6.5"/></svg><span>Analytics</span></a>
@@ -1470,6 +1518,12 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
           <section class="block card-s"><div class="block-head"><div><h2>Today's news</h2><p>High and medium impact · SAST</p></div></div><div id="ov-news" class="ov-news"></div></section>
         </div>
         <section class="block reveal"><div class="block-head"><div><h2>Running trades</h2><p>Open and pending setups being tracked live</p></div><a class="link-btn" href="#/journal">Journal →</a></div><div id="ov-open"></div></section>
+      </section>
+
+      <!-- INVEST -->
+      <section id="page-invest" class="page">
+        <div class="page-head-row"><div><p class="eyebrow">Your economist &amp; scout</p><h1>Invest</h1><p class="lede" id="inv-sub">Loading…</p></div><button id="inv-refresh" class="btn-soft">⟳ Refresh</button></div>
+        <div id="inv-body"></div>
       </section>
 
       <!-- MARKETS -->
@@ -1533,7 +1587,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-23.6';
+const BUILD='2026-11-24.1';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
@@ -5472,12 +5526,78 @@ function renderPairTabs(){
   el.innerHTML=getInstruments().map(i=>{ const b=biasBadge(i.symbol); return `<button class="ptab ${currentInst&&currentInst.symbol===i.symbol?'active':''}" data-sym="${i.symbol}"><i class="hp-dot ${b.cls}"></i>${esc(i.name)}</button>`; }).join('');
   el.querySelectorAll('[data-sym]').forEach(b=>b.addEventListener('click',()=>goTrade(b.dataset.sym)));
 }
+
+// ===== Invest page: economy card, watchlists with key levels, sector strength (data: investor.json from the daily job) =====
+let invData=null, invTab='swing', invMkt='all', invLoading=null;
+function investorUrls(){ return defaultScoresUrls().map(u=>u.replace(/scores\.json$/,'investor.json')); }
+async function loadInvestor(force){
+  if(invLoading&&!force) return invLoading;
+  invLoading=(async()=>{ for(const u of investorUrls()){ try{ const r=await fetch(u+(u.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'}); if(r.ok){ invData=await r.json(); return invData; } }catch(e){} } return invData; })();
+  try{ return await invLoading; } finally{ invLoading=null; }
+}
+const INV_DOT={green:'good',red:'bad',grey:'mid'};
+const INV_REG_ICON={Expansion:'🌤',Overheating:'🔥',Slowdown:'🌥',Stagflation:'⛈',Recovery:'🌱'};
+function invTvUrl(sym){ return 'https://www.tradingview.com/chart/?symbol='+encodeURIComponent(sym); }
+function invPrice(z,v){ if(v==null) return '—'; const n=+v, c=z&&z.currency==='ZAc'; const dp=c?0:n<10?4:2; const s=n.toLocaleString('en-US',{minimumFractionDigits:dp,maximumFractionDigits:dp}); return c?s+'c':s; }
+function invLevelName(k){ return ({trigger:'Trigger',support:'Support',stop_idea:'Stop idea',buy_zone:'Buy zone',target:'Target',gap_day_low:'Gap-day low',gap_day_high:'Gap-day high',gap_fill:'Gap fill',recent_high:'Recent high','52w_low':'52-week low',resistance:'Resistance'})[k]||k; }
+function invCard(z,big){
+  const lv=Object.entries(z.levels||{}).filter(([,v])=>v!=null).map(([k,v])=>`<div class="iv-lv"><span>${invLevelName(k)}</span><b>${invPrice(z,v)}</b></div>`).join('');
+  const h=z.history; const edge=h&&h.edge_pct!=null?`<span class="iv-edge ${h.edge_pct>=0?'pos':'neg'}">${h.edge_pct>=0?'+':''}${h.edge_pct}% vs holding</span>`:'';
+  const ring=`<div class="iv-ring" style="--p:${z.score}" title="Guide score: trend, momentum and volume (not a buy signal)"><span>${z.score}</span></div>`;
+  return `<article class="iv-card card-s${big?' big':''}" data-t="${esc(z.ticker)}">
+    <div class="iv-top">${ring}<div class="iv-id"><div class="iv-tk">${esc(z.ticker)} <small>${esc(z.market)}</small></div><div class="iv-nm">${esc(z.name||'')}</div></div>
+      <div class="iv-px"><b>${invPrice(z,z.price)}</b><small class="${(z.chg_1d_pct||0)>=0?'pos':'neg'}">${z.chg_1d_pct==null?'—':(z.chg_1d_pct>=0?'+':'')+(+z.chg_1d_pct).toFixed(2)}%</small></div></div>
+    <div class="iv-setup ${z.side==='avoid'?'avoid':''}">${esc(z.setup_name)}</div>
+    <ul class="iv-why">${(z.reasons||[]).map(r=>`<li>${esc(r)}</li>`).join('')}</ul>
+    <div class="iv-lvls">${lv}</div>
+    <div class="iv-cc"><div><i>✓</i> ${esc(z.confirm||'')}</div><div><i>✕</i> ${esc(z.cancel||'')}</div></div>
+    ${h?`<div class="iv-hist">${esc(h.text)} ${edge}</div>`:''}
+    <div class="iv-foot"><a class="btn-soft iv-tv" href="${invTvUrl(z.tv)}" target="_blank" rel="noopener">Do my TA on TradingView ↗</a><span class="iv-date">Data ${esc(z.date||'')}</span></div>
+  </article>`;
+}
+function invEconomy(e){
+  if(!e) return '';
+  const sig=(e.signals||[]).map(s=>`<div class="iv-sig"><i class="iv-dot ${INV_DOT[s.state]||'mid'}"></i><div><b>${esc(s.name)}</b><span class="mono">${esc(s.value)}</span><small>${esc(s.meaning)}</small></div></div>`).join('');
+  const chip=(x,cls)=>`<span class="iv-chip ${cls}" title="${x.months} months · beat the S&P 500 ${x.beat_spy_pct}% of the time">${esc(x.sector||x.ticker)} <b>${x.avg_excess_3m_pct>0?'+':''}${x.avg_excess_3m_pct}%</b></span>`;
+  return `<section class="iv-econ card-s">
+    <div class="iv-econ-h"><div class="iv-reg"><span class="iv-reg-ic">${INV_REG_ICON[e.regime]||'◈'}</span><div><p class="eyebrow">US economy now</p><h2>${esc(e.regime)}</h2><small>${esc(e.confidence)} confidence</small></div></div><p class="iv-sum">${esc(e.summary)}</p></div>
+    <div class="iv-wells"><div><p class="eyebrow">Usually does well now (next 3 months vs S&amp;P 500)</p>${(e.does_well||[]).map(x=>chip(x,'pos')).join('')||'<small>—</small>'}</div><div><p class="eyebrow">Usually struggles</p>${(e.struggles||[]).map(x=>chip(x,'neg')).join('')||'<small>—</small>'}</div></div>
+    <details class="iv-sigs"><summary>The ${(e.signals||[]).length} readings behind this</summary><div class="iv-sig-grid">${sig}</div><p class="iv-note">${esc(e.history_note||'')}</p></details>
+  </section>`;
+}
+function invSectors(rows){
+  if(!rows||!rows.length) return '';
+  return `<section class="card-s iv-sect"><h3>Sector strength <small>vs S&amp;P 500</small></h3><div class="iv-sec-rows">${rows.map(r=>`<div class="iv-sec${r.favoured?' fav':''}"><span class="iv-rk">${r.rank}</span><span class="iv-sn">${esc(r.sector)} <small>${esc(r.ticker)}</small>${r.favoured?' <em>fits the economy</em>':''}</span><span class="${r.rs3_pct>=0?'pos':'neg'}">3m ${r.rs3_pct>0?'+':''}${r.rs3_pct}%</span><span class="${r.rs6_pct>=0?'pos':'neg'}">6m ${r.rs6_pct>0?'+':''}${r.rs6_pct}%</span><span class="iv-tr ${r.trend}">${r.trend==='up'?'▲ uptrend':'▼ downtrend'}</span><a href="${invTvUrl(r.tv)}" target="_blank" rel="noopener">TA ↗</a></div>`).join('')}</div></section>`;
+}
+function invStats(st,period){
+  const rows=Object.entries(st||{}).map(([k,v])=>`<tr><td>${esc(v.name)}</td><td>${v.test?.trades??'—'}</td><td>${v.test?.win_rate!=null?Math.round(v.test.win_rate*100)+'%':'—'}</td><td>${v.test?.avg_ret_pct!=null?(v.test.avg_ret_pct>0?'+':'')+v.test.avg_ret_pct+'%':'—'}</td><td>${v.baseline_avg_ret_pct!=null?(v.baseline_avg_ret_pct>0?'+':'')+v.baseline_avg_ret_pct+'%':'—'}</td><td class="${(v.edge_vs_holding_pct||0)>=0?'pos':'neg'}">${v.edge_vs_holding_pct!=null?(v.edge_vs_holding_pct>0?'+':'')+v.edge_vs_holding_pct+'%':'—'}</td><td>${v.status==='live'?'✅ proven':'🔬 research'}</td></tr>`).join('');
+  return `<section class="card-s iv-stats"><h3>How these setups did <small>${esc(period||'')}, after costs</small></h3><div class="iv-tbl"><table><thead><tr><th>Setup</th><th>Cases</th><th>Won</th><th>Avg trade</th><th>Just holding</th><th>Edge</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="iv-note">None of these simple setups beat just holding in 2023–2026, so treat the lists as places to look, not signals. Re-tested every Saturday; a setup that starts working shows up here.</p></section>`;
+}
+function renderInvest(force){
+  const body=$('inv-body'); if(!body) return;
+  if(!invData||force){ if(!invData) body.innerHTML='<div class="card-s iv-wait"><span class="spinner"></span> Loading today\'s guide…</div>'; loadInvestor(force).then(d=>{ if(d) renderInvest(); else body.innerHTML='<div class="card-s iv-wait">No guide yet — the daily job writes it after the US close. Check again tomorrow morning.</div>'; }); if(!invData) return; }
+  const d=invData; const mk=invMkt;
+  $('inv-sub').textContent=`${d.generated_at} · ${d.markets_scanned} markets scanned · prices to ${d.data_date}`;
+  const list=(invTab==='avoid'?d.avoid:d.swing)||[]; const shown=list.filter(z=>mk==='all'||z.market===mk);
+  const top=(d.top3||[]).map(k=>(d.swing||[]).find(z=>z.ticker+'|'+z.setup===k)).filter(Boolean);
+  const markets=['all',...new Set(((d.swing||[]).concat(d.avoid||[])).map(z=>z.market))];
+  body.innerHTML=invEconomy(d.economy)
+   +(top.length?`<h3 class="iv-h">Today's best 3 to look at</h3><div class="iv-grid top">${top.map(z=>invCard(z,true)).join('')}</div>`:'')
+   +`<div class="iv-bar"><div class="iv-tabs">${[['swing','⚡ Swing watchlist',(d.swing||[]).length],['avoid','🚫 Avoid list',(d.avoid||[]).length],['sectors','🧭 Sectors',null],['stats','📊 Track record',null]].map(([k,l,n])=>`<button data-tab="${k}" class="${invTab===k?'on':''}">${l}${n!=null?` <small>${n}</small>`:''}</button>`).join('')}</div>
+     ${invTab==='swing'||invTab==='avoid'?`<div class="iv-filt">${markets.map(m=>`<button data-mk="${m}" class="${mk===m?'on':''}">${m==='all'?'All':m}</button>`).join('')}</div>`:''}</div>`
+   +(invTab==='sectors'?invSectors(d.sectors):invTab==='stats'?invStats(d.signal_stats,d.test_period):`<div class="iv-grid">${shown.map(z=>invCard(z)).join('')||'<div class="card-s iv-wait">Nothing on this list today.</div>'}</div>`)
+   +`<p class="iv-disc">Ideas to research with your own analysis — not financial advice. Prices are daily closes (US shares in USD, JSE in cents). Long-term ideas and the model portfolio are coming next.</p>`;
+  body.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{ invTab=b.dataset.tab; renderInvest(); }));
+  body.querySelectorAll('[data-mk]').forEach(b=>b.addEventListener('click',()=>{ invMkt=b.dataset.mk; renderInvest(); }));
+}
+document.addEventListener('click',e=>{ if(e.target&&e.target.id==='inv-refresh'){ renderInvest(true); toast('Refreshing the guide…'); } });
 // ---------- ROUTER (#/overview, #/markets, #/trade/XAUUSD, #/journal, #/analytics, #/settings) ----------
 function goTrade(sym){ location.hash='#/trade/'+encodeURIComponent(sym); }
 function route(){
   const parts=(location.hash||'#/overview').replace(/^#\/?/,'').split('/'); let page=parts[0]||'overview';
   if(page==='trade'){ const sym=decodeURIComponent(parts[1]||lsGet('bd_last_pair','XAUUSD')); const inst=getInstruments().find(i=>i.symbol===sym)||getInstruments()[0]; if(inst){ lsSet('bd_last_pair',inst.symbol); showPage('chart'); if(!currentInst||currentInst.symbol!==inst.symbol||!chart) openChart(inst); else { setChartView(); } renderPairTabs(); } return; }
-  if(!['overview','markets','journal','analytics','settings'].includes(page)) page='overview';
+  if(!['overview','markets','invest','journal','analytics','settings'].includes(page)) page='overview';
   showPage(page);
 }
 function showPage(name){
@@ -5490,6 +5610,7 @@ function showPage(name){
   if(name==='overview') renderOverview();
   if(name==='markets') setTimeout(()=>{ msPaintAllPrio(); msScanPriority(); bsScan(); },300);
   if(name==='markets') renderMarketsTable();
+  if(name==='invest') renderInvest();
   window.scrollTo({top:0});
 }
 function closeChart(){ location.hash='#/markets'; }

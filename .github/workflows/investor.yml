@@ -1,0 +1,59 @@
+name: Investor guide (daily)
+
+# Builds investor.json (economy card, swing/avoid watchlists with key levels, sector strength)
+# from the invest-data cache and publishes it on main for the Invest page.
+# Phone alerts: economy regime change, a watchlist trigger level reached, and the Sunday weekly guide.
+on:
+  schedule:
+    - cron: '41 3 * * 1-6'   # 05:41 SAST Mon-Sat (after the overnight data job)
+    - cron: '13 5 * * 1-5'   # 07:13 SAST backup (GitHub cron can be late or skipped)
+    - cron: '7 6 * * 0'      # Sunday 08:07 SAST weekly guide
+  workflow_dispatch:
+    inputs:
+      alerts:
+        description: 'Send phone alerts'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+
+jobs:
+  guide:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/checkout@v4
+        with: { ref: invest-data, path: cache }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install numpy==2.*
+      - name: Build guide
+        env:
+          PYTHONUNBUFFERED: '1'
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          FLAG=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.alerts }}" != "true" ]; then FLAG="--no-alerts"; fi
+          python scripts/investor.py --cache cache --out investor.json $FLAG
+      - name: Publish
+        run: |
+          git config user.name "bias-desk-bot"
+          git config user.email "bias-desk-bot@users.noreply.github.com"
+          git add investor.json
+          if git diff --cached --quiet; then echo "No change"; exit 0; fi
+          git commit -m "Investor guide $(TZ=Africa/Johannesburg date '+%F %H:%M')"
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 5; done; exit 1
+      - name: Phone alert - guide failed
+        if: failure()
+        env: { NTFY_TOPIC: '${{ secrets.NTFY_TOPIC }}' }
+        run: |
+          python scripts/notify.py --title "Bias Desk: investor guide failed" --message "Today's Invest page did not update. Open the Actions tab for details." --priority high || true
