@@ -787,6 +787,12 @@
    "market": "Index",
    "name": "Oil futures",
    "context": true
+  },
+  {
+   "ticker": "HYG",
+   "market": "ETF",
+   "name": "High-yield (junk) bonds",
+   "context": true
   }
  ],
  "fred": [
