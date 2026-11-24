@@ -21,9 +21,15 @@ UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, 
 _last = {}
 
 
-def get(url, tries=4, pause=0.6):
+_dead = {}  # host -> consecutive failures (circuit breaker: stop hammering a host that is blocking us)
+
+
+def get(url, tries=3, pause=0.6):
     """Polite GET: one request per `pause` seconds per host, retries with back-off."""
     host = url.split("/")[2]
+    if _dead.get(host, 0) >= 8:
+        raise RuntimeError(f"{host} skipped (blocked earlier in this run)")
+    err = None
     for i in range(tries):
         wait = _last.get(host, 0) + pause - time.time()
         if wait > 0:
@@ -31,13 +37,15 @@ def get(url, tries=4, pause=0.6):
         _last[host] = time.time()
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
+                _dead[host] = 0
                 return r.read()
         except Exception as e:
             err = e
             code = getattr(e, "code", None)
             if code in (400, 404):
                 break
-            time.sleep(3 * (i + 1) + (10 if code == 429 else 0))
+            time.sleep(2 * (i + 1) + (5 if code == 429 else 0))
+    _dead[host] = _dead.get(host, 0) + 1
     raise RuntimeError(f"{err}")
 
 
@@ -193,12 +201,14 @@ def main():
                 entry["note"] = "download failed - using previous copy (" + "; ".join(errs) + ")"
             else:
                 entry.update({"status": "failed", "problems": errs}); fail += 1
+                print(f"{t:10s} FAILED {'; '.join(errs)}", flush=True)
                 report["instruments"].append(entry); continue
         good, probs, st = check(rows, mkt)
         entry.update(st); entry["source"] = src; entry["name"] = (meta or {}).get("name") or ins.get("name"); entry["currency"] = (meta or {}).get("currency")
         if (meta or {}).get("splits"):
             entry["splits"] = meta["splits"][-3:]
         entry["problems"] = probs
+        print(f"{t:10s} {src or '-':6s} {st['rows']:5d} rows, last {st['last']}" + (f"  [{'; '.join(probs)}]" if probs else ""), flush=True)
         entry["status"] = "ok" if good and not probs else ("warning" if good else "failed")
         ok += entry["status"] == "ok"; warn += entry["status"] == "warning"; fail += entry["status"] == "failed"
         report["instruments"].append(entry)

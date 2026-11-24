@@ -30,8 +30,13 @@ jobs:
         with: { ref: invest-data, path: cache }
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
+      - name: Probe the sources
+        run: |
+          for u in "https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=5d&interval=1d" "https://query2.finance.yahoo.com/v8/finance/chart/SPY?range=5d&interval=1d" "https://stooq.com/q/d/l/?s=spy.us&i=d" "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10"; do
+            echo "$u -> $(curl -s -o /dev/null -w '%{http_code} %{size_download}B' -A 'Mozilla/5.0' --max-time 20 "$u")"; done
       - name: Download and check data
         env:
+          PYTHONUNBUFFERED: '1'
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
