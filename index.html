@@ -1382,6 +1382,49 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 .ms-slots{display:flex;flex-direction:column;gap:6px;margin:6px 0 10px}.ms-sh,.ms-slot{display:grid;grid-template-columns:24px 1fr 80px;gap:8px;align-items:center}.ms-sh span{font-size:11px;color:var(--muted)}
 .ms-slot input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}.ms-slot input:not([type=checkbox]){width:100%!important}
 </style>
+<style>
+/* ===== Investor Desk ===== */
+#page-invest .card-s{margin-bottom:16px}
+.inv-wait{padding:22px}
+.inv-meta{font-size:13px;color:var(--muted);margin:0 0 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.inv-row-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.inv-regime{background:var(--blue);color:#fff;border-radius:999px;padding:5px 12px;font-weight:700;font-size:13px}
+.inv-summary{font-size:15px;line-height:1.55;margin:10px 0}
+.inv-risks ul{margin:6px 0 0 18px;padding:0}.inv-risks{font-size:14px;margin-bottom:10px}
+.inv-tilt{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted);margin:8px 0 12px}
+.inv-tilt em,.inv-table em{font-style:normal;font-weight:700;padding:1px 7px;border-radius:6px;margin-right:2px}
+em.pos{background:rgba(34,229,138,.16);color:var(--green)}em.neg{background:rgba(255,77,109,.16);color:var(--red)}
+.inv-sigs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.inv-sig{display:flex;gap:9px;align-items:flex-start;padding:9px;border:1px solid var(--border);border-radius:12px}
+.inv-dot{width:10px;height:10px;border-radius:50%;background:var(--muted);margin-top:5px;flex:none}.inv-dot.good{background:var(--green)}.inv-dot.bad{background:var(--red)}
+.inv-sig-n{font-size:12px;color:var(--muted)}.inv-sig-v{font-weight:700}.inv-sig-v small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.inv-table{width:100%;border-collapse:collapse;font-size:13px}.inv-table th,.inv-table td{padding:7px 8px;border-bottom:1px solid var(--border);text-align:left}
+.inv-table th{color:var(--muted);font-weight:600}.inv-table a{color:inherit}
+.inv-table .up,.inv-sub .up{color:var(--green)}.inv-table .down,.inv-sub .down{color:var(--red)}
+.inv-tabs{display:flex;gap:8px;margin:6px 0 10px;flex-wrap:wrap}
+.inv-tabs button,.inv-chips button{background:var(--glass);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:9px 14px;font-weight:600;cursor:pointer}
+.inv-tabs button small{color:var(--muted);font-weight:400;margin-left:4px}
+.inv-tabs button.active,.inv-chips button.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.inv-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.inv-chips button{padding:5px 11px;font-size:13px}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:16px}
+.inv-card{display:flex;flex-direction:column;gap:8px;margin-bottom:0!important}
+.inv-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.inv-tk{font-size:18px}.inv-name{color:var(--muted)}.inv-mkt{font-size:11px;border:1px solid var(--border);border-radius:6px;padding:1px 6px;margin-left:4px}
+.inv-score{min-width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:rgba(30,107,255,.18);border:2px solid var(--blue)}
+.inv-sub{font-size:13px;color:var(--muted)}
+.inv-side{font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;margin-right:4px}.inv-side.long{background:rgba(34,229,138,.18);color:var(--green)}.inv-side.short{background:rgba(255,77,109,.18);color:var(--red)}
+.inv-ai{margin:0;font-size:14px;line-height:1.45;padding:8px 10px;border-radius:10px;background:rgba(56,225,255,.08);border:1px solid rgba(56,225,255,.25)}
+.inv-why{margin:0 0 0 18px;padding:0;font-size:13px;line-height:1.5}
+.inv-lvls,.inv-metrics{display:flex;flex-wrap:wrap;gap:6px}
+.inv-lvl,.inv-metrics span{border:1px solid var(--border);border-radius:9px;padding:4px 8px;font-size:13px;font-weight:700}
+.inv-lvl small,.inv-metrics small{display:block;font-weight:400;font-size:10px;color:var(--muted)}
+.inv-parts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.inv-parts small{font-size:10px;color:var(--muted)}
+.inv-bar{height:6px;border-radius:4px;background:var(--glass);overflow:hidden}.inv-bar i{display:block;height:100%;background:var(--cyan)}
+.inv-news summary{cursor:pointer;font-size:13px;color:var(--muted)}.inv-news a,.inv-hl a{display:block;font-size:13px;color:inherit;padding:5px 0;border-bottom:1px solid var(--border);text-decoration:none}
+.inv-news a small,.inv-hl a small{color:var(--muted)}
+.inv-actions{margin-top:auto}.inv-actions a{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;font-size:13px;padding:9px 12px}
+.inv-disc{font-size:12px;color:var(--muted);text-align:center;margin:10px 0 30px}
+</style>
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><canvas id="fx-canvas"></canvas><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><div class="grid-overlay"></div></div>
@@ -1420,6 +1463,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
       <a href="#/trade" data-page="chart"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="3" height="10"/><path d="M6.5 4v3M6.5 17v3"/><rect x="15" y="5" width="3" height="8"/><path d="M16.5 2v3M16.5 13v5"/></svg><span>Trade</span></a>
       <a href="#/journal" data-page="journal"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><span>Journal</span></a>
       <a href="#/analytics" data-page="analytics"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.5 6.5"/></svg><span>Analytics</span></a>
+      <a href="#/invest" data-page="invest"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Investor</span></a>
       <a href="#/settings" data-page="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
     </nav>
     <div class="sn-foot">
@@ -1495,6 +1539,12 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
       <section id="page-analytics" class="page">
         <div class="page-head-row"><div><p class="eyebrow">Win rate</p><h1>Analytics</h1><p class="lede">A win is the 1:2.5 target. Anything beyond it is a bonus win.</p></div></div>
         <div id="analytics-body"></div>
+      </section>
+
+      <!-- INVESTOR DESK -->
+      <section id="page-invest" class="page">
+        <div class="page-head-row"><div><p class="eyebrow">AI economist</p><h1>Investor</h1><p class="lede">Where to look next: the economy, the strongest sectors, and shares worth your technical analysis. Ideas to research, not advice.</p></div></div>
+        <div id="inv-root"></div>
       </section>
 
       <!-- SETTINGS -->
@@ -5474,10 +5524,70 @@ function renderPairTabs(){
 }
 // ---------- ROUTER (#/overview, #/markets, #/trade/XAUUSD, #/journal, #/analytics, #/settings) ----------
 function goTrade(sym){ location.hash='#/trade/'+encodeURIComponent(sym); }
+// ===== INVESTOR DESK — AI economist + stock scanner (reads investor.json written by scripts/investor.py) =====
+let invData=null, invTab='swing', invMarket='All', invLoading=false;
+function invUrls(){
+  const urls=[]; try{ const custom=(getScoresUrl()||'').trim(); if(custom) urls.push(custom.replace(/scores\.json(\?.*)?$/,'investor.json'));
+    if(/^https?:/.test(location.protocol)){ const m=location.hostname.match(/^([^.]+)\.github\.io$/i); const repo=location.pathname.split('/').filter(Boolean)[0];
+      if(m&&repo) urls.push(`https://raw.githubusercontent.com/${m[1]}/${repo}/main/investor.json`); urls.push(new URL('investor.json',location.href).href); } }catch(e){}
+  return [...new Set(urls)].filter(u=>/investor\.json/.test(u)); }
+async function invLoad(force){
+  if(invLoading) return; if(invData&&!force) return; invLoading=true;
+  for(const u of invUrls()){ try{ const r=await fetch(u+(u.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'}); if(!r.ok) continue; invData=await r.json(); break; }catch(e){} }
+  invLoading=false; }
+const invNum=(v,d=1,suf='')=>v===null||v===undefined||!isFinite(v)?'—':(+v).toFixed(d)+suf;
+const invSign=(v,d=1)=>v===null||v===undefined||!isFinite(v)?'—':(v>0?'+':'')+(+v).toFixed(d)+'%';
+const invCls=v=>v>0?'up':v<0?'down':'';
+function invTV(sym){ return 'https://www.tradingview.com/chart/?symbol='+encodeURIComponent(sym); }
+async function renderInvestor(force){
+  const root=document.getElementById('inv-root'); if(!root) return;
+  if(!invData||force){ root.innerHTML='<div class="card-s inv-wait">Loading the Investor Desk…</div>'; await invLoad(true); }
+  const d=invData;
+  if(!d){ root.innerHTML=`<div class="card-s inv-wait"><h3>No investor report yet</h3><p>Your GitHub job <em>Investor Desk</em> writes <em>investor.json</em> once a day after the US market closes. Run it once from GitHub → Actions → <b>Investor Desk</b> → <b>Run workflow</b>, then come back.</p><button class="btn-primary" id="inv-retry">Check again</button></div>`;
+    document.getElementById('inv-retry').onclick=()=>renderInvestor(true); return; }
+  const m=d.macro||{};
+  const head=`<div class="inv-meta">Report for <b>${esc(d.date)}</b> · made ${esc(d.generated_at||'')} · ${d.coverage?d.coverage.tickers:'?'} markets scanned · ${d.coverage?d.coverage.companies_with_accounts:'?'} company accounts${d.model?` · written by ${esc(d.model)}`:''} <button class="btn-ghost" id="inv-reload">↻ Refresh</button></div>`;
+  const signals=(m.signals||[]).map(s=>`<div class="inv-sig"><span class="inv-dot ${s.tone>0?'good':s.tone<0?'bad':''}"></span><div><div class="inv-sig-n">${esc(s.name)}</div><div class="inv-sig-v">${s.value===null?'—':esc(s.value)+esc(s.unit||'')} <small>${esc(s.read)}</small></div></div></div>`).join('');
+  const econ=`<div class="card-s inv-econ"><div class="inv-row-head"><h3>🌍 The economy</h3><span class="inv-regime">${esc(m.regime||'—')}</span></div>
+    <p class="inv-summary">${esc(m.summary||'')}</p>
+    ${(m.risks||[]).length?`<div class="inv-risks"><b>Watch out for:</b><ul>${m.risks.map(r=>`<li>${esc(r)}</li>`).join('')}</ul></div>`:''}
+    <div class="inv-tilt"><span>Usually does well now: ${(m.favor||[]).map(x=>`<em class="pos">${esc(x)}</em>`).join(' ')}</span><span>Usually struggles: ${(m.avoid||[]).map(x=>`<em class="neg">${esc(x)}</em>`).join(' ')}</span></div>
+    <div class="inv-sigs">${signals}</div></div>`;
+  const sectors=`<div class="card-s"><h3>🏭 Sector strength (strongest first)</h3><table class="inv-table"><thead><tr><th>#</th><th>Sector</th><th>1 month</th><th>3 months</th><th>6 months</th><th>Trend</th><th>Economy</th></tr></thead><tbody>
+    ${(d.sectors||[]).map((s,i)=>`<tr><td>${i+1}</td><td><a href="${invTV(s.etf)}" target="_blank" rel="noopener">${esc(s.name)}</a> <small>${esc(s.etf)}</small></td><td class="${invCls(s.r1m)}">${invSign(s.r1m)}</td><td class="${invCls(s.r3m)}">${invSign(s.r3m)}</td><td class="${invCls(s.r6m)}">${invSign(s.r6m)}</td><td>${s.trend==='up'?'↗ up':s.trend==='down'?'↘ down':'→ mixed'}</td><td>${s.macro==='favoured'?'<em class="pos">favoured</em>':s.macro==='avoid'?'<em class="neg">avoid</em>':''}</td></tr>`).join('')}
+    </tbody></table></div>`;
+  const list=(invTab==='swing'?d.swing:d.longterm)||[];
+  const markets=['All',...new Set([...(d.swing||[]),...(d.longterm||[])].map(c=>c.market))];
+  const shown=list.filter(c=>invMarket==='All'||c.market===invMarket);
+  const lvlName={trigger:'Breakout level',support:'Support',stop_idea:'Stop idea',buy_zone:'Buy zone',target_idea:'Target idea',resistance:'Resistance',sell_zone:'Sell zone',s200:'200-day avg',s50:'50-day avg',hi52:'52-week high'};
+  const cards=shown.map(c=>{
+    const side=invTab==='swing'?(c.side===1?'<span class="inv-side long">LONG idea</span>':'<span class="inv-side short">SHORT idea</span>'):'<span class="inv-side long">Long-term</span>';
+    const lv=Object.entries(c.levels||{}).filter(([k,v])=>v!==null).map(([k,v])=>`<span class="inv-lvl"><small>${esc(lvlName[k]||k)}</small>${esc(v)}</span>`).join('');
+    const mt=c.metrics&&Object.keys(c.metrics).length?`<div class="inv-metrics">${[['P/E',c.metrics.pe,1,''],['Revenue growth',c.metrics.rev_growth,0,'%'],['Profit margin',c.metrics.net_margin,0,'%'],['ROE',c.metrics.roe,0,'%'],['Free cash flow margin',c.metrics.fcf_margin,0,'%'],['Debt/equity',c.metrics.debt_equity,1,'']].map(([n,v,dd,u])=>`<span><small>${n}</small>${invNum(v,dd,u)}</span>`).join('')}</div>`:'';
+    const parts=c.parts&&c.parts.quality!==undefined?`<div class="inv-parts">${[['Quality',c.parts.quality],['Growth',c.parts.growth],['Value',c.parts.value],['Trend',Math.max(0,Math.min(100,c.parts.trend))]].map(([n,v])=>`<div><small>${n}</small><div class="inv-bar"><i style="width:${Math.max(0,Math.min(100,v||0))}%"></i></div></div>`).join('')}</div>`:'';
+    const news=c.news&&c.news.headlines&&c.news.headlines.length?`<details class="inv-news"><summary>📰 ${c.news.count} recent headlines (${c.news.tone>0.25?'mostly positive':c.news.tone<-0.25?'mostly negative':'mixed'})</summary>${c.news.headlines.map(h=>`<a href="${esc(h.link)}" target="_blank" rel="noopener">${esc(h.title)} <small>${esc(h.source||'')}</small></a>`).join('')}</details>`:'';
+    return `<div class="card-s inv-card"><div class="inv-card-head"><div><b class="inv-tk">${esc(c.ticker)}</b> <span class="inv-name">${esc(c.name)}</span> <span class="inv-mkt">${esc(c.market)}</span></div><div class="inv-score" title="Score out of ~100: how strongly the data points here">${Math.round(c.score)}</div></div>
+      <div class="inv-sub">${side} ${c.setup?`<b>${esc(c.setup)}</b>`:''} · price ${esc(c.price)} ${c.r3m!==undefined&&c.r3m!==null?`· 3 months <span class="${invCls(c.r3m)}">${invSign(c.r3m)}</span>`:''}</div>
+      ${c.ai_note?`<p class="inv-ai">🤖 ${esc(c.ai_note)}</p>`:''}
+      <ul class="inv-why">${(c.why||[]).map(w=>`<li>${esc(w)}</li>`).join('')}</ul>
+      ${lv?`<div class="inv-lvls">${lv}</div>`:''}${mt}${parts}${news}
+      <div class="inv-actions"><a class="btn-primary" href="${invTV(c.tv||c.ticker)}" target="_blank" rel="noopener">Do my TA on TradingView ↗</a></div></div>`; }).join('')||'<p class="pt-muted">No ideas for this market today.</p>';
+  const ideas=`<div class="inv-tabs"><button data-t="swing" class="${invTab==='swing'?'active':''}">⚡ Swing ideas <small>days–weeks</small></button><button data-t="longterm" class="${invTab==='longterm'?'active':''}">🌱 Long-term ideas <small>months–years</small></button></div>
+    <div class="inv-chips">${markets.map(x=>`<button data-m="${esc(x)}" class="${invMarket===x?'active':''}">${esc(x)}</button>`).join('')}</div>
+    <div class="inv-grid">${cards}</div>`;
+  const tr=d.track||{}; const trRows=['swing','longterm'].flatMap(l=>[5,20,60].map(h=>[l,h,tr[`${l}_${h}d`]])).filter(r=>r[2]);
+  const track=`<div class="card-s"><h3>📈 Track record of past ideas</h3>${trRows.length?`<table class="inv-table"><thead><tr><th>List</th><th>After</th><th>Ideas</th><th>Went the right way</th><th>Average move</th><th>vs S&amp;P 500</th></tr></thead><tbody>${trRows.map(([l,h,s])=>`<tr><td>${l==='swing'?'Swing':'Long-term'}</td><td>${h} trading days</td><td>${s.picks}</td><td>${s.hit_rate}%</td><td class="${invCls(s.avg_return)}">${invSign(s.avg_return,2)}</td><td class="${invCls(s.vs_spy)}">${invSign(s.vs_spy,2)}</td></tr>`).join('')}</tbody></table>`:'<p class="pt-muted">Builds up automatically — the first results appear 5 trading days after the first report.</p>'}</div>`;
+  const hl=(d.headlines||[]).length?`<div class="card-s"><h3>🗞️ Market headlines</h3><div class="inv-hl">${d.headlines.map(h=>`<a href="${esc(h.link)}" target="_blank" rel="noopener">${esc(h.title)} <small>${esc(h.source||'')}</small></a>`).join('')}</div></div>`:'';
+  root.innerHTML=head+econ+ideas+sectors+track+hl+`<p class="inv-disc">${esc(d.note||'Ideas to research, not advice.')}</p>`;
+  document.getElementById('inv-reload').onclick=()=>renderInvestor(true);
+  root.querySelectorAll('.inv-tabs button').forEach(b=>b.onclick=()=>{ invTab=b.dataset.t; renderInvestor(); });
+  root.querySelectorAll('.inv-chips button').forEach(b=>b.onclick=()=>{ invMarket=b.dataset.m; renderInvestor(); });
+}
+
 function route(){
   const parts=(location.hash||'#/overview').replace(/^#\/?/,'').split('/'); let page=parts[0]||'overview';
   if(page==='trade'){ const sym=decodeURIComponent(parts[1]||lsGet('bd_last_pair','XAUUSD')); const inst=getInstruments().find(i=>i.symbol===sym)||getInstruments()[0]; if(inst){ lsSet('bd_last_pair',inst.symbol); showPage('chart'); if(!currentInst||currentInst.symbol!==inst.symbol||!chart) openChart(inst); else { setChartView(); } renderPairTabs(); } return; }
-  if(!['overview','markets','journal','analytics','settings'].includes(page)) page='overview';
+  if(!['overview','markets','journal','analytics','invest','settings'].includes(page)) page='overview';
   showPage(page);
 }
 function showPage(name){
@@ -5488,6 +5598,7 @@ function showPage(name){
   if(name==='journal') renderJournal();
   if(name==='analytics'){ renderAnalytics(); runBiasAccuracy(); }
   if(name==='overview') renderOverview();
+  if(name==='invest') renderInvestor();
   if(name==='markets') setTimeout(()=>{ msPaintAllPrio(); msScanPriority(); bsScan(); },300);
   if(name==='markets') renderMarketsTable();
   window.scrollTo({top:0});
