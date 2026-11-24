@@ -73,7 +73,8 @@ jobs:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python scripts/notify.py --title "Bias Desk: daily scores failed" --message "The scoring job failed. Open Bias Desk and press 'Get today's scores', or tell Claude." --priority high --tags warning
+        run: |
+          python scripts/notify.py --title "Bias Desk - daily scores failed" --message "The scoring job failed. Open Bias Desk and press Get today's scores, or tell Claude." --priority high --tags warning
       - name: Refresh the website
         env:
           GH_TOKEN: ${{ github.token }}
