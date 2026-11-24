@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-11-24 16:20 SAST",
+ "generated_at": "2026-11-24 16:23 SAST",
  "data_date": "2026-11-23",
- "markets_scanned": 180,
+ "markets_scanned": 181,
  "note": "Ideas to research with your own technical analysis - not trade signals and not financial advice.",
  "economy": {
   "regime": "Overheating",
@@ -31,6 +31,14 @@
     "value": "-1.1%",
     "state": "red",
     "meaning": "Stocks in a downtrend"
+   },
+   {
+    "key": "credit",
+    "group": "Stress",
+    "name": "Junk bonds vs Treasuries (1-yr)",
+    "value": "-0.4%",
+    "state": "grey",
+    "meaning": "Credit slightly weaker than usual"
    },
    {
     "key": "cpi",
@@ -101,46 +109,46 @@
    {
     "ticker": "XLE",
     "sector": "Energy",
-    "avg_excess_3m_pct": 3.38,
-    "beat_spy_pct": 50,
-    "months": 46
+    "avg_excess_3m_pct": 2.27,
+    "beat_spy_pct": 48,
+    "months": 48
    },
    {
     "ticker": "XLK",
     "sector": "Technology",
-    "avg_excess_3m_pct": 1.01,
-    "beat_spy_pct": 57,
-    "months": 46
+    "avg_excess_3m_pct": 1.72,
+    "beat_spy_pct": 58,
+    "months": 48
    },
    {
     "ticker": "XLV",
     "sector": "Health Care",
-    "avg_excess_3m_pct": 0.78,
-    "beat_spy_pct": 54,
-    "months": 46
+    "avg_excess_3m_pct": 0.28,
+    "beat_spy_pct": 52,
+    "months": 48
    }
   ],
   "struggles": [
    {
     "ticker": "XLRE",
     "sector": "Real Estate",
-    "avg_excess_3m_pct": -1.9,
-    "beat_spy_pct": 46,
-    "months": 46
+    "avg_excess_3m_pct": -2.15,
+    "beat_spy_pct": 44,
+    "months": 48
    },
    {
     "ticker": "XLY",
     "sector": "Consumer Discretionary",
-    "avg_excess_3m_pct": -1.9,
-    "beat_spy_pct": 28,
-    "months": 46
+    "avg_excess_3m_pct": -1.95,
+    "beat_spy_pct": 29,
+    "months": 48
    },
    {
     "ticker": "XLC",
     "sector": "Communication Services",
-    "avg_excess_3m_pct": -1.61,
+    "avg_excess_3m_pct": -1.84,
     "beat_spy_pct": 48,
-    "months": 46
+    "months": 48
    }
   ],
   "history_note": "Sector results by regime use 108 month-ends since 2017-11 (free data starts there); economic numbers are used ~6 weeks after the month, as when they were published.",
@@ -149,119 +157,119 @@
     "months": 48,
     "sectors": {
      "XLK": {
-      "avg_excess_3m_pct": 2.72,
-      "beat_spy_pct": 71,
+      "avg_excess_3m_pct": 2.35,
+      "beat_spy_pct": 69,
       "months": 48
      },
      "XLF": {
-      "avg_excess_3m_pct": -1.15,
-      "beat_spy_pct": 40,
+      "avg_excess_3m_pct": -0.89,
+      "beat_spy_pct": 44,
       "months": 48
      },
      "XLE": {
-      "avg_excess_3m_pct": 0.05,
-      "beat_spy_pct": 31,
+      "avg_excess_3m_pct": -0.02,
+      "beat_spy_pct": 29,
       "months": 48
      },
      "XLV": {
-      "avg_excess_3m_pct": -1.11,
+      "avg_excess_3m_pct": -1.13,
       "beat_spy_pct": 40,
       "months": 48
      },
      "XLI": {
-      "avg_excess_3m_pct": -0.77,
-      "beat_spy_pct": 38,
+      "avg_excess_3m_pct": -1.04,
+      "beat_spy_pct": 33,
       "months": 48
      },
      "XLY": {
-      "avg_excess_3m_pct": -0.29,
+      "avg_excess_3m_pct": 0.11,
       "beat_spy_pct": 44,
       "months": 48
      },
      "XLP": {
-      "avg_excess_3m_pct": -1.76,
+      "avg_excess_3m_pct": -1.94,
       "beat_spy_pct": 40,
       "months": 48
      },
      "XLU": {
-      "avg_excess_3m_pct": -0.98,
+      "avg_excess_3m_pct": -1.19,
       "beat_spy_pct": 48,
       "months": 48
      },
      "XLB": {
-      "avg_excess_3m_pct": -0.63,
+      "avg_excess_3m_pct": -1.05,
       "beat_spy_pct": 40,
       "months": 48
      },
      "XLRE": {
-      "avg_excess_3m_pct": -0.42,
-      "beat_spy_pct": 52,
+      "avg_excess_3m_pct": -0.87,
+      "beat_spy_pct": 50,
       "months": 48
      },
      "XLC": {
-      "avg_excess_3m_pct": 0.31,
-      "beat_spy_pct": 61,
+      "avg_excess_3m_pct": 0.58,
+      "beat_spy_pct": 63,
       "months": 41
      }
     }
    },
    "Overheating": {
-    "months": 46,
+    "months": 48,
     "sectors": {
      "XLK": {
-      "avg_excess_3m_pct": 1.01,
-      "beat_spy_pct": 57,
-      "months": 46
+      "avg_excess_3m_pct": 1.72,
+      "beat_spy_pct": 58,
+      "months": 48
      },
      "XLF": {
-      "avg_excess_3m_pct": -0.21,
-      "beat_spy_pct": 52,
-      "months": 46
+      "avg_excess_3m_pct": -0.37,
+      "beat_spy_pct": 50,
+      "months": 48
      },
      "XLE": {
-      "avg_excess_3m_pct": 3.38,
-      "beat_spy_pct": 50,
-      "months": 46
+      "avg_excess_3m_pct": 2.27,
+      "beat_spy_pct": 48,
+      "months": 48
      },
      "XLV": {
-      "avg_excess_3m_pct": 0.78,
-      "beat_spy_pct": 54,
-      "months": 46
+      "avg_excess_3m_pct": 0.28,
+      "beat_spy_pct": 52,
+      "months": 48
      },
      "XLI": {
-      "avg_excess_3m_pct": -0.62,
+      "avg_excess_3m_pct": -0.57,
       "beat_spy_pct": 48,
-      "months": 46
+      "months": 48
      },
      "XLY": {
-      "avg_excess_3m_pct": -1.9,
-      "beat_spy_pct": 28,
-      "months": 46
+      "avg_excess_3m_pct": -1.95,
+      "beat_spy_pct": 29,
+      "months": 48
      },
      "XLP": {
-      "avg_excess_3m_pct": -0.35,
-      "beat_spy_pct": 41,
-      "months": 46
+      "avg_excess_3m_pct": -0.8,
+      "beat_spy_pct": 40,
+      "months": 48
      },
      "XLU": {
-      "avg_excess_3m_pct": -0.73,
-      "beat_spy_pct": 37,
-      "months": 46
+      "avg_excess_3m_pct": -1.18,
+      "beat_spy_pct": 35,
+      "months": 48
      },
      "XLB": {
-      "avg_excess_3m_pct": -1.22,
-      "beat_spy_pct": 39,
-      "months": 46
+      "avg_excess_3m_pct": -1.55,
+      "beat_spy_pct": 38,
+      "months": 48
      },
      "XLRE": {
-      "avg_excess_3m_pct": -1.9,
-      "beat_spy_pct": 46,
-      "months": 46
+      "avg_excess_3m_pct": -2.15,
+      "beat_spy_pct": 44,
+      "months": 48
      },
      "XLC": {
-      "avg_excess_3m_pct": -1.61,
+      "avg_excess_3m_pct": -1.84,
       "beat_spy_pct": 48,
-      "months": 46
+      "months": 48
      }
     }
    },
@@ -269,119 +277,59 @@
     "months": 6,
     "sectors": {
      "XLK": {
-      "avg_excess_3m_pct": 5.43,
+      "avg_excess_3m_pct": 6.38,
       "beat_spy_pct": 100,
       "months": 6
      },
      "XLF": {
-      "avg_excess_3m_pct": -3.61,
-      "beat_spy_pct": 17,
-      "months": 6
-     },
-     "XLE": {
-      "avg_excess_3m_pct": -16.04,
+      "avg_excess_3m_pct": -4.95,
       "beat_spy_pct": 0,
       "months": 6
      },
+     "XLE": {
+      "avg_excess_3m_pct": -14.75,
+      "beat_spy_pct": 17,
+      "months": 6
+     },
      "XLV": {
-      "avg_excess_3m_pct": -9.7,
+      "avg_excess_3m_pct": -8.9,
       "beat_spy_pct": 0,
       "months": 6
      },
      "XLI": {
-      "avg_excess_3m_pct": 1.3,
-      "beat_spy_pct": 83,
-      "months": 6
-     },
-     "XLY": {
-      "avg_excess_3m_pct": 5.14,
-      "beat_spy_pct": 83,
-      "months": 6
-     },
-     "XLP": {
-      "avg_excess_3m_pct": -5.36,
-      "beat_spy_pct": 17,
-      "months": 6
-     },
-     "XLU": {
-      "avg_excess_3m_pct": -5.65,
-      "beat_spy_pct": 17,
-      "months": 6
-     },
-     "XLB": {
-      "avg_excess_3m_pct": -2.05,
-      "beat_spy_pct": 50,
-      "months": 6
-     },
-     "XLRE": {
-      "avg_excess_3m_pct": -8.54,
-      "beat_spy_pct": 0,
-      "months": 6
-     },
-     "XLC": {
-      "avg_excess_3m_pct": 2.08,
-      "beat_spy_pct": 83,
-      "months": 6
-     }
-    }
-   },
-   "Stagflation": {
-    "months": 2,
-    "sectors": {
-     "XLK": {
-      "avg_excess_3m_pct": 17.94,
+      "avg_excess_3m_pct": 2.9,
       "beat_spy_pct": 100,
-      "months": 2
-     },
-     "XLF": {
-      "avg_excess_3m_pct": -4.14,
-      "beat_spy_pct": 0,
-      "months": 2
-     },
-     "XLE": {
-      "avg_excess_3m_pct": -23.34,
-      "beat_spy_pct": 0,
-      "months": 2
-     },
-     "XLV": {
-      "avg_excess_3m_pct": -11.17,
-      "beat_spy_pct": 0,
-      "months": 2
-     },
-     "XLI": {
-      "avg_excess_3m_pct": 0.61,
-      "beat_spy_pct": 50,
-      "months": 2
+      "months": 6
      },
      "XLY": {
-      "avg_excess_3m_pct": -3.18,
-      "beat_spy_pct": 50,
-      "months": 2
+      "avg_excess_3m_pct": 3.73,
+      "beat_spy_pct": 83,
+      "months": 6
      },
      "XLP": {
-      "avg_excess_3m_pct": -11.16,
-      "beat_spy_pct": 0,
-      "months": 2
+      "avg_excess_3m_pct": -4.93,
+      "beat_spy_pct": 17,
+      "months": 6
      },
      "XLU": {
-      "avg_excess_3m_pct": -11.44,
-      "beat_spy_pct": 0,
-      "months": 2
+      "avg_excess_3m_pct": -5.07,
+      "beat_spy_pct": 17,
+      "months": 6
      },
      "XLB": {
-      "avg_excess_3m_pct": -8.96,
-      "beat_spy_pct": 0,
-      "months": 2
+      "avg_excess_3m_pct": 0.1,
+      "beat_spy_pct": 50,
+      "months": 6
      },
      "XLRE": {
-      "avg_excess_3m_pct": -8.01,
-      "beat_spy_pct": 0,
-      "months": 2
+      "avg_excess_3m_pct": -6.07,
+      "beat_spy_pct": 17,
+      "months": 6
      },
      "XLC": {
-      "avg_excess_3m_pct": -7.23,
-      "beat_spy_pct": 50,
-      "months": 2
+      "avg_excess_3m_pct": 1.42,
+      "beat_spy_pct": 83,
+      "months": 6
      }
     }
    },
@@ -389,58 +337,58 @@
     "months": 3,
     "sectors": {
      "XLK": {
-      "avg_excess_3m_pct": -0.63,
-      "beat_spy_pct": 33,
-      "months": 3
-     },
-     "XLF": {
-      "avg_excess_3m_pct": 2.88,
+      "avg_excess_3m_pct": 3.35,
       "beat_spy_pct": 67,
       "months": 3
      },
+     "XLF": {
+      "avg_excess_3m_pct": 1.26,
+      "beat_spy_pct": 33,
+      "months": 3
+     },
      "XLE": {
-      "avg_excess_3m_pct": -0.32,
+      "avg_excess_3m_pct": -1.67,
       "beat_spy_pct": 67,
       "months": 3
      },
      "XLV": {
-      "avg_excess_3m_pct": -4.52,
+      "avg_excess_3m_pct": -5.75,
       "beat_spy_pct": 0,
       "months": 3
      },
      "XLI": {
-      "avg_excess_3m_pct": 1.07,
-      "beat_spy_pct": 33,
+      "avg_excess_3m_pct": 2.23,
+      "beat_spy_pct": 67,
       "months": 3
      },
      "XLY": {
-      "avg_excess_3m_pct": 3.85,
+      "avg_excess_3m_pct": 0.31,
       "beat_spy_pct": 67,
       "months": 3
      },
      "XLP": {
-      "avg_excess_3m_pct": -6.77,
+      "avg_excess_3m_pct": -4.68,
       "beat_spy_pct": 0,
       "months": 3
      },
      "XLU": {
-      "avg_excess_3m_pct": -3.82,
+      "avg_excess_3m_pct": -1.63,
       "beat_spy_pct": 33,
       "months": 3
      },
      "XLB": {
-      "avg_excess_3m_pct": -1.14,
+      "avg_excess_3m_pct": 1.37,
       "beat_spy_pct": 33,
       "months": 3
      },
      "XLRE": {
-      "avg_excess_3m_pct": -6.56,
+      "avg_excess_3m_pct": -4.27,
       "beat_spy_pct": 0,
       "months": 3
      },
      "XLC": {
-      "avg_excess_3m_pct": 2.16,
-      "beat_spy_pct": 67,
+      "avg_excess_3m_pct": -0.24,
+      "beat_spy_pct": 33,
       "months": 3
      }
     }
@@ -489,11 +437,11 @@
    },
    {
     "date": "2024-09-30",
-    "regime": "Slowdown"
+    "regime": "Expansion"
    },
    {
     "date": "2024-10-31",
-    "regime": "Recovery"
+    "regime": "Expansion"
    },
    {
     "date": "2024-11-29",
@@ -513,7 +461,7 @@
    },
    {
     "date": "2025-03-31",
-    "regime": "Stagflation"
+    "regime": "Overheating"
    },
    {
     "date": "2025-04-30",
@@ -561,7 +509,7 @@
    },
    {
     "date": "2026-03-31",
-    "regime": "Stagflation"
+    "regime": "Overheating"
    },
    {
     "date": "2026-04-30",
