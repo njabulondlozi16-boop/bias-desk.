@@ -16,8 +16,7 @@ _nm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_nm); alert = _nm.alert
 from datetime import date
 
 SAST = timezone(timedelta(hours=2))
-UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36",
-      "Accept": "application/json,text/csv,*/*"}
+UA = {"User-Agent": "Mozilla/5.0"}  # Yahoo answers this exact tag from GitHub's servers (longer browser tags and curl/python get HTTP 429)
 _last = {}
 
 
@@ -49,8 +48,8 @@ def get(url, tries=3, pause=0.6):
     raise RuntimeError(f"{err}")
 
 
-def yahoo(ticker):
-    raw = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(ticker)}?range=10y&interval=1d&events=split%2Cdiv"))
+def yahoo(ticker, host="query1"):
+    raw = json.loads(get(f"https://{host}.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(ticker)}?range=10y&interval=1d&events=split%2Cdiv"))
     res = (raw.get("chart") or {}).get("result")
     if not res:
         raise RuntimeError(f"no data ({(raw.get('chart') or {}).get('error')})")
@@ -95,6 +94,44 @@ def fred(series):
     if len(out) < 12:
         raise RuntimeError("too few FRED rows")
     return out
+
+
+BLS = {"CPI": "CUUR0000SA0", "CORE_CPI": "CUUR0000SA0L1E", "UNRATE": "LNS14000000", "PAYROLLS": "CES0000000001"}
+
+
+def bls(series_ids):
+    """US Bureau of Labor Statistics public API (no key: 10 years per call, 25 calls a day)."""
+    out = {}
+    end = datetime.now(timezone.utc).year
+    for start in (end - 19, end - 9):
+        body = json.dumps({"seriesid": list(series_ids.values()), "startyear": str(start), "endyear": str(min(end, start + 9))}).encode()
+        req = urllib.request.Request("https://api.bls.gov/publicAPI/v2/timeseries/data/", data=body, headers={"Content-Type": "application/json", **UA})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            js = json.loads(r.read())
+        if js.get("status") != "REQUEST_SUCCEEDED":
+            raise RuntimeError("; ".join(js.get("message") or ["BLS error"]))
+        for sr in js["Results"]["series"]:
+            name = next(k for k, v in series_ids.items() if v == sr["seriesID"])
+            for d in sr["data"]:
+                if d["period"].startswith("M") and d["period"] != "M13" and d["value"] not in ("-", ""):
+                    out.setdefault(name, {})[f"{d['year']}-{d['period'][1:]}-01"] = float(d["value"])
+        time.sleep(1)
+    return {k: sorted(v.items()) for k, v in out.items()}
+
+
+def treasury():
+    """Daily US Treasury par yield curve (3 months, 2 years, 10 years) from treasury.gov, one CSV per year."""
+    cols = {"3 Mo": "T3M", "2 Yr": "T2Y", "10 Yr": "T10Y"}
+    out = {v: {} for v in cols.values()}
+    y1 = datetime.now(timezone.utc).year
+    for y in range(y1 - 10, y1 + 1):
+        txt = get(f"https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/{y}/all?type=daily_treasury_yield_curve&field_tdr_date_value={y}&page&_format=csv").decode("utf-8", "ignore")
+        for r in csv.DictReader(io.StringIO(txt)):
+            m, d, yy = r["Date"].split("/")
+            for c, k in cols.items():
+                if r.get(c) not in (None, ""):
+                    out[k][f"{yy}-{m}-{d}"] = float(r[c])
+    return {k: sorted(v.items()) for k, v in out.items()}
 
 
 def check(rows, market):
@@ -184,11 +221,10 @@ def main():
                     rows, meta = yahoo(t); src = "yahoo"
                 except Exception as e:
                     errs.append(f"yahoo: {e}")
-                    if mkt in ("US", "ETF", "Commodity"):
-                        try:
-                            rows, meta = stooq(t); src = "stooq"
-                        except Exception as e2:
-                            errs.append(f"stooq: {e2}")
+                    try:  # second Yahoo host
+                        rows, meta = yahoo(t, "query2"); src = "yahoo"
+                    except Exception as e2:
+                        errs.append(f"yahoo2: {e2}")
             if rows:
                 good, probs, st = check(rows, mkt)
                 if good or not old:
@@ -213,7 +249,29 @@ def main():
         ok += entry["status"] == "ok"; warn += entry["status"] == "warning"; fail += entry["status"] == "failed"
         report["instruments"].append(entry)
     fok = ffail = 0
-    for s in uni.get("fred", []):
+    # Economy data. FRED doesn't answer GitHub's servers, so the US government sources are used directly:
+    # BLS (CPI, unemployment, payrolls) and the Treasury (yield curve). VIX, dollar and oil come from Yahoo above.
+    econ = []
+    for name, fn in (("bls", lambda: bls(BLS)), ("treasury", treasury)):
+        path = os.path.join(a.cache, "econ", name + ".json.gz")
+        old = load(path)
+        try:
+            if old and old.get("fetched") == today and not a.force:
+                data = old["series"]
+            elif a.mock:
+                data = {k: [[f"{2016 + i // 12}-{i % 12 + 1:02d}-01", 2 + math.sin(i / 9)] for i in range(120)] for k in (BLS if name == "bls" else ("T3M", "T2Y", "T10Y"))}
+                save(path, {"source": name, "fetched": today, "series": data})
+            else:
+                data = fn(); save(path, {"source": name, "fetched": today, "series": data})
+            for k, rows in data.items():
+                report["fred"].append({"series": f"{k} ({name})", "status": "ok", "rows": len(rows), "first": rows[0][0], "last": rows[-1][0]}); fok += 1
+        except Exception as ex:
+            if old:
+                for k, rows in old["series"].items():
+                    report["fred"].append({"series": f"{k} ({name})", "status": "warning", "rows": len(rows), "last": rows[-1][0], "note": f"download failed, previous copy: {ex}"}); fok += 1
+            else:
+                report["fred"].append({"series": name, "status": "failed", "note": str(ex)}); ffail += 1
+    for s in ([] if not a.mock and not os.environ.get("TRY_FRED") else uni.get("fred", [])):
         path = os.path.join(a.cache, "fred", s + ".json.gz")
         old = load(path)
         e = {"series": s}
@@ -236,11 +294,11 @@ def main():
     json.dump(report, open(os.path.join(a.cache, "reports", "data_quality.json"), "w"), indent=1, allow_nan=False)
     # short human-readable version
     lines = [f"# Investor desk - data quality ({report['generated_at']})", "",
-             f"Instruments: **{ok} ok**, {warn} with warnings, **{fail} failed** (of {len(uni['instruments'])}). FRED series: {fok} ok, {ffail} failed.", "",
+             f"Instruments: **{ok} ok**, {warn} with warnings, **{fail} failed** (of {len(uni['instruments'])}). Economy series: {fok} ok, {ffail} failed.", "",
              "| Ticker | Market | Status | Rows | Last bar | Source | Problems |", "|---|---|---|---|---|---|---|"]
     for x in sorted(report["instruments"], key=lambda x: ({"failed": 0, "warning": 1, "ok": 2}[x.get("status", "failed")], x["ticker"])):
         lines.append(f"| {x['ticker']} | {x['market']} | {x.get('status')} | {x.get('rows', '')} | {x.get('last', '')} | {x.get('source', '')} | {'; '.join(x.get('problems') or []) or x.get('note', '')} |")
-    lines += ["", "| FRED series | Status | Rows | Last value date |", "|---|---|---|---|"] + [f"| {e['series']} | {e['status']} | {e.get('rows', '')} | {e.get('last', '')} |" for e in report["fred"]]
+    lines += ["", "| Economy series | Status | Rows | Last value date |", "|---|---|---|---|"] + [f"| {e['series']} | {e['status']} | {e.get('rows', '')} | {e.get('last', '')} |" for e in report["fred"]]
     open(os.path.join(a.cache, "reports", "data_quality.md"), "w").write("\n".join(lines) + "\n")
     print("\n".join(lines[:3]))
     if not a.mock and (fail > max(5, 0.1 * len(uni["instruments"])) or ffail > 2):
