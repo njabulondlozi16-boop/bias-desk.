@@ -235,6 +235,10 @@ def main():
         entry = {"ticker": t, "market": mkt}
         if old and old.get("fetched") == today and not a.force:
             rows, meta, src = old["rows"], old.get("meta", {}), old.get("source", "cache")
+            rows, fixes = clean(rows)
+            if fixes:
+                meta = dict(meta or {}); meta["cleaned"] = fixes[-10:]
+                save(path, {**old, "rows": rows, "meta": meta})
         else:
             rows = meta = None; src = None; errs = []
             if a.mock:
