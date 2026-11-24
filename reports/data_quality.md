@@ -1,4 +1,4 @@
-# Investor desk - data quality (2026-11-24 15:20 SAST)
+# Investor desk - data quality (2026-11-24 15:21 SAST)
 
 Instruments: **175 ok**, 5 with warnings, **1 failed** (of 181). Economy series: 7 ok, 0 failed.
 
