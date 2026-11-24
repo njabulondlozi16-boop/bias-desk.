@@ -1,0 +1,54 @@
+name: Investor data (prices + economy)
+
+# Phase 1 of the investor desk: downloads ~10 years of daily prices for config/universe.json and the FRED
+# economic series into the `invest-data` branch, checks them, and writes a data-quality report there.
+on:
+  push:
+    branches: ['invest/**']
+    paths: ['scripts/inv_data.py', 'config/universe.json', '.github/workflows/investor-data.yml']
+  schedule:
+    - cron: '23 22 * * 1-5'   # 00:23 SAST, after the US close (backups below: GitHub often starts late)
+    - cron: '51 1 * * 2-6'    # 03:51 SAST
+  workflow_dispatch:
+    inputs:
+      force: { description: 'Download everything again', type: boolean, default: false }
+
+permissions:
+  contents: write
+
+concurrency:
+  group: invest-data
+  cancel-in-progress: false
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { ref: invest-data, path: cache }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Download and check data
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/inv_data.py --cache cache ${{ inputs.force && '--force' || '' }}
+      - name: Save to the invest-data branch
+        working-directory: cache
+        run: |
+          git config user.name "bias-desk-bot"
+          git config user.email "bias-desk-bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "No change"; exit 0; fi
+          git commit -m "Investor data $(TZ=Africa/Johannesburg date '+%F %H:%M')"
+          git push
+      - name: Report in the run summary
+        run: cat cache/reports/data_quality.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Test alert (branch builds only)
+        if: github.event_name == 'push'
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python scripts/notify.py --title "Bias Desk test alert" --message "Investor data job finished on branch ${GITHUB_REF_NAME}. If you can read this, alerts work." --priority high --tags white_check_mark

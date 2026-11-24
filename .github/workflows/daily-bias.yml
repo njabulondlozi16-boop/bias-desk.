@@ -58,6 +58,22 @@ jobs:
           git commit -m "Daily bias scores $(TZ=Africa/Johannesburg date +%F)"
           git pull --rebase
           git push
+      - name: Phone alert - morning brief
+        if: success()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          # only when this run actually published today's scores (skipped runs stay quiet)
+          if git log -1 --format=%s | grep -q "Daily bias scores $(TZ=Africa/Johannesburg date +%F)"; then python scripts/morning_brief.py; else echo "no new scores this run"; fi
+      - name: Phone alert - scoring failed
+        if: failure()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/notify.py --title "Bias Desk: daily scores failed" --message "The scoring job failed. Open Bias Desk and press 'Get today's scores', or tell Claude." --priority high --tags warning
       - name: Refresh the website
         env:
           GH_TOKEN: ${{ github.token }}
