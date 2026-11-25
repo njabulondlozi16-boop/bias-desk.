@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-24",
-  "generated_at": "05:09 SAST",
+  "date": "2026-11-25",
+  "generated_at": "04:59 SAST",
   "model": "gemini-3.5-flash-lite",
   "scores": {
     "EURUSD": {
-      "score": -6,
-      "label": "Strong Bearish",
-      "reason": "Strong USD and weak Euro fundamentals weigh heavily."
-    },
-    "GBPUSD": {
       "score": -5,
       "label": "Moderately Bearish",
-      "reason": "Hawkish Fed expectations outweighing resilient UK data."
+      "reason": "Euro pressured by robust US dollar strength and Fed hike bets."
+    },
+    "GBPUSD": {
+      "score": -4,
+      "label": "Moderately Bearish",
+      "reason": "Pound constrained by strong greenback and slowing domestic growth."
     },
     "AUDUSD": {
-      "score": -8,
-      "label": "Strong Bearish",
-      "reason": "Weak Australian employment data crushes currency."
+      "score": -2,
+      "label": "Neutral",
+      "reason": "Domestic inflation supports AUD, but strong USD caps gains."
     },
     "NZDUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Persistent domestic weakness and strong US dollar."
+      "reason": "Weighed by low yield appeal, sluggish economy, and strong dollar."
     },
     "USDCHF": {
       "score": 5,
       "label": "Moderately Bullish",
-      "reason": "Widening interest rate differential favors USD."
+      "reason": "Widening interest rate differential favors USD over CHF."
     },
     "XAUUSD": {
-      "score": 3,
-      "label": "Moderately Bullish",
-      "reason": "Rebound from lows despite hawkish Fed rate bets."
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Hawkish Fed rate expectations and higher yields weigh on gold."
     },
     "US30": {
-      "score": 6,
-      "label": "Strong Bullish",
-      "reason": "Strong market bounce led by tech and Nvidia."
+      "score": -2,
+      "label": "Neutral",
+      "reason": "Tech rout and macro headwinds weigh on broader equities."
     },
     "US100": {
-      "score": 8,
-      "label": "Strong Bullish",
-      "reason": "Massive tech rally following Jensen Huang's return."
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "Heavy tech sector selloff and fading AI euphoria hit Nasdaq."
     },
     "GER30": {
-      "score": 6,
-      "label": "Strong Bullish",
-      "reason": "DAX rallies sharply on AI optimism and strong PMIs."
-    },
-    "BTCUSD": {
       "score": -4,
       "label": "Moderately Bearish",
-      "reason": "Crypto headwinds and risk sentiment limit gains."
+      "reason": "DAX pressured by tech uncertainty and impending tariff fears."
+    },
+    "BTCUSD": {
+      "score": -7,
+      "label": "Strong Bearish",
+      "reason": "Crypto-specific headwinds, ETF outflows, and risk-off sentiment hurt BTC."
     }
   },
   "currencies": {
     "USD": {
       "score": 7,
-      "reason": "Strong data, hawkish Fed bets, and DXY strength."
+      "reason": "Fed rate hike expectations rise and strong inflation focus."
     },
     "EUR": {
-      "score": -5,
-      "reason": "Political uncertainty, weak PMIs, and soft growth."
+      "score": -3,
+      "reason": "Weighed down by broad dollar strength and weak sentiment."
     },
     "GBP": {
-      "score": -4,
-      "reason": "Slowing private sector growth and strong USD pressure."
+      "score": -2,
+      "reason": "Slowing private sector growth and persistent US dollar strength."
     },
     "AUD": {
-      "score": -7,
-      "reason": "Surprise jump in jobless rate, RBA rate cut bets."
+      "score": 4,
+      "reason": "Stronger-than-expected inflation keeps RBA rate hike risks alive."
     },
     "NZD": {
       "score": -6,
-      "reason": "Sluggish economy, low interest rates, and soft sentiment."
+      "reason": "Sluggish economy, low relative rates, and weak global risk sentiment."
     },
     "CHF": {
       "score": -2,
-      "reason": "Low borrowing costs and wider yield differential with US."
+      "reason": "Low domestic rates compared to US amplify funding currency status."
     }
   },
   "sources": {
@@ -112,7 +112,7 @@
       "problems": []
     },
     "GOLD": {
-      "paragraphs": 3,
+      "paragraphs": 2,
       "headlines": 6,
       "problems": []
     },
