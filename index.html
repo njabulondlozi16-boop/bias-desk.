@@ -6404,12 +6404,12 @@ function initFX(){
     const all=[C.lo,C.hi,C.sl,C.tp]; const pmin=Math.min(...all), pmax=Math.max(...all), pad=(pmax-pmin)*.08;
     const Y=v=>{ const f=(v-(pmin-pad))/((pmax+pad)-(pmin-pad)); return C.dir>0?Y1-f*(Y1-Y0):Y0+f*(Y1-Y0); }, X=i=>X0+(i+.5)*bw;
     let A=1; if(e>C.tDone) A=Math.max(0,1-(e-C.tDone)/1700); if(e<400) A=e/400;
-    if(e>C.tDone&&!C.dusted){ C.dusted=true; for(let i=0;i<C.B.length;i++){ const b=C.B[i]; for(let k=0;k<4;k++) TC.dust.push({x:X(i)+R(-bw/3,bw/3),y:Y(R(b.l,b.h)),vx:R(-.4,.4),vy:R(-1.2,-.2),a:1,c:b.c>=b.o?'130,240,225':'255,140,190'}); } }
+    if(e>C.tDone&&!C.dusted){ C.dusted=true; for(let i=0;i<C.B.length;i++){ const b=C.B[i]; for(let k=0;k<4;k++) TC.dust.push({x:X(i)+R(-bw/3,bw/3),y:Y(R(b.l,b.h)),vx:R(-.4,.4),vy:R(-1.2,-.2),a:1,c:(b.c>=b.o)===(C.dir>0)?'130,240,225':'255,140,190'}); } }
     if(!TC.counted&&e>C.tEnd){ TC.counted=true; if(C.win){ TC.w++; TC.r+=2.5; for(let k=0;k<90;k++){ const an=R(0,6.28), sp=R(1,6); TC.burst.push({x:X(C.B.length-1),y:Y(C.tp),vx:Math.cos(an)*sp,vy:Math.sin(an)*sp,a:1,c:Math.random()<.5?'255,226,150':'120,250,220'}); } } else { TC.l++; TC.r-=1; } }
     ctx.save(); ctx.globalAlpha=A*.95; ctx.globalCompositeOperation='source-over';
     const font=(w,sz)=>`${w} ${sz}px 'JetBrains Mono',ui-monospace,monospace`;
     // header
-    ctx.font=font(600,lite?9:11); ctx.fillStyle='rgba(200,205,255,.55)'; ctx.textAlign='left'; ctx.fillText(`BIAS DESK · FRVP MODEL · SETUP #${TC.n} · ${C.dir>0?'BUY':'SELL'}`,X0,Y0-14);
+    ctx.font=font(600,lite?9:11); ctx.fillStyle='rgba(200,205,255,.55)'; ctx.textAlign='left'; ctx.fillText(`BIAS DESK ULTRA · FRVP MODEL · SETUP #${TC.n} · ${C.dir>0?'BULLISH':'BEARISH'} BIAS`,X0,Y0-14);
     ctx.textAlign='right'; ctx.fillStyle='rgba(200,205,255,.55)'; ctx.fillText(`W ${TC.w} · L ${TC.l} · ${TC.r>=0?'+':''}${TC.r.toFixed(1)}R`,X1,Y0-14);
     const legX0=X(0)-bw/2, legX1=X(C.legN-1)+bw/2;
     // FRVP in starlight
@@ -6424,16 +6424,20 @@ function initFX(){
       ctx.globalCompositeOperation='source-over'; }
     // A++ zone pulse while price returns
     if(e>C.at[C.legN]&&e<C.tEntry+600){ const zy=Y(C.zone), r=8+6*Math.sin(now/180); ctx.globalCompositeOperation='lighter'; const zg=ctx.createRadialGradient(X(C.entryI),zy,0,X(C.entryI),zy,r*3); zg.addColorStop(0,'rgba(255,220,140,.45)'); zg.addColorStop(1,'rgba(255,220,140,0)'); ctx.fillStyle=zg; ctx.fillRect(X(C.entryI)-r*3,zy-r*3,r*6,r*6); ctx.globalCompositeOperation='source-over'; ctx.fillStyle='rgba(255,225,160,.8)'; ctx.font=font(700,lite?9:11); ctx.textAlign='left'; ctx.fillText('A++  POC × FVG',X(C.entryI)+14,zy+(C.dir>0?18:-10)); }
-    // position tool
-    if(e>C.tEntry){ const f=Math.min(1,(e-C.tEntry)/600), xe=X(C.entryI), ye=Y(C.entry), yt=Y(C.tp), ys=Y(C.sl), xr=xe+(X1-xe)*f;
-      ctx.fillStyle='rgba(60,220,180,.13)'; ctx.fillRect(xe,Math.min(ye,yt),xr-xe,Math.abs(yt-ye)); ctx.fillStyle='rgba(255,90,140,.13)'; ctx.fillRect(xe,Math.min(ye,ys),xr-xe,Math.abs(ys-ye));
-      ctx.strokeStyle='rgba(90,240,200,.7)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(xe,yt); ctx.lineTo(xr,yt); ctx.stroke(); ctx.strokeStyle='rgba(255,110,150,.7)'; ctx.beginPath(); ctx.moveTo(xe,ys); ctx.lineTo(xr,ys); ctx.stroke(); ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.beginPath(); ctx.moveTo(xe,ye); ctx.lineTo(xr,ye); ctx.stroke();
-      if(f>.9){ ctx.font=font(700,lite?9:11); ctx.textAlign='right'; ctx.fillStyle='rgba(120,250,215,.9)'; ctx.fillText('TP · 1 : 2.5',xr-4,yt+(C.dir>0?-5:13)); ctx.fillStyle='rgba(255,140,170,.9)'; ctx.fillText('SL · below VAL',xr-4,ys+(C.dir>0?13:-5));
-        ctx.textAlign='left'; ctx.fillStyle='#fff'; ctx.fillText(C.dir>0?'▲ BUY':'▼ SELL',xe+4,ye+(C.dir>0?14:-6)); } }
+    // FBC Ultra style levels: Market Shift → Potential Key Level · Invalidation Level · Potential Target Level
+    if(e>C.tEntry){ const f=Math.min(1,(e-C.tEntry)/600), xe=X(C.entryI), ye=Y(C.entry), yt=Y(C.tp), ys=Y(C.sl), xr=xe+(X1-xe)*f, kc=C.dir>0?'34,214,120':'255,72,96';
+      ctx.fillStyle='rgba(60,220,140,.10)'; ctx.fillRect(xe,Math.min(ye,yt),xr-xe,Math.abs(yt-ye)); ctx.fillStyle='rgba(255,80,100,.10)'; ctx.fillRect(xe,Math.min(ye,ys),xr-xe,Math.abs(ys-ye));
+      const L=(y,c,w,dash)=>{ ctx.setLineDash(dash||[]); ctx.strokeStyle=c; ctx.lineWidth=w; ctx.beginPath(); ctx.moveTo(xe,y); ctx.lineTo(xr,y); ctx.stroke(); ctx.setLineDash([]); };
+      L(yt,'rgba(80,170,255,.9)',1.5,[6,4]); L(ys,'rgba(255,90,110,.9)',1.5,[6,4]); L(ye,`rgba(${kc},1)`,2.5); ctx.globalCompositeOperation='lighter'; L(ye,`rgba(${kc},.25)`,8); ctx.globalCompositeOperation='source-over';
+      if(f>.9){ const tag=(txt,y,c,below)=>{ ctx.font=font(700,lite?8:10); const w=ctx.measureText(txt).width+12, h=lite?14:17, x=xr-w, yy=below?y+3:y-h-3; ctx.fillStyle=`rgba(${c},.18)`; ctx.fillRect(x,yy,w,h); ctx.strokeStyle=`rgba(${c},.8)`; ctx.lineWidth=1; ctx.strokeRect(x+.5,yy+.5,w-1,h-1); ctx.fillStyle=`rgba(${c},1)`; ctx.textAlign='left'; ctx.fillText(txt,x+6,yy+h-(lite?4:5)); };
+        tag('Potential Target Level · 1:2.5',yt,'90,175,255',C.dir<0); tag('Invalidation Level',ys,'255,95,115',C.dir>0); tag(`Potential Key Level ${C.dir>0?'▲':'▼'}`,ye,kc,C.dir<0); } }
+    // Market Shift label on the candle that confirms
+    if(e>C.at[C.entryI]+C.S*.6){ const k=Math.min(1,(e-C.at[C.entryI]-C.S*.6)/400), b=C.B[C.entryI], x=X(C.entryI), y=C.dir>0?Y(b.l)+16:Y(b.h)-10;
+      ctx.globalAlpha*=k; ctx.font=font(800,lite?9:11); ctx.textAlign='right'; ctx.fillStyle=C.dir>0?'rgba(60,230,140,1)':'rgba(255,90,110,1)'; ctx.fillText(C.dir>0?'MARKET SHIFT ▲':'MARKET SHIFT ▼',x-bw*.9,y+(C.dir>0?10:-4)); ctx.globalAlpha/=k||1; }
     // candles loading
     for(let i=0;i<C.B.length;i++){ const ti=C.at[i]; if(e<ti) break; const b=C.B[i], f=Math.min(1,(e-ti)/C.S); let cur=b.c, hi=b.h, lo=b.l;
       if(f<1){ const up=b.c>=b.o, e1=up?b.l:b.h, e2=up?b.h:b.l; if(f<.3){ cur=b.o+(e1-b.o)*f/.3; } else if(f<.7){ cur=e1+(e2-e1)*(f-.3)/.4; } else cur=e2+(b.c-e2)*(f-.7)/.3; hi=Math.max(b.o,cur,f>=.3?e1:-1e9,f>=.7?e2:-1e9); lo=Math.min(b.o,cur,f>=.3?e1:1e9,f>=.7?e2:1e9); hi=Math.max(hi,cur); lo=Math.min(lo,cur); }
-      const up=cur>=b.o, col=up?'110,235,220':'255,125,180', x=X(i), w=bw*.56;
+      const up=(cur>=b.o)===(C.dir>0), col=up?'110,235,220':'255,125,180', x=X(i), w=bw*.56;
       ctx.strokeStyle=`rgba(${col},.85)`; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x,Y(hi)); ctx.lineTo(x,Y(lo)); ctx.stroke();
       const yo=Y(b.o), yc=Y(cur); ctx.fillStyle=`rgba(${col},.82)`; ctx.fillRect(x-w/2,Math.min(yo,yc),w,Math.max(1,Math.abs(yc-yo)));
       ctx.globalCompositeOperation='lighter'; ctx.fillStyle=`rgba(${col},.12)`; ctx.fillRect(x-w/2-2,Math.min(yo,yc)-2,w+4,Math.max(1,Math.abs(yc-yo))+4); ctx.globalCompositeOperation='source-over';
@@ -6441,7 +6445,7 @@ function initFX(){
       if(f<1){ const py=Y(cur); ctx.globalCompositeOperation='lighter'; const sg=ctx.createRadialGradient(x,py,0,x,py,14); sg.addColorStop(0,'rgba(255,255,255,.95)'); sg.addColorStop(.25,`rgba(${col},.5)`); sg.addColorStop(1,`rgba(${col},0)`); ctx.fillStyle=sg; ctx.fillRect(x-14,py-14,28,28); ctx.globalCompositeOperation='source-over';
         ctx.setLineDash([2,4]); ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.beginPath(); ctx.moveTo(x+8,py); ctx.lineTo(X1,py); ctx.stroke(); ctx.setLineDash([]); } }
     // result
-    if(e>C.tEnd){ const k=Math.min(1,(e-C.tEnd)/500), y=(Y0+Y1)/2, sc=.8+.2*k; ctx.save(); ctx.translate(Math.min(X1-150,(X(C.entryI)+X1)/2),Math.max(Y0+30,Math.min(Y1-30,Y(C.tp)+(C.dir>0?-46:58)))); ctx.scale(sc,sc); ctx.textAlign='center';
+    if(e>C.tEnd){ const k=Math.min(1,(e-C.tEnd)/500), y=(Y0+Y1)/2, sc=.8+.2*k; ctx.save(); ctx.translate(Math.min(X1-150,(X(C.entryI)+X1)/2),Math.max(Y0+30,Math.min(Y1-30,Y(C.tp)+(C.dir>0?-62:72)))); ctx.scale(sc,sc); ctx.textAlign='center';
       ctx.font=font(800,lite?20:34); ctx.globalCompositeOperation='lighter'; const txt=C.win?'TP HIT  +2.5R':'SL HIT  −1R'; ctx.fillStyle=C.win?`rgba(255,220,140,${.35*k})`:`rgba(255,140,170,${.25*k})`; for(const d of [[-2,0],[2,0],[0,-2],[0,2]]) ctx.fillText(txt,d[0],d[1]);
       ctx.globalCompositeOperation='source-over'; ctx.fillStyle=C.win?`rgba(255,240,200,${k})`:`rgba(255,200,215,${.85*k})`; ctx.fillText(txt,0,0);
       ctx.font=font(500,lite?9:12); ctx.fillStyle=`rgba(210,210,255,${.7*k})`; ctx.fillText(C.win?'Patience at the POC pays.':'Risk was defined. Trust the edge.',0,lite?18:26); ctx.restore(); }
