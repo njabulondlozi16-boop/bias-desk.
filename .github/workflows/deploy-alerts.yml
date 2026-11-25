@@ -1,0 +1,77 @@
+name: Alert server (deploy)
+
+# Deploys the always-on alert server (alerts-worker/) to your free Cloudflare account.
+# Needs repo secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, ALERTS_KEY (+ NTFY_TOPIC, already set).
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['alerts-worker/**', '.github/workflows/deploy-alerts.yml']
+
+concurrency: { group: alerts-deploy, cancel-in-progress: false }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: alerts-worker } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Live Deriv check (same requests the server sends)
+        run: node test/probe.mjs
+      - name: Check secrets
+        id: chk
+        env:
+          CF: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACC: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          KEY: ${{ secrets.ALERTS_KEY }}
+        run: |
+          if [ -z "$CF" ] || [ -z "$ACC" ] || [ -z "$KEY" ]; then
+            echo "Missing CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / ALERTS_KEY secrets - see the setup steps. Not deploying." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "ok=0" >> "$GITHUB_OUTPUT"
+          else echo "ok=1" >> "$GITHUB_OUTPUT"; fi
+      - name: Storage (KV)
+        if: steps.chk.outputs.ok == '1'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          ID=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces?per_page=100" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const n=(j.result||[]).find(x=>x.title==="bias-desk-alerts");console.log(n?n.id:"")})')
+          if [ -z "$ID" ]; then
+            ID=$(curl -s -X POST -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json" -d '{"title":"bias-desk-alerts"}' "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);if(!j.success){console.error(JSON.stringify(j.errors));process.exit(1)}console.log(j.result.id)})')
+          fi
+          sed -i "s/KV_ID_PLACEHOLDER/$ID/" wrangler.toml
+      - name: Deploy
+        if: steps.chk.outputs.ok == '1'
+        id: dep
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4 deploy 2>&1 | tee deploy.log
+          URL=$(grep -o 'https://[a-zA-Z0-9.-]*workers\.dev' deploy.log | head -1)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+      - name: Secrets
+        if: steps.chk.outputs.ok == '1'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          ALERTS_KEY: ${{ secrets.ALERTS_KEY }}
+          NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
+        run: |
+          node -e 'const o={NTFY_TOPIC:process.env.NTFY_TOPIC,ALERTS_KEY:process.env.ALERTS_KEY};if(process.env.NTFY_TOKEN)o.NTFY_TOKEN=process.env.NTFY_TOKEN;require("fs").writeFileSync("/tmp/s.json",JSON.stringify(o))'
+          npx --yes wrangler@4 secret bulk /tmp/s.json; rm -f /tmp/s.json
+      - name: Check the live server
+        if: steps.chk.outputs.ok == '1'
+        env:
+          URL: ${{ steps.dep.outputs.url }}
+          KEY: ${{ secrets.ALERTS_KEY }}
+        run: |
+          sleep 15
+          echo "Server address: $URL" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Health: $(curl -s "$URL/health")" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Deriv from Cloudflare: $(curl -s -H "X-Key: $KEY" "$URL/probe")" | tee -a "$GITHUB_STEP_SUMMARY"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "Test push: $(curl -s -H "X-Key: $KEY" "$URL/test")" | tee -a "$GITHUB_STEP_SUMMARY"; fi
