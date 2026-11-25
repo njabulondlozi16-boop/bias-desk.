@@ -1664,6 +1664,7 @@ body.ui-neon.ui-galaxy .logo-mark{color:var(--neon);text-shadow:0 0 18px rgba(16
 body.ui-neon.ui-galaxy .keypad button{background:linear-gradient(180deg,#181530,#0e0c1d);border-color:rgba(255,255,255,.07)}
 body.ui-neon.ui-galaxy .keypad button:hover{border-color:rgba(167,139,250,.45)}
 body.ui-neon.ui-galaxy{--muted:#9590ad}
+body.ui-neon.ui-galaxy .grid-overlay{display:none}
 body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%,rgba(124,92,240,.16),transparent 62%),radial-gradient(760px 480px at 8% 108%,rgba(80,120,230,.12),transparent 62%),radial-gradient(520px 320px at 55% 45%,rgba(190,110,220,.05),transparent 70%),linear-gradient(180deg,#07061a,#020108)}
 .look-opt i.gal{background:radial-gradient(1px 1px at 30% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 60%,#fff,transparent),radial-gradient(circle at 70% 25%,rgba(167,139,250,.9),transparent 45%),linear-gradient(135deg,#07061a,#1b1240)}
 </style>
@@ -6408,17 +6409,127 @@ function initFX(){
     g.globalCompositeOperation='source-over';
     rings(0,Math.PI);                                           // near side of the rings, in front of the planet
     return {c,cx,cy,Rp,TL}; }
-  function buildGalaxy(){ paintDeepSpace(); const w=paintAlienWorld();
+  const GX_FS=`precision highp float;
+uniform vec2 uRes; uniform float uT; uniform vec2 uM;
+float h1(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+float vn(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h1(i),h1(i+vec2(1.,0.)),f.x),mix(h1(i+vec2(0.,1.)),h1(i+vec2(1.,1.)),f.x),f.y); }
+float fbm(vec2 p){ float s=0., a=.5; mat2 m=mat2(1.6,1.2,-1.2,1.6); for(int i=0;i<5;i++){ s+=a*vn(p); p=m*p; a*=.5; } return s; }
+float fbm3(vec2 p){ float s=0., a=.5; mat2 m=mat2(1.6,1.2,-1.2,1.6); for(int i=0;i<3;i++){ s+=a*vn(p); p=m*p; a*=.5; } return s; }
+vec4 over(vec4 d, vec4 s){ return vec4(s.rgb*s.a + d.rgb*(1.-s.a), s.a + d.a*(1.-s.a)); }
+void cs(inout vec4 ca, inout float za, inout vec4 cb, inout float zb){ if(za>zb){ vec4 tc=ca; ca=cb; cb=tc; float tz=za; za=zb; zb=tz; } }
+vec4 moon(vec2 o, vec3 M, float mr, vec3 base, vec3 L, float T, float seed, out float mz){
+  vec2 q=(o-M.xy)/mr; float d2=dot(q,q); mz=-99.; if(d2>=1.) return vec4(0.);
+  float z=sqrt(1.-d2); vec3 n=vec3(q,z); mz=M.z+z*mr;
+  float cr=fbm3(q*3.+seed)*.8+fbm3(q*9.+seed*2.)*.3;
+  vec3 c=base*(.6+.6*cr); float di=clamp(dot(n,L),0.,1.); float term=smoothstep(-.05,.25,dot(n,L));
+  vec3 col=c*(.04+1.2*term*(.35+.65*di)) + vec3(.5,.8,1.)*pow(1.-z,3.)*.35*term;
+  float edge=smoothstep(1.,.96,sqrt(d2));
+  return vec4(col,edge); }
+void main(){
+  float asp=uRes.x/uRes.y; vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y; float T=uT; vec2 par=uM*vec2(-.03,.02);
+  // ---- flowing nebula
+  vec2 np=p*1.45+par*.6+vec2(T*.006,T*.002);
+  vec2 q=vec2(fbm(np+vec2(0.,T*.012)), fbm(np+vec2(5.2,1.3)-T*.01));
+  vec2 r=vec2(fbm(np+3.*q+vec2(1.7,9.2)+T*.018), fbm(np+3.*q+vec2(8.3,2.8)-T*.014));
+  float f=fbm(np+2.6*r);
+  vec3 nc=mix(vec3(.04,.55,.62),vec3(.78,.14,.66),clamp(r.x*1.5-.25,0.,1.));
+  nc=mix(nc,vec3(.36,.26,1.),clamp(q.y*1.3-.35,0.,1.)); nc=mix(nc,vec3(1.,.55,.75),clamp(f*f*1.6-.6,0.,1.)*.5);
+  float mask=smoothstep(1.25,0.,length(p-vec2(-.34*asp,.2)))*.95+smoothstep(.85,0.,length(p-vec2(.02,.38)))*.55+smoothstep(.7,0.,length(p-vec2(-.1*asp,-.35)))*.35;
+  float na=pow(f,2.4)*2.1*mask + .3*pow(clamp(1.-abs(r.y-q.x)*2.6,0.,1.),5.)*mask;
+  na=clamp(na,0.,.82);
+  vec4 acc=vec4(nc*na,na);
+  // ---- distant sun with rays and flares
+  vec2 sp=vec2(.4*asp,.37)+par*.4; vec2 dv=p-sp; float sd=length(dv); float an=atan(dv.y,dv.x);
+  float rays=pow(abs(sin(an*6.+T*.04)),22.)*.6+pow(abs(sin(an*9.-T*.06)),34.)*.45+pow(abs(sin(an*2.+.5)),80.)*.8;
+  float sg=.0009/(sd*sd+.0006)+exp(-sd*11.)*.45+rays*exp(-sd*4.2)*.24;
+  sg*=.92+.08*sin(T*1.1)+.04*sin(T*3.7);
+  vec3 sunc=vec3(1.,.93,.86);
+  acc.rgb+=sunc*sg; acc.a=clamp(acc.a+sg,0.,1.);
+  for(int k=1;k<4;k++){ float fk=float(k); vec2 gp=sp+(vec2(-.1*asp,-.1)-sp)*(.35*fk); float gd=length(p-gp); float ring=exp(-pow((gd-.025*fk)*60.,2.))*.12+exp(-gd*gd*900./fk)*.05;
+    vec3 gc=fk==1.?vec3(.4,1.,.85):(fk==2.?vec3(.9,.4,1.):vec3(.4,.6,1.)); acc.rgb+=gc*ring; acc.a=clamp(acc.a+ring,0.,1.); }
+  // ---- planet frame
+  vec2 Cp=vec2(.31*asp,-.53)+par; float Rp=.6; vec2 o=(p-Cp)/Rp; float d2=dot(o,o);
+  float A=-.42, ci=cos(.25), si=sin(.25);
+  vec3 ex=vec3(cos(A),sin(A),0.), ey=vec3(-sin(A)*ci,cos(A)*ci,si), ez=cross(ex,ey);
+  vec3 L=normalize(vec3((sp-Cp)/Rp,.12));
+  vec4 pl=vec4(0.); float pz=-99.;
+  if(d2<1.){
+    float z=sqrt(1.-d2); vec3 n=vec3(o,z); vec3 m=vec3(dot(n,ex),dot(n,ey),dot(n,ez));
+    float lat=m.y, lon=atan(m.x,m.z);
+    float flow=lon+T*.02*(1.+.7*sin(lat*8.));
+    float w=fbm(vec2(flow*2.2,lat*16.)+vec2(T*.01,0.));
+    float band=lat*7.+w*1.7+fbm3(vec2(flow*5.,lat*30.))*.5;
+    vec3 col=vec3(.05,.27,.34);
+    col=mix(col,vec3(.12,.47,.5),smoothstep(-.3,.6,sin(band)));
+    col=mix(col,vec3(.25,.16,.5),smoothstep(.2,.9,sin(band*1.7+1.3)));
+    col=mix(col,vec3(.55,.22,.56),smoothstep(.55,1.,sin(band*.8+2.1))*.85);
+    col=mix(col,vec3(.42,.78,.8),smoothstep(.8,1.,sin(band*2.3+.4))*.6);
+    vec2 sc=vec2(mod(flow-1.2,6.2832)-3.1416,(lat+.28)*3.); float sdd=length(sc*vec2(1.,1.6));
+    float sw=atan(sc.y,sc.x)+sdd*7.-T*.25; col=mix(col,vec3(.95,.7,.9),smoothstep(.45,.0,sdd)*(.55+.45*sin(sw*3.))*.8);
+    float di=dot(n,L), term=smoothstep(-.06,.32,di);
+    col*=.82; vec3 lit=col*(.035+1.05*term*(.3+.7*clamp(di,0.,1.)));
+    vec2 g=vec2(flow*34.,lat*34.); vec2 gi=floor(g); float hh=h1(gi);
+    float city=step(.88,hh)*smoothstep(.32,0.,length(fract(g)-.5))*(.55+.45*sin(T*(1.5+hh*3.)+hh*60.));
+    vec3 cc=mix(vec3(.3,1.,.85),vec3(1.,.42,.9),step(.55,h1(gi+7.1)));
+    lit+=cc*city*(1.-smoothstep(-.12,.12,di))*1.4;
+    float al=abs(lat); float pol=smoothstep(.76,.81,al)*smoothstep(.9,.84,al);
+    float cur=.4+fbm3(vec2(lon*5.+T*.12,T*.15+al*6.))*1.2;
+    lit+=mix(vec3(.15,1.,.65),vec3(.9,.35,1.),smoothstep(.82,.88,al))*pol*cur*1.6*(1.-term*.75);
+    lit+=vec3(.45,.9,1.)*pow(1.-z,2.4)*(.2+1.4*term);
+    pl=vec4(lit,smoothstep(1.,.993,sqrt(d2))); pz=z;
+  }
+  // ---- rings (with the planet's shadow, particles orbiting)
+  vec4 rg=vec4(0.); float rz=-99.;
+  { float Zr=-(o.x*ey.x+o.y*ey.y)/ey.z; vec3 P=vec3(o,Zr); float rad=length(P);
+    if(rad>1.26&&rad<2.32){ float fr=(rad-1.26)/1.06; float th=atan(dot(P,ez),dot(P,ex)); float kep=T*.35/pow(rad,1.5);
+      float dens=(.3+.7*vn(vec2(fr*70.,1.)))*(.5+.5*vn(vec2(fr*21.+3.,2.)));
+      dens*=smoothstep(0.,.05,fr)*smoothstep(1.,.86,fr)*(1.-.92*smoothstep(.43,.45,fr)*(1.-smoothstep(.5,.52,fr)));
+      float clump=.7+.3*vn(vec2((th+kep)*40.,fr*120.));
+      vec3 rc=mix(vec3(.93,.89,1.),vec3(.62,.88,1.),smoothstep(.25,.7,fr)); rc=mix(rc,vec3(1.,.7,.9),smoothstep(.72,1.,fr));
+      float b=dot(P,L), c=dot(P,P)-1.; float sh=(b<0.&&b*b-c>0.)?.12:1.;
+      float sparkle=pow(vn(vec2((th+kep)*260.,fr*400.)),12.)*2.;
+      rg=vec4(rc*(.3+.95*sh)+vec3(1.)*sparkle*sh, clamp(dens*clump*.8,0.,1.)); rz=Zr; } }
+  // ---- moons in 3D orbits
+  float a1=T*.035+1.2, a2=-T*.022+4.;
+  vec3 M1=2.7*(cos(a1)*ex+sin(a1)*(ez*cos(.45)+ey*sin(.45)));
+  vec3 M2=3.4*(cos(a2)*ex+sin(a2)*(ez*cos(.2)-ey*sin(.2)));
+  float z1, z2; vec4 m1=moon(o,M1,.085,vec3(.72,.82,1.),L,T,3.,z1); vec4 m2=moon(o,M2,.05,vec3(.95,.55,.62),L,T,9.,z2);
+  // ---- depth-sort and composite
+  vec4 c0=rg; float y0=rz; vec4 c1=pl; float y1=pz; vec4 c2=m1; float y2=z1; vec4 c3=m2; float y3=z2;
+  cs(c0,y0,c1,y1); cs(c2,y2,c3,y3); cs(c0,y0,c2,y2); cs(c1,y1,c3,y3); cs(c1,y1,c2,y2);
+  acc=over(acc,c0); acc=over(acc,c1); acc=over(acc,c2); acc=over(acc,c3);
+  // ---- atmosphere halo + breathing aurora glow around the limb
+  float rr=sqrt(d2);
+  if(rr>.97){ vec3 nn=normalize(vec3(o,0.)); float li=clamp(dot(nn,L)*1.3+.2,0.,1.); float br=.85+.15*sin(T*.7);
+    float halo=exp(-max(rr-1.,0.)*13.)*.75*li*br + exp(-max(rr-1.,0.)*5.)*.12*br; vec3 hc=mix(vec3(.5,.35,1.),vec3(.45,.95,1.),li);
+    acc.rgb+=hc*halo; acc.a=clamp(acc.a+halo,0.,1.); }
+  gl_FragColor=vec4(acc.rgb,clamp(acc.a,0.,1.));
+}
+`;
+  function initGL(){ gx.glTried=true; let c=null; try{ c=document.createElement('canvas'); c.id='gx-gl'; c.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none'; cv.after(c);
+      const gl=c.getContext('webgl',{premultipliedAlpha:true,alpha:true,antialias:false,powerPreference:'high-performance'}); if(!gl) throw new Error('no webgl');
+      const sh=(type,src)=>{ const o=gl.createShader(type); gl.shaderSource(o,src); gl.compileShader(o); if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; };
+      const pr=gl.createProgram(); gl.attachShader(pr,sh(gl.VERTEX_SHADER,'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}')); gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,GX_FS)); gl.linkProgram(pr);
+      if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr)); gl.useProgram(pr);
+      const bf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,bf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW); const al=gl.getAttribLocation(pr,'a'); gl.enableVertexAttribArray(al); gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+      c.addEventListener('webglcontextlost',e=>{ e.preventDefault(); gx.gl=null; c.remove(); build(); });
+      gx.gl={gl,c,uRes:gl.getUniformLocation(pr,'uRes'),uT:gl.getUniformLocation(pr,'uT'),uM:gl.getUniformLocation(pr,'uM'),t0:performance.now()-R(0,600)*1000};
+    }catch(e){ console.warn('Galaxy GPU scene unavailable, using the still scene:',e&&e.message); if(c) c.remove(); gx.gl=null; } }
+  function renderGL(){ const G=gx.gl, gl=G.gl, k=lite?.55:.7, w=Math.max(1,Math.round(W*k)), h=Math.max(1,Math.round(H*k));
+    if(G.c.width!==w||G.c.height!==h){ G.c.width=w; G.c.height=h; gl.viewport(0,0,w,h); }
+    gl.uniform2f(G.uRes,w,h); gl.uniform1f(G.uT,(performance.now()-G.t0)/1000); gl.uniform2f(G.uM,pmx,pmy); gl.drawArrays(gl.TRIANGLES,0,3); }
+  function buildGalaxy(){ paintDeepSpace(); if(!gx.glTried) initGL(); const w=gx.gl?null:paintAlienWorld();
     gx={...gx,world:w,meteor:null,
       moons:[{c:sphereSprite(lite?16:26,'120,150,190','230,240,255','150,200,255'),orb:1.55,sp:.0009,a:R(0,6.28),tilt:.34},{c:sphereSprite(lite?9:14,'150,70,90','255,190,200','255,140,180'),orb:2.25,sp:-.0006,a:R(0,6.28),tilt:.42}],
       tw:Array.from({length:lite?50:110},()=>({x:R(0,W),y:R(0,H),r:R(.7,1.8),ph:R(0,6.28),f:R(.015,.06),c:scol()}))}; }
-  function drawGalaxy(){ if(!gx.world) return; const Wd=gx.world;
+  function drawGalaxy(){ const Wd=gx.world; if(!Wd&&!gx.gl) return;
     ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1; ctx.drawImage(bg,0,0);
     ctx.globalCompositeOperation='lighter';
     for(const s of gx.tw){ const x=s.x+pmx*-8, y=s.y+pmy*-6; const a=.25+.55*Math.pow((1+Math.sin(t*s.f+s.ph))/2,2); ctx.fillStyle=`rgba(${s.c},${a})`; ctx.fillRect(x,y,s.r,s.r);
       if(a>.7&&s.r>1.5){ ctx.fillStyle=`rgba(${s.c},${(a-.7)*.8})`; ctx.fillRect(x-3,y+s.r/2-.3,6+s.r,.6); ctx.fillRect(x+s.r/2-.3,y-3,.6,6+s.r); } }
     if(!gx.meteor&&!reduce&&Math.random()<(lite?.003:.0025)){ const a=R(.35,.7); gx.meteor={x:R(W*.05,W*.6),y:R(0,H*.35),vx:Math.cos(a)*R(9,14),vy:Math.sin(a)*R(9,14),life:1}; }
     const M=gx.meteor; if(M){ const tx=M.x-M.vx*7, ty=M.y-M.vy*7; const lg=ctx.createLinearGradient(M.x,M.y,tx,ty); lg.addColorStop(0,`rgba(235,240,255,${.85*M.life})`); lg.addColorStop(1,'rgba(235,240,255,0)'); ctx.strokeStyle=lg; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(M.x,M.y); ctx.lineTo(tx,ty); ctx.stroke(); M.x+=M.vx; M.y+=M.vy; M.life-=.035; if(M.life<=0||M.x>W+50||M.y>H+50) gx.meteor=null; }
+    if(gx.gl){ ctx.globalCompositeOperation='source-over'; renderGL(); return; }
     // moons orbit the giant: behind it, then across the sky in front of it
     const ox=pmx*-14, oy=pmy*-8, pos=gx.moons.map(m=>{ m.a+=reduce?0:m.sp*SPD; const c=Math.cos(m.a+Wd.TL), sn=Math.sin(m.a); return {m,x:Wd.cx+ox+Math.cos(m.a)*Wd.Rp*m.orb, y:Wd.cy+oy-Math.abs(Math.sin(m.a))*Wd.Rp*m.orb*m.tilt*2.2+Math.cos(m.a)*Wd.Rp*m.orb*.32*-1, z:sn}; });
     ctx.globalCompositeOperation='source-over';
@@ -6427,7 +6538,7 @@ function initFX(){
     ctx.globalCompositeOperation='lighter'; const pulse=.5+.5*Math.sin(t*.02); const ag=ctx.createRadialGradient(Wd.cx+ox,Wd.cy+oy,Wd.Rp*.99,Wd.cx+ox,Wd.cy+oy,Wd.Rp*1.25); ag.addColorStop(0,`rgba(90,255,220,${.08+.06*pulse})`); ag.addColorStop(1,'rgba(150,110,255,0)'); ctx.fillStyle=ag; ctx.beginPath(); ctx.arc(Wd.cx+ox,Wd.cy+oy,Wd.Rp*1.25,0,7); ctx.arc(Wd.cx+ox,Wd.cy+oy,Wd.Rp*.99,0,7,true); ctx.fill(); // breathing aurora
     ctx.globalCompositeOperation='source-over';
     for(const q of pos) if(q.z>=0) ctx.drawImage(q.m.c,q.x-q.m.c.width/2,q.y-q.m.c.height/2); }
-  function build(){ P=pal(); look=(document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'); if(look==='g'){ buildGalaxy(); return; } paintBackground();
+  function build(){ P=pal(); look=(document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'); { const gc=document.getElementById('gx-gl'); if(gc) gc.style.display=look==='g'?'':'none'; } if(look==='g'){ buildGalaxy(); return; } paintBackground();
     const gs=Math.min(W,H); gal=[{c:paintGalaxy(Math.round(gs*.55),2,.42,P.gal),x:.16,y:.2,sp:.00035,a:R(0,6),par:6,al:.85},{c:paintGalaxy(Math.round(gs*.32),3,.62,[P.gal[1],P.gal[0],P.gal[2]]),x:.83,y:.12,sp:-.0006,a:R(0,6),par:4,al:.6}];
     sun=paintSun(lite?11:17); bhs=paintHole(lite?20:34);
     const pr=[2.2,3,3.4,2.6,7,6,4.4,4.2], au=[.06,.09,.125,.16,.23,.3,.37,.44];
@@ -6442,7 +6553,7 @@ function initFX(){
   const draw=()=>{
     requestAnimationFrame(draw);
     const onChart=document.body.dataset.page==='chart';
-    if(document.hidden||onChart||still||document.body.classList.contains('landing-on')||(frame++%(lite?4:3))) return;
+    if(document.hidden||onChart||still||document.body.classList.contains('landing-on')||(frame++%(look==='g'?2:(lite?4:3)))) return;
     if(!document.hasFocus()&&frame%30) return;
     if(reduce) still=true;
     if(((document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'))!==look) build();
