@@ -6357,7 +6357,7 @@ function initFX(){
     g.globalCompositeOperation='lighter';
     // nebula clouds (emission red/pink, reflection blue, a violet veil)
     const cloud=(x,y,r,c,a,n)=>{ for(let k=0;k<n;k++){ const px=x+R(-r,r)*.7, py=y+R(-r,r)*.5, rr=r*R(.35,.9); const q=g.createRadialGradient(px,py,0,px,py,rr); q.addColorStop(0,`rgba(${c},${a})`); q.addColorStop(1,`rgba(${c},0)`); g.fillStyle=q; g.fillRect(px-rr,py-rr,rr*2,rr*2); } };
-    cloud(W*.78,H*.68,W*.16,'214,78,132',.035,9); cloud(W*.2,H*.22,W*.14,'70,150,230',.03,8); cloud(W*.55,H*.18,W*.2,'130,96,230',.025,8); cloud(W*.3,H*.75,W*.1,'230,120,90',.02,5);
+    cloud(W*.22,H*.25,W*.2,'40,200,190',.05,12); cloud(W*.32,H*.18,W*.16,'210,70,190',.045,11); cloud(W*.55,H*.12,W*.22,'120,90,240',.035,10); cloud(W*.12,H*.55,W*.12,'255,110,170',.03,7); cloud(W*.65,H*.45,W*.15,'60,140,255',.025,7);
     // Milky Way glow
     for(let i=0;i<60;i++){ const u=i/59, [x,y]=at(u,gauss()*BW*.25), r=BW*R(.9,1.6), warm=Math.exp(-Math.pow((u-.55)/.22,2)); const q=g.createRadialGradient(x,y,0,x,y,r); q.addColorStop(0,`rgba(${warm>.4?'255,214,176':'170,180,240'},${.045+.045*warm})`); q.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=q; g.fillRect(x-r,y-r,r*2,r*2); }
     // band star dust
@@ -6375,40 +6375,58 @@ function initFX(){
       else { g.fillStyle=`rgba(${c},${.12+m*1.0})`; const z=m>.4?1.3:.8; g.fillRect(x,y,z,z); } }
     g.globalCompositeOperation='source-over';
     gx.src=new Uint32Array(g.getImageData(0,0,W,H).data.buffer); }
-  function paintHoleReal(rad){ const s=Math.ceil(rad*10), c=mk(s,s), g=c.getContext('2d'), m=s/2, TL=-.12;
-    const ring=(r0,r1,sy,from,to,hot)=>{ g.save(); g.translate(m,m); g.rotate(TL); g.scale(1,sy); const steps=48;
-      for(let k=0;k<steps;k++){ const f=k/steps, r=r0+(r1-r0)*f; for(let j=0;j<72;j++){ const a0=from+(to-from)*j/72, a1=from+(to-from)*(j+1)/72, dop=.45+.55*Math.pow((1-Math.cos(a0+.25))/2,1.6);
-          const col=f<.25?'255,246,226':f<.55?'255,206,140':'240,140,70'; g.strokeStyle=`rgba(${col},${hot*dop*Math.pow(1-f,1.3)*(.6+.4*Math.random())})`; g.lineWidth=(r1-r0)/steps*1.6; g.beginPath(); g.arc(0,0,r,a0,a1+.01); g.stroke(); } }
-      g.restore(); };
-    const glow=g.createRadialGradient(m,m,rad,m,m,m); glow.addColorStop(0,'rgba(255,190,120,.18)'); glow.addColorStop(.3,'rgba(255,150,90,.05)'); glow.addColorStop(1,'rgba(255,150,90,0)'); g.fillStyle=glow; g.fillRect(0,0,s,s);
-    g.globalCompositeOperation='lighter';
-    ring(rad*1.06,rad*2.3,.95,Math.PI,Math.PI*2,.75);   // back of the disk, bent up over the top by gravity
-    ring(rad*1.02,rad*1.6,.85,0,Math.PI,.28);            // ... and under the bottom
-    ring(rad*1.7,rad*4.6,.16,0,Math.PI*2,.55);           // the flat accretion disk
-    g.save(); g.translate(m,m); const ph=g.createRadialGradient(0,0,rad*.97,0,0,rad*1.22); ph.addColorStop(0,'rgba(255,240,215,0)'); ph.addColorStop(.25,'rgba(255,240,215,.95)'); ph.addColorStop(.55,'rgba(255,190,120,.35)'); ph.addColorStop(1,'rgba(255,170,100,0)'); g.fillStyle=ph; g.beginPath(); g.arc(0,0,rad*1.22,0,7); g.fill(); g.restore(); // photon ring
-    g.globalCompositeOperation='source-over'; g.fillStyle='#000'; g.beginPath(); g.arc(m,m,rad,0,7); g.fill();                 // event horizon shadow
-    g.globalCompositeOperation='lighter'; ring(rad*1.7,rad*4.6,.16,0,Math.PI,.75);                                              // front of the disk, over the shadow
+  function sphereSprite(r,base,lit,glowCol){ const S=Math.ceil(r*3.2), c=mk(S,S), g=c.getContext('2d'), m=S/2;
+    const gl=g.createRadialGradient(m,m,r*.9,m,m,r*1.6); gl.addColorStop(0,`rgba(${glowCol},.35)`); gl.addColorStop(1,`rgba(${glowCol},0)`); g.fillStyle=gl; g.fillRect(0,0,S,S);
+    const b=g.createRadialGradient(m-r*.5,m-r*.45,r*.05,m-r*.1,m,r*1.15); b.addColorStop(0,`rgb(${lit})`); b.addColorStop(.45,`rgb(${base})`); b.addColorStop(1,'rgb(4,3,12)'); g.fillStyle=b; g.beginPath(); g.arc(m,m,r,0,7); g.fill();
+    g.save(); g.beginPath(); g.arc(m,m,r,0,7); g.clip(); for(let i=0;i<14;i++){ g.fillStyle=`rgba(0,0,0,${R(.04,.12)})`; g.beginPath(); g.arc(m+R(-r,r)*.8,m+R(-r,r)*.8,R(r*.05,r*.2),0,7); g.fill(); } g.restore();
     return c; }
-  function buildGalaxy(){ paintDeepSpace(); const rad=lite?26:46, Lr=Math.round(rad*4.6), S=Lr*2, RE=rad*1.55;
-    const off=new Int32Array(S*S*2), blk=new Uint8Array(S*S);
-    for(let j=0;j<S;j++) for(let i=0;i<S;i++){ const dx=i-Lr+.5, dy=j-Lr+.5, r=Math.hypot(dx,dy), k=j*S+i;
-      if(r<rad){ blk[k]=1; continue; } const w=r>Lr?0:1-Math.pow(Math.max(0,(r-Lr*.55)/(Lr*.45)),2); const b=r-RE*RE/r*w; off[k*2]=Math.round(dx*b/r-dx); off[k*2+1]=Math.round(dy*b/r-dy); }
-    gx={...gx,rad,Lr,S,off,blk,img:ctx.createImageData(S,S),hole:paintHoleReal(rad),meteor:null,
-      tw:Array.from({length:lite?50:110},()=>({x:R(0,W),y:R(0,H),r:R(.7,1.8),ph:R(0,6.28),f:R(.015,.06),c:scol()}))}; gx.dst=new Uint32Array(gx.img.data.buffer); }
-  function drawGalaxy(){ const {src,off,blk,S,Lr,dst,img,hole,rad}=gx; if(!src) return;
+  function paintAlienWorld(){ const c=mk(W,H), g=c.getContext('2d'), Rp=Math.min(W*.42,H*.62), cx=W*.8, cy=H*1.02, TL=.42, LX=cx+Rp*.62, LY=cy-Rp*1.05, dl=(x,y)=>Math.hypot(x-LX,y-LY)/Rp;
+    const rings=(from,to)=>{ g.save(); g.translate(cx,cy); g.rotate(TL); g.scale(1,.24); g.globalCompositeOperation='lighter';
+      for(let k=0;k<120;k++){ const f=k/120, r=Rp*(1.28+f*.95); if(f>.46&&f<.5) continue; // the gap
+        const band=.5+.5*Math.sin(f*47)*Math.sin(f*13+1), a=(f<.05?f*20:1)*(1-f*.5)*(.08+.2*band); const col=f<.4?'235,226,255':f<.75?'170,225,255':'255,190,235';
+        g.strokeStyle=`rgba(${col},${a})`; g.lineWidth=Rp*.95/120*1.4; g.beginPath(); g.arc(0,0,r,from,to); g.stroke(); }
+      g.restore(); g.globalCompositeOperation='source-over'; };
+    rings(Math.PI,Math.PI*2);                                   // far side of the rings, behind the planet
+    // the planet: banded alien atmosphere
+    g.save(); g.beginPath(); g.arc(cx,cy,Rp,0,7); g.clip();
+    g.fillStyle='#0b2a3a'; g.fillRect(cx-Rp,cy-Rp,Rp*2,Rp*2);
+    const cols=['14,74,92','27,111,122','58,40,122','120,52,130','70,160,170','24,60,110','150,90,170','40,130,140'];
+    g.translate(cx,cy); g.rotate(TL); g.filter='blur(2.5px)';
+    for(let y=-Rp;y<Rp;y+=Rp/90){ const k=Math.floor((y/Rp+1)*7.3+Math.sin(y*.03)*1.7)%cols.length; g.fillStyle=`rgba(${cols[(k+cols.length)%cols.length]},.4)`; g.beginPath(); g.moveTo(-Rp,y);
+      for(let x=-Rp;x<=Rp;x+=Rp/30) g.lineTo(x,y+Math.sin(x*.012+y*.05)*Rp*.012); g.lineTo(Rp,y+Rp/60); g.lineTo(-Rp,y+Rp/60); g.fill(); }
+    for(let i=0;i<5;i++){ const x=R(-Rp*.6,Rp*.2), y=R(-Rp*.75,-Rp*.2), rx=R(Rp*.05,Rp*.12); const q=g.createRadialGradient(x,y,0,x,y,rx); q.addColorStop(0,'rgba(220,170,240,.35)'); q.addColorStop(1,'rgba(220,170,240,0)'); g.fillStyle=q; g.beginPath(); g.ellipse(x,y,rx,rx*.45,0,0,7); g.fill(); } // storms
+    g.filter='none'; g.setTransform(1,0,0,1,0,0);
+    // night side: alien lights
+    g.globalCompositeOperation='lighter'; for(let i=0;i<(lite?120:300);i++){ const an=R(0,6.28), rr=Math.sqrt(Math.random())*Rp, x=cx+Math.cos(an)*rr, y=cy+Math.sin(an)*rr; if(dl(x,y)>1.15){ const col=Math.random()<.6?'90,255,210':'255,120,230'; g.fillStyle=`rgba(${col},${R(.15,.55)})`; g.fillRect(x,y,R(.8,2),R(.8,2)); } }
+    g.globalCompositeOperation='source-over';
+    // light from the upper left → day / night terminator
+    const sh=g.createRadialGradient(LX,LY,0,LX,LY,Rp*2.1); sh.addColorStop(0,'rgba(2,2,10,0)'); sh.addColorStop(.3,'rgba(2,2,10,.05)'); sh.addColorStop(.52,'rgba(2,2,10,.55)'); sh.addColorStop(.66,'rgba(2,2,10,.9)'); sh.addColorStop(1,'rgba(2,2,10,.97)'); g.fillStyle=sh; g.fillRect(cx-Rp,cy-Rp,Rp*2,Rp*2);
+    g.globalCompositeOperation='lighter'; for(let i=0;i<(lite?60:160);i++){ const an=R(0,6.28), rr=Math.sqrt(Math.random())*Rp, x=cx+Math.cos(an)*rr, y=cy+Math.sin(an)*rr; if(dl(x,y)>1.25){ g.fillStyle=`rgba(${Math.random()<.6?'110,255,220':'255,140,235'},${R(.25,.7)})`; g.fillRect(x,y,1.2,1.2); } }
+    g.restore();
+    // atmosphere glow on the rim
+    g.globalCompositeOperation='lighter'; const ann=()=>{ g.beginPath(); g.arc(cx,cy,Rp*1.12,0,7); g.arc(cx,cy,Rp*.965,0,7,true); }; const base=g.createRadialGradient(cx,cy,Rp*.965,cx,cy,Rp*1.12); base.addColorStop(0,'rgba(110,200,255,.22)'); base.addColorStop(1,'rgba(150,120,255,0)'); g.fillStyle=base; ann(); g.fill(); g.save(); ann(); g.clip(); const lit=g.createRadialGradient(LX,LY,0,LX,LY,Rp*1.35); lit.addColorStop(0,'rgba(140,250,255,.9)'); lit.addColorStop(.6,'rgba(120,200,255,.35)'); lit.addColorStop(1,'rgba(120,160,255,0)'); g.fillStyle=lit; g.fillRect(cx-Rp*1.2,cy-Rp*1.2,Rp*2.4,Rp*2.4); const fade=g.createRadialGradient(cx,cy,Rp*.965,cx,cy,Rp*1.12); fade.addColorStop(0,'rgba(0,0,0,0)'); fade.addColorStop(1,'rgba(0,0,0,1)'); g.globalCompositeOperation='destination-out'; g.fillStyle=fade; g.fillRect(cx-Rp*1.2,cy-Rp*1.2,Rp*2.4,Rp*2.4); g.restore();
+    g.globalCompositeOperation='source-over';
+    rings(0,Math.PI);                                           // near side of the rings, in front of the planet
+    return {c,cx,cy,Rp,TL}; }
+  function buildGalaxy(){ paintDeepSpace(); const w=paintAlienWorld();
+    gx={...gx,world:w,meteor:null,
+      moons:[{c:sphereSprite(lite?16:26,'120,150,190','230,240,255','150,200,255'),orb:1.55,sp:.0009,a:R(0,6.28),tilt:.34},{c:sphereSprite(lite?9:14,'150,70,90','255,190,200','255,140,180'),orb:2.25,sp:-.0006,a:R(0,6.28),tilt:.42}],
+      tw:Array.from({length:lite?50:110},()=>({x:R(0,W),y:R(0,H),r:R(.7,1.8),ph:R(0,6.28),f:R(.015,.06),c:scol()}))}; }
+  function drawGalaxy(){ if(!gx.world) return; const Wd=gx.world;
     ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1; ctx.drawImage(bg,0,0);
-    const cx=Math.round(W*(.5+.36*Math.sin(t*.0007))), cy=Math.round(H*(.46+.26*Math.sin(t*.00113+1.1))), x0=cx-Lr, y0=cy-Lr;
-    for(let j=0;j<S;j++){ const row=j*S, py=y0+j; for(let i=0;i<S;i++){ const k=row+i; if(blk[k]){ dst[k]=0xff000000; continue; }
-      let sx=x0+i+off[k*2], sy=py+off[k*2+1]; if(sx<0) sx=0; else if(sx>=W) sx=W-1; if(sy<0) sy=0; else if(sy>=H) sy=H-1; dst[k]=src[sy*W+sx]; } }
-    ctx.putImageData(img,x0,y0);
     ctx.globalCompositeOperation='lighter';
-    const er=ctx.createRadialGradient(cx,cy,rad*1.4,cx,cy,rad*1.75); er.addColorStop(0,'rgba(200,210,255,0)'); er.addColorStop(.5,'rgba(200,210,255,.10)'); er.addColorStop(1,'rgba(200,210,255,0)'); ctx.fillStyle=er; ctx.fillRect(cx-rad*2,cy-rad*2,rad*4,rad*4); // faint Einstein ring
-    for(const s of gx.tw){ let x=s.x+pmx*-8, y=s.y+pmy*-6; const dx=x-cx, dy=y-cy, d=Math.hypot(dx,dy); if(d<Lr){ if(d<rad*1.1) continue; const b=d-rad*rad*2.4/d; x=cx+dx*b/d; y=cy+dy*b/d; }
-      const a=.25+.55*Math.pow((1+Math.sin(t*s.f+s.ph))/2,2); ctx.fillStyle=`rgba(${s.c},${a})`; ctx.fillRect(x,y,s.r,s.r); if(a>.7&&s.r>1.5){ ctx.fillStyle=`rgba(${s.c},${(a-.7)*.8})`; ctx.fillRect(x-3,y+s.r/2-.3,6+s.r,.6); ctx.fillRect(x+s.r/2-.3,y-3,.6,6+s.r); } }
-    // shooting star now and then
-    if(!gx.meteor&&!reduce&&Math.random()<(lite?.003:.0025)){ const a=R(.35,.7); gx.meteor={x:R(W*.1,W*.9),y:R(0,H*.4),vx:Math.cos(a)*R(9,14),vy:Math.sin(a)*R(9,14),life:1}; }
+    for(const s of gx.tw){ const x=s.x+pmx*-8, y=s.y+pmy*-6; const a=.25+.55*Math.pow((1+Math.sin(t*s.f+s.ph))/2,2); ctx.fillStyle=`rgba(${s.c},${a})`; ctx.fillRect(x,y,s.r,s.r);
+      if(a>.7&&s.r>1.5){ ctx.fillStyle=`rgba(${s.c},${(a-.7)*.8})`; ctx.fillRect(x-3,y+s.r/2-.3,6+s.r,.6); ctx.fillRect(x+s.r/2-.3,y-3,.6,6+s.r); } }
+    if(!gx.meteor&&!reduce&&Math.random()<(lite?.003:.0025)){ const a=R(.35,.7); gx.meteor={x:R(W*.05,W*.6),y:R(0,H*.35),vx:Math.cos(a)*R(9,14),vy:Math.sin(a)*R(9,14),life:1}; }
     const M=gx.meteor; if(M){ const tx=M.x-M.vx*7, ty=M.y-M.vy*7; const lg=ctx.createLinearGradient(M.x,M.y,tx,ty); lg.addColorStop(0,`rgba(235,240,255,${.85*M.life})`); lg.addColorStop(1,'rgba(235,240,255,0)'); ctx.strokeStyle=lg; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(M.x,M.y); ctx.lineTo(tx,ty); ctx.stroke(); M.x+=M.vx; M.y+=M.vy; M.life-=.035; if(M.life<=0||M.x>W+50||M.y>H+50) gx.meteor=null; }
-    ctx.globalCompositeOperation='source-over'; const sc=1+.015*Math.sin(t*.04); const hw=hole.width*sc; ctx.globalAlpha=.97; ctx.drawImage(hole,cx-hw/2,cy-hw/2,hw,hw); ctx.globalAlpha=1; }
+    // moons orbit the giant: behind it, then across the sky in front of it
+    const ox=pmx*-14, oy=pmy*-8, pos=gx.moons.map(m=>{ m.a+=reduce?0:m.sp*SPD; const c=Math.cos(m.a+Wd.TL), sn=Math.sin(m.a); return {m,x:Wd.cx+ox+Math.cos(m.a)*Wd.Rp*m.orb, y:Wd.cy+oy-Math.abs(Math.sin(m.a))*Wd.Rp*m.orb*m.tilt*2.2+Math.cos(m.a)*Wd.Rp*m.orb*.32*-1, z:sn}; });
+    ctx.globalCompositeOperation='source-over';
+    for(const q of pos) if(q.z<0) ctx.drawImage(q.m.c,q.x-q.m.c.width/2,q.y-q.m.c.height/2);
+    ctx.drawImage(Wd.c,ox,oy);
+    ctx.globalCompositeOperation='lighter'; const pulse=.5+.5*Math.sin(t*.02); const ag=ctx.createRadialGradient(Wd.cx+ox,Wd.cy+oy,Wd.Rp*.99,Wd.cx+ox,Wd.cy+oy,Wd.Rp*1.25); ag.addColorStop(0,`rgba(90,255,220,${.08+.06*pulse})`); ag.addColorStop(1,'rgba(150,110,255,0)'); ctx.fillStyle=ag; ctx.beginPath(); ctx.arc(Wd.cx+ox,Wd.cy+oy,Wd.Rp*1.25,0,7); ctx.arc(Wd.cx+ox,Wd.cy+oy,Wd.Rp*.99,0,7,true); ctx.fill(); // breathing aurora
+    ctx.globalCompositeOperation='source-over';
+    for(const q of pos) if(q.z>=0) ctx.drawImage(q.m.c,q.x-q.m.c.width/2,q.y-q.m.c.height/2); }
   function build(){ P=pal(); look=(document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'); if(look==='g'){ buildGalaxy(); return; } paintBackground();
     const gs=Math.min(W,H); gal=[{c:paintGalaxy(Math.round(gs*.55),2,.42,P.gal),x:.16,y:.2,sp:.00035,a:R(0,6),par:6,al:.85},{c:paintGalaxy(Math.round(gs*.32),3,.62,[P.gal[1],P.gal[0],P.gal[2]]),x:.83,y:.12,sp:-.0006,a:R(0,6),par:4,al:.6}];
     sun=paintSun(lite?11:17); bhs=paintHole(lite?20:34);
