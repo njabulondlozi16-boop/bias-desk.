@@ -1639,6 +1639,40 @@ body.anim-paused .cz,body.anim-paused .cz *,body.anim-paused .landing *{animatio
   .ld-grid,.ld-steps{grid-template-columns:1fr}.ld-sec{padding:70px 18px}.ld-tag.t2{right:4%}.ld-stats{gap:22px}
 }
 @media (max-width:420px){ .ld-acts .ghost{display:none} .ld-title{font-size:50px} }
+
+/* ===================== Galaxy look (Graphite Neon layout, deep-space palette) ===================== */
+/* ===================== Graphite Neon look ===================== */
+body.ui-neon.ui-galaxy{--bg:#000000;--bg2:#0e0c1e;--blue:#a78bfa;--blue2:#7c5cf0;--cyan:#a5c8ff;--accent:#a78bfa;--accent2:#a78bfa;--green:#a78bfa;--text:#f8f8f8;--muted:#8c9198;--glass:rgba(255,255,255,.035);--border:rgba(255,255,255,.09);--surface:rgba(14,12,30,.88);--surface2:rgba(22,20,40,.92);--line:rgba(255,255,255,.07);--radius:12px;--neon:#a78bfa;--neon-soft:rgba(167,139,250,.14)}
+body.ui-neon.ui-galaxy{background:radial-gradient(1200px 700px at 78% -10%,#0e0c1e 0%,transparent 60%),linear-gradient(180deg,#05040d,#000000) fixed;color:var(--text)}
+body.ui-neon.ui-galaxy .aurora .orb{display:none}
+body.ui-neon.ui-galaxy .aurora .orb.o1{background:radial-gradient(circle,rgba(167,139,250,.18),transparent 70%)}
+body.ui-neon.ui-galaxy .aurora .orb.o2,body.ui-neon.ui-galaxy .aurora .orb.o3{background:radial-gradient(circle,rgba(130,150,230,.10),transparent 70%)}
+body.ui-neon.ui-galaxy .sidenav{background:linear-gradient(180deg,#0b0a1a,#060512);border-right:1px solid rgba(255,255,255,.06)}
+body.ui-neon.ui-galaxy .sidenav a.active,body.ui-neon.ui-galaxy .sn-links a.active{background:linear-gradient(90deg,rgba(167,139,250,.14),rgba(167,139,250,0));color:#fff;box-shadow:inset 2px 0 0 var(--neon)}
+body.ui-neon.ui-galaxy .topbar{background:rgba(6,5,14,.84);border-bottom:1px solid rgba(255,255,255,.06)}
+body.ui-neon.ui-galaxy .card-s,body.ui-neon.ui-galaxy .glass{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.008)),#0e0c1e;border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 18px 40px rgba(0,0,0,.35);border-radius:12px}
+body.ui-neon.ui-galaxy .btn-primary{background:linear-gradient(180deg,#c4b5fd,#7c5cf0);color:#0d0820;box-shadow:0 0 0 1px rgba(167,139,250,.45),0 10px 30px rgba(167,139,250,.22)}
+body.ui-neon.ui-galaxy .btn-primary:hover{box-shadow:0 0 0 1px rgba(167,139,250,.7),0 12px 36px rgba(167,139,250,.35)}
+body.ui-neon.ui-galaxy .btn-soft:hover{border-color:rgba(167,139,250,.45)}
+body.ui-neon.ui-galaxy .aurora{background:radial-gradient(1100px 650px at 85% -12%,rgba(167,139,250,.07),transparent 60%),radial-gradient(900px 600px at 0% 110%,rgba(255,255,255,.035),transparent 60%),linear-gradient(180deg,#080716,#000000)}
+body.ui-neon.ui-galaxy .sn-logo{background:linear-gradient(145deg,#1d1a36,#0b0a18);color:var(--neon);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px rgba(167,139,250,.35),0 0 18px rgba(167,139,250,.25);text-shadow:0 0 10px rgba(167,139,250,.8)}
+body.ui-neon.ui-galaxy .btn-hero{background:linear-gradient(180deg,#c4b5fd,#7c5cf0);color:#0d0820;box-shadow:0 0 0 1px rgba(167,139,250,.45),0 10px 30px rgba(167,139,250,.22)}
+body.ui-neon.ui-galaxy ::selection{background:rgba(167,139,250,.3)}
+/* login card */
+body.ui-neon.ui-galaxy .login-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01)),#0e0c1e;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(167,139,250,.06),0 -1px 0 rgba(167,139,250,.5) inset;clip-path:polygon(0 18px,18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%);border-radius:4px}
+body.ui-neon.ui-galaxy .logo-mark{color:var(--neon);text-shadow:0 0 18px rgba(167,139,250,.7)}
+body.ui-neon.ui-galaxy .keypad button{background:linear-gradient(180deg,#181530,#0e0c1d);border-color:rgba(255,255,255,.07)}
+body.ui-neon.ui-galaxy .keypad button:hover{border-color:rgba(167,139,250,.45)}
+body.ui-neon.ui-galaxy{--muted:#9590ad}
+body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%,rgba(124,92,240,.16),transparent 62%),radial-gradient(760px 480px at 8% 108%,rgba(80,120,230,.12),transparent 62%),radial-gradient(520px 320px at 55% 45%,rgba(190,110,220,.05),transparent 70%),linear-gradient(180deg,#07061a,#020108)}
+body.ui-neon.ui-galaxy .aurora::before,body.ui-neon.ui-galaxy .aurora::after{content:'';position:absolute;inset:0;pointer-events:none;background-repeat:repeat}
+body.ui-neon.ui-galaxy .aurora::before{background-image:radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.75),transparent 60%),radial-gradient(1px 1px at 37% 72%,rgba(220,225,255,.6),transparent 60%),radial-gradient(1.4px 1.4px at 64% 28%,rgba(255,255,255,.8),transparent 60%),radial-gradient(1px 1px at 82% 63%,rgba(200,190,255,.6),transparent 60%),radial-gradient(1px 1px at 23% 47%,rgba(255,255,255,.45),transparent 60%),radial-gradient(1.2px 1.2px at 91% 12%,rgba(190,215,255,.7),transparent 60%),radial-gradient(1px 1px at 50% 92%,rgba(255,255,255,.5),transparent 60%),radial-gradient(1px 1px at 5% 85%,rgba(220,210,255,.55),transparent 60%);background-size:420px 420px;opacity:.55;animation:galTw 7s ease-in-out infinite alternate}
+body.ui-neon.ui-galaxy .aurora::after{background-image:radial-gradient(1px 1px at 18% 33%,rgba(255,255,255,.5),transparent 60%),radial-gradient(1px 1px at 71% 81%,rgba(210,220,255,.45),transparent 60%),radial-gradient(1.6px 1.6px at 44% 14%,rgba(255,255,255,.7),transparent 60%),radial-gradient(1px 1px at 88% 41%,rgba(220,200,255,.5),transparent 60%),radial-gradient(1px 1px at 29% 88%,rgba(255,255,255,.4),transparent 60%);background-size:610px 610px;opacity:.4;animation:galTw 11s ease-in-out infinite alternate-reverse,galDrift 240s linear infinite}
+@keyframes galTw{from{opacity:.25}to{opacity:.6}}
+@keyframes galDrift{from{background-position:0 0}to{background-position:-610px 305px}}
+body.ui-neon.ui-galaxy.anim-paused .aurora::before,body.ui-neon.ui-galaxy.anim-paused .aurora::after{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){body.ui-neon.ui-galaxy .aurora::before,body.ui-neon.ui-galaxy .aurora::after{animation:none}}
+.look-opt i.gal{background:radial-gradient(1px 1px at 30% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 60%,#fff,transparent),radial-gradient(circle at 70% 25%,rgba(167,139,250,.9),transparent 45%),linear-gradient(135deg,#07061a,#1b1240)}
 </style>
 </head>
 <body>
@@ -2297,6 +2331,7 @@ const THEMES=[
  {id:'sunset',name:'Sunset Glow',accent:'#f97316',bg:'#0b0614',bg2:'#1f1033',chartBg:'#1f1033',chartBg2:'#09040f',grid:'transparent',text:'#fff0f8',axisText:'#f7d3e8',up:'#ffc400',down:'#ff1a4b',wickUp:'#ffc400',wickDown:'#ff1a4b',borderUp:'#ffc400',borderDown:'#ff1a4b',crosshair:'#d39bff',priceLine:'#c084fc',light:false},
  {id:'mt5-black',name:'MT5 Black',accent:'#00c853',bg:'#05070a',bg2:'#0d1117',chartBg:'#000000',grid:'transparent',text:'#eef2f6',up:'#00ff3b',down:'#d60000',wickUp:'#00ff3b',wickDown:'#d60000',borderUp:'#00ff3b',borderDown:'#d60000',crosshair:'#a3acb7',priceLine:'#8b949e',axisText:'#e6edf3',light:false},
  {id:'ultra-blue',name:'Midnight Blue',accent:'#1e6bff',bg:'#06122b',bg2:'#0b2a5c',chartBg:'#06122b',grid:'transparent',text:'#eef5ff',up:'#1f7aff',down:'#ffffff',wickUp:'#1f7aff',wickDown:'#ffffff',borderUp:'#1f7aff',borderDown:'#ffffff',crosshair:'#4de6ff',priceLine:'#38e1ff',axisText:'#e6f0ff',tp:'#38e1ff',light:false},
+ {id:'galaxy',name:'Galaxy',accent:'#a78bfa',bg:'#07061a',bg2:'#120e2c',chartBg:'#0a0820',chartBg2:'#05040f',grid:'transparent',text:'#ecebff',axisText:'#d9d6f5',up:'#5fd4d0',down:'#d77bb0',wickUp:'#5fd4d0',wickDown:'#d77bb0',borderUp:'#5fd4d0',borderDown:'#d77bb0',crosshair:'#9d92d8',priceLine:'#a78bfa',light:false},
  {id:'neon-night',name:'Neon Night',accent:'#00ff9c',bg:'#000000',bg2:'#0a0a12',chartBg:'#000000',grid:'transparent',text:'#ecfff8',up:'#00ff9c',down:'#ff1a8c',wickUp:'#00ff9c',wickDown:'#ff1a8c',borderUp:'#00ff9c',borderDown:'#ff1a8c',crosshair:'#00ff9c',priceLine:'#00ff9c',axisText:'#e0fff5',light:false},
  {id:'mt4-olive',name:'MT4 Olive',accent:'#8e24aa',bg:'#141310',bg2:'#2a2820',chartBg:'#aea98c',grid:'transparent',text:'#f8f5e8',axisText:'#1b1a14',up:'#5200a3',down:'#ff0000',wickUp:'#5200a3',wickDown:'#ff0000',borderUp:'#5200a3',borderDown:'#ff0000',crosshair:'#3d3a2c',priceLine:'#3d3a2c',light:false},
  {id:'tv-light',name:'TradingView Light',accent:'#2962ff',bg:'#eef1f7',bg2:'#ffffff',chartBg:'#ffffff',grid:'#f0f3fa',text:'#131722',axisText:'#131722',up:'#00b386',down:'#ff1f3d',wickUp:'#00b386',wickDown:'#ff1f3d',borderUp:'#00b386',borderDown:'#ff1f3d',crosshair:'#7d818c',priceLine:'#9598a1',light:true},
@@ -6079,7 +6114,7 @@ function railGroupsInit(){ const rail=document.querySelector('.tool-rail'); if(!
   addEventListener('resize',close); }
 // ===== Look (Graphite Neon / Midnight Blue) + landing page + log-in animation =====
 function uiLook(){ return lsGet('bd_ui','neon')||'neon'; }
-function applyLook(){ document.body.classList.toggle('ui-neon',uiLook()==='neon'); }
+function applyLook(){ const L=uiLook(); document.body.classList.toggle('ui-neon',L==='neon'||L==='galaxy'); document.body.classList.toggle('ui-galaxy',L==='galaxy'); }
 function buildCore(host){ if(!host||host.firstChild) return;
   const faces=['rotateY(0deg)','rotateY(90deg)','rotateY(180deg)','rotateY(-90deg)','rotateX(90deg)','rotateX(-90deg)']; let h='<div class="cz">';
   faces.forEach((f,fi)=>{ h+=`<div class="cz-face" style="transform:${f} translateZ(calc(var(--S)*.5 + var(--e)*var(--S)*.34))">`;
@@ -6112,10 +6147,10 @@ function playIntro(text){ if(reduceMotion()) return; const o=$('bd-intro'); if(!
 function lookCard(){ const g=$('settings-grid'); if(!g||g.querySelector('#look-card')) return; const c=document.createElement('div'); c.className='setting-card card-s'; c.id='look-card';
   const L=uiLook(), land=lsGet('bd_landing',true)!==false;
   c.innerHTML=`<h3>Look</h3><p class="pt-muted">The whole desk: colours, panels and buttons. Candle colours are set separately (Trade → theme).</p>
-   <div class="look-opts"><button class="look-opt${L==='neon'?' on':''}" data-look="neon"><i style="background:linear-gradient(135deg,#0c1014 55%,#1ee883 55%)"></i>Graphite Neon</button><button class="look-opt${L==='classic'?' on':''}" data-look="classic"><i style="background:linear-gradient(135deg,#0a1a3f 55%,#2962ff 55%)"></i>Midnight Blue</button></div>
+   <div class="look-opts"><button class="look-opt${L==='neon'?' on':''}" data-look="neon"><i style="background:linear-gradient(135deg,#0c1014 55%,#1ee883 55%)"></i>Graphite Neon</button><button class="look-opt${L==='classic'?' on':''}" data-look="classic"><i style="background:linear-gradient(135deg,#0a1a3f 55%,#2962ff 55%)"></i>Midnight Blue</button><button class="look-opt${L==='galaxy'?' on':''}" data-look="galaxy"><i class="gal"></i>Galaxy</button></div>
    <label class="alc-chk" style="margin-top:12px"><input type="checkbox" id="look-landing" ${land?'checked':''}> Show the welcome page before log in</label>`;
   g.prepend(c);
-  c.querySelectorAll('[data-look]').forEach(b=>b.addEventListener('click',()=>{ lsSet('bd_ui',b.dataset.look); applyLook(); c.remove(); lookCard(); toast(b.dataset.look==='neon'?'Graphite Neon ✓':'Midnight Blue ✓'); }));
+  c.querySelectorAll('[data-look]').forEach(b=>b.addEventListener('click',()=>{ lsSet('bd_ui',b.dataset.look); applyLook(); c.remove(); lookCard(); toast({neon:'Graphite Neon ✓',galaxy:'Galaxy ✓'}[b.dataset.look]||'Midnight Blue ✓'); }));
   c.querySelector('#look-landing').addEventListener('change',e=>lsSet('bd_landing',e.target.checked)); }
 // ===== Invest page: economy card, watchlists with key levels, sector strength (data: investor.json from the daily job) =====
 let invData=null, invTab='swing', invMkt='all', invLoading=null;
@@ -6286,6 +6321,7 @@ function initFX(){
   const mk=(w,h)=>{ const c=document.createElement('canvas'); c.width=w; c.height=h; return c; };
   const R=(a,b)=>a+Math.random()*(b-a);
   function pal(){ const nz=document.body.classList.contains('ui-neon');
+    if(document.body.classList.contains('ui-galaxy')) return {sky0:'#0d0a26',sky1:'#020108',neb:[[124,92,240,.075],[70,120,235,.06],[200,110,210,.035]],star:[236,234,255],gal:[[226,222,255],[167,139,250],[120,170,255]],grid:'150,120,245',sun:[255,240,220],disk:[[255,226,200],[167,139,250]],planet:[[150,158,172],[196,178,150],[92,140,190],[176,98,70],[210,190,150],[220,200,160],[140,190,200],[150,120,220]]};
     return nz?{sky0:'#05070a',sky1:'#000000',neb:[[30,232,131,.045],[120,130,150,.05]],star:[235,240,248],gal:[[214,226,236],[150,170,190],[30,232,131]],grid:'0,192,64',sun:[255,244,214],disk:[[255,236,200],[30,232,131]],planet:[[150,158,172],[196,178,150],[92,140,190],[176,98,70],[210,190,150],[220,200,160],[140,190,200],[90,110,170]]}
               :{sky0:'#081129',sky1:'#03050e',neb:[[90,80,220,.06],[40,160,255,.05]],star:[225,235,255],gal:[[220,228,255],[150,140,255],[60,200,255]],grid:'70,140,255',sun:[255,236,190],disk:[[255,214,150],[255,140,60]],planet:[[150,158,172],[196,178,150],[92,140,190],[176,98,70],[210,190,150],[220,200,160],[140,190,200],[90,110,170]]}; }
   let P=pal();
@@ -6315,7 +6351,7 @@ function initFX(){
     g.globalCompositeOperation='source-over'; g.fillStyle='#000'; g.beginPath(); g.arc(m,m,rad,0,7); g.fill();          // event horizon
     g.globalCompositeOperation='lighter'; g.save(); g.translate(m,m); g.scale(1,.22); for(let k=0;k<10;k++){ const r=rad*(1.35+k*.11); g.strokeStyle=`rgba(${d0},${.55*(1-k/10)})`; g.lineWidth=rad*.14; g.beginPath(); g.arc(0,0,r,0,Math.PI); g.stroke(); } g.restore(); // front of the disk over the shadow
     return c; }
-  function build(){ P=pal(); look=document.body.classList.contains('ui-neon')?'n':'c'; paintBackground();
+  function build(){ P=pal(); look=(document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'); paintBackground();
     const gs=Math.min(W,H); gal=[{c:paintGalaxy(Math.round(gs*.55),2,.42,P.gal),x:.16,y:.2,sp:.00035,a:R(0,6),par:6,al:.85},{c:paintGalaxy(Math.round(gs*.32),3,.62,[P.gal[1],P.gal[0],P.gal[2]]),x:.83,y:.12,sp:-.0006,a:R(0,6),par:4,al:.6}];
     sun=paintSun(lite?11:17); bhs=paintHole(lite?20:34);
     const pr=[2.2,3,3.4,2.6,7,6,4.4,4.2], au=[.06,.09,.125,.16,.23,.3,.37,.44];
@@ -6333,7 +6369,7 @@ function initFX(){
     if(document.hidden||onChart||still||document.body.classList.contains('landing-on')||(frame++%(lite?4:3))) return;
     if(!document.hasFocus()&&frame%30) return;
     if(reduce) still=true;
-    if((document.body.classList.contains('ui-neon')?'n':'c')!==look) build();
+    if(((document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'))!==look) build();
     t+=SPD; pmx+=(mx-pmx)*.05; pmy+=(my-pmy)*.05;
     ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1; ctx.drawImage(bg,0,0);
     const hy=H*.5, f=H*.9, vp=W/2+pmx*-30;
