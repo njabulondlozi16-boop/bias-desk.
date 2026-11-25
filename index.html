@@ -1221,6 +1221,11 @@ body.light-chart .tb-btn,body.light-chart .pop-row{color:#131722}body.light-char
 .th-dd{position:relative}
 .th-btn{gap:7px}.th-mini{display:inline-flex;width:30px;height:18px;border-radius:4px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.14)}.th-mini svg{width:30px;height:18px;display:block}
 .th-name{font:600 12px 'Space Grotesk',sans-serif;white-space:nowrap}.th-btn .th-mini{display:inline-flex!important}.th-caret{font-size:10px;opacity:.7}
+.ccq-pop{position:fixed;z-index:120;width:260px;padding:12px;background:rgba(18,22,32,.98);border:1px solid rgba(255,255,255,.1);border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.55);font-size:13px}
+.ccq-pop h4{margin:0 0 2px;font-size:13px}.ccq-pop p{margin:0 0 10px;color:#8a93a6;font-size:12px}
+.ccq-tfs{display:grid;grid-template-columns:1fr 1fr;gap:6px}.ccq-tfs button{padding:8px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:inherit;cursor:pointer;text-align:left}
+.ccq-tfs button:hover{background:rgba(41,98,255,.18);border-color:#2962ff}.ccq-tfs button.on{background:rgba(41,98,255,.28);border-color:#2962ff}.ccq-tfs b{display:block;font-size:14px}.ccq-tfs small{color:#8a93a6}
+.ccq-list{margin-top:10px;display:flex;flex-direction:column;gap:4px}.ccq-item{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-radius:6px;background:rgba(255,255,255,.04)}.ccq-item button{background:none;border:0;color:#8a93a6;cursor:pointer}
 .theme-pop{position:absolute;right:0;top:calc(100% + 8px);z-index:90;width:470px;max-height:min(72vh,620px);overflow:auto;padding:12px;background:rgba(18,22,32,.98);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.6);backdrop-filter:blur(8px)}
 .th-cap{margin:2px 2px 8px;font:700 10.5px 'Space Grotesk',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bfc8d8}.th-grid+.th-cap{margin-top:12px}
 .th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -3405,7 +3410,7 @@ function buildChartShell(){
         <div class="rail-fly" hidden><p class="rail-fly-h">Lines</p><button id="ct-line" class="rail-btn" title="Trendline — click two points (Alt+T). Click a line to change its colour, thickness and style."><i class="ico">${ICON.line}</i><span>Trendline <kbd>Alt+T</kbd></span></button><button id="ct-arrow" class="rail-btn" title="Arrow — click where it starts, then where it points. Click it to change colour, thickness and style."><i class="ico">${ICON.arrow}</i><span>Arrow</span></button><button id="ct-hray" class="rail-btn" title="Horizontal ray — click once where it should start; it runs to the right edge. Click it to change colour, thickness, style or set an alert."><i class="ico">${ICON.hray}</i><span>Horizontal ray</span></button><button id="ct-fib" class="rail-btn" title="Fib retracement — click the start of the swing, then the end (like TradingView). Click it to change levels, colours and extend."><i class="ico">${ICON.fib}</i><span>Fib retracement</span></button></div></div>
       <button id="ct-rect" class="rail-btn" title="Rectangle — drag a box (Alt+R). Great for zones. Click it to change colour, fill, or extend it right."><i class="ico">${ICON.rect}</i><span>Rect</span></button>
       <div class="rail-grp" data-g="alerts"><button class="rail-btn rail-head" data-head="alerts" title="Alerts — zone box, price line, candle-close &amp; phone alerts"><i class="ico">${ICON.bell}</i><span>Alerts</span><b class="rail-car" title="Show all"></b></button>
-        <div class="rail-fly" hidden><p class="rail-fly-h">Alerts</p><button id="ct-zone" class="rail-btn" title="Zone alert — drag a box around a zone. You get a phone + PC alert when price enters it (or a candle closes inside — set on the Alerts page)."><i class="ico">${ICON.zone}</i><span>Zone alert</span></button><button id="ct-alert" class="rail-btn" title="Price alert — click the price you want to be alerted at"><i class="ico">${ICON.bell}</i><span>Price alert (line)</span></button><button id="ct-alerts-page" class="rail-btn" title="Candle-close alerts, phone alerts, all zones"><i class="ico">${ICON.clock}</i><span>Candle-close &amp; phone alerts…</span></button></div></div>
+        <div class="rail-fly" hidden><p class="rail-fly-h">Alerts</p><button id="ct-zone" class="rail-btn" title="Zone alert — drag a box around a zone. You get a phone + PC alert when price enters it (or a candle closes inside — set on the Alerts page)."><i class="ico">${ICON.zone}</i><span>Zone alert</span></button><button id="ct-alert" class="rail-btn" title="Price alert — click the price you want to be alerted at"><i class="ico">${ICON.bell}</i><span>Price alert (line)</span></button><button id="ct-ccq" class="rail-btn" title="Candle close alert — pick 15M, 1H or 4H and you get told when that candle closes, whatever timeframe you are on"><i class="ico">${ICON.clock}</i><span>Candle close alert</span></button><button id="ct-alerts-page" class="rail-btn" title="Candle-close alerts, phone alerts, all zones"><i class="ico">${ICON.clock}</i><span>Candle-close &amp; phone alerts…</span></button></div></div>
       <div class="rail-grp" data-g="ana" data-menu="1"><button class="rail-btn rail-head" data-head="ana" title="Analysis — FRVP, FVG, market structure"><i class="ico">${ICON.ms}</i><span>Analysis</span><b class="rail-car" title="Show all"></b></button>
         <div class="rail-fly" hidden><p class="rail-fly-h">Analysis</p><button id="ct-vp" class="rail-btn" title="Fixed Range Volume Profile — drag across the candles you want measured"><i class="ico">${ICON.vp}</i><span>Volume profile (FRVP)</span></button><button id="ct-fvg" class="rail-btn" title="FVG — fair value gaps, shown only after the 3rd candle closes; removed when a candle closes through the gap (no inverse FVGs)"><i class="ico">${ICON.fvg}</i><span>Fair value gaps (FVG)</span></button><button id="ct-ms" class="rail-btn" title="Market structure — range high / low, bos, mss, sweep (+ 1D · 4h · 1h · 15m table)"><i class="ico">${ICON.ms}</i><span>Market structure</span></button></div></div>
       <button id="ct-qt" class="rail-btn" title="Trade — show / hide the BUY and SELL buttons on every chart"><i class="ico">${ICON.trade}</i><span>Trade</span></button>
@@ -3460,6 +3465,7 @@ function buildChartShell(){
   document.addEventListener('keydown',e=>{ const l=$('pair-dd-list'); if(e.key==='Escape'&&l&&!l.hidden) l.hidden=true; });
   $('ct-cursor').addEventListener('click',()=>{ tlSetMode(false); vpSetMode(false); alSetMode(false); tlRender(); vpRender(); });
   $('ct-alert').addEventListener('click',()=>alSetMode(!alMode));
+  $('ct-ccq').addEventListener('click',e=>{ e.stopPropagation(); ccqOpen(); });
   $('ct-qt').addEventListener('click',()=>{ const on=!qtShown(); lsSet('bd_qt',on); qtSync(); toast(on?'BUY / SELL buttons on':'BUY / SELL buttons hidden — tap Trade to bring them back'); });
   qtSync();
   $('ct-fvg').addEventListener('click',()=>{ const on=!fvgOn(); lsSet('bd_fvg_on',on); fvgCache.sig=''; fvgPosition(); tlKick(); mcCharts.forEach(m=>{ m.fvg=null; mcDraw(m); }); toast(on?'FVG on — gaps appear once the 3rd candle closes, and go when a candle closes through them':'FVG off'); });
@@ -4816,7 +4822,7 @@ function alRender(){ const lay=tlWrap()?.querySelector('.al-layer'); if(!lay||!c
 function alPosition(){ const lay=tlWrap()?.querySelector('.al-layer'); if(!lay) return; let aw=0; try{ aw=chart.priceScale('right').width()||0; }catch(e){} lay.style.right=aw+'px';
   lay.querySelectorAll('.al-line').forEach(el=>{ const a=getAlerts().find(x=>x.id===el.dataset.id); const y=a?yAtPrice(a.price):null; if(y===null){ el.style.display='none'; return; } el.style.display=''; el.style.top=y+'px'; }); }
 // bell panel: active alerts, recent alerts, switches
-function renderAlertBadge(){ const b=$('ct-bell'); if(!b) return; const n=getAlerts().filter(a=>a.active).length; b.querySelector('.bell-n').textContent=n||''; }
+function renderAlertBadge(){ const b=$('ct-bell'); if(!b) return; const n=getAlerts().filter(a=>a.active).length+(typeof ccOnce==='function'?ccOnce().length:0); b.querySelector('.bell-n').textContent=n||''; }
 function renderAlertPanel(){ const p=$('alert-panel'); if(!p||p.hidden) return; const C=alertCfg(); const al=getAlerts().filter(a=>a.active); const log=lsGet('bd_alert_log',[])||[]; const perm='Notification' in window?Notification.permission:'unsupported';
   p.innerHTML=`<div class="ap-head"><strong>Alerts</strong><button class="ap-x">✕</button></div>
    ${perm!=='granted'?`<button class="ap-perm">${perm==='denied'?'Notifications are blocked in your browser settings':'Turn on notifications'}</button>`:''}
@@ -5879,6 +5885,28 @@ function ccNext(tf,now,anchor){ const b=ccBoundary(tf,now,anchor); return b+CC_T
 function hmToMin(x){ const [h,m]=String(x||'0:0').split(':').map(Number); return (h||0)*60+(m||0); }
 function ccInHours(C,ms){ const t=new Date(ms).toLocaleTimeString('en-GB',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit'}); const m=hmToMin(t), a=hmToMin(C.from), b=hmToMin(C.to); return a<=b?(m>=a&&m<=b):(m>=a||m<=b); }
 let ccLast=null, ccJobs=[];
+// one-shot candle-close alerts set from the chart (Alerts > Candle close alert): fire once, then remove themselves
+function ccOnce(){ return (lsGet('bd_cc_once',[])||[]).filter(o=>o&&o.id&&CC_TF[o.tf]); }
+function ccOnceSet(a){ lsSet('bd_cc_once',a); renderAlertBadge(); }
+function ccLeft(sec){ sec=Math.max(0,Math.round(sec)); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60; return h?`${h}h ${m}m`:m?`${m}m ${s}s`:`${s}s`; }
+let ccqTimer=null;
+function ccqClose(){ const p=document.querySelector('.ccq-pop'); if(p) p.remove(); clearInterval(ccqTimer); ccqTimer=null; }
+function ccqOpen(){ ccqClose(); if(!currentInst){ toast('Open a chart first'); return; } askNotify(); alertEngineStart();
+  const btn=$('ct-ccq'), rail=document.querySelector('.tool-rail'); const r=(btn&&btn.offsetParent?btn:rail||document.body).getBoundingClientRect();
+  const p=document.createElement('div'); p.className='ccq-pop'; document.body.appendChild(p);
+  p.style.left=Math.min(innerWidth-270,r.right+8)+'px'; p.style.top=Math.max(8,Math.min(innerHeight-330,r.top))+'px';
+  const draw=()=>{ const sym=currentInst.symbol, now=Date.now()/1000, A=ccCfg().anchor, mine=ccOnce().filter(o=>o.sym===sym);
+    p.innerHTML=`<h4>⏰ Candle close alert · ${esc(currentInst.name||sym)}</h4><p>Tap a timeframe. You get the alarm when that candle closes, even on the 5m chart. Tap again to cancel.</p>
+      <div class="ccq-tfs">${Object.keys(CC_TF).map(tf=>{ const on=mine.some(o=>o.tf===tf); return `<button data-tf="${tf}" class="${on?'on':''}"><b>${CC_TF[tf].label}${on?' ✓':''}</b><small>closes in ${ccLeft(ccNext(tf,now,A)-now)}</small></button>`; }).join('')}</div>
+      ${mine.length?`<div class="ccq-list">${mine.map(o=>`<div class="ccq-item"><span>🔔 ${CC_TF[o.tf].label} close · ${sastHM(o.at*1000)} SAST · in ${ccLeft(o.at-now)}</span><button data-x="${o.id}" title="Cancel">✕</button></div>`).join('')}</div>`:''}`; };
+  p.addEventListener('click',e=>{ e.stopPropagation(); const x=e.target.closest('[data-x]'), b=e.target.closest('[data-tf]');
+    if(x){ ccOnceSet(ccOnce().filter(o=>o.id!==x.dataset.x)); draw(); return; }
+    if(!b) return; const sym=currentInst.symbol, tf=b.dataset.tf, all=ccOnce(), ex=all.find(o=>o.sym===sym&&o.tf===tf);
+    if(ex){ ccOnceSet(all.filter(o=>o!==ex)); toast(`${CC_TF[tf].label} close alert cancelled`); }
+    else { const now=Math.floor(Date.now()/1000), at=ccNext(tf,now,ccCfg().anchor); all.push({id:'Q'+Date.now().toString(36),sym,tf,at,created:Date.now()}); ccOnceSet(all); toast(`⏰ ${currentInst.name||sym} ${CC_TF[tf].label} candle closes at ${sastHM(at*1000)} SAST — alarm set`); }
+    draw(); });
+  draw(); ccqTimer=setInterval(()=>{ if(!document.body.contains(p)) return ccqClose(); draw(); },1000);
+  setTimeout(()=>document.addEventListener('pointerdown',function h(e){ if(!p.contains(e.target)){ ccqClose(); document.removeEventListener('pointerdown',h,true); } },true),0); }
 function ccTick(){ if(!feedStarted) return; const now=Math.floor(Date.now()/1000), C=ccCfg();
   if(zoneSideDirty&&now%5===0){ zoneSideDirty=false; lsSet('bd_zone_side',zoneSide); }
   if(zoneDirty&&now%3===0) zoneRebuild();
@@ -5891,7 +5919,8 @@ function ccCandle(cs,B,s){ const win=(cs||[]).filter(c=>c.time>=B-s&&c.time<B).s
 async function ccRun(job,test){
   const C=ccCfg(), ins=getInstruments(); const zs=[]; for(const a of zoneIdx.values()) zs.push(...a);
   const tasks=[]; for(const tf of job.due){ const want=new Set(C.on?(C.sel[tf]||[]):[]); zs.filter(z=>z.mode==='close'&&z.tf===tf).forEach(z=>want.add(z.sym));
-    for(const sym of want){ const inst=ins.find(i=>i.symbol===sym); if(!inst||(!test&&isClosedNow(inst))) continue; tasks.push({tf,inst,sum:C.on&&(C.sel[tf]||[]).includes(sym),zones:zs.filter(z=>z.sym===sym&&z.mode==='close'&&z.tf===tf)}); } }
+    const once=test?[]:ccOnce().filter(o=>o.tf===tf&&o.at<=job.B); once.forEach(o=>want.add(o.sym));
+    for(const sym of want){ const inst=ins.find(i=>i.symbol===sym); const isOnce=once.some(o=>o.sym===sym); if(!inst||(!test&&!isOnce&&isClosedNow(inst))) continue; tasks.push({tf,inst,once:isOnce,sum:isOnce||(C.on&&(C.sel[tf]||[]).includes(sym)),zones:zs.filter(z=>z.sym===sym&&z.mode==='close'&&z.tf===tf)}); } }
   if(!tasks.length) return; if(!test&&!(await claim('cc:'+job.B+':'+job.due.join(',')))) return;
   const need={}; tasks.forEach(t=>{ const T=CC_TF[t.tf], k=t.inst.symbol+'|'+T.base; need[k]=Math.max(need[k]||0,T.n); });
   const got={}; await Promise.all(Object.keys(need).map(async k=>{ const [sym,base]=k.split('|'); const inst=ins.find(i=>i.symbol===sym); try{ got[k]=await fetchCandlesOnceRaw(inst,+base,need[k]); }catch(e){ got[k]=[]; } }));
@@ -5900,7 +5929,8 @@ async function ccRun(job,test){
     for(const z of t.zones){ if(c.c>=z.lo&&c.c<=z.hi) zoneFire(t.inst,z,c.c,{tf:t.tf}); }
     if(t.sum) rows.push({t,c}); }
   if(missing&&!job.retried&&!test&&rows.length===0&&job.tries<2){ job.tries++; job.at=Math.floor(Date.now()/1000)+5; ccJobs.push(job); return; } // feed was a little slow — try again in 5 s
-  if(!rows.length) return; if(!test&&!ccInHours(C,job.B*1000)) return;
+  if(!test&&tasks.some(t=>t.once)){ const ids=new Set(ccOnce().filter(o=>job.due.includes(o.tf)&&o.at<=job.B).map(o=>o.id)); ccOnceSet(ccOnce().filter(o=>!ids.has(o.id))); } // one-off alerts are used up
+  if(!rows.length) return; if(!test&&!ccInHours(C,job.B*1000)){ rows.splice(0,rows.length,...rows.filter(r=>r.t.once)); if(!rows.length) return; }
   const order=['1d','4h','1h','15m']; rows.sort((a,b)=>order.indexOf(a.t.tf)-order.indexOf(b.t.tf)||a.t.inst.name.localeCompare(b.t.inst.name));
   const line=({t,c})=>{ const ch=(c.c-c.o)/c.o*100, up=c.c>c.o, dn=c.c<c.o; return `${up?'🟢':dn?'🔴':'⚪'} ${t.inst.name} ${CC_TF[t.tf].label} ${up?'bullish':dn?'bearish':'doji'} · close ${fmtPrice(t.inst,c.c)} (${ch>=0?'+':''}${ch.toFixed(2)}%)`; };
   const tfs=[...new Set(rows.map(r=>CC_TF[r.t.tf].label))]; const hm=sastHM(job.B*1000);
@@ -5914,7 +5944,7 @@ async function ccRun(job,test){
 function ccTest(){ const C=ccCfg(); const now=Math.floor(Date.now()/1000); const due=Object.keys(CC_TF).filter(tf=>(C.sel[tf]||[]).length); if(!due.length){ toast('Tick at least one pair and timeframe first'); return; }
   const tf=due.includes('15m')?'15m':due[0]; ccRun({due:[tf],B:ccBoundary(tf,now,C.anchor),tries:9},true); toast('Sending a test with the last closed '+CC_TF[tf].label+' candle…'); }
 let alertEngineOn=false;
-function alertEngineStart(){ if(alertEngineOn) return; alertEngineOn=true; zoneRebuild();
+function alertEngineStart(){ if(alertEngineOn) return; alertEngineOn=true; zoneRebuild(); { const n=Date.now()/1000; ccOnceSet(ccOnce().filter(o=>o.at>n-240)); }
   try{ const w=new Worker(URL.createObjectURL(new Blob(['setInterval(()=>postMessage(0),1000)'],{type:'text/javascript'}))); w.onmessage=ccTick; }catch(e){ setInterval(ccTick,1000); }
   addEventListener('storage',e=>{ if(e.key&&e.key.startsWith('bd_lines_')){ zoneDirty=true; srvSoon(); } if(e.key==='bd_cc'||e.key==='bd_alerts') srvSoon(); });
   setTimeout(()=>{ srvSync(); srvPoll(); },8000); setInterval(srvPoll,60000); setInterval(()=>srvSync(),10*60000); onFeedModeChange(m=>{ if(m==='live') setTimeout(srvSync,3000); });
