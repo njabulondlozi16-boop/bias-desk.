@@ -1580,6 +1580,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 
 <div id="toast" class="toast" hidden></div>
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<script>window.LightweightCharts||document.write('<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"><\/script>')</script>
 <script type="module">
 
 // ===== js/storage.js (merged, imports/exports resolved) =====
@@ -1587,10 +1588,13 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-24.1';
+const BUILD='2026-11-25.1';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
-  try{ const base=location.href.split('#')[0].split('?')[0]; const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
+  if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
+  try{ const base=location.href.split('#')[0].split('?')[0];
+    try{ const h=await fetch(base+'?check='+Date.now(),{method:'HEAD',cache:'no-store'}); const tag=h.ok&&(h.headers.get('etag')||h.headers.get('last-modified')); if(tag){ if(tag===checkForUpdate.tag) return; checkForUpdate.tag=tag; } }catch(e){}
+    const r=await fetch(base+'?check='+Date.now(),{cache:'no-store'}); if(!r.ok) return; const m=(await r.text()).match(/const BUILD='([^']+)'/);
     if(m&&m[1]!==BUILD&&!document.getElementById('update-bar')){ const b=document.createElement('div'); b.id='update-bar'; b.className='update-bar'; b.innerHTML=`<span>A new version of Bias Desk is ready.</span><button>Reload now</button>`; document.body.appendChild(b);
       b.querySelector('button').addEventListener('click',()=>{ location.replace(base+'?v='+encodeURIComponent(m[1])+location.hash); }); } }catch(e){}
 }
@@ -1833,7 +1837,7 @@ function connect(){
     }catch(e){ fail('connected but '+e.message,false); }
   };
   sock.onmessage=ev=>{
-    let msg; try{ msg=JSON.parse(ev.data); }catch(e){ return; }
+    lastWsMsg=Date.now(); let msg; try{ msg=JSON.parse(ev.data); }catch(e){ return; }
     if(msg.req_id && pending.has(msg.req_id)){ const p=pending.get(msg.req_id); pending.delete(msg.req_id); if(msg.error) p.reject(new Error(msg.error.message||msg.error.code||'Deriv error')); else p.resolve(msg); if(msg.msg_type!=='tick') return; }
     if(msg.msg_type==='tick' && msg.tick){ const t=msg.tick; const sym=t.symbol||t.underlying_symbol; for(const inst of getInstruments()){ if(getDerivSymbol(inst)!==sym) continue; const s=getState(inst); pushTick(s,t.epoch,+t.quote); s.hasData=true; s.src='live'; } notifyTick(); }
     if(msg.msg_type==='ohlc' && msg.ohlc){ const o=msg.ohlc; const sym=o.symbol||o.underlying_symbol; const inst=getInstruments().find(i=>getDerivSymbol(i)===sym); if(inst){ notifyCandle({symbol:inst.symbol,deriv:sym,time:+o.open_time,open:+o.open,high:+o.high,low:+o.low,close:+o.close,granularity:+o.granularity}); } }
@@ -1862,6 +1866,20 @@ function scheduleReconnect(){
   if(!fallbackTimer) fallbackTimer=setTimeout(()=>{ fallbackTimer=null; if(feedMode!=='live') goOffline(); },8000);
   clearTimeout(reconnectTimer); reconnectTimer=setTimeout(()=>{ if(feedMode!=='live') connect(); },delay);
 }
+// Feed watchdog: after sleep / Wi-Fi change a socket can look open but deliver nothing. If it has been silent,
+// ask Deriv for a quick answer (a request this API is known to answer); no answer in 10 s → reconnect. Back online → reconnect at once (no back-off wait).
+let lastWsMsg=0, feedWatchBusy=false;
+async function feedWatch(quietMs=45000){
+  if(feedWatchBusy||document.hidden||!started) return;
+  if(feedMode!=='live'||!ws||ws.readyState!==1) return;
+  if(Date.now()-lastWsMsg<quietMs) return;
+  feedWatchBusy=true; const sock=ws;
+  try{ await wsSend({active_symbols:'brief'},10000); }catch(e){ if(/did not answer|not open/i.test(e.message||'')&&ws===sock){ lastFeedError='Feed went silent — reconnecting'; reconnectFeed(); } }
+  finally{ feedWatchBusy=false; }
+}
+setInterval(()=>feedWatch(),20000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) feedWatch(15000); });
+addEventListener('online',()=>{ if(!started) return; if(feedMode==='live') feedWatch(5000); else reconnectFeed(); });
 function startFeed(){ if(started) return; started=true; fallbackTimer=setTimeout(()=>{ fallbackTimer=null; if(feedMode!=='live') goOffline(lastFeedError||'Still connecting to the live feed…'); },20000); connect(); }
 function reconnectFeed(){ reconnectAttempt=0; epFailsThisRound=0; lastFeedError=''; const old=ws; ws=null; try{ if(old) old.close(); }catch(e){} if(feedMode!=='live') setMode('connecting'); else setMode('connecting'); mapping.clear(); connect(); }
 // --- Candles for the full chart (live only; demo only when allowed) ---
@@ -4994,8 +5012,8 @@ document.addEventListener('keydown',e=>{ if(!mvSel||document.body.dataset.page!=
 // ===== Running trades on every chart: any open / pending trade is drawn on every chart of its pair (read-only),
 // so a second setup never hides the first one. The main chart's editable setup also shows on the extra charts. =====
 let runTrades=[]; let rtBusy=false;
-async function refreshRunTrades(){ if(rtBusy) return; if(rp.active){ rpRefreshOpen(); return; } rtBusy=true; try{ const all=await idbAll('journal'); runTrades=all.filter(t=>!t.practice&&(t.status==='OPEN'||t.status==='PENDING'||(t.result==='WIN'&&t.bonusTracking))&&isFinite(t.entry)&&isFinite(t.sl)); }catch(e){} finally{ rtBusy=false; } rtRender(); mcCharts.forEach(m=>{ mcDraw(m); mcBadge(m); }); }
-setInterval(refreshRunTrades,2500);
+async function refreshRunTrades(force){ if(rtBusy) return; if(!force&&(document.hidden||document.body.dataset.page!=='chart')) return; if(rp.active){ rpRefreshOpen(); return; } rtBusy=true; try{ const all=await idbAll('journal'); runTrades=all.filter(t=>!t.practice&&(t.status==='OPEN'||t.status==='PENDING'||(t.result==='WIN'&&t.bonusTracking))&&isFinite(t.entry)&&isFinite(t.sl)); }catch(e){} finally{ rtBusy=false; } rtRender(); mcCharts.forEach(m=>{ mcDraw(m); mcBadge(m); }); }
+setInterval(refreshRunTrades,2500); document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&document.body.dataset.page==='chart') refreshRunTrades(true); });
 setInterval(()=>{ if(msOn()&&document.body.dataset.page==='chart'&&!document.hidden) msUpdate(); },15000);
 for(const ev of ['bd:trade-confirmed','bd:trade-closed','bd:tool-cleared']) window.addEventListener(ev,()=>setTimeout(refreshRunTrades,60));
 function tradeLabel(t){ const st=t.status==='SETUP'?'SETUP':t.status==='PENDING'?'PENDING':t.result==='WIN'?'WIN ✓ · bonus':'LIVE'; return `${t.direction==='buy'?'▲ BUY':'▼ SELL'} · ${st}`; }
@@ -5345,7 +5363,7 @@ function showNextMotivation(){
   const el=document.createElement('span'); el.className='mot-msg'+(pinned?' pinned':''); el.innerHTML=(pinned?'<b>📌 RULE</b> ':'<b>✦</b> ')+esc(text);
   slot.querySelector('.ticker-empty')?.remove(); slot.appendChild(el);
 }
-function initMotivation(){ if(motTimer) return; showNextMotivation(); motTimer=setInterval(showNextMotivation,9000); }
+function initMotivation(){ if(motTimer) return; showNextMotivation(); motTimer=setInterval(()=>{ if(!document.hidden) showNextMotivation(); },9000); }
 
 // ===== js/app.js (merged, imports/exports resolved) =====
 // app.js — entry point: login flow, shell routing, cards, sparklines, balance, idle lock
@@ -5399,7 +5417,7 @@ function enterApp(){
     startBinance(); recheckBinanceTrades();
     window.addEventListener('hashchange',route); }
   renderCards(); route(); resetIdle(); initMotivation(); renderSessions();
-  if(!window.__sessTimer) window.__sessTimer=setInterval(()=>{ renderSessions(); const c=$('tb-clock'); if(c) c.textContent=new Intl.DateTimeFormat('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()); const sc=$('ov-session-chip'); if(sc) sc.innerHTML='<span class="live-ring"></span>'+esc(sessionFor(new Date()))+' session'; },1000);
+  if(!window.__sessTimer) window.__sessTimer=setInterval(()=>{ if(document.hidden) return; if(document.body.dataset.page==='overview') renderSessions(); const c=$('tb-clock'); if(c) c.textContent=new Intl.DateTimeFormat('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()); const sc=$('ov-session-chip'); if(sc) sc.innerHTML='<span class="live-ring"></span>'+esc(sessionFor(new Date()))+' session'; },1000);
 }
 function lockApp(){ document.querySelectorAll('.shot-viewer,.modal-overlay:not(#modal-overlay),.tf-pick,.tc-pop,#detail-overlay').forEach(x=>x.remove()); const mo=$('modal-overlay'); if(mo) mo.hidden=true; try{ if(rp.playing) replayPlay(false); tlSelect(null); tlSetMode(false); if(typeof mdSelect==='function') mdSelect(null); }catch(e){} try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){} document.body.dataset.page='locked'; $('app-shell').hidden=true; $('login-screen').hidden=false; $('password-input').value=''; pinBuf=''; renderPinDots(); refreshLoginUI(); clearTimeout(idleTimer); toast('Desk locked 🔒'); }
 let lastActive=Date.now();
@@ -5611,6 +5629,7 @@ function showPage(name){
   if(name==='markets') setTimeout(()=>{ msPaintAllPrio(); msScanPriority(); bsScan(); },300);
   if(name==='markets') renderMarketsTable();
   if(name==='invest') renderInvest();
+  if(name==='chart') refreshRunTrades(true);
   window.scrollTo({top:0});
 }
 function closeChart(){ location.hash='#/markets'; }
@@ -5688,7 +5707,7 @@ function renderSessions(){
 function initFX(){
   const cv=$('fx-canvas'); if(!cv) return; const ctx=cv.getContext('2d'); const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const lite=matchMedia('(pointer: coarse)').matches||innerWidth<820; // phones / tablets: lighter scene, 15 fps
-  const DPR=Math.min(devicePixelRatio||1,lite?1:1.5); let W=0,H=0,layers=[],nodes=[],quotes=[],ribbons=[],t=0,mx=-999,my=-999,still=false;
+  const DPR=1; const SPD=lite?1:1.5; let spawnT=0, gcache={}; /* soft background: 1x pixels, 20 fps on desktop (motion scaled so speed looks the same) */ let W=0,H=0,layers=[],nodes=[],quotes=[],ribbons=[],t=0,mx=-999,my=-999,still=false;
   const SYMS=['EURUSD','XAUUSD','GBPUSD','US30','US100','GER30','AUDUSD','NZDUSD','USDCHF','BTCUSD'];
   function makeLayer(depth){ const n=Math.ceil(W/(10+depth*6))+40; let p=0.5; const c=[]; for(let i=0;i<n;i++){ const o=p; p=Math.max(.15,Math.min(.85,p+(Math.random()-.5)*.06)); c.push({o,cl:p,h:Math.max(o,p)+Math.random()*.03,l:Math.min(o,p)-Math.random()*.03}); }
     return {depth,candles:c,off:0,speed:.05+depth*.06,bw:4+depth*3,gap:6+depth*4,y:H*(.26+depth*.2),amp:H*(.09+depth*.04),alpha:.035+depth*.035}; }
@@ -5705,41 +5724,47 @@ function initFX(){
   const draw=()=>{
     requestAnimationFrame(draw);
     const onChart=document.body.dataset.page==='chart';
-    if(document.hidden||onChart||still||(frame++%(lite?4:2))) return;
+    if(document.hidden||onChart||still||(frame++%(lite?4:3))) return;
+    if(!document.hasFocus()&&frame%30) return; // window in the background: ~2 fps
     if(reduce) still=true; // reduced motion: one calm frame, no animation
     if(frame%240===0){ acc=css('--accent')||acc; }
-    t+=1; ctx.clearRect(0,0,W,H); const light=document.body.classList.contains('light');
+    t+=SPD; ctx.clearRect(0,0,W,H); const light=document.body.classList.contains('light'); const gk=W+'|'+H+'|'+light; if(gcache.k!==gk) gcache={k:gk};
     // perspective grid floor — a horizon the market runs towards
-    { const hy=H*.62, vp=W/2; ctx.save(); const g=ctx.createLinearGradient(0,hy,0,H); g.addColorStop(0,'rgba(56,225,255,0)'); g.addColorStop(1,light?'rgba(41,98,255,.10)':'rgba(56,140,255,.16)'); ctx.strokeStyle=g; ctx.lineWidth=1;
-      for(let i=-14;i<=14;i++){ ctx.beginPath(); ctx.moveTo(vp+i*12,hy); ctx.lineTo(vp+i*W*.16,H); ctx.stroke(); }
+    { const hy=H*.62, vp=W/2; ctx.save(); let g=gcache.grid; if(!g){ g=gcache.grid=ctx.createLinearGradient(0,hy,0,H); g.addColorStop(0,'rgba(56,225,255,0)'); g.addColorStop(1,light?'rgba(41,98,255,.10)':'rgba(56,140,255,.16)'); } ctx.strokeStyle=g; ctx.lineWidth=1;
+      ctx.beginPath(); for(let i=-14;i<=14;i++){ ctx.moveTo(vp+i*12,hy); ctx.lineTo(vp+i*W*.16,H); } ctx.stroke();
       const sp=reduce?0:(t*.8)%40; for(let k=0;k<14;k++){ const z=(k*40+sp)/560; const y=hy+(H-hy)*z*z; ctx.globalAlpha=Math.min(1,z*1.4); ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); } ctx.restore(); }
     // candle streams (far → near)
     for(const L of layers){
-      if(!reduce) L.off+=L.speed; const step=L.bw+L.gap; while(L.off>step){ L.off-=step; L.candles.shift(); const last=L.candles[L.candles.length-1].cl; const p=Math.max(.15,Math.min(.85,last+(Math.random()-.5)*.06)); L.candles.push({o:last,cl:p,h:Math.max(last,p)+Math.random()*.03,l:Math.min(last,p)-Math.random()*.03}); }
-      ctx.globalAlpha=L.alpha;
-      L.candles.forEach((c,i)=>{ const x=i*step-L.off; if(x<-step||x>W+step) return; const Y=v=>L.y+(.5-v)*L.amp*2; const isUp=c.cl>=c.o;
-        ctx.fillStyle=ctx.strokeStyle=isUp?up:dn; ctx.beginPath(); ctx.moveTo(x+L.bw/2,Y(c.h)); ctx.lineTo(x+L.bw/2,Y(c.l)); ctx.lineWidth=1; ctx.stroke();
-        const y1=Y(Math.max(c.o,c.cl)), y2=Y(Math.min(c.o,c.cl)); ctx.fillRect(x,y1,L.bw,Math.max(1,y2-y1)); });
+      if(!reduce) L.off+=L.speed*SPD; const step=L.bw+L.gap; while(L.off>step){ L.off-=step; L.candles.shift(); const last=L.candles[L.candles.length-1].cl; const p=Math.max(.15,Math.min(.85,last+(Math.random()-.5)*.06)); L.candles.push({o:last,cl:p,h:Math.max(last,p)+Math.random()*.03,l:Math.min(last,p)-Math.random()*.03}); }
+      ctx.globalAlpha=L.alpha; const pu=new Path2D(), pd=new Path2D(), bu=new Path2D(), bdn=new Path2D(); const Y=v=>L.y+(.5-v)*L.amp*2;
+      L.candles.forEach((c,i)=>{ const x=i*step-L.off; if(x<-step||x>W+step) return; const isUp=c.cl>=c.o; const P=isUp?pu:pd;
+        P.moveTo(x+L.bw/2,Y(c.h)); P.lineTo(x+L.bw/2,Y(c.l)); const y1=Y(Math.max(c.o,c.cl)), y2=Y(Math.min(c.o,c.cl)); (isUp?bu:bdn).rect(x,y1,L.bw,Math.max(1,y2-y1)); });
+      ctx.lineWidth=1; ctx.strokeStyle=up; ctx.stroke(pu); ctx.fillStyle=up; ctx.fill(bu); ctx.strokeStyle=dn; ctx.stroke(pd); ctx.fillStyle=dn; ctx.fill(bdn);
     }
     ctx.globalAlpha=1;
     // glowing price ribbons
     ctx.save(); ctx.globalCompositeOperation=light?'source-over':'lighter';
-    for(const R of ribbons){ const ph=R.ph+(reduce?0:t*R.sp); const g=ctx.createLinearGradient(0,0,W,0); const cA=R.hue===0?'56,225,255':R.hue===1?'124,92,255':'34,229,138';
-      g.addColorStop(0,`rgba(${cA},0)`); g.addColorStop(.25,`rgba(${cA},${light?.18:.32})`); g.addColorStop(.75,`rgba(${cA},${light?.14:.26})`); g.addColorStop(1,`rgba(${cA},0)`);
-      ctx.strokeStyle=g; ctx.lineWidth=R.w; ctx.shadowColor=`rgba(${cA},.8)`; ctx.shadowBlur=light||lite?0:12; ctx.beginPath();
-      for(let x=0;x<=W;x+=8){ const y=R.y+noise(x+ph*120,R.f)*R.amp; x?ctx.lineTo(x,y):ctx.moveTo(x,y); } ctx.stroke();
-      const hx=((t*1.6*(1+R.hue*.3))%(W+200))-100, hy=R.y+noise(hx+ph*120,R.f)*R.amp; const rg=ctx.createRadialGradient(hx,hy,0,hx,hy,18); rg.addColorStop(0,`rgba(${cA},.9)`); rg.addColorStop(1,`rgba(${cA},0)`); ctx.shadowBlur=0; ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(hx,hy,18,0,6.283); ctx.fill(); }
+    for(const R of ribbons){ const ph=R.ph+(reduce?0:t*R.sp); const cA=R.hue===0?'56,225,255':R.hue===1?'124,92,255':'34,229,138';
+      const mk=(a1,a2)=>{ const g=ctx.createLinearGradient(0,0,W,0); g.addColorStop(0,`rgba(${cA},0)`); g.addColorStop(.25,`rgba(${cA},${a1})`); g.addColorStop(.75,`rgba(${cA},${a2})`); g.addColorStop(1,`rgba(${cA},0)`); return g; };
+      const gr=gcache['r'+R.hue]||(gcache['r'+R.hue]={line:mk(light?.18:.32,light?.14:.26),glow:mk(light?0:.07,light?0:.055),glow2:mk(light?0:.04,light?0:.03)});
+      const path=new Path2D(); for(let x=0;x<=W;x+=8){ const y=R.y+noise(x+ph*120,R.f)*R.amp; x?path.lineTo(x,y):path.moveTo(x,y); }
+      if(!light&&!lite){ ctx.strokeStyle=gr.glow2; ctx.lineWidth=R.w+14; ctx.stroke(path); ctx.strokeStyle=gr.glow; ctx.lineWidth=R.w+6; ctx.stroke(path); } // soft glow without shadowBlur (much cheaper)
+      ctx.strokeStyle=gr.line; ctx.lineWidth=R.w; ctx.stroke(path);
+      const hx=((t*1.6*(1+R.hue*.3))%(W+200))-100, hy=R.y+noise(hx+ph*120,R.f)*R.amp; const rg=ctx.createRadialGradient(hx,hy,0,hx,hy,18); rg.addColorStop(0,`rgba(${cA},.9)`); rg.addColorStop(1,`rgba(${cA},0)`); ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(hx,hy,18,0,6.283); ctx.fill(); }
     ctx.restore();
     // neural constellation — links light up near the pointer
-    for(const n of nodes){ if(!reduce){ n.x+=n.vx; n.y+=n.vy; if(n.x<-10) n.x=W+10; if(n.x>W+10) n.x=-10; if(n.y<-10) n.y=H+10; if(n.y>H+10) n.y=-10; } }
+    for(const n of nodes){ if(!reduce){ n.x+=n.vx*SPD; n.y+=n.vy*SPD; if(n.x<-10) n.x=W+10; if(n.x>W+10) n.x=-10; if(n.y<-10) n.y=H+10; if(n.y>H+10) n.y=-10; } }
     ctx.lineWidth=.6;
-    for(let i=0;i<nodes.length;i++){ const a=nodes[i]; const dm=Math.hypot(a.x-mx,a.y-my); for(let j=i+1;j<nodes.length;j++){ const b=nodes[j]; const d=Math.hypot(a.x-b.x,a.y-b.y); if(d<120){ const boost=dm<180?1.8:1; ctx.strokeStyle=`rgba(120,170,255,${(1-d/120)*.12*boost})`; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } }
+    { const LV=6, links=Array.from({length:LV},()=>new Path2D()), dots=Array.from({length:LV},()=>new Path2D()); // batched by brightness: a few draw calls instead of hundreds
+    for(let i=0;i<nodes.length;i++){ const a=nodes[i]; const dm=Math.hypot(a.x-mx,a.y-my); const boost=dm<180?1.8:1;
+      for(let j=i+1;j<nodes.length;j++){ const b=nodes[j]; const dx=a.x-b.x, dy=a.y-b.y, d2=dx*dx+dy*dy; if(d2<14400){ const al=(1-Math.sqrt(d2)/120)*boost/1.8; const L=links[Math.min(LV-1,(al*LV)|0)]; L.moveTo(a.x,a.y); L.lineTo(b.x,b.y); } }
       if(dm<180){ ctx.strokeStyle=`rgba(56,225,255,${(1-dm/180)*.35})`; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(mx,my); ctx.stroke(); }
-      const al=.3+.3*Math.sin(t*.03+a.ph); ctx.beginPath(); ctx.arc(a.x,a.y,a.r,0,6.283); ctx.fillStyle=`rgba(160,200,255,${al})`; ctx.fill(); }
+      const al=.5+.5*Math.sin(t*.03+a.ph); const D=dots[Math.min(LV-1,(al*LV)|0)]; D.moveTo(a.x+a.r,a.y); D.arc(a.x,a.y,a.r,0,6.283); }
+    for(let k=0;k<LV;k++){ const f=(k+.5)/LV; ctx.strokeStyle=`rgba(120,170,255,${f*.216})`; ctx.stroke(links[k]); ctx.fillStyle=`rgba(160,200,255,${.3+.3*(2*f-1)})`; ctx.fill(dots[k]); } }
     // drifting quotes
-    if(!reduce&&t%70===0&&quotes.length<7) spawnQuote();
+    if(!reduce&&(spawnT+=SPD)>=70){ spawnT=0; if(quotes.length<7) spawnQuote(); }
     ctx.font='600 11px "JetBrains Mono",monospace';
-    quotes=quotes.filter(q=>{ q.y-=.35; q.life++; const a=Math.min(1,q.life/80)*Math.max(0,1-q.life/700)*.35; if(a<=0&&q.life>100) return false; ctx.fillStyle=(q.up?'rgba(34,197,138,':'rgba(240,80,110,')+a+')'; ctx.fillText(q.txt,q.x,q.y); return q.y>-20; });
+    quotes=quotes.filter(q=>{ q.y-=.35*SPD; q.life+=SPD; const a=Math.min(1,q.life/80)*Math.max(0,1-q.life/700)*.35; if(a<=0&&q.life>100) return false; ctx.fillStyle=(q.up?'rgba(34,197,138,':'rgba(240,80,110,')+a+')'; ctx.fillText(q.txt,q.x,q.y); return q.y>-20; });
   };
   draw();
 }
