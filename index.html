@@ -1665,13 +1665,6 @@ body.ui-neon.ui-galaxy .keypad button{background:linear-gradient(180deg,#181530,
 body.ui-neon.ui-galaxy .keypad button:hover{border-color:rgba(167,139,250,.45)}
 body.ui-neon.ui-galaxy{--muted:#9590ad}
 body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%,rgba(124,92,240,.16),transparent 62%),radial-gradient(760px 480px at 8% 108%,rgba(80,120,230,.12),transparent 62%),radial-gradient(520px 320px at 55% 45%,rgba(190,110,220,.05),transparent 70%),linear-gradient(180deg,#07061a,#020108)}
-body.ui-neon.ui-galaxy .aurora::before,body.ui-neon.ui-galaxy .aurora::after{content:'';position:absolute;inset:0;pointer-events:none;background-repeat:repeat}
-body.ui-neon.ui-galaxy .aurora::before{background-image:radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.75),transparent 60%),radial-gradient(1px 1px at 37% 72%,rgba(220,225,255,.6),transparent 60%),radial-gradient(1.4px 1.4px at 64% 28%,rgba(255,255,255,.8),transparent 60%),radial-gradient(1px 1px at 82% 63%,rgba(200,190,255,.6),transparent 60%),radial-gradient(1px 1px at 23% 47%,rgba(255,255,255,.45),transparent 60%),radial-gradient(1.2px 1.2px at 91% 12%,rgba(190,215,255,.7),transparent 60%),radial-gradient(1px 1px at 50% 92%,rgba(255,255,255,.5),transparent 60%),radial-gradient(1px 1px at 5% 85%,rgba(220,210,255,.55),transparent 60%);background-size:420px 420px;opacity:.55;animation:galTw 7s ease-in-out infinite alternate}
-body.ui-neon.ui-galaxy .aurora::after{background-image:radial-gradient(1px 1px at 18% 33%,rgba(255,255,255,.5),transparent 60%),radial-gradient(1px 1px at 71% 81%,rgba(210,220,255,.45),transparent 60%),radial-gradient(1.6px 1.6px at 44% 14%,rgba(255,255,255,.7),transparent 60%),radial-gradient(1px 1px at 88% 41%,rgba(220,200,255,.5),transparent 60%),radial-gradient(1px 1px at 29% 88%,rgba(255,255,255,.4),transparent 60%);background-size:610px 610px;opacity:.4;animation:galTw 11s ease-in-out infinite alternate-reverse,galDrift 240s linear infinite}
-@keyframes galTw{from{opacity:.25}to{opacity:.6}}
-@keyframes galDrift{from{background-position:0 0}to{background-position:-610px 305px}}
-body.ui-neon.ui-galaxy.anim-paused .aurora::before,body.ui-neon.ui-galaxy.anim-paused .aurora::after{animation-play-state:paused}
-@media (prefers-reduced-motion:reduce){body.ui-neon.ui-galaxy .aurora::before,body.ui-neon.ui-galaxy .aurora::after{animation:none}}
 .look-opt i.gal{background:radial-gradient(1px 1px at 30% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 60%,#fff,transparent),radial-gradient(circle at 70% 25%,rgba(167,139,250,.9),transparent 45%),linear-gradient(135deg,#07061a,#1b1240)}
 </style>
 </head>
@@ -6351,7 +6344,72 @@ function initFX(){
     g.globalCompositeOperation='source-over'; g.fillStyle='#000'; g.beginPath(); g.arc(m,m,rad,0,7); g.fill();          // event horizon
     g.globalCompositeOperation='lighter'; g.save(); g.translate(m,m); g.scale(1,.22); for(let k=0;k<10;k++){ const r=rad*(1.35+k*.11); g.strokeStyle=`rgba(${d0},${.55*(1-k/10)})`; g.lineWidth=rad*.14; g.beginPath(); g.arc(0,0,r,0,Math.PI); g.stroke(); } g.restore(); // front of the disk over the shadow
     return c; }
-  function build(){ P=pal(); look=(document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'); paintBackground();
+
+  // ===== Galaxy look: a realistic deep sky (Milky Way, nebulae, true-colour stars) and a drifting, lensing black hole =====
+  const SCOL=[[[170,192,255],.14],[[228,234,255],.3],[[255,246,228],.26],[[255,228,182],.16],[[255,196,140],.11],[[255,156,122],.03]];
+  const scol=()=>{ let r=Math.random(); for(const [c,w] of SCOL){ if((r-=w)<=0) return c; } return SCOL[1][0]; };
+  const gauss=()=>{ let u=0; for(let i=0;i<4;i++) u+=Math.random(); return (u-2)/1.15; };
+  let gx={};
+  function paintDeepSpace(){ bg=mk(W,H); const g=bg.getContext('2d');
+    const sky=g.createRadialGradient(W*.55,H*.4,0,W*.5,H*.5,Math.max(W,H)*.85); sky.addColorStop(0,'#0b0922'); sky.addColorStop(.6,'#05041a'); sky.addColorStop(1,'#010006'); g.fillStyle=sky; g.fillRect(0,0,W,H);
+    const ax=-.08*W, ay=.92*H, bx=1.08*W, by=.06*H, L=Math.hypot(bx-ax,by-ay), ux=(bx-ax)/L, uy=(by-ay)/L, nx=-uy, ny=ux, BW=Math.min(W,H)*.16;
+    const at=(u,v)=>[ax+ux*u*L+nx*v, ay+uy*u*L+ny*v];
+    g.globalCompositeOperation='lighter';
+    // nebula clouds (emission red/pink, reflection blue, a violet veil)
+    const cloud=(x,y,r,c,a,n)=>{ for(let k=0;k<n;k++){ const px=x+R(-r,r)*.7, py=y+R(-r,r)*.5, rr=r*R(.35,.9); const q=g.createRadialGradient(px,py,0,px,py,rr); q.addColorStop(0,`rgba(${c},${a})`); q.addColorStop(1,`rgba(${c},0)`); g.fillStyle=q; g.fillRect(px-rr,py-rr,rr*2,rr*2); } };
+    cloud(W*.78,H*.68,W*.16,'214,78,132',.035,9); cloud(W*.2,H*.22,W*.14,'70,150,230',.03,8); cloud(W*.55,H*.18,W*.2,'130,96,230',.025,8); cloud(W*.3,H*.75,W*.1,'230,120,90',.02,5);
+    // Milky Way glow
+    for(let i=0;i<60;i++){ const u=i/59, [x,y]=at(u,gauss()*BW*.25), r=BW*R(.9,1.6), warm=Math.exp(-Math.pow((u-.55)/.22,2)); const q=g.createRadialGradient(x,y,0,x,y,r); q.addColorStop(0,`rgba(${warm>.4?'255,214,176':'170,180,240'},${.045+.045*warm})`); q.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=q; g.fillRect(x-r,y-r,r*2,r*2); }
+    // band star dust
+    const N=Math.round(W*H/(lite?70:26)); for(let i=0;i<N;i++){ const u=Math.random(), v=gauss()*BW*.55, [x,y]=at(u,v), a=Math.max(0,.6-Math.abs(v)/BW*.42)*Math.random(); const c=scol(); g.fillStyle=`rgba(${c},${a*.8})`; g.fillRect(x,y,Math.random()<.02?1.3:.8,Math.random()<.02?1.3:.8); }
+    // dust lanes
+    g.globalCompositeOperation='source-over';
+    for(let i=0;i<90;i++){ const u=R(.05,.95), [x,y]=at(u,gauss()*BW*.12+BW*.05*Math.sin(u*9)), r=BW*R(.12,.38); const q=g.createRadialGradient(x,y,0,x,y,r); q.addColorStop(0,'rgba(4,3,12,.30)'); q.addColorStop(1,'rgba(4,3,12,0)'); g.fillStyle=q; g.beginPath(); g.ellipse(x,y,r*1.8,r*.7,Math.atan2(uy,ux),0,7); g.fill(); }
+    g.globalCompositeOperation='lighter';
+    // a far-away galaxy
+    { const x=W*.84, y=H*.22, r=Math.min(W,H)*.06; g.save(); g.translate(x,y); g.rotate(-.5); g.scale(1,.38); const q=g.createRadialGradient(0,0,0,0,0,r); q.addColorStop(0,'rgba(255,236,214,.55)'); q.addColorStop(.12,'rgba(240,220,210,.22)'); q.addColorStop(.5,'rgba(170,170,230,.07)'); q.addColorStop(1,'rgba(150,150,220,0)'); g.fillStyle=q; g.beginPath(); g.arc(0,0,r,0,7); g.fill(); g.restore(); }
+    // field stars in true colours, brightest with a soft glow and spikes
+    const n=Math.round(W*H/(lite?900:420)); for(let i=0;i<n;i++){ const x=R(0,W), y=R(0,H), m=Math.pow(Math.random(),5), c=scol();
+      if(m>.9){ const r=1.2+(m-.9)*30; const q=g.createRadialGradient(x,y,0,x,y,r*2.5); q.addColorStop(0,`rgba(${c},.9)`); q.addColorStop(.18,`rgba(${c},.35)`); q.addColorStop(1,`rgba(${c},0)`); g.fillStyle=q; g.fillRect(x-r*2.5,y-r*2.5,r*5,r*5);
+        if(m>.965){ g.strokeStyle=`rgba(${c},.28)`; g.lineWidth=.6; g.beginPath(); g.moveTo(x-r*3,y); g.lineTo(x+r*3,y); g.moveTo(x,y-r*3); g.lineTo(x,y+r*3); g.stroke(); } }
+      else { g.fillStyle=`rgba(${c},${.12+m*1.0})`; const z=m>.4?1.3:.8; g.fillRect(x,y,z,z); } }
+    g.globalCompositeOperation='source-over';
+    gx.src=new Uint32Array(g.getImageData(0,0,W,H).data.buffer); }
+  function paintHoleReal(rad){ const s=Math.ceil(rad*10), c=mk(s,s), g=c.getContext('2d'), m=s/2, TL=-.12;
+    const ring=(r0,r1,sy,from,to,hot)=>{ g.save(); g.translate(m,m); g.rotate(TL); g.scale(1,sy); const steps=48;
+      for(let k=0;k<steps;k++){ const f=k/steps, r=r0+(r1-r0)*f; for(let j=0;j<72;j++){ const a0=from+(to-from)*j/72, a1=from+(to-from)*(j+1)/72, dop=.45+.55*Math.pow((1-Math.cos(a0+.25))/2,1.6);
+          const col=f<.25?'255,246,226':f<.55?'255,206,140':'240,140,70'; g.strokeStyle=`rgba(${col},${hot*dop*Math.pow(1-f,1.3)*(.6+.4*Math.random())})`; g.lineWidth=(r1-r0)/steps*1.6; g.beginPath(); g.arc(0,0,r,a0,a1+.01); g.stroke(); } }
+      g.restore(); };
+    const glow=g.createRadialGradient(m,m,rad,m,m,m); glow.addColorStop(0,'rgba(255,190,120,.18)'); glow.addColorStop(.3,'rgba(255,150,90,.05)'); glow.addColorStop(1,'rgba(255,150,90,0)'); g.fillStyle=glow; g.fillRect(0,0,s,s);
+    g.globalCompositeOperation='lighter';
+    ring(rad*1.06,rad*2.3,.95,Math.PI,Math.PI*2,.75);   // back of the disk, bent up over the top by gravity
+    ring(rad*1.02,rad*1.6,.85,0,Math.PI,.28);            // ... and under the bottom
+    ring(rad*1.7,rad*4.6,.16,0,Math.PI*2,.55);           // the flat accretion disk
+    g.save(); g.translate(m,m); const ph=g.createRadialGradient(0,0,rad*.97,0,0,rad*1.22); ph.addColorStop(0,'rgba(255,240,215,0)'); ph.addColorStop(.25,'rgba(255,240,215,.95)'); ph.addColorStop(.55,'rgba(255,190,120,.35)'); ph.addColorStop(1,'rgba(255,170,100,0)'); g.fillStyle=ph; g.beginPath(); g.arc(0,0,rad*1.22,0,7); g.fill(); g.restore(); // photon ring
+    g.globalCompositeOperation='source-over'; g.fillStyle='#000'; g.beginPath(); g.arc(m,m,rad,0,7); g.fill();                 // event horizon shadow
+    g.globalCompositeOperation='lighter'; ring(rad*1.7,rad*4.6,.16,0,Math.PI,.75);                                              // front of the disk, over the shadow
+    return c; }
+  function buildGalaxy(){ paintDeepSpace(); const rad=lite?26:46, Lr=Math.round(rad*4.6), S=Lr*2, RE=rad*1.55;
+    const off=new Int32Array(S*S*2), blk=new Uint8Array(S*S);
+    for(let j=0;j<S;j++) for(let i=0;i<S;i++){ const dx=i-Lr+.5, dy=j-Lr+.5, r=Math.hypot(dx,dy), k=j*S+i;
+      if(r<rad){ blk[k]=1; continue; } const w=r>Lr?0:1-Math.pow(Math.max(0,(r-Lr*.55)/(Lr*.45)),2); const b=r-RE*RE/r*w; off[k*2]=Math.round(dx*b/r-dx); off[k*2+1]=Math.round(dy*b/r-dy); }
+    gx={...gx,rad,Lr,S,off,blk,img:ctx.createImageData(S,S),hole:paintHoleReal(rad),meteor:null,
+      tw:Array.from({length:lite?50:110},()=>({x:R(0,W),y:R(0,H),r:R(.7,1.8),ph:R(0,6.28),f:R(.015,.06),c:scol()}))}; gx.dst=new Uint32Array(gx.img.data.buffer); }
+  function drawGalaxy(){ const {src,off,blk,S,Lr,dst,img,hole,rad}=gx; if(!src) return;
+    ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1; ctx.drawImage(bg,0,0);
+    const cx=Math.round(W*(.5+.36*Math.sin(t*.0007))), cy=Math.round(H*(.46+.26*Math.sin(t*.00113+1.1))), x0=cx-Lr, y0=cy-Lr;
+    for(let j=0;j<S;j++){ const row=j*S, py=y0+j; for(let i=0;i<S;i++){ const k=row+i; if(blk[k]){ dst[k]=0xff000000; continue; }
+      let sx=x0+i+off[k*2], sy=py+off[k*2+1]; if(sx<0) sx=0; else if(sx>=W) sx=W-1; if(sy<0) sy=0; else if(sy>=H) sy=H-1; dst[k]=src[sy*W+sx]; } }
+    ctx.putImageData(img,x0,y0);
+    ctx.globalCompositeOperation='lighter';
+    const er=ctx.createRadialGradient(cx,cy,rad*1.4,cx,cy,rad*1.75); er.addColorStop(0,'rgba(200,210,255,0)'); er.addColorStop(.5,'rgba(200,210,255,.10)'); er.addColorStop(1,'rgba(200,210,255,0)'); ctx.fillStyle=er; ctx.fillRect(cx-rad*2,cy-rad*2,rad*4,rad*4); // faint Einstein ring
+    for(const s of gx.tw){ let x=s.x+pmx*-8, y=s.y+pmy*-6; const dx=x-cx, dy=y-cy, d=Math.hypot(dx,dy); if(d<Lr){ if(d<rad*1.1) continue; const b=d-rad*rad*2.4/d; x=cx+dx*b/d; y=cy+dy*b/d; }
+      const a=.25+.55*Math.pow((1+Math.sin(t*s.f+s.ph))/2,2); ctx.fillStyle=`rgba(${s.c},${a})`; ctx.fillRect(x,y,s.r,s.r); if(a>.7&&s.r>1.5){ ctx.fillStyle=`rgba(${s.c},${(a-.7)*.8})`; ctx.fillRect(x-3,y+s.r/2-.3,6+s.r,.6); ctx.fillRect(x+s.r/2-.3,y-3,.6,6+s.r); } }
+    // shooting star now and then
+    if(!gx.meteor&&!reduce&&Math.random()<(lite?.003:.0025)){ const a=R(.35,.7); gx.meteor={x:R(W*.1,W*.9),y:R(0,H*.4),vx:Math.cos(a)*R(9,14),vy:Math.sin(a)*R(9,14),life:1}; }
+    const M=gx.meteor; if(M){ const tx=M.x-M.vx*7, ty=M.y-M.vy*7; const lg=ctx.createLinearGradient(M.x,M.y,tx,ty); lg.addColorStop(0,`rgba(235,240,255,${.85*M.life})`); lg.addColorStop(1,'rgba(235,240,255,0)'); ctx.strokeStyle=lg; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(M.x,M.y); ctx.lineTo(tx,ty); ctx.stroke(); M.x+=M.vx; M.y+=M.vy; M.life-=.035; if(M.life<=0||M.x>W+50||M.y>H+50) gx.meteor=null; }
+    ctx.globalCompositeOperation='source-over'; const sc=1+.015*Math.sin(t*.04); const hw=hole.width*sc; ctx.globalAlpha=.97; ctx.drawImage(hole,cx-hw/2,cy-hw/2,hw,hw); ctx.globalAlpha=1; }
+  function build(){ P=pal(); look=(document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'); if(look==='g'){ buildGalaxy(); return; } paintBackground();
     const gs=Math.min(W,H); gal=[{c:paintGalaxy(Math.round(gs*.55),2,.42,P.gal),x:.16,y:.2,sp:.00035,a:R(0,6),par:6,al:.85},{c:paintGalaxy(Math.round(gs*.32),3,.62,[P.gal[1],P.gal[0],P.gal[2]]),x:.83,y:.12,sp:-.0006,a:R(0,6),par:4,al:.6}];
     sun=paintSun(lite?11:17); bhs=paintHole(lite?20:34);
     const pr=[2.2,3,3.4,2.6,7,6,4.4,4.2], au=[.06,.09,.125,.16,.23,.3,.37,.44];
@@ -6371,6 +6429,7 @@ function initFX(){
     if(reduce) still=true;
     if(((document.body.classList.contains('ui-galaxy')?'g':document.body.classList.contains('ui-neon')?'n':'c'))!==look) build();
     t+=SPD; pmx+=(mx-pmx)*.05; pmy+=(my-pmy)*.05;
+    if(look==='g'){ drawGalaxy(); return; }
     ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1; ctx.drawImage(bg,0,0);
     const hy=H*.5, f=H*.9, vp=W/2+pmx*-30;
     const B=hole(t); const bsx=vp+B.x*f/B.z, bsy=hy+CAM*f/B.z, bScale=Math.max(.6,Math.min(1.6,15/B.z)); const bwy=hy+(CAM+5.2)*f/B.z;
