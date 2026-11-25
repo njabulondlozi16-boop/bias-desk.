@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-24 16:23 SAST",
- "data_date": "2026-11-23",
+ "generated_at": "2026-11-25 15:26 SAST",
+ "data_date": "2026-11-24",
  "markets_scanned": 181,
  "note": "Ideas to research with your own technical analysis - not trade signals and not financial advice.",
  "economy": {
@@ -28,7 +28,7 @@
     "key": "spy200",
     "group": "Markets",
     "name": "S&P 500 vs 200-day average",
-    "value": "-1.1%",
+    "value": "-1.6%",
     "state": "red",
     "meaning": "Stocks in a downtrend"
    },
@@ -36,7 +36,7 @@
     "key": "credit",
     "group": "Stress",
     "name": "Junk bonds vs Treasuries (1-yr)",
-    "value": "-0.4%",
+    "value": "-0.6%",
     "state": "grey",
     "meaning": "Credit slightly weaker than usual"
    },
@@ -60,7 +60,7 @@
     "key": "curve",
     "group": "Stress",
     "name": "Yield curve (10y - 2y)",
-    "value": "+0.29 pts",
+    "value": "+0.28 pts",
     "state": "grey",
     "meaning": "Flat"
    },
@@ -68,7 +68,7 @@
     "key": "policy",
     "group": "Policy",
     "name": "Short-term rates, last 6 months (Fed direction)",
-    "value": "4.37% (+0.69)",
+    "value": "4.36% (+0.68)",
     "state": "red",
     "meaning": "Fed tightening - headwind"
    },
@@ -76,7 +76,7 @@
     "key": "y10",
     "group": "Policy",
     "name": "10-year yield, last 3 months",
-    "value": "4.92% (+0.22)",
+    "value": "4.91% (+0.27)",
     "state": "grey",
     "meaning": "Borrowing costs steady"
    },
@@ -84,7 +84,7 @@
     "key": "vix",
     "group": "Stress",
     "name": "Fear index (VIX)",
-    "value": "26.6",
+    "value": "26.4",
     "state": "red",
     "meaning": "Fear is high"
    },
@@ -92,7 +92,7 @@
     "key": "DX-Y.NYB",
     "group": "Markets",
     "name": "US dollar, last 3 months",
-    "value": "+5.5%",
+    "value": "+4.7%",
     "state": "red",
     "meaning": "Strong dollar - pressure on rand, EM and gold"
    },
@@ -100,7 +100,7 @@
     "key": "CL=F",
     "group": "Markets",
     "name": "Oil, last 3 months",
-    "value": "-2.7%",
+    "value": "-0.2%",
     "state": "grey",
     "meaning": "Little change"
    }
@@ -542,40 +542,40 @@
   ]
  },
  "top3": [
-  "COST|breakout_52w",
+  "ABBV|breakout_52w",
   "DIS|breakout_52w",
   "BID.JO|breakout_52w"
  ],
  "swing": [
   {
-   "ticker": "COST",
-   "name": "Costco Wholesale Corporation",
+   "ticker": "ABBV",
+   "name": "AbbVie Inc.",
    "market": "US",
-   "price": 1097.91,
+   "price": 300.28,
    "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "COST",
-   "chg_1d_pct": -0.3847,
-   "r63_pct": 14.53,
-   "momentum_rank": 95,
-   "vol_ratio": 1.2181,
+   "date": "2026-11-24",
+   "tv": "ABBV",
+   "chg_1d_pct": 4.1012,
+   "r63_pct": 14.92,
+   "momentum_rank": 93,
+   "vol_ratio": 1.2245,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "breakout_52w",
    "setup_name": "Near a 52-week high in an uptrend",
    "side": "long",
-   "score": 90,
+   "score": 89,
    "reasons": [
-    "-2.3% from the 52-week high",
+    "-0.9% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
     "Volume this week 1.2x normal",
-    "3-month return +14.5% (stronger than 95% of the list)"
+    "3-month return +14.9% (stronger than 93% of the list)"
    ],
    "levels": {
-    "trigger": 1123.67,
-    "support": 1061.85,
-    "stop_idea": 1057.38
+    "trigger": 302.93,
+    "support": 291.22,
+    "stop_idea": 279.88
    },
    "history": {
     "key": "breakout_52w",
@@ -588,21 +588,21 @@
     "period": "2023-01-01 to 2026-11-24",
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
-   "confirm": "A daily close above 1123.67 on strong volume",
-   "cancel": "A close back below the 20-day average (1061.85)"
+   "confirm": "A daily close above 302.93 on strong volume",
+   "cancel": "A close back below the 20-day average (291.22)"
   },
   {
    "ticker": "DIS",
    "name": "The Walt Disney Company",
    "market": "US",
-   "price": 120.27,
+   "price": 122.51,
    "currency": "USD",
-   "date": "2026-11-23",
+   "date": "2026-11-24",
    "tv": "DIS",
-   "chg_1d_pct": 1.941,
-   "r63_pct": 8.1079,
-   "momentum_rank": 85,
-   "vol_ratio": 1.6295,
+   "chg_1d_pct": 1.8625,
+   "r63_pct": 11.75,
+   "momentum_rank": 91,
+   "vol_ratio": 1.4311,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -611,14 +611,14 @@
    "side": "long",
    "score": 89,
    "reasons": [
-    "-2.5% from the 52-week high",
+    "-0.7% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
-    "Volume this week 1.6x normal",
-    "3-month return +8.1% (stronger than 85% of the list)"
+    "Volume this week 1.4x normal",
+    "3-month return +11.7% (stronger than 91% of the list)"
    ],
    "levels": {
     "trigger": 123.37,
-    "support": 116.65,
+    "support": 117.26,
     "stop_idea": 116.13
    },
    "history": {
@@ -633,20 +633,20 @@
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
    "confirm": "A daily close above 123.37 on strong volume",
-   "cancel": "A close back below the 20-day average (116.65)"
+   "cancel": "A close back below the 20-day average (117.26)"
   },
   {
    "ticker": "BID.JO",
    "name": "Bid Corporation Limited",
    "market": "JSE",
-   "price": 47856.0,
+   "price": 47380.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "tv": "JSE:BID",
-   "chg_1d_pct": 1.0046,
-   "r63_pct": 11.33,
-   "momentum_rank": 90,
-   "vol_ratio": 1.3027,
+   "chg_1d_pct": -1.2402,
+   "r63_pct": 10.2,
+   "momentum_rank": 88,
+   "vol_ratio": 1.5624,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -655,15 +655,15 @@
    "side": "long",
    "score": 89,
    "reasons": [
-    "-1.3% from the 52-week high",
+    "-2.3% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
-    "Volume this week 1.3x normal",
-    "3-month return +11.3% (stronger than 90% of the list)"
+    "Volume this week 1.6x normal",
+    "3-month return +10.2% (stronger than 88% of the list)"
    ],
    "levels": {
     "trigger": 48481.0,
-    "support": 46765.4,
-    "stop_idea": 45240.0
+    "support": 46715.35,
+    "stop_idea": 44000.0
    },
    "history": {
     "key": "breakout_52w",
@@ -677,36 +677,36 @@
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
    "confirm": "A daily close above 48481.0 on strong volume",
-   "cancel": "A close back below the 20-day average (46765.4)"
+   "cancel": "A close back below the 20-day average (46715.35)"
   },
   {
    "ticker": "TGT",
    "name": "Target Corporation",
    "market": "US",
-   "price": 168.19,
+   "price": 176.06,
    "currency": "USD",
-   "date": "2026-11-23",
+   "date": "2026-11-24",
    "tv": "TGT",
-   "chg_1d_pct": 1.4231,
-   "r63_pct": 3.6118,
-   "momentum_rank": 73,
-   "vol_ratio": 1.6954,
+   "chg_1d_pct": 4.6792,
+   "r63_pct": 8.0832,
+   "momentum_rank": 82,
+   "vol_ratio": 1.6425,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "breakout_52w",
    "setup_name": "Near a 52-week high in an uptrend",
    "side": "long",
-   "score": 85,
+   "score": 88,
    "reasons": [
-    "-2.2% from the 52-week high",
+    "-0.4% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
-    "Volume this week 1.7x normal",
-    "3-month return +3.6% (stronger than 73% of the list)"
+    "Volume this week 1.6x normal",
+    "3-month return +8.1% (stronger than 82% of the list)"
    ],
    "levels": {
-    "trigger": 171.91,
-    "support": 159.22,
+    "trigger": 176.73,
+    "support": 160.68,
     "stop_idea": 156.14
    },
    "history": {
@@ -720,21 +720,329 @@
     "period": "2023-01-01 to 2026-11-24",
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
-   "confirm": "A daily close above 171.91 on strong volume",
-   "cancel": "A close back below the 20-day average (159.22)"
+   "confirm": "A daily close above 176.73 on strong volume",
+   "cancel": "A close back below the 20-day average (160.68)"
   },
   {
-   "ticker": "PG",
-   "name": "The Procter & Gamble Company",
+   "ticker": "KO",
+   "name": "The Coca-Cola Company",
    "market": "US",
-   "price": 169.6,
+   "price": 97.62,
    "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "KO",
+   "chg_1d_pct": 1.8148,
+   "r63_pct": 9.017,
+   "momentum_rank": 86,
+   "vol_ratio": 1.2995,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
+   "side": "long",
+   "score": 87,
+   "reasons": [
+    "-2.9% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.3x normal",
+    "3-month return +9.0% (stronger than 86% of the list)"
+   ],
+   "levels": {
+    "trigger": 100.56,
+    "support": 96.33,
+    "stop_idea": 94.6
+   },
+   "history": {
+    "key": "breakout_52w",
+    "status": "research",
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
+   },
+   "confirm": "A daily close above 100.56 on strong volume",
+   "cancel": "A close back below the 20-day average (96.33)"
+  },
+  {
+   "ticker": "XLP",
+   "name": "State Street Consumer Staples Select Sector SPDR ETF",
+   "market": "ETF",
+   "price": 91.88,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "XLP",
+   "chg_1d_pct": 1.6597,
+   "r63_pct": 7.2033,
+   "momentum_rank": 80,
+   "vol_ratio": 1.6367,
+   "sector": "Consumer Staples",
+   "favoured": false,
+   "list": "swing",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
+   "side": "long",
+   "score": 87,
+   "reasons": [
+    "-1.7% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.6x normal",
+    "3-month return +7.2% (stronger than 80% of the list)"
+   ],
+   "levels": {
+    "trigger": 93.48,
+    "support": 90.6,
+    "stop_idea": 89.29
+   },
+   "history": {
+    "key": "breakout_52w",
+    "status": "research",
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
+   },
+   "confirm": "A daily close above 93.48 on strong volume",
+   "cancel": "A close back below the 20-day average (90.6)"
+  },
+  {
+   "ticker": "CL",
+   "name": "Colgate-Palmolive Company",
+   "market": "US",
+   "price": 99.24,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "CL",
+   "chg_1d_pct": 1.3377,
+   "r63_pct": 8.4145,
+   "momentum_rank": 84,
+   "vol_ratio": 1.2368,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
+   "side": "long",
+   "score": 86,
+   "reasons": [
+    "-2.5% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.2x normal",
+    "3-month return +8.4% (stronger than 84% of the list)"
+   ],
+   "levels": {
+    "trigger": 101.81,
+    "support": 97.55,
+    "stop_idea": 94.98
+   },
+   "history": {
+    "key": "breakout_52w",
+    "status": "research",
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
+   },
+   "confirm": "A daily close above 101.81 on strong volume",
+   "cancel": "A close back below the 20-day average (97.55)"
+  },
+  {
+   "ticker": "MDLZ",
+   "name": "Mondelez International, Inc.",
+   "market": "US",
+   "price": 67.01,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "MDLZ",
+   "chg_1d_pct": 1.1472,
+   "r63_pct": 7.2887,
+   "momentum_rank": 80,
+   "vol_ratio": 1.2369,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
+   "side": "long",
+   "score": 85,
+   "reasons": [
+    "-2.8% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.2x normal",
+    "3-month return +7.3% (stronger than 80% of the list)"
+   ],
+   "levels": {
+    "trigger": 68.92,
+    "support": 66.05,
+    "stop_idea": 64.83
+   },
+   "history": {
+    "key": "breakout_52w",
+    "status": "research",
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
+   },
+   "confirm": "A daily close above 68.92 on strong volume",
+   "cancel": "A close back below the 20-day average (66.05)"
+  },
+  {
+   "ticker": "GILD",
+   "name": "Gilead Sciences, Inc.",
+   "market": "US",
+   "price": 178.29,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "GILD",
+   "chg_1d_pct": 4.5137,
+   "r63_pct": 21.07,
+   "momentum_rank": 98,
+   "vol_ratio": 1.0613,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
+   "side": "long",
+   "score": 80,
+   "reasons": [
+    "-0.8% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.1x normal",
+    "3-month return +21.1% (stronger than 98% of the list)"
+   ],
+   "levels": {
+    "trigger": 179.68,
+    "support": 168.84,
+    "stop_idea": 164.8
+   },
+   "history": {
+    "key": "breakout_52w",
+    "status": "research",
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
+   },
+   "confirm": "A daily close above 179.68 on strong volume",
+   "cancel": "A close back below the 20-day average (168.84)"
+  },
+  {
+   "ticker": "VOD.JO",
+   "name": "Vodacom Group Limited",
+   "market": "JSE",
+   "price": 18393.0,
+   "currency": "ZAc",
    "date": "2026-11-23",
-   "tv": "PG",
-   "chg_1d_pct": 0.1358,
-   "r63_pct": 17.42,
-   "momentum_rank": 97,
-   "vol_ratio": 1.0488,
+   "tv": "JSE:VOD",
+   "chg_1d_pct": 1.8495,
+   "r63_pct": 26.34,
+   "momentum_rank": 99,
+   "vol_ratio": 1.0158,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
+   "side": "long",
+   "score": 80,
+   "reasons": [
+    "-0.8% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.0x normal",
+    "3-month return +26.3% (stronger than 99% of the list)"
+   ],
+   "levels": {
+    "trigger": 18550.0,
+    "support": 17120.6,
+    "stop_idea": 16770.0
+   },
+   "history": {
+    "key": "breakout_52w",
+    "status": "research",
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
+   },
+   "confirm": "A daily close above 18550.0 on strong volume",
+   "cancel": "A close back below the 20-day average (17120.6)"
+  },
+  {
+   "ticker": "ACN",
+   "name": "Accenture plc",
+   "market": "US",
+   "price": 232.32,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "ACN",
+   "chg_1d_pct": 4.5121,
+   "r63_pct": 29.11,
+   "momentum_rank": 100,
+   "vol_ratio": 0.7577,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 79,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (222.46)",
+    "RSI 48 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 222.46,
+    "support": 187.11,
+    "target": 271.76,
+    "stop_idea": 186.17
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 187.11"
+  },
+  {
+   "ticker": "COST",
+   "name": "Costco Wholesale Corporation",
+   "market": "US",
+   "price": 1091.71,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "COST",
+   "chg_1d_pct": 2.2286,
+   "r63_pct": 17.56,
+   "momentum_rank": 95,
+   "vol_ratio": 1.1741,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -743,14 +1051,58 @@
    "side": "long",
    "score": 79,
    "reasons": [
-    "-2.3% from the 52-week high",
+    "-0.3% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.2x normal",
+    "3-month return +17.6% (stronger than 95% of the list)"
+   ],
+   "levels": {
+    "trigger": 1094.75,
+    "support": 1039.24,
+    "stop_idea": 1042.07
+   },
+   "history": {
+    "key": "breakout_52w",
+    "status": "research",
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
+   },
+   "confirm": "A daily close above 1094.75 on strong volume",
+   "cancel": "A close back below the 20-day average (1039.24)"
+  },
+  {
+   "ticker": "PG",
+   "name": "The Procter & Gamble Company",
+   "market": "US",
+   "price": 172.47,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "PG",
+   "chg_1d_pct": 1.6922,
+   "r63_pct": 19.73,
+   "momentum_rank": 97,
+   "vol_ratio": 1.0442,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
+   "side": "long",
+   "score": 79,
+   "reasons": [
+    "-0.6% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
     "Volume this week 1.0x normal",
-    "3-month return +17.4% (stronger than 97% of the list)"
+    "3-month return +19.7% (stronger than 97% of the list)"
    ],
    "levels": {
     "trigger": 173.59,
-    "support": 166.47,
+    "support": 167.13,
     "stop_idea": 165.88
    },
    "history": {
@@ -765,108 +1117,20 @@
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
    "confirm": "A daily close above 173.59 on strong volume",
-   "cancel": "A close back below the 20-day average (166.47)"
-  },
-  {
-   "ticker": "TXN",
-   "name": "Texas Instruments Incorporated",
-   "market": "US",
-   "price": 291.19,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "TXN",
-   "chg_1d_pct": 10.4,
-   "r63_pct": 12.52,
-   "momentum_rank": 92,
-   "vol_ratio": 1.2229,
-   "sector": null,
-   "favoured": false,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 79,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (286.03)",
-    "RSI 50 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 286.03,
-    "support": 264.45,
-    "target": 317.2,
-    "stop_idea": 260.98
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 262.29"
-  },
-  {
-   "ticker": "VOD.JO",
-   "name": "Vodacom Group Limited",
-   "market": "JSE",
-   "price": 18380.0,
-   "currency": "ZAc",
-   "date": "2026-11-24",
-   "tv": "JSE:VOD",
-   "chg_1d_pct": -0.0707,
-   "r63_pct": 25.76,
-   "momentum_rank": 100,
-   "vol_ratio": 0.8736,
-   "sector": null,
-   "favoured": false,
-   "list": "swing",
-   "setup": "breakout_52w",
-   "setup_name": "Near a 52-week high in an uptrend",
-   "side": "long",
-   "score": 79,
-   "reasons": [
-    "-1.1% from the 52-week high",
-    "Above the 50- and 200-day averages, 50 above 200",
-    "Volume this week 0.9x normal",
-    "3-month return +25.8% (stronger than 100% of the list)"
-   ],
-   "levels": {
-    "trigger": 18579.0,
-    "support": 17236.8,
-    "stop_idea": 17527.0
-   },
-   "history": {
-    "key": "breakout_52w",
-    "status": "research",
-    "trades": 584,
-    "win_rate": 0.459,
-    "avg_ret_pct": 0.81,
-    "holding_pct": 1.88,
-    "edge_pct": -1.07,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
-   },
-   "confirm": "A daily close above 18579.0 on strong volume",
-   "cancel": "A close back below the 20-day average (17236.8)"
+   "cancel": "A close back below the 20-day average (167.13)"
   },
   {
    "ticker": "SHP.JO",
    "name": "Shoprite Holdings Ltd",
    "market": "JSE",
-   "price": 34404.0,
+   "price": 34724.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "tv": "JSE:SHP",
-   "chg_1d_pct": -0.9216,
-   "r63_pct": 13.87,
-   "momentum_rank": 95,
-   "vol_ratio": 1.0772,
+   "chg_1d_pct": 1.8957,
+   "r63_pct": 16.34,
+   "momentum_rank": 94,
+   "vol_ratio": 1.1848,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -875,14 +1139,14 @@
    "side": "long",
    "score": 79,
    "reasons": [
-    "-2.6% from the 52-week high",
+    "-1.7% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
-    "Volume this week 1.1x normal",
-    "3-month return +13.9% (stronger than 95% of the list)"
+    "Volume this week 1.2x normal",
+    "3-month return +16.3% (stronger than 94% of the list)"
    ],
    "levels": {
     "trigger": 35310.0,
-    "support": 34036.0,
+    "support": 34026.65,
     "stop_idea": 33133.0
    },
    "history": {
@@ -897,37 +1161,37 @@
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
    "confirm": "A daily close above 35310.0 on strong volume",
-   "cancel": "A close back below the 20-day average (34036.0)"
+   "cancel": "A close back below the 20-day average (34026.65)"
   },
   {
-   "ticker": "OUT.JO",
-   "name": "OUTsurance Group Limited",
-   "market": "JSE",
-   "price": 9273.0,
-   "currency": "ZAc",
+   "ticker": "AAPL",
+   "name": "Apple Inc.",
+   "market": "US",
+   "price": 354.07,
+   "currency": "USD",
    "date": "2026-11-24",
-   "tv": "JSE:OUT",
-   "chg_1d_pct": 0.9581,
-   "r63_pct": 15.59,
-   "momentum_rank": 97,
-   "vol_ratio": 0.9465,
+   "tv": "AAPL",
+   "chg_1d_pct": 1.4295,
+   "r63_pct": 13.04,
+   "momentum_rank": 91,
+   "vol_ratio": 1.169,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "breakout_52w",
    "setup_name": "Near a 52-week high in an uptrend",
    "side": "long",
-   "score": 79,
+   "score": 78,
    "reasons": [
-    "-2.9% from the 52-week high",
+    "-1.9% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
-    "Volume this week 0.9x normal",
-    "3-month return +15.6% (stronger than 97% of the list)"
+    "Volume this week 1.2x normal",
+    "3-month return +13.0% (stronger than 91% of the list)"
    ],
    "levels": {
-    "trigger": 9548.0,
-    "support": 9062.65,
-    "stop_idea": 8920.0
+    "trigger": 360.83,
+    "support": 347.94,
+    "stop_idea": 340.56
    },
    "history": {
     "key": "breakout_52w",
@@ -940,126 +1204,38 @@
     "period": "2023-01-01 to 2026-11-24",
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
-   "confirm": "A daily close above 9548.0 on strong volume",
-   "cancel": "A close back below the 20-day average (9062.65)"
-  },
-  {
-   "ticker": "ACN",
-   "name": "Accenture plc",
-   "market": "US",
-   "price": 222.29,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "ACN",
-   "chg_1d_pct": 0.5064,
-   "r63_pct": 19.87,
-   "momentum_rank": 98,
-   "vol_ratio": 0.7918,
-   "sector": null,
-   "favoured": false,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 78,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (221.65)",
-    "RSI 40 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 221.65,
-    "support": 187.1,
-    "target": 271.76,
-    "stop_idea": 186.16
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 187.1"
-  },
-  {
-   "ticker": "MO",
-   "name": "Altria Group, Inc.",
-   "market": "US",
-   "price": 73.8,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "MO",
-   "chg_1d_pct": -1.4291,
-   "r63_pct": 10.15,
-   "momentum_rank": 88,
-   "vol_ratio": 0.9937,
-   "sector": null,
-   "favoured": false,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 77,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (73.05)",
-    "RSI 44 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 73.05,
-    "support": 68.6,
-    "target": 79.97,
-    "stop_idea": 68.25
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 68.6"
+   "confirm": "A daily close above 360.83 on strong volume",
+   "cancel": "A close back below the 20-day average (347.94)"
   },
   {
    "ticker": "APN.JO",
    "name": "Aspen Pharmacare Holdings Limited",
    "market": "JSE",
-   "price": 17742.0,
+   "price": 17904.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "tv": "JSE:APN",
-   "chg_1d_pct": -0.9048,
-   "r63_pct": 19.34,
+   "chg_1d_pct": 0.4996,
+   "r63_pct": 21.78,
    "momentum_rank": 98,
-   "vol_ratio": 0.5262,
+   "vol_ratio": 0.6425,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "breakout_52w",
    "setup_name": "Near a 52-week high in an uptrend",
    "side": "long",
-   "score": 77,
+   "score": 78,
    "reasons": [
-    "-2.2% from the 52-week high",
+    "-1.3% from the 52-week high",
     "Above the 50- and 200-day averages, 50 above 200",
-    "Volume this week 0.5x normal",
-    "3-month return +19.3% (stronger than 98% of the list)"
+    "Volume this week 0.6x normal",
+    "3-month return +21.8% (stronger than 98% of the list)"
    ],
    "levels": {
     "trigger": 18142.0,
-    "support": 17052.75,
-    "stop_idea": 17005.0
+    "support": 16961.7,
+    "stop_idea": 16900.0
    },
    "history": {
     "key": "breakout_52w",
@@ -1073,20 +1249,64 @@
     "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
    "confirm": "A daily close above 18142.0 on strong volume",
-   "cancel": "A close back below the 20-day average (17052.75)"
+   "cancel": "A close back below the 20-day average (16961.7)"
   },
   {
    "ticker": "MRP.JO",
    "name": "Mr Price Group Limited",
    "market": "JSE",
-   "price": 17382.0,
+   "price": 17900.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "tv": "JSE:MRP",
-   "chg_1d_pct": -2.8939,
-   "r63_pct": 6.8215,
-   "momentum_rank": 83,
-   "vol_ratio": 1.3146,
+   "chg_1d_pct": 0.0056,
+   "r63_pct": 10.03,
+   "momentum_rank": 88,
+   "vol_ratio": 1.4,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 78,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (17245.58)",
+    "RSI 50 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 17245.58,
+    "support": 16749.84,
+    "target": 19435.0,
+    "stop_idea": 16666.09
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 16749.84"
+  },
+  {
+   "ticker": "OMU.JO",
+   "name": "Old Mutual Limited",
+   "market": "JSE",
+   "price": 1430.0,
+   "currency": "ZAc",
+   "date": "2026-11-23",
+   "tv": "JSE:OMU",
+   "chg_1d_pct": 0.7042,
+   "r63_pct": 14.71,
+   "momentum_rank": 92,
+   "vol_ratio": 0.7515,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -1096,14 +1316,14 @@
    "score": 77,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (17272.16)",
-    "RSI 43 - momentum has cooled"
+    "Pulled back to the 50-day average (1392.8)",
+    "RSI 50 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 17272.16,
-    "support": 16751.88,
-    "target": 19435.0,
-    "stop_idea": 16668.12
+    "buy_zone": 1392.8,
+    "support": 1376.95,
+    "target": 1527.0,
+    "stop_idea": 1370.06
    },
    "history": {
     "key": "pullback_uptrend",
@@ -1117,37 +1337,37 @@
     "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
    },
    "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 16751.88"
+   "cancel": "A close below 1376.95"
   },
   {
-   "ticker": "TMO",
-   "name": "Thermo Fisher Scientific Inc.",
+   "ticker": "MO",
+   "name": "Altria Group, Inc.",
    "market": "US",
-   "price": 688.08,
+   "price": 74.82,
    "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "TMO",
-   "chg_1d_pct": 2.7691,
-   "r63_pct": 9.6247,
-   "momentum_rank": 86,
-   "vol_ratio": 0.8425,
+   "date": "2026-11-24",
+   "tv": "MO",
+   "chg_1d_pct": 1.3821,
+   "r63_pct": 9.9754,
+   "momentum_rank": 87,
+   "vol_ratio": 1.0594,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "pullback_uptrend",
    "setup_name": "Pullback to the 50-day in an uptrend",
    "side": "long",
-   "score": 75,
+   "score": 76,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (679.98)",
-    "RSI 50 - momentum has cooled"
+    "Pulled back to the 50-day average (73.15)",
+    "RSI 48 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 679.98,
-    "support": 558.49,
-    "target": 727.56,
-    "stop_idea": 555.7
+    "buy_zone": 73.15,
+    "support": 68.66,
+    "target": 79.97,
+    "stop_idea": 68.32
    },
    "history": {
     "key": "pullback_uptrend",
@@ -1161,35 +1381,35 @@
     "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
    },
    "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 558.49"
+   "cancel": "A close below 68.66"
   },
   {
    "ticker": "DSY.JO",
    "name": "Discovery Limited",
    "market": "JSE",
-   "price": 26343.0,
+   "price": 26476.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "tv": "JSE:DSY",
-   "chg_1d_pct": -0.5023,
-   "r63_pct": 6.7146,
-   "momentum_rank": 82,
-   "vol_ratio": 1.0227,
+   "chg_1d_pct": 2.1057,
+   "r63_pct": 8.6662,
+   "momentum_rank": 85,
+   "vol_ratio": 1.0415,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "pullback_uptrend",
    "setup_name": "Pullback to the 50-day in an uptrend",
    "side": "long",
-   "score": 75,
+   "score": 76,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (26877.93)",
-    "RSI 41 - momentum has cooled"
+    "Pulled back to the 50-day average (26883.31)",
+    "RSI 42 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 26877.93,
-    "support": 26172.14,
+    "buy_zone": 26883.31,
+    "support": 26158.59,
     "target": 28626.0,
     "stop_idea": 25627.22
    },
@@ -1208,149 +1428,61 @@
    "cancel": "A close below 25756.0"
   },
   {
-   "ticker": "XLV",
-   "name": "State Street Health Care Select Sector SPDR ETF",
-   "market": "ETF",
-   "price": 179.42,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "XLV",
-   "chg_1d_pct": 1.23,
-   "r63_pct": 2.7478,
-   "momentum_rank": 69,
-   "vol_ratio": 1.5952,
-   "sector": "Health Care",
-   "favoured": true,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 74,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (176.68)",
-    "RSI 46 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 176.68,
-    "support": 160.13,
-    "target": 192.32,
-    "stop_idea": 159.33
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 160.13"
-  },
-  {
-   "ticker": "MET",
-   "name": "MetLife, Inc.",
+   "ticker": "AMGN",
+   "name": "Amgen Inc.",
    "market": "US",
-   "price": 98.72,
+   "price": 473.94,
    "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "MET",
-   "chg_1d_pct": 3.188,
-   "r63_pct": 3.5813,
-   "momentum_rank": 72,
-   "vol_ratio": 1.2312,
+   "date": "2026-11-24",
+   "tv": "AMGN",
+   "chg_1d_pct": 5.5452,
+   "r63_pct": 8.2521,
+   "momentum_rank": 82,
+   "vol_ratio": 1.154,
    "sector": null,
    "favoured": false,
    "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
+   "setup": "breakout_52w",
+   "setup_name": "Near a 52-week high in an uptrend",
    "side": "long",
-   "score": 73,
+   "score": 75,
    "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (98.62)",
-    "RSI 47 - momentum has cooled"
+    "-1.5% from the 52-week high",
+    "Above the 50- and 200-day averages, 50 above 200",
+    "Volume this week 1.2x normal",
+    "3-month return +8.3% (stronger than 82% of the list)"
    ],
    "levels": {
-    "buy_zone": 98.62,
-    "support": 86.62,
-    "target": 106.72,
-    "stop_idea": 86.19
+    "trigger": 481.21,
+    "support": 457.62,
+    "stop_idea": 432.75
    },
    "history": {
-    "key": "pullback_uptrend",
+    "key": "breakout_52w",
     "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
+    "trades": 584,
+    "win_rate": 0.459,
+    "avg_ret_pct": 0.81,
+    "holding_pct": 1.88,
+    "edge_pct": -1.07,
     "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+    "text": "Since 2023 this setup won 46% of 584 cases, avg +0.81% a trade after costs, vs +1.88% for just holding."
    },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 86.62"
+   "confirm": "A daily close above 481.21 on strong volume",
+   "cancel": "A close back below the 20-day average (457.62)"
   },
   {
-   "ticker": "DHR",
-   "name": "Danaher Corporation",
+   "ticker": "AMT",
+   "name": "American Tower Corporation",
    "market": "US",
-   "price": 225.66,
+   "price": 182.83,
    "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "DHR",
-   "chg_1d_pct": 2.4052,
-   "r63_pct": 4.6719,
-   "momentum_rank": 75,
-   "vol_ratio": 0.8632,
-   "sector": null,
-   "favoured": false,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 72,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (225.15)",
-    "RSI 47 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 225.15,
-    "support": 200.7,
-    "target": 238.46,
-    "stop_idea": 199.7
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 200.7"
-  },
-  {
-   "ticker": "EMR",
-   "name": "Emerson Electric Co.",
-   "market": "US",
-   "price": 158.31,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "EMR",
-   "chg_1d_pct": 4.8897,
-   "r63_pct": 2.5273,
-   "momentum_rank": 68,
-   "vol_ratio": 1.0705,
+   "date": "2026-11-24",
+   "tv": "AMT",
+   "chg_1d_pct": 1.9631,
+   "r63_pct": 5.1652,
+   "momentum_rank": 73,
+   "vol_ratio": 0.9182,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -1360,12 +1492,276 @@
    "score": 71,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (159.96)",
-    "RSI 46 - momentum has cooled"
+    "Pulled back to the 50-day average (179.44)",
+    "RSI 48 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 159.96,
-    "support": 147.09,
+    "buy_zone": 179.44,
+    "support": 175.68,
+    "target": 202.5,
+    "stop_idea": 174.8
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 175.68"
+  },
+  {
+   "ticker": "COP",
+   "name": "ConocoPhillips",
+   "market": "US",
+   "price": 134.64,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "COP",
+   "chg_1d_pct": 1.8534,
+   "r63_pct": 3.7638,
+   "momentum_rank": 71,
+   "vol_ratio": 0.9937,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 71,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (136.4)",
+    "RSI 45 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 136.4,
+    "support": 122.81,
+    "target": 153.27,
+    "stop_idea": 122.2
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 122.81"
+  },
+  {
+   "ticker": "MET",
+   "name": "MetLife, Inc.",
+   "market": "US",
+   "price": 99.21,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "MET",
+   "chg_1d_pct": 0.4964,
+   "r63_pct": 3.3944,
+   "momentum_rank": 70,
+   "vol_ratio": 1.0861,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 71,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (98.65)",
+    "RSI 49 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 98.65,
+    "support": 86.74,
+    "target": 106.72,
+    "stop_idea": 86.31
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 86.74"
+  },
+  {
+   "ticker": "MDT",
+   "name": "Medtronic plc",
+   "market": "US",
+   "price": 96.13,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "MDT",
+   "chg_1d_pct": -4.5572,
+   "r63_pct": 5.3232,
+   "momentum_rank": 73,
+   "vol_ratio": 0.5359,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 70,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (94.71)",
+    "RSI 43 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 94.71,
+    "support": 87.16,
+    "target": 106.2,
+    "stop_idea": 86.73
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 87.16"
+  },
+  {
+   "ticker": "PFE",
+   "name": "Pfizer Inc.",
+   "market": "US",
+   "price": 28.46,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "PFE",
+   "chg_1d_pct": 3.8686,
+   "r63_pct": 2.0337,
+   "momentum_rank": 66,
+   "vol_ratio": 1.0123,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 70,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (28.52)",
+    "RSI 48 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 28.52,
+    "support": 26.29,
+    "target": 30.99,
+    "stop_idea": 26.16
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 26.29"
+  },
+  {
+   "ticker": "BLK",
+   "name": "BlackRock, Inc.",
+   "market": "US",
+   "price": 1146.03,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "BLK",
+   "chg_1d_pct": 0.1319,
+   "r63_pct": -1.8154,
+   "momentum_rank": 57,
+   "vol_ratio": 1.1884,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 68,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (1123.74)",
+    "RSI 48 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 1123.74,
+    "support": 1062.99,
+    "target": 1242.12,
+    "stop_idea": 1057.68
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 1062.99"
+  },
+  {
+   "ticker": "EMR",
+   "name": "Emerson Electric Co.",
+   "market": "US",
+   "price": 156.98,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "EMR",
+   "chg_1d_pct": -0.8401,
+   "r63_pct": -0.4728,
+   "momentum_rank": 60,
+   "vol_ratio": 1.0353,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 68,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (160.17)",
+    "RSI 45 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 160.17,
+    "support": 147.08,
     "target": 171.39,
     "stop_idea": 146.35
    },
@@ -1381,109 +1777,21 @@
     "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
    },
    "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 147.09"
+   "cancel": "A close below 147.08"
   },
   {
-   "ticker": "AMT",
-   "name": "American Tower Corporation",
-   "market": "US",
-   "price": 179.31,
+   "ticker": "XLF",
+   "name": "State Street Financial Select Sector SPDR ETF",
+   "market": "ETF",
+   "price": 56.11,
    "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "AMT",
-   "chg_1d_pct": -2.66,
-   "r63_pct": 1.5001,
-   "momentum_rank": 67,
-   "vol_ratio": 0.9371,
-   "sector": null,
-   "favoured": false,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 70,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (179.3)",
-    "RSI 43 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 179.3,
-    "support": 175.6,
-    "target": 202.5,
-    "stop_idea": 174.73
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 175.6"
-  },
-  {
-   "ticker": "JNJ",
-   "name": "Johnson & Johnson",
-   "market": "US",
-   "price": 270.05,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "JNJ",
-   "chg_1d_pct": -0.1553,
-   "r63_pct": -1.1313,
-   "momentum_rank": 58,
-   "vol_ratio": 1.2598,
-   "sector": null,
-   "favoured": false,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 69,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (267.5)",
-    "RSI 48 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 267.5,
-    "support": 249.61,
-    "target": 290.25,
-    "stop_idea": 248.36
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 249.61"
-  },
-  {
-   "ticker": "AMZN",
-   "name": "Amazon.com, Inc.",
-   "market": "US",
-   "price": 255.39,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "AMZN",
-   "chg_1d_pct": 3.4722,
-   "r63_pct": -2.1719,
-   "momentum_rank": 55,
-   "vol_ratio": 1.1966,
-   "sector": null,
+   "date": "2026-11-24",
+   "tv": "XLF",
+   "chg_1d_pct": 0.8266,
+   "r63_pct": -3.3495,
+   "momentum_rank": 53,
+   "vol_ratio": 1.4322,
+   "sector": "Financials",
    "favoured": false,
    "list": "swing",
    "setup": "pullback_uptrend",
@@ -1492,12 +1800,56 @@
    "score": 68,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (255.07)",
-    "RSI 48 - momentum has cooled"
+    "Pulled back to the 50-day average (55.82)",
+    "RSI 47 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 255.07,
-    "support": 245.38,
+    "buy_zone": 55.82,
+    "support": 53.77,
+    "target": 60.04,
+    "stop_idea": 53.5
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 53.77"
+  },
+  {
+   "ticker": "AMZN",
+   "name": "Amazon.com, Inc.",
+   "market": "US",
+   "price": 252.29,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "AMZN",
+   "chg_1d_pct": -1.2138,
+   "r63_pct": -3.0698,
+   "momentum_rank": 54,
+   "vol_ratio": 1.1761,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 67,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (255.15)",
+    "RSI 47 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 255.15,
+    "support": 245.59,
     "target": 275.34,
     "stop_idea": 244.08
    },
@@ -1516,61 +1868,17 @@
    "cancel": "A close below 245.31"
   },
   {
-   "ticker": "XLF",
-   "name": "State Street Financial Select Sector SPDR ETF",
-   "market": "ETF",
-   "price": 55.65,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "XLF",
-   "chg_1d_pct": 1.9791,
-   "r63_pct": -4.224,
-   "momentum_rank": 53,
-   "vol_ratio": 1.5148,
-   "sector": "Financials",
-   "favoured": false,
-   "list": "swing",
-   "setup": "pullback_uptrend",
-   "setup_name": "Pullback to the 50-day in an uptrend",
-   "side": "long",
-   "score": 68,
-   "reasons": [
-    "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (55.83)",
-    "RSI 44 - momentum has cooled"
-   ],
-   "levels": {
-    "buy_zone": 55.83,
-    "support": 53.76,
-    "target": 60.04,
-    "stop_idea": 53.49
-   },
-   "history": {
-    "key": "pullback_uptrend",
-    "status": "research",
-    "trades": 552,
-    "win_rate": 0.431,
-    "avg_ret_pct": 0.43,
-    "holding_pct": 1.72,
-    "edge_pct": -1.29,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
-   },
-   "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 53.76"
-  },
-  {
    "ticker": "UNP",
    "name": "Union Pacific Corporation",
    "market": "US",
-   "price": 288.89,
+   "price": 290.83,
    "currency": "USD",
-   "date": "2026-11-23",
+   "date": "2026-11-24",
    "tv": "UNP",
-   "chg_1d_pct": 0.5569,
-   "r63_pct": -6.2532,
+   "chg_1d_pct": 0.6715,
+   "r63_pct": -5.9366,
    "momentum_rank": 46,
-   "vol_ratio": 1.3151,
+   "vol_ratio": 1.2767,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -1580,14 +1888,14 @@
    "score": 65,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (288.28)",
-    "RSI 44 - momentum has cooled"
+    "Pulled back to the 50-day average (288.42)",
+    "RSI 46 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 288.28,
-    "support": 274.02,
+    "buy_zone": 288.42,
+    "support": 274.22,
     "target": 309.86,
-    "stop_idea": 272.65
+    "stop_idea": 272.85
    },
    "history": {
     "key": "pullback_uptrend",
@@ -1601,20 +1909,20 @@
     "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
    },
    "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 274.02"
+   "cancel": "A close below 274.22"
   },
   {
    "ticker": "GM",
    "name": "General Motors Company",
    "market": "US",
-   "price": 81.64,
+   "price": 82.32,
    "currency": "USD",
-   "date": "2026-11-23",
+   "date": "2026-11-24",
    "tv": "GM",
-   "chg_1d_pct": 3.7225,
-   "r63_pct": -4.6628,
-   "momentum_rank": 51,
-   "vol_ratio": 0.8216,
+   "chg_1d_pct": 0.8329,
+   "r63_pct": -4.4478,
+   "momentum_rank": 50,
+   "vol_ratio": 0.7767,
    "sector": null,
    "favoured": false,
    "list": "swing",
@@ -1624,12 +1932,12 @@
    "score": 64,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (83.06)",
-    "RSI 45 - momentum has cooled"
+    "Pulled back to the 50-day average (83.0)",
+    "RSI 47 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 83.06,
-    "support": 80.62,
+    "buy_zone": 83.0,
+    "support": 80.64,
     "target": 93.7,
     "stop_idea": 77.92
    },
@@ -1648,34 +1956,34 @@
    "cancel": "A close below 78.31"
   },
   {
-   "ticker": "PYPL",
-   "name": "PayPal Holdings, Inc.",
+   "ticker": "USB",
+   "name": "U.S. Bancorp",
    "market": "US",
-   "price": 55.24,
+   "price": 58.07,
    "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "PYPL",
-   "chg_1d_pct": 3.6592,
-   "r63_pct": -11.0704,
-   "momentum_rank": 29,
-   "vol_ratio": 0.9764,
+   "date": "2026-11-24",
+   "tv": "USB",
+   "chg_1d_pct": 1.1496,
+   "r63_pct": -6.665,
+   "momentum_rank": 42,
+   "vol_ratio": 0.8807,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "pullback_uptrend",
    "setup_name": "Pullback to the 50-day in an uptrend",
    "side": "long",
-   "score": 59,
+   "score": 62,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (55.98)",
-    "RSI 43 - momentum has cooled"
+    "Pulled back to the 50-day average (58.75)",
+    "RSI 45 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 55.98,
-    "support": 50.34,
-    "target": 60.87,
-    "stop_idea": 50.09
+    "buy_zone": 58.75,
+    "support": 57.53,
+    "target": 63.12,
+    "stop_idea": 55.58
    },
    "history": {
     "key": "pullback_uptrend",
@@ -1689,37 +1997,37 @@
     "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
    },
    "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 50.34"
+   "cancel": "A close below 55.86"
   },
   {
    "ticker": "ABT",
    "name": "Abbott Laboratories",
    "market": "US",
-   "price": 103.32,
+   "price": 105.39,
    "currency": "USD",
-   "date": "2026-11-23",
+   "date": "2026-11-24",
    "tv": "ABT",
-   "chg_1d_pct": 0.3107,
-   "r63_pct": -10.483,
-   "momentum_rank": 32,
-   "vol_ratio": 0.7714,
+   "chg_1d_pct": 2.0035,
+   "r63_pct": -7.0651,
+   "momentum_rank": 40,
+   "vol_ratio": 0.8193,
    "sector": null,
    "favoured": false,
    "list": "swing",
    "setup": "pullback_uptrend",
    "setup_name": "Pullback to the 50-day in an uptrend",
    "side": "long",
-   "score": 58,
+   "score": 61,
    "reasons": [
     "Long-term uptrend (50-day above 200-day)",
-    "Pulled back to the 50-day average (103.63)",
-    "RSI 43 - momentum has cooled"
+    "Pulled back to the 50-day average (103.7)",
+    "RSI 49 - momentum has cooled"
    ],
    "levels": {
-    "buy_zone": 103.63,
-    "support": 100.36,
+    "buy_zone": 103.7,
+    "support": 100.34,
     "target": 117.07,
-    "stop_idea": 99.86
+    "stop_idea": 99.84
    },
    "history": {
     "key": "pullback_uptrend",
@@ -1733,7 +2041,94 @@
     "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
    },
    "confirm": "A bullish reversal candle at the 50-day average",
-   "cancel": "A close below 100.36"
+   "cancel": "A close below 100.34"
+  },
+  {
+   "ticker": "PYPL",
+   "name": "PayPal Holdings, Inc.",
+   "market": "US",
+   "price": 56.17,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "PYPL",
+   "chg_1d_pct": 1.6836,
+   "r63_pct": -8.9003,
+   "momentum_rank": 34,
+   "vol_ratio": 0.9412,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "pullback_uptrend",
+   "setup_name": "Pullback to the 50-day in an uptrend",
+   "side": "long",
+   "score": 60,
+   "reasons": [
+    "Long-term uptrend (50-day above 200-day)",
+    "Pulled back to the 50-day average (56.02)",
+    "RSI 47 - momentum has cooled"
+   ],
+   "levels": {
+    "buy_zone": 56.02,
+    "support": 50.42,
+    "target": 60.87,
+    "stop_idea": 50.17
+   },
+   "history": {
+    "key": "pullback_uptrend",
+    "status": "research",
+    "trades": 552,
+    "win_rate": 0.431,
+    "avg_ret_pct": 0.43,
+    "holding_pct": 1.72,
+    "edge_pct": -1.29,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 43% of 552 cases, avg +0.43% a trade after costs, vs +1.72% for just holding."
+   },
+   "confirm": "A bullish reversal candle at the 50-day average",
+   "cancel": "A close below 50.42"
+  },
+  {
+   "ticker": "INTU",
+   "name": "Intuit Inc.",
+   "market": "US",
+   "price": 279.42,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "INTU",
+   "chg_1d_pct": 1.4376,
+   "r63_pct": -18.8379,
+   "momentum_rank": 15,
+   "vol_ratio": 1.4203,
+   "sector": null,
+   "favoured": false,
+   "list": "swing",
+   "setup": "gap_drift_down",
+   "setup_name": "Big gap down that held",
+   "side": "avoid",
+   "score": 0,
+   "reasons": [
+    "Gapped -8.4% on 2026-11-20 on 3.0x normal volume",
+    "The gap has not been filled since",
+    "Often news-driven (results) - check the headline before you trade it"
+   ],
+   "levels": {
+    "gap_day_high": 300.44,
+    "gap_fill": 310.02,
+    "recent_high": 351.39
+   },
+   "history": {
+    "key": "gap_drift_down",
+    "status": "research",
+    "trades": 130,
+    "win_rate": 0.262,
+    "avg_ret_pct": -1.19,
+    "holding_pct": -1.03,
+    "edge_pct": -0.16,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 26% of 130 cases, avg -1.19% a trade after costs, vs -1.03% for just holding."
+   },
+   "confirm": "Bounces fail below the gap",
+   "cancel": "Price fills the gap (310.02)"
   }
  ],
  "avoid": [
@@ -1741,14 +2136,14 @@
    "ticker": "BKNG",
    "name": "Booking Holdings Inc.",
    "market": "US",
-   "price": 144.94,
+   "price": 146.64,
    "currency": "USD",
-   "date": "2026-11-23",
+   "date": "2026-11-24",
    "tv": "BKNG",
-   "chg_1d_pct": 0.0207,
-   "r63_pct": -32.0376,
-   "momentum_rank": 3,
-   "vol_ratio": 0.9046,
+   "chg_1d_pct": 1.1729,
+   "r63_pct": -29.6308,
+   "momentum_rank": 5,
+   "vol_ratio": 0.9076,
    "sector": null,
    "favoured": false,
    "list": "avoid",
@@ -1757,12 +2152,12 @@
    "side": "avoid",
    "score": 0,
    "reasons": [
-    "+0.6% from the 52-week low",
+    "+1.9% from the 52-week low",
     "Below the 50- and 200-day averages"
    ],
    "levels": {
-    "52w_low": 144.1,
-    "resistance": 159.3,
+    "52w_low": 143.86,
+    "resistance": 158.81,
     "recent_high": 165.39
    },
    "history": {
@@ -1777,62 +2172,20 @@
     "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
    },
    "confirm": "Lower lows continue",
-   "cancel": "A close back above the 50-day (159.3)"
-  },
-  {
-   "ticker": "NFLX",
-   "name": "Netflix, Inc.",
-   "market": "US",
-   "price": 58.1,
-   "currency": "USD",
-   "date": "2026-11-23",
-   "tv": "NFLX",
-   "chg_1d_pct": 2.4149,
-   "r63_pct": -29.3445,
-   "momentum_rank": 6,
-   "vol_ratio": 1.06,
-   "sector": null,
-   "favoured": false,
-   "list": "avoid",
-   "setup": "breakdown_52w",
-   "setup_name": "Breaking down to 52-week lows",
-   "side": "avoid",
-   "score": 0,
-   "reasons": [
-    "+2.7% from the 52-week low",
-    "Below the 50- and 200-day averages"
-   ],
-   "levels": {
-    "52w_low": 56.56,
-    "resistance": 66.96,
-    "recent_high": 64.56
-   },
-   "history": {
-    "key": "breakdown_52w",
-    "status": "research",
-    "trades": 75,
-    "win_rate": 0.36,
-    "avg_ret_pct": -3.19,
-    "holding_pct": -1.33,
-    "edge_pct": -1.86,
-    "period": "2023-01-01 to 2026-11-24",
-    "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
-   },
-   "confirm": "Lower lows continue",
-   "cancel": "A close back above the 50-day (66.96)"
+   "cancel": "A close back above the 50-day (158.81)"
   },
   {
    "ticker": "UBER",
    "name": "Uber Technologies, Inc.",
    "market": "US",
-   "price": 64.07,
+   "price": 64.7,
    "currency": "USD",
-   "date": "2026-11-23",
+   "date": "2026-11-24",
    "tv": "UBER",
-   "chg_1d_pct": 0.9453,
-   "r63_pct": -20.2614,
-   "momentum_rank": 16,
-   "vol_ratio": 1.2694,
+   "chg_1d_pct": 0.9833,
+   "r63_pct": -17.5691,
+   "momentum_rank": 17,
+   "vol_ratio": 1.2015,
    "sector": null,
    "favoured": false,
    "list": "avoid",
@@ -1841,12 +2194,12 @@
    "side": "avoid",
    "score": 0,
    "reasons": [
-    "+1.2% from the 52-week low",
+    "+2.2% from the 52-week low",
     "Below the 50- and 200-day averages"
    ],
    "levels": {
     "52w_low": 63.29,
-    "resistance": 68.79,
+    "resistance": 68.66,
     "recent_high": 71.09
    },
    "history": {
@@ -1861,20 +2214,104 @@
     "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
    },
    "confirm": "Lower lows continue",
-   "cancel": "A close back above the 50-day (68.79)"
+   "cancel": "A close back above the 50-day (68.66)"
+  },
+  {
+   "ticker": "GLD",
+   "name": "Gold",
+   "market": "Commodity",
+   "price": 325.45,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "GLD",
+   "chg_1d_pct": -2.2731,
+   "r63_pct": -22.7547,
+   "momentum_rank": 10,
+   "vol_ratio": 1.5175,
+   "sector": null,
+   "favoured": false,
+   "list": "avoid",
+   "setup": "breakdown_52w",
+   "setup_name": "Breaking down to 52-week lows",
+   "side": "avoid",
+   "score": 0,
+   "reasons": [
+    "+1.4% from the 52-week low",
+    "Below the 50- and 200-day averages"
+   ],
+   "levels": {
+    "52w_low": 320.95,
+    "resistance": 372.33,
+    "recent_high": 369.38
+   },
+   "history": {
+    "key": "breakdown_52w",
+    "status": "research",
+    "trades": 75,
+    "win_rate": 0.36,
+    "avg_ret_pct": -3.19,
+    "holding_pct": -1.33,
+    "edge_pct": -1.86,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
+   },
+   "confirm": "Lower lows continue",
+   "cancel": "A close back above the 50-day (372.33)"
+  },
+  {
+   "ticker": "SLV",
+   "name": "Silver",
+   "market": "Commodity",
+   "price": 36.84,
+   "currency": "USD",
+   "date": "2026-11-24",
+   "tv": "SLV",
+   "chg_1d_pct": -5.32,
+   "r63_pct": -40.1851,
+   "momentum_rank": 1,
+   "vol_ratio": 1.7733,
+   "sector": null,
+   "favoured": false,
+   "list": "avoid",
+   "setup": "breakdown_52w",
+   "setup_name": "Breaking down to 52-week lows",
+   "side": "avoid",
+   "score": 0,
+   "reasons": [
+    "+0.4% from the 52-week low",
+    "Below the 50- and 200-day averages"
+   ],
+   "levels": {
+    "52w_low": 36.71,
+    "resistance": 50.24,
+    "recent_high": 47.41
+   },
+   "history": {
+    "key": "breakdown_52w",
+    "status": "research",
+    "trades": 75,
+    "win_rate": 0.36,
+    "avg_ret_pct": -3.19,
+    "holding_pct": -1.33,
+    "edge_pct": -1.86,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
+   },
+   "confirm": "Lower lows continue",
+   "cancel": "A close back above the 50-day (50.24)"
   },
   {
    "ticker": "PRX.JO",
    "name": "Prosus N.V.",
    "market": "JSE",
-   "price": 59642.0,
+   "price": 60051.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "tv": "JSE:PRX",
-   "chg_1d_pct": -0.6811,
-   "r63_pct": -15.2243,
+   "chg_1d_pct": 1.4906,
+   "r63_pct": -14.5214,
    "momentum_rank": 22,
-   "vol_ratio": 1.0332,
+   "vol_ratio": 1.161,
    "sector": null,
    "favoured": false,
    "list": "avoid",
@@ -1883,13 +2320,13 @@
    "side": "avoid",
    "score": 0,
    "reasons": [
-    "+2.1% from the 52-week low",
+    "+2.8% from the 52-week low",
     "Below the 50- and 200-day averages"
    ],
    "levels": {
     "52w_low": 58425.0,
-    "resistance": 65761.99,
-    "recent_high": 68956.0
+    "resistance": 65901.13,
+    "recent_high": 70208.0
    },
    "history": {
     "key": "breakdown_52w",
@@ -1903,20 +2340,20 @@
     "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
    },
    "confirm": "Lower lows continue",
-   "cancel": "A close back above the 50-day (65761.99)"
+   "cancel": "A close back above the 50-day (65901.13)"
   },
   {
    "ticker": "GRT.JO",
    "name": "Growthpoint Properties Limited",
    "market": "JSE",
-   "price": 1543.0,
+   "price": 1551.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
+   "date": "2026-11-23",
    "tv": "JSE:GRT",
-   "chg_1d_pct": -0.5158,
-   "r63_pct": -5.7026,
+   "chg_1d_pct": 1.6383,
+   "r63_pct": -5.4448,
    "momentum_rank": 47,
-   "vol_ratio": 1.2362,
+   "vol_ratio": 1.3566,
    "sector": null,
    "favoured": false,
    "list": "avoid",
@@ -1925,13 +2362,13 @@
    "side": "avoid",
    "score": 0,
    "reasons": [
-    "+2.2% from the 52-week low",
+    "+2.7% from the 52-week low",
     "Below the 50- and 200-day averages"
    ],
    "levels": {
     "52w_low": 1510.0,
-    "resistance": 1581.96,
-    "recent_high": 1650.0
+    "resistance": 1583.09,
+    "recent_high": 1654.0
    },
    "history": {
     "key": "breakdown_52w",
@@ -1945,20 +2382,20 @@
     "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
    },
    "confirm": "Lower lows continue",
-   "cancel": "A close back above the 50-day (1581.96)"
+   "cancel": "A close back above the 50-day (1583.09)"
   },
   {
-   "ticker": "STX40.JO",
-   "name": "Satrix 40 (JSE Top 40)",
+   "ticker": "PPH.JO",
+   "name": "Pepkor Holdings Limited",
    "market": "JSE",
-   "price": 9885.0,
+   "price": 1722.0,
    "currency": "ZAc",
-   "date": "2026-11-24",
-   "tv": "JSE:STX40",
-   "chg_1d_pct": -0.3327,
-   "r63_pct": -10.2546,
-   "momentum_rank": 32,
-   "vol_ratio": 1.1196,
+   "date": "2026-11-23",
+   "tv": "JSE:PPH",
+   "chg_1d_pct": -0.2895,
+   "r63_pct": -13.1619,
+   "momentum_rank": 26,
+   "vol_ratio": 1.3006,
    "sector": null,
    "favoured": false,
    "list": "avoid",
@@ -1971,9 +2408,9 @@
     "Below the 50- and 200-day averages"
    ],
    "levels": {
-    "52w_low": 9650.0,
-    "resistance": 10351.28,
-    "recent_high": 10899.0
+    "52w_low": 1681.0,
+    "resistance": 1833.66,
+    "recent_high": 2019.0
    },
    "history": {
     "key": "breakdown_52w",
@@ -1987,17 +2424,59 @@
     "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
    },
    "confirm": "Lower lows continue",
-   "cancel": "A close back above the 50-day (10351.28)"
+   "cancel": "A close back above the 50-day (1833.66)"
+  },
+  {
+   "ticker": "STX40.JO",
+   "name": "Satrix 40 (JSE Top 40)",
+   "market": "JSE",
+   "price": 9918.0,
+   "currency": "ZAc",
+   "date": "2026-11-23",
+   "tv": "JSE:STX40",
+   "chg_1d_pct": 1.6918,
+   "r63_pct": -9.9632,
+   "momentum_rank": 33,
+   "vol_ratio": 1.0918,
+   "sector": null,
+   "favoured": false,
+   "list": "avoid",
+   "setup": "breakdown_52w",
+   "setup_name": "Breaking down to 52-week lows",
+   "side": "avoid",
+   "score": 0,
+   "reasons": [
+    "+2.8% from the 52-week low",
+    "Below the 50- and 200-day averages"
+   ],
+   "levels": {
+    "52w_low": 9650.0,
+    "resistance": 10371.63,
+    "recent_high": 10908.0
+   },
+   "history": {
+    "key": "breakdown_52w",
+    "status": "research",
+    "trades": 75,
+    "win_rate": 0.36,
+    "avg_ret_pct": -3.19,
+    "holding_pct": -1.33,
+    "edge_pct": -1.86,
+    "period": "2023-01-01 to 2026-11-24",
+    "text": "Since 2023 this setup won 36% of 75 cases, avg -3.19% a trade after costs, vs -1.33% for just holding."
+   },
+   "confirm": "Lower lows continue",
+   "cancel": "A close back above the 50-day (10371.63)"
   }
  ],
  "sectors": [
   {
    "ticker": "XLV",
    "sector": "Health Care",
-   "r3_pct": 2.7,
-   "r6_pct": 21.8,
-   "rs3_pct": 8.2,
-   "rs6_pct": 25.1,
+   "r3_pct": 6.8,
+   "r6_pct": 25.2,
+   "rs3_pct": 12.8,
+   "rs6_pct": 28.9,
    "trend": "up",
    "favoured": true,
    "tv": "XLV",
@@ -2006,10 +2485,10 @@
   {
    "ticker": "XLP",
    "sector": "Consumer Staples",
-   "r3_pct": 5.1,
-   "r6_pct": 9.5,
-   "rs3_pct": 10.6,
-   "rs6_pct": 12.8,
+   "r3_pct": 7.2,
+   "r6_pct": 10.1,
+   "rs3_pct": 13.1,
+   "rs6_pct": 13.8,
    "trend": "up",
    "favoured": false,
    "tv": "XLP",
@@ -2018,10 +2497,10 @@
   {
    "ticker": "XLF",
    "sector": "Financials",
-   "r3_pct": -4.2,
-   "r6_pct": 8.1,
-   "rs3_pct": 1.2,
-   "rs6_pct": 11.4,
+   "r3_pct": -3.3,
+   "r6_pct": 9.9,
+   "rs3_pct": 2.6,
+   "rs6_pct": 13.6,
    "trend": "up",
    "favoured": false,
    "tv": "XLF",
@@ -2030,47 +2509,47 @@
   {
    "ticker": "XLE",
    "sector": "Energy",
-   "r3_pct": -3.0,
-   "r6_pct": 4.9,
-   "rs3_pct": 2.5,
-   "rs6_pct": 8.1,
+   "r3_pct": -2.6,
+   "r6_pct": 7.5,
+   "rs3_pct": 3.3,
+   "rs6_pct": 11.2,
    "trend": "up",
    "favoured": true,
    "tv": "XLE",
    "rank": 4
   },
   {
-   "ticker": "XLY",
-   "sector": "Consumer Discretionary",
-   "r3_pct": -0.6,
-   "r6_pct": -1.7,
-   "rs3_pct": 4.8,
-   "rs6_pct": 1.6,
-   "trend": "up",
-   "favoured": false,
-   "tv": "XLY",
-   "rank": 5
-  },
-  {
    "ticker": "XLU",
    "sector": "Utilities",
-   "r3_pct": 0.8,
-   "r6_pct": -3.1,
-   "rs3_pct": 6.2,
-   "rs6_pct": 0.2,
+   "r3_pct": 0.5,
+   "r6_pct": -2.5,
+   "rs3_pct": 6.4,
+   "rs6_pct": 1.2,
    "trend": "down",
    "favoured": false,
    "tv": "XLU",
+   "rank": 5
+  },
+  {
+   "ticker": "XLY",
+   "sector": "Consumer Discretionary",
+   "r3_pct": 0.7,
+   "r6_pct": -2.7,
+   "rs3_pct": 6.6,
+   "rs6_pct": 1.0,
+   "trend": "up",
+   "favoured": false,
+   "tv": "XLY",
    "rank": 6
   },
   {
    "ticker": "XLRE",
    "sector": "Real Estate",
-   "r3_pct": -4.6,
-   "r6_pct": -2.4,
-   "rs3_pct": 0.8,
-   "rs6_pct": 0.9,
-   "trend": "down",
+   "r3_pct": -2.8,
+   "r6_pct": -0.9,
+   "rs3_pct": 3.1,
+   "rs6_pct": 2.8,
+   "trend": "up",
    "favoured": false,
    "tv": "XLRE",
    "rank": 7
@@ -2078,46 +2557,46 @@
   {
    "ticker": "XLB",
    "sector": "Materials",
-   "r3_pct": -6.4,
-   "r6_pct": -1.3,
-   "rs3_pct": -1.0,
-   "rs6_pct": 2.0,
+   "r3_pct": -6.1,
+   "r6_pct": -1.2,
+   "rs3_pct": -0.1,
+   "rs6_pct": 2.6,
    "trend": "down",
    "favoured": false,
    "tv": "XLB",
    "rank": 8
   },
   {
-   "ticker": "XLI",
-   "sector": "Industrials",
-   "r3_pct": -8.7,
-   "r6_pct": -6.3,
-   "rs3_pct": -3.2,
-   "rs6_pct": -3.0,
-   "trend": "down",
-   "favoured": false,
-   "tv": "XLI",
-   "rank": 9
-  },
-  {
    "ticker": "XLC",
    "sector": "Communication Services",
-   "r3_pct": -8.2,
-   "r6_pct": -9.8,
-   "rs3_pct": -2.7,
-   "rs6_pct": -6.5,
+   "r3_pct": -6.9,
+   "r6_pct": -9.6,
+   "rs3_pct": -1.0,
+   "rs6_pct": -5.9,
    "trend": "down",
    "favoured": false,
    "tv": "XLC",
+   "rank": 9
+  },
+  {
+   "ticker": "XLI",
+   "sector": "Industrials",
+   "r3_pct": -10.1,
+   "r6_pct": -6.8,
+   "rs3_pct": -4.2,
+   "rs6_pct": -3.1,
+   "trend": "down",
+   "favoured": false,
+   "tv": "XLI",
    "rank": 10
   },
   {
    "ticker": "XLK",
    "sector": "Technology",
-   "r3_pct": -10.5,
-   "r6_pct": -12.1,
-   "rs3_pct": -5.1,
-   "rs6_pct": -8.8,
+   "r3_pct": -14.0,
+   "r6_pct": -14.6,
+   "rs3_pct": -8.0,
+   "rs6_pct": -10.9,
    "trend": "down",
    "favoured": true,
    "tv": "XLK",
