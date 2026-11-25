@@ -1454,10 +1454,10 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 /* Alerts page */
 .alc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;align-items:start}
 .alc-card{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
-.alc-wide{grid-column:1/-1}.alc-card,.alc-card *{min-width:0}.alc-card select,.alc-card input[type=text]{max-width:100%;width:100%}.alc-z select{width:auto}
+.alc-wide{grid-column:1/-1}.alc-srv-st{margin-left:auto;font:600 11px 'Space Grotesk',sans-serif;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}.alc-srv-st.on{color:var(--up);border-color:color-mix(in srgb,var(--up) 45%,transparent)}.alc-health{display:flex;flex-wrap:wrap;gap:6px}.alc-next.neg{color:var(--down)}.alc-card,.alc-card *{min-width:0}.alc-card input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px var(--bg2,#0d1220) inset;-webkit-text-fill-color:var(--text)}.alc-card select,.alc-card input[type=text],.alc-card input[type=password]{max-width:100%;width:100%}.alc-z select{width:auto}
 .alc-card h3{margin:0;display:flex;align-items:center;gap:10px;font:600 15px 'Space Grotesk',sans-serif}.alc-card h3 small{color:var(--muted);font-weight:500;font-size:12px}
 .alc-f{display:flex;flex-direction:column;gap:5px;font-size:12.5px}.alc-f small{color:var(--muted)}
-.alc-f input[type=text],.alc-f select,.alc-hrs input{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--text);font:500 13px 'JetBrains Mono',monospace}
+.alc-f input[type=text],.alc-f input[type=password],.alc-f select,.alc-hrs input{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--text);font:500 13px 'JetBrains Mono',monospace}
 .alc-f select{font-family:'Space Grotesk',sans-serif}
 .alc-chk{display:flex;gap:8px;align-items:flex-start;font-size:13px}.alc-chk small{color:var(--muted);display:block;font-size:11.5px;margin-top:2px}.alc-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}.alc-col2{display:flex;flex-direction:column;gap:10px}.alc-sub{margin:6px 0 0;font:600 11px 'Space Grotesk',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.alc-chk.sm{font-size:12px;align-items:center}
 .alc-types{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px}
@@ -1650,7 +1650,7 @@ body.light-chart .ms-table{background:rgba(255,255,255,.9);border-color:rgba(0,0
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-25.2';
+const BUILD='2026-11-25.3';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -4588,7 +4588,7 @@ function fireAlert(title,body,kind='ok',tag,opts={}){
   const snd=opts.sound||'alarm'; if(alertCfg().sound&&snd!=='off') playAlarm(alertCfg().tone,snd==='chime'?2.2:ALARM_SECS,{delay:opts.delay||0}); if(opts.push!==false) pushOnce(tag||title,{title,message:body||'',type:opts.ptype||(String(tag||'').startsWith('tr')?'trade':kind==='news'?'news':'price'),priority:opts.prio||4,tags:opts.tags||['bell'],click:opts.sym?siteUrl('#/trade/'+encodeURIComponent(opts.sym)):siteUrl()}); if(!opts.noToast) toast('🔔 '+title+(body?' — '+body:''));
   try{ if('Notification' in window&&Notification.permission==='granted'){ const n=new Notification(title,{body,tag:tag||title,renotify:true,icon:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2962ff"/><text x="32" y="44" font-size="34" text-anchor="middle" fill="#fff">◆</text></svg>')}); n.onclick=()=>{ window.focus(); if(opts.sym) location.hash='#/trade/'+encodeURIComponent(opts.sym); n.close(); }; } }catch(e){}
   renderAlertPanel(); }
-function getAlerts(){ return (lsGet('bd_alerts',[])||[]).filter(a=>a&&a.id); } function setAlerts(a){ lsSet('bd_alerts',a); renderAlertBadge(); }
+function getAlerts(){ return (lsGet('bd_alerts',[])||[]).filter(a=>a&&a.id); } function setAlerts(a){ lsSet('bd_alerts',a); renderAlertBadge(); srvSoon(); }
 function linePriceAt(l,t,sym){ if(!rp.active&&currentInst&&currentInst.symbol===sym){ const L1=logicalForTime(l.t1), L2=logicalForTime(l.t2), L=logicalForTime(t); if(L1!==null&&L2!==null&&L!==null&&L2!==L1) return l.p1+(l.p2-l.p1)*(L-L1)/(L2-L1); } return l.t2===l.t1?l.p1:l.p1+(l.p2-l.p1)*(t-l.t1)/(l.t2-l.t1); }
 const alertLast={};
 function checkAlerts(){
@@ -4780,7 +4780,7 @@ function drawValid(l){ return l&&[l.t1,l.p1,l.t2,l.p2].every(Number.isFinite); }
 function drawLines(sym){ const raw=localStorage.getItem(tlKey(sym)); if(!drawStore[sym]) drawStore[sym]=[];
   if(raw!==drawRaw[sym]){ drawRaw[sym]=raw; let v=[]; try{ v=JSON.parse(raw||'[]'); }catch(e){} drawStore[sym].splice(0,drawStore[sym].length,...(Array.isArray(v)?v:[]).filter(drawValid)); }
   return drawStore[sym]; }
-function drawPersist(sym){ lsSet(tlKey(sym),drawStore[sym]||[]); drawRaw[sym]=localStorage.getItem(tlKey(sym)); zoneDirty=true; }
+function drawPersist(sym){ lsSet(tlKey(sym),drawStore[sym]||[]); drawRaw[sym]=localStorage.getItem(tlKey(sym)); zoneDirty=true; srvSoon(); }
 // after any change: save once, redraw every chart showing that pair
 function drawChanged(sym,from){ drawPersist(sym); if(tlSym===sym&&from!=='main'){ tlLines=drawStore[sym]; tlRender(); } mcCharts.forEach(m=>{ if(m.inst&&m.inst.symbol===sym) mdRender(m); }); }
 let mSel=null, mdDrag=null, mdDraft=null;
@@ -5659,6 +5659,7 @@ async function zoneFire(inst,z,p,how){
   const first=await claim('zn:'+z.id+':'+(l.zone.armedAt||0)+':'+(z.repeat?Math.floor(Date.now()/600e3):0));
   if(!z.repeat){ l.zone.on=false; } l.zone.hitAt=Date.now(); l.zone.hits=(l.zone.hits||0)+1; drawChanged(inst.symbol); zoneDirty=true;
   if(!first) return; // another tab already alerted
+  if(srvOn()) srvCall('/fired',{id:z.id,at:Date.now(),armedAt:l.zone.armedAt||0,repeat:!!z.repeat}).catch(()=>{});
   const rng=`${fmtPrice(inst,z.lo)} – ${fmtPrice(inst,z.hi)}`;
   const title=how.tf?`${CC_TF[how.tf].label} candle closed inside your zone`:'price is in your zone';
   const body=`${rng} · price ${fmtPrice(inst,p)}${how.from?(how.from==='above'?' · came down into it':' · came up into it'):''} · ${sastHM(Date.now())} SAST`;
@@ -5712,17 +5713,47 @@ async function ccRun(job,test){
   const body=one?`${line(one).replace(/^\S+ \S+ \S+ /,'')} · H ${fmtPrice(one.t.inst,one.c.h)} · L ${fmtPrice(one.t.inst,one.c.l)} · ${hm} SAST`:rows.map(line).join('\n');
   const sym=(one||rows[0]).t.inst.symbol;
   fireAlert(title,body,'ok','cc'+job.B,{sound:C.pc,push:false,noToast:false});
-  pushPhone({title,message:body,priority:4,type:'cc',tags:[one?(one.c.c>=one.c.o?'chart_with_upwards_trend':'chart_with_downwards_trend'):'hourglass'],click:siteUrl('#/trade/'+encodeURIComponent(sym))},test);
+  if(!srvOn()||test) pushPhone({title,message:body,priority:4,type:'cc',tags:[one?(one.c.c>=one.c.o?'chart_with_upwards_trend':'chart_with_downwards_trend'):'hourglass'],click:siteUrl('#/trade/'+encodeURIComponent(sym))},test);
 }
 function ccTest(){ const C=ccCfg(); const now=Math.floor(Date.now()/1000); const due=Object.keys(CC_TF).filter(tf=>(C.sel[tf]||[]).length); if(!due.length){ toast('Tick at least one pair and timeframe first'); return; }
   const tf=due.includes('15m')?'15m':due[0]; ccRun({due:[tf],B:ccBoundary(tf,now,C.anchor),tries:9},true); toast('Sending a test with the last closed '+CC_TF[tf].label+' candle…'); }
 let alertEngineOn=false;
 function alertEngineStart(){ if(alertEngineOn) return; alertEngineOn=true; zoneRebuild();
   try{ const w=new Worker(URL.createObjectURL(new Blob(['setInterval(()=>postMessage(0),1000)'],{type:'text/javascript'}))); w.onmessage=ccTick; }catch(e){ setInterval(ccTick,1000); }
-  addEventListener('storage',e=>{ if(e.key&&e.key.startsWith('bd_lines_')) zoneDirty=true; });
+  addEventListener('storage',e=>{ if(e.key&&e.key.startsWith('bd_lines_')){ zoneDirty=true; srvSoon(); } if(e.key==='bd_cc'||e.key==='bd_alerts') srvSoon(); });
+  setTimeout(()=>{ srvSync(); srvPoll(); },8000); setInterval(srvPoll,60000); setInterval(()=>srvSync(),10*60000); onFeedModeChange(m=>{ if(m==='live') setTimeout(srvSync,3000); });
   try{ navigator.locks&&navigator.locks.request('bd-alive-'+Math.random(),()=>new Promise(()=>{})); }catch(e){} // helps the browser keep this tab running in the background
 }
 
+// --- always-on server (Cloudflare Worker): keeps alerts going when this PC is off ---
+function srvCfg(){ return {url:'',key:'',...(lsGet('bd_srv',{})||{})}; } // device-only: never synced
+function srvOn(){ const c=srvCfg(); return !!(c.url&&c.key); }
+async function srvCall(path,body){ const c=srvCfg(); if(!c.url||!c.key) throw new Error('not connected');
+  const r=await fetch(c.url.replace(/\/+$/,'')+path,{method:body?'POST':'GET',headers:{'X-Key':c.key,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,cache:'no-store'});
+  const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('HTTP '+r.status)); return j; }
+function srvPair(inst){ const bn=isBinance(inst); return {sym:inst.symbol,name:inst.name,dp:instDp(inst),deriv:bn?'':(getDerivSymbol(inst)||inst.derivSymbol||''),binance:bn?binanceSym(inst):''}; }
+function srvPayload(){ const C=ccCfg(), ins=getInstruments(); const sel={};
+  for(const tf of Object.keys(CC_TF)) sel[tf]=(C.sel[tf]||[]).map(s=>ins.find(i=>i.symbol===s)).filter(Boolean).map(srvPair);
+  const zones=zoneAll().map(({inst,l})=>({...srvPair(inst),id:l.id,lo:Math.min(l.p1,l.p2),hi:Math.max(l.p1,l.p2),mode:l.zone.mode||'touch',tf:l.zone.tf||'1h',repeat:!!l.zone.repeat,on:!!l.zone.on,armedAt:l.zone.armedAt||0}));
+  for(const a of getAlerts()){ if(!a.active) continue; const inst=ins.find(i=>i.symbol===a.sym); if(!inst) continue; let lv=a.price;
+    if(a.kind==='line'){ const l=drawLines(a.sym).find(x=>x.id===a.lineId); if(!l||l.kind!=='hray') continue; lv=l.p1; } // trendlines stay browser-only (they slope)
+    if(isFinite(lv)) zones.push({...srvPair(inst),id:a.id,lo:lv,hi:lv,mode:'touch',tf:'1h',repeat:false,on:true,armedAt:a.created||1,kind:'level'}); }
+  return {cc:{on:C.on,anchor:C.anchor,from:C.from,to:C.to,sel},zones}; }
+let srvT=null, srvHash='', srvLast={ok:null,msg:''};
+function srvSoon(){ if(!srvOn()) return; clearTimeout(srvT); srvT=setTimeout(srvSync,3000); }
+async function srvSync(force){ if(!srvOn()||feedMode!=='live') return; const p=srvPayload(); const h=JSON.stringify(p); if(!force&&h===srvHash) return; // only when something changed (server storage has a daily write limit)
+  try{ const r=await srvCall('/config',p); srvHash=h; srvLast={ok:true,msg:`synced ${sastHM(Date.now())} · ${r.pairs} pair-timeframes · ${r.zones} zones/levels`}; }catch(e){ srvLast={ok:false,msg:'sync failed: '+e.message}; }
+  const el=document.getElementById('alc-srv-r'); if(el) el.textContent=srvLast.msg; }
+// zones/alerts the server fired while this page was closed → show them as hit here too
+async function srvPoll(){ if(!srvOn()||document.hidden&&Math.random()<.5) return; let st; try{ st=await srvCall('/state'); }catch(e){ return; }
+  const z=st.zones||{}; let ch=new Set();
+  for(const {inst,l} of zoneAll()){ const s=z[l.id]; if(s&&s.by==='server'&&s.off&&s.armedAt===(l.zone.armedAt||0)&&l.zone.on){ l.zone.on=false; l.zone.hitAt=s.lastHit; l.zone.hits=s.hits; ch.add(inst.symbol); } }
+  ch.forEach(sym=>drawChanged(sym)); if(ch.size) zoneDirty=true;
+  const al=getAlerts(); let ac=false; for(const a of al){ const s=z[a.id]; if(a.active&&s&&s.by==='server'&&s.off){ a.active=false; a.firedAt=s.lastHit; ac=true; } } if(ac){ setAlerts(al); alRender(); }
+  if((ch.size||ac)&&document.body.dataset.page==='alerts') renderAlertsPage(); }
+
+async function srvHealth(){ const el=document.getElementById('alc-srv-h'); if(!el||!srvOn()) return; try{ const r=await fetch(srvCfg().url.replace(/\/+$/,'')+'/health',{cache:'no-store'}); const j=await r.json(); const l=j.last;
+  el.innerHTML=`<span class="alc-next"><b>Server</b> running</span>${l&&l.at?`<span class="alc-next"><b>Last report</b> ${sastHM(l.at)}</span>`:''}${j.topic?'':'<span class="alc-next neg">NTFY_TOPIC secret missing</span>'}${l&&l.errors&&l.errors.length?`<span class="alc-next neg">${esc(l.errors[0])}</span>`:''}`; }catch(e){ el.innerHTML='<span class="alc-next neg">Server not reachable</span>'; } }
 // --- Alerts page ---
 function renderAlertsPage(){ const root=$('alc-body'); if(!root) return; const P=pushCfg(), C=ccCfg(), ins=getInstruments(); const now=Math.floor(Date.now()/1000);
   const perm='Notification' in window?Notification.permission:'unsupported'; const tfs=Object.keys(CC_TF);
@@ -5741,6 +5772,18 @@ function renderAlertsPage(){ const root=$('alc-body'); if(!root) return; const P
     <label class="alc-f"><span>Sound on this PC for candle closes</span><select id="alc-pc"><option value="chime" ${C.pc==='chime'?'selected':''}>Short (2 s)</option><option value="alarm" ${C.pc==='alarm'?'selected':''}>Full alarm (10 s)</option><option value="off" ${C.pc==='off'?'selected':''}>Silent</option></select></label>
     <p class="alc-muted">Zone and price alerts always ring the full alarm on the PC and arrive as urgent on your phone. Keep Bias Desk open on the PC (minimised is fine).</p>
     </div></div></section>
+  <section class="card-s alc-card alc-wide alc-srv"><h3>☁️ Always-on server <small>sends your alerts even when this PC is off</small><span class="alc-srv-st ${srvOn()?'on':''}" id="alc-srv-st">${srvOn()?'connected':'not set up'}</span></h3>
+    <div class="alc-2"><div class="alc-col2">
+      <label class="alc-f"><span>Server address</span><input id="alc-srv-url" type="text" autocomplete="off" spellcheck="false" placeholder="https://bias-desk-alerts.your-name.workers.dev" value="${esc(srvCfg().url)}"></label>
+      <label class="alc-f"><span>Server key <small>(your ALERTS_KEY)</small></span><input id="alc-srv-key" type="password" autocomplete="new-password" value="${esc(srvCfg().key)}"></label>
+      <div class="alc-row"><button class="btn-soft" id="alc-srv-save">🔗 Connect &amp; sync</button><button class="btn-soft" id="alc-srv-test" ${srvOn()?'':'disabled'}>📲 Test from server</button></div>
+      <span class="alc-muted" id="alc-srv-r">${esc(srvLast.msg||'')}</span>
+    </div><div class="alc-col2">
+      <p class="alc-muted">When connected, the server checks your <b>zone boxes</b>, <b>price alerts</b> and <b>horizontal-ray alerts</b> every minute against Deriv 1-minute candles (so a quick spike still counts), and sends your <b>candle-close</b> messages. Everything you change here or on a chart is sent to it automatically.</p>
+      <p class="alc-muted">With this PC on, zone alerts still come instantly from here and the server skips them — no doubles. Sloping trendline alerts need the PC.</p>
+      <div class="alc-health" id="alc-srv-h"></div>
+    </div></div>
+  </section>
   <section class="card-s alc-card alc-wide"><h3>🕯 Candle close <label class="alc-sw"><input type="checkbox" id="alc-on" ${C.on?'checked':''}> on</label></h3>
     <p class="alc-muted">Tick the pairs and timeframes. Every close sends <b>one</b> message with all ticked pairs — direction, close and % move.</p>
     <div class="alc-tbl"><table><thead><tr><th>Pair</th>${tfs.map(tf=>`<th><button class="alc-col" data-col="${tf}" title="Tick / untick all">${CC_TF[tf].label}</button></th>`).join('')}</tr></thead><tbody>
@@ -5762,7 +5805,7 @@ function renderAlertsPage(){ const root=$('alc-body'); if(!root) return; const P
     <p class="alc-sub">Price &amp; line alerts</p>
     ${getAlerts().filter(a=>a.active).map(a=>{ const i=ins.find(x=>x.symbol===a.sym); return `<div class="alc-pa"><b>${esc(i?i.name:a.sym)}</b><span class="mono">${a.kind==='line'?'line':fmtPrice(i||{base:1},a.price)}</span><button class="btn-soft" data-padel="${a.id}">✕</button></div>`; }).join('')||'<p class="alc-muted">None. On a chart: Alerts ▸ Price alert, then click a price.</p>'}
   </section></div>`;
-  const saveP=patch=>{ lsSet('bd_push',{...pushCfg(),...patch}); }; const saveC=patch=>{ lsSet('bd_cc',{...ccCfg(),...patch}); };
+  const saveP=patch=>{ lsSet('bd_push',{...pushCfg(),...patch}); }; const saveC=patch=>{ lsSet('bd_cc',{...ccCfg(),...patch}); srvSoon(); };
   $('alc-topic').addEventListener('change',e=>{ const v=e.target.value.trim(); if(v&&!/^[-_A-Za-z0-9]{1,64}$/.test(v)){ toast('Topic can only have letters, numbers, - and _'); return; } saveP({topic:v}); toast(v?'Topic saved on this device':'Topic removed'); });
   root.querySelectorAll('[data-p]').forEach(x=>x.addEventListener('change',()=>saveP({[x.dataset.p]:x.checked})));
   root.querySelectorAll('[data-pt]').forEach(x=>x.addEventListener('change',()=>{ const P=pushCfg(); saveP({types:{...P.types,[x.dataset.pt]:x.checked}}); }));
@@ -5772,11 +5815,17 @@ function renderAlertsPage(){ const root=$('alc-body'); if(!root) return; const P
   $('alc-on').addEventListener('change',e=>saveC({on:e.target.checked}));
   $('alc-anchor').addEventListener('change',e=>{ saveC({anchor:e.target.value}); ccLast=null; renderAlertsPage(); });
   $('alc-from').addEventListener('change',e=>saveC({from:e.target.value||'00:00'})); $('alc-to').addEventListener('change',e=>saveC({to:e.target.value||'23:59'}));
-  const setSel=(tf,sym,on)=>{ const C=ccCfg(); const a=new Set(C.sel[tf]||[]); on?a.add(sym):a.delete(sym); C.sel[tf]=[...a]; lsSet('bd_cc',C); };
+  const setSel=(tf,sym,on)=>{ const C=ccCfg(); const a=new Set(C.sel[tf]||[]); on?a.add(sym):a.delete(sym); C.sel[tf]=[...a]; lsSet('bd_cc',C); srvSoon(); };
   root.querySelectorAll('[data-cc]').forEach(x=>x.addEventListener('change',()=>{ setSel(x.dataset.cc,x.dataset.sym,x.checked); unlockAudio(); }));
-  root.querySelectorAll('[data-col]').forEach(b=>b.addEventListener('click',()=>{ const tf=b.dataset.col; const box=[...root.querySelectorAll(`[data-cc="${tf}"]`)]; const on=!box.every(x=>x.checked); const C=ccCfg(); C.sel[tf]=on?ins.map(i=>i.symbol):[]; lsSet('bd_cc',C); box.forEach(x=>x.checked=on); }));
+  root.querySelectorAll('[data-col]').forEach(b=>b.addEventListener('click',()=>{ const tf=b.dataset.col; const box=[...root.querySelectorAll(`[data-cc="${tf}"]`)]; const on=!box.every(x=>x.checked); const C=ccCfg(); C.sel[tf]=on?ins.map(i=>i.symbol):[]; lsSet('bd_cc',C); srvSoon(); box.forEach(x=>x.checked=on); }));
   root.querySelectorAll('[data-row]').forEach(b=>b.addEventListener('click',()=>{ const sym=b.dataset.row; const box=[...root.querySelectorAll(`[data-cc][data-sym="${CSS.escape(sym)}"]`)]; const on=!box.every(x=>x.checked); box.forEach(x=>{ x.checked=on; setSel(x.dataset.cc,sym,on); }); }));
   $('alc-cctest').addEventListener('click',ccTest);
+  $('alc-srv-save').addEventListener('click',async()=>{ const url=$('alc-srv-url').value.trim().replace(/\/+$/,''), key=$('alc-srv-key').value.trim(); const r=$('alc-srv-r');
+    if(url&&!/^https:\/\/[a-z0-9.-]+\.workers\.dev$/i.test(url)){ r.textContent='The address should look like https://bias-desk-alerts.your-name.workers.dev'; return; }
+    lsSet('bd_srv',{url,key}); if(!url||!key){ r.textContent='Server disconnected on this device'; renderAlertsPage(); return; }
+    r.textContent='Connecting…'; try{ await srvCall('/state'); srvHash=''; await srvSync(true); r.textContent='✅ Connected — '+srvLast.msg; $('alc-srv-st').textContent='connected'; $('alc-srv-st').classList.add('on'); $('alc-srv-test').disabled=false; srvHealth(); }catch(e){ r.textContent='Could not connect: '+(e.message==='wrong key'?'the key does not match ALERTS_KEY':e.message); } });
+  $('alc-srv-test').addEventListener('click',async()=>{ const r=$('alc-srv-r'); r.textContent='Asking the server to send a test…'; try{ const x=await srvCall('/test'); r.textContent=x.ok?'Sent from the server — check your phone':'Server could not send: '+(x.err||x.skip); }catch(e){ r.textContent='Failed: '+e.message; } });
+  srvHealth();
   root.querySelectorAll('.alc-z').forEach(row=>{ const sym=row.dataset.sym, id=row.dataset.id;
     row.querySelector('[data-zmode]').addEventListener('change',e=>{ const v=e.target.value; zoneUpdate(sym,id,v==='touch'?{mode:'touch'}:{mode:'close',tf:v.split(':')[1]}); });
     row.querySelector('[data-zrep]').addEventListener('change',e=>zoneUpdate(sym,id,{repeat:e.target.checked}));

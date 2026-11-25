@@ -1,0 +1,11 @@
+name = "bias-desk-alerts"
+main = "src/worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[triggers]
+crons = ["* * * * *"]
+
+[[kv_namespaces]]
+binding = "KV"
+id = "KV_ID_PLACEHOLDER"
