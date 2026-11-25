@@ -1,6 +1,6 @@
 {
  "source": "Forex Factory economic calendar",
- "fetched": "2026-11-25T10:32:55Z",
+ "fetched": "2026-11-25T15:02:20Z",
  "events": [
   {
    "t": 1795392000,
@@ -137,6 +137,14 @@
    "impact": "medium",
    "forecast": "2.3%",
    "previous": "2.3%"
+  },
+  {
+   "t": 1795616100,
+   "cur": "GBP",
+   "title": "Monetary Policy Report Hearings",
+   "impact": "medium",
+   "forecast": "",
+   "previous": ""
   },
   {
    "t": 1795698000,
