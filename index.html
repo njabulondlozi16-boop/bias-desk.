@@ -1687,6 +1687,27 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 .gp-card h3{margin:0 0 8px;font-size:15px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}.gp-card ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.5}
 .gp-card .gp-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:12.5px;color:var(--muted,#8b96a3)}.gp-card select{font-size:12.5px}
 .coach-card{margin:0 0 16px}.coach-card li b{color:var(--text)}
+/* ===== clean layout pass ===== */
+.tvh-right .hd-btn>span:not(.th-mini):not(.th-name):not(.bell-n){display:none}.tvh-right .th-name{display:none}
+.tvh-right .hd-sep{width:1px;height:20px;background:var(--line);margin:0 4px;flex:0 0 1px}
+.setup-hd{border-color:rgba(214,219,226,.45)!important;color:var(--text)!important;position:relative}.setup-hd.on{background:rgba(214,219,226,.16)!important;border-color:rgba(214,219,226,.9)!important}
+.setup-hd i{font-style:normal;font-size:15px;line-height:1}.setup-hd .su-pulse{position:absolute;top:3px;right:3px;width:7px;height:7px;border-radius:50%;background:#f5b041;box-shadow:0 0 0 0 rgba(245,176,65,.6);animation:suPulse 1.6s infinite}
+@keyframes suPulse{0%{box-shadow:0 0 0 0 rgba(245,176,65,.6)}70%{box-shadow:0 0 0 7px rgba(245,176,65,0)}100%{box-shadow:0 0 0 0 rgba(245,176,65,0)}}
+#page-chart .bias-banner{padding:5px 12px!important;gap:10px!important;min-height:0!important;border-style:solid!important}#page-chart .bias-banner svg{max-height:24px!important}
+#page-chart .bias-banner-main{flex-direction:row!important;align-items:baseline;gap:10px!important;min-width:0!important;overflow:hidden}#page-chart .bias-banner-label{font-size:11.5px!important;letter-spacing:1.5px!important;white-space:nowrap}
+#page-chart .bias-banner .bias-reason{display:block!important;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}#page-chart .bias-banner .bias-score{font-size:16px!important}
+.rail-fly .rf-row{display:flex;align-items:stretch;gap:2px}.rail-fly .rf-row>.rail-btn:first-child{flex:1;min-width:0}.rail-fly .rf-cog{flex:0 0 34px;width:34px!important;justify-content:center!important;padding:0!important}.rail-fly .rf-cog .ico{margin:0!important}
+.rail-fly .rail-fly-h+.rail-fly-h{display:none}.rail-fly .rail-fly-h.sub{margin-top:6px;padding-top:8px;border-top:1px solid var(--line)}
+.rail-fly .rail-btn.active>span::after{content:'  ●';color:var(--accent);font-size:9px}
+.set-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}.set-tabs button{padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted,#8b96a3);font-weight:600;font-size:13px;cursor:pointer}
+.set-tabs button.on{color:var(--text);border-color:color-mix(in srgb,var(--accent) 60%,transparent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+#settings-grid>[data-stab][hidden]{display:none!important}
+.su-list{display:grid;gap:10px;max-width:760px}.su-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.025)}
+.su-item strong{font-size:16px;letter-spacing:.02em;min-width:90px}.su-item .su-s{flex:1;color:var(--muted,#8b96a3);font-size:13px}.su-item.st-zone{border-color:rgba(245,176,65,.6)}.su-item.st-trigger{border-color:rgba(30,232,131,.6)}
+.su-empty{max-width:760px;padding:28px 20px;border-radius:14px;border:1px dashed var(--line);text-align:center;color:var(--muted,#8b96a3)}
+.su-ctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:0 0 16px;max-width:760px}.su-ctl label{display:inline-flex;gap:7px;align-items:center;font-size:13px;color:var(--muted,#8b96a3);cursor:pointer}.su-ctl .su-meta{margin-left:auto;font-size:12px;color:var(--muted,#8b96a3)}
+@media(max-width:760px){#page-chart .bias-banner .bias-badge,#page-chart .bias-banner .bias-date,#page-chart .bias-banner .bias-reason{display:none!important}#page-chart .bias-banner-label{font-size:10.5px!important;overflow:hidden;text-overflow:ellipsis}.su-item{flex-wrap:wrap}.su-ctl .su-meta{margin-left:0}}
+#ov-plan:empty{display:none}#ov-plan .gp-card{margin:0 0 18px}
 </style>
 </head>
 <body>
@@ -1800,6 +1821,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
           <div class="ov-hero-side" id="ov-session-chip"></div>
         </div>
         <div class="kpi-strip reveal" id="ov-kpis"></div>
+        <div id="ov-plan"></div>
         <section class="hero glass reveal" id="ov-live">
           <div class="hero-main">
             <div class="hero-head"><div class="hero-title"><span class="hero-kicker"><i class="live-ring"></i>LIVE MARKET</span><h2 id="hero-name">—</h2><div class="hero-type" id="hero-type"></div></div>
@@ -1827,7 +1849,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 
       <!-- ALERTS -->
       <section id="page-setups" class="page">
-        <div class="page-head-row"><div><p class="eyebrow">Your model, watched on every pair</p><h1>Setups</h1><p class="lede">4H + 1H structure → 1H FRVP of the leg → POC on the right side of 50% → untouched POC zone → sweep + engulfing on 15m or 1H.</p></div></div>
+        <div class="page-head-row"><div><p class="eyebrow">Suggestions</p><h1>Setups</h1><p class="lede">Pairs where your model sees a setup. Suggestions only — open the chart and press ◎ to see the zone.</p></div></div>
         <div id="setups-body"></div>
       </section>
       <section id="page-alerts" class="page">
@@ -1868,7 +1890,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 
       <!-- SETTINGS -->
       <section id="page-settings" class="page">
-        <div class="page-head-row"><div><p class="eyebrow">Desk</p><h1>Settings</h1><p class="lede">Security, price feed, bias scores, tool labels, motivation and layouts.</p></div></div>
+        <div class="page-head-row"><div><p class="eyebrow">Desk</p><h1>Settings</h1><p class="lede">Pick a section below.</p></div></div>
         <div class="settings-grid" id="settings-grid"></div>
       </section>
     </main>
@@ -1903,7 +1925,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-27.2';
+const BUILD='2026-11-27.3';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -3462,8 +3484,11 @@ function buildChartShell(){
     <span id="hd-news" class="hd-news"><i>📰</i><span>News…</span></span>
     <div class="tvh-right">
       <button id="ct-bell" class="hd-btn" title="Alerts"><i class="ico">${ICON.bell}</i><span class="bell-n"></span></button>
+      <span class="hd-sep"></span>
+      <button id="ct-setup-hd" class="hd-btn setup-hd" hidden title="Suggested setup on this pair — press to show / hide it on the chart"><i>◎</i><span>Setup</span><b class="su-pulse" hidden></b></button>
       <button id="ct-sess-hd" class="hd-btn sess-hd" title="Show / hide trading sessions (SAST)"><i class="sess-dots"><b></b><b></b><b></b></i><span>Sessions</span></button>
       <button id="ct-big-hd" class="hd-btn big-hd" title="Show / hide the red big-move boxes (market-open range + break alarm)"><i class="big-ico"></i><span>Big moves</span></button>
+      <span class="hd-sep"></span>
       <button id="ct-replay" class="hd-btn" title="Bar replay — practise on past candles"><i>⏮</i><span>Replay</span></button>
       <button id="ct-journal" class="hd-btn" title="Trades on this pair"><i>☰</i><span>Journal</span></button>
       <div class="th-dd"><button id="ct-theme" class="hd-btn th-btn" title="Candle design"><span class="th-mini"></span><span class="th-name"></span><b class="th-caret">▾</b></button><div id="theme-pop" class="theme-pop" hidden></div></div>
@@ -3480,7 +3505,7 @@ function buildChartShell(){
       <div class="rail-grp" data-g="alerts"><button class="rail-btn rail-head" data-head="alerts" title="Alerts — zone box, price line, candle-close &amp; phone alerts"><i class="ico">${ICON.bell}</i><span>Alerts</span><b class="rail-car" title="Show all"></b></button>
         <div class="rail-fly" hidden><p class="rail-fly-h">Alerts</p><button id="ct-zone" class="rail-btn" title="Zone alert — drag a box around a zone. You get a phone + PC alert when price enters it (or a candle closes inside — set on the Alerts page)."><i class="ico">${ICON.zone}</i><span>Zone alert</span></button><button id="ct-alert" class="rail-btn" title="Price alert — click the price you want to be alerted at"><i class="ico">${ICON.bell}</i><span>Price alert (line)</span></button><button id="ct-ccq" class="rail-btn" title="Candle close alert — pick 15M, 1H or 4H and you get told when that candle closes, whatever timeframe you are on"><i class="ico">${ICON.clock}</i><span>Candle close alert</span></button><button id="ct-alerts-page" class="rail-btn" title="Candle-close alerts, phone alerts, all zones"><i class="ico">${ICON.clock}</i><span>Candle-close &amp; phone alerts…</span></button></div></div>
       <div class="rail-grp" data-g="ana" data-menu="1"><button class="rail-btn rail-head" data-head="ana" title="Analysis — FRVP, FVG, market structure"><i class="ico">${ICON.ms}</i><span>Analysis</span><b class="rail-car" title="Show all"></b></button>
-        <div class="rail-fly" hidden><p class="rail-fly-h">Analysis</p><button id="ct-vp" class="rail-btn" title="Fixed Range Volume Profile — drag across the candles you want measured"><i class="ico">${ICON.vp}</i><span>Volume profile (FRVP)</span></button><button id="ct-fvg" class="rail-btn" title="FVG — fair value gaps, shown only after the 3rd candle closes; removed when a candle closes through the gap (no inverse FVGs)"><i class="ico">${ICON.fvg}</i><span>Fair value gaps (FVG)</span></button><button id="ct-ms" class="rail-btn" title="Market structure — range high / low, bos, mss, sweep (+ 1D · 4h · 1h · 15m table)"><i class="ico">${ICON.ms}</i><span>Market structure</span></button><button id="ct-sp" class="rail-btn" title="Volume spikes — S where sellers step in, B where buyers step in"><i class="ico">${ICON.spike}</i><span>Volume spikes · S / B</span></button><button id="ct-sp-set" class="rail-btn" title="Volume spike settings"><i class="ico">${ICON.cog}</i><span>Spike settings…</span></button><button id="ct-qs" class="rail-btn" title="Trade quality — live 0–100 score for a buy and a sell (4H trend, efficiency, volatility)"><i class="ico">${ICON.ms}</i><span>Trade quality</span></button><button id="ct-sess" class="rail-btn" title="Trading sessions (SAST) — Asia, London, New York boxes with their high and low"><i class="ico">${ICON.clock}</i><span>Sessions (SAST)</span></button><button id="ct-sess-set" class="rail-btn" title="Session settings"><i class="ico">${ICON.cog}</i><span>Session settings…</span></button><button id="ct-big" class="rail-btn" title="Red big-move boxes: the market-open range for this pair, with a BREAK alarm"><i class="ico">${ICON.zone}</i><span>Big-move boxes (red)</span></button></div></div>
+        <div class="rail-fly" hidden><p class="rail-fly-h">Indicators</p><button id="ct-vp" class="rail-btn" title="Fixed Range Volume Profile — drag across the candles you want measured"><i class="ico">${ICON.vp}</i><span>Volume profile (FRVP)</span></button><button id="ct-fvg" class="rail-btn" title="FVG — fair value gaps, shown only after the 3rd candle closes; removed when a candle closes through the gap (no inverse FVGs)"><i class="ico">${ICON.fvg}</i><span>Fair value gaps (FVG)</span></button><button id="ct-ms" class="rail-btn" title="Market structure — range high / low, bos, mss, sweep (+ 1D · 4h · 1h · 15m table)"><i class="ico">${ICON.ms}</i><span>Market structure</span></button><div class="rf-row"><button id="ct-sp" class="rail-btn" title="Volume spikes — S where sellers step in, B where buyers step in"><i class="ico">${ICON.spike}</i><span>Volume spikes · S / B</span></button><button id="ct-sp-set" class="rail-btn rf-cog" title="Volume spike settings"><i class="ico">${ICON.cog}</i></button></div><button id="ct-qs" class="rail-btn" title="Trade quality — live 0–100 score for a buy and a sell (4H trend, efficiency, volatility)"><i class="ico">${ICON.ms}</i><span>Trade quality</span></button><p class="rail-fly-h sub">Sessions &amp; boxes</p><div class="rf-row"><button id="ct-sess" class="rail-btn" title="Trading sessions (SAST) — Asia, London, New York boxes with their high and low"><i class="ico">${ICON.clock}</i><span>Sessions (SAST)</span></button><button id="ct-sess-set" class="rail-btn rf-cog" title="Session settings"><i class="ico">${ICON.cog}</i></button></div><button id="ct-big" class="rail-btn" title="Red big-move boxes: the market-open range for this pair, with a BREAK alarm"><i class="ico">${ICON.zone}</i><span>Big-move boxes (red)</span></button></div></div>
       <button id="ct-qt" class="rail-btn" title="Trade — show / hide the BUY and SELL buttons on every chart"><i class="ico">${ICON.trade}</i><span>Trade</span></button>
       <button id="ct-colors" class="rail-btn" title="Tool colours — FVG, market structure, alert lines (drawings: click them)"><i class="ico"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 2-.8 2-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="14.5" cy="7" r="1.2"/></svg></i><span>Colours</span></button>
       <span class="rail-sep"></span>
@@ -4178,7 +4203,9 @@ setInterval(()=>{ if(!document.hidden||spCfg().pc||spCfg().phone) spRun(); },150
 // closes below the previous candle's low, or a sweep candle, inside candle(s), then a bearish close below the sweep candle's low
 // → entry at that close, stop above the sweep wick, target 1:2.5 (minimum 1:2). POC within 6% of the 0.886 level = A++; POC box overlapping a 1H FVG = +FVG.
 // Forex / gold / index feeds have no volume here, so the profile weights each 15m candle by its range (tick volume follows range); BTC uses real Binance volume.
-const SCAN_DEF={on:true,chart:true,touch:true,phone:true,pc:true,sessOnly:false,skip:[]};
+const SCAN_DEF={on:true,show:false,touch:true,pat:true,phone:true,pc:true,sessOnly:false,skip:[]};
+const SU_ACTIVE=['waiting','zone','trigger'];
+function scanActive(sym){ const r=scanRes[sym]; return r&&r.box&&SU_ACTIVE.includes(r.state)?r:null; }
 function scanCfg(){ const c=lsGet('bd_scan',{})||{}; return {...SCAN_DEF,...c,skip:Array.isArray(c.skip)?c.skip:[]}; }
 let scanRes=lsGet('bd_scan_res',{})||{}, scanBusy=false, scanBucket=null, scanLast=0, scanProg='';
 function scanPairs(){ const C=scanCfg(); return getInstruments().filter(i=>!C.skip.includes(i.symbol)); }
@@ -4243,9 +4270,9 @@ function scanAlert(inst,r){ const C=scanCfg(); if(!C.pc&&!C.phone) return; const
   const F=v=>fmtPrice(inst,v), side=r.dir<0?'SELL':'BUY', extra=`${r.bias!=null?` · daily bias ${r.bias>0?'+':''}${r.bias}${(r.bias>2&&r.dir>0)||(r.bias<-2&&r.dir<0)?' ✓ agrees':Math.abs(r.bias)<=2?'':' ✗ against'}`:''}${r.q!=null?` · quality ${r.q}/100 ${qsEmo(r.q)}`:''}${r.news?` · ⚠ ${r.news}`:''}`;
   const opt=(o)=>({sym:inst.symbol,push:C.phone?undefined:false,ptype:'price',noToast:!C.pc,...o,sound:C.pc?o.sound:'off'});
   if(r.state==='zone'&&C.touch&&r.touchT&&nowS-(r.touchT+900)<1800){ const k='z'+inst.symbol+r.touchT; if(!fired[k]){ fired[k]=nowS; ch=true;
-    fireAlert(`${side} setup · price is in your POC zone (${r.grade}${r.fvg?' +FVG':''})`,`zone ${F(r.box[0])} – ${F(r.box[1])} · 50% ${F(r.mid)} · now watch 15m / 1H for a sweep + ${r.dir<0?'bearish':'bullish'} engulfing${extra}`,'ok','scz'+k,opt({sound:'chime',prio:4,tags:['dart']})); } }
-  if(r.trig&&r.state==='trigger'&&nowS-r.trig.closeT<Math.max(900,r.trig.g*0.9)){ const k='t'+inst.symbol+r.trig.t; if(!fired[k]){ fired[k]=nowS; ch=true; const t=r.trig;
-    fireAlert(`${side} ENTRY · your setup triggered (${r.grade}${r.fvg?' +FVG':''}, ${t.tf})`,`${t.kind} at the POC zone · entry ${F(t.entry)} · SL ${F(t.sl)} · TP ${F(t.tp)} (1:2.5) · ${r.dir<0?'LL':'HH'} ${F(r.b)} = ${t.llR.toFixed(1)}R${extra}`,r.dir<0?'bad':'ok','sct'+k,opt({sound:'alarm',prio:5,tags:['rotating_light']})); } }
+    fireAlert(`price reached the suggested ${side} zone (${r.grade}${r.fvg?' +FVG':''})`,`open the chart and press ◎ Setup to see it${extra}`,'ok','scz'+k,opt({sound:'chime',prio:4,tags:['dart']})); } }
+  if(C.pat&&r.trig&&r.state==='trigger'&&nowS-r.trig.closeT<Math.max(900,r.trig.g*0.9)){ const k='t'+inst.symbol+r.trig.t; if(!fired[k]){ fired[k]=nowS; ch=true; const t=r.trig;
+    fireAlert(`${t.kind} printed in the suggested ${side} zone (${t.tf})`,`your call — check it on the chart${extra}`,r.dir<0?'bad':'ok','sct'+k,opt({sound:'alarm',prio:5,tags:['rotating_light']})); } }
   if(ch){ for(const k in fired) if(nowS-fired[k]>7*86400) delete fired[k]; lsSet('bd_scan_fired',fired); } }
 async function scanRun(){ const C=scanCfg(); if(!C.on||scanBusy||rp.active) return false; if(feedMode!=='live') return false; scanBusy=true;
   const pairs=scanPairs(); try{ for(let k=0;k<pairs.length;k++){ const inst=pairs[k]; scanProg=`${k+1}/${pairs.length} ${inst.name||inst.symbol}`; if(document.body.dataset.page==='setups') renderSetups();
@@ -4253,7 +4280,7 @@ async function scanRun(){ const C=scanCfg(); if(!C.on||scanBusy||rp.active) retu
       scanRes[inst.symbol]=r; try{ scanAlert(inst,r); }catch(e){} }
     for(const k of Object.keys(scanRes)) if(!pairs.some(i=>i.symbol===k)) delete scanRes[k];
     lsSet('bd_scan_res',scanRes); scanLast=Date.now(); }
-  finally{ scanBusy=false; scanProg=''; } if(document.body.dataset.page==='setups') renderSetups(); scanPosition.k=''; try{ scanPosition(); tlKick(); }catch(e){} return true; }
+  finally{ scanBusy=false; scanProg=''; } if(document.body.dataset.page==='setups') renderSetups(); try{ setupHdSync(); scanPosition(); tlKick(); }catch(e){} return true; }
 setInterval(()=>{ if(!scanCfg().on) return; const now=Math.floor(Date.now()/1000), b=Math.floor(now/900); if(b!==scanBucket&&now%900>=25&&feedMode==='live'&&!rp.active){ scanBucket=b; scanRun(); } },5000);
 // ===== Daily game plan — one message before New York: setups, bias, news, the best pair =====
 const PLAN_DEF={on:true,mins:7*60+30,coach:true};
@@ -4265,13 +4292,13 @@ function planBest(){ let best=null, bs=-1; for(const inst of scanPairs()){ const
 function planBuild(){ const nowS=Date.now()/1000, P=planTime(nowS), lines=[];
   const live=scanPairs().map(i=>({inst:i,r:scanRes[i.symbol]})).filter(x=>x.r&&x.r.box&&['trigger','zone','waiting'].includes(x.r.state)).sort((a,b)=>(SU_ORDER[a.r.state]-SU_ORDER[b.r.state])||((a.r.away||0)-(b.r.away||0)));
   const F=(i,v)=>fmtPrice(i,v);
-  lines.push(live.length?'🎯 Setups: '+live.slice(0,5).map(({inst,r})=>`${inst.name||inst.symbol} ${r.dir<0?'SELL':'BUY'} ${r.grade}${r.fvg?' +FVG':''} ${r.state==='trigger'?'TRIGGERED':r.state==='zone'?'in zone':`waiting ${F(inst,r.box[0])}–${F(inst,r.box[1])}`}`).join(' · '):'🎯 Setups: none of your zones are live right now');
+  lines.push(live.length?'🎯 Setups: '+live.slice(0,5).map(({inst,r})=>`${inst.name||inst.symbol} ${r.dir<0?'SELL':'BUY'} ${r.grade}${r.fvg?' +FVG':''} (${r.state==='trigger'?'pattern printed':r.state==='zone'?'price in zone':'waiting'})`).join(' · '):'🎯 Setups: none suggested right now');
   const bz=scanPairs().map(i=>({i,b:getBias(i.symbol)})).filter(x=>x.b&&Math.abs(x.b.score)>=3).sort((a,b)=>Math.abs(b.b.score)-Math.abs(a.b.score)).slice(0,5);
   lines.push(bz.length?'📊 Bias: '+bz.map(x=>`${x.i.name||x.i.symbol} ${x.b.score>0?'+':''}${x.b.score}`).join(' · '):'📊 Bias: no strong daily bias today');
   const [d0,d1]=sastDayBounds(); const seen=new Set(), ev=[]; for(const i of scanPairs()) for(const e of newsFor(i,Math.max(d0,nowS),d1)){ const k=e.t+e.cur+e.title; if(!seen.has(k)){ seen.add(k); ev.push(e); } }
   ev.sort((a,b)=>a.t-b.t); lines.push(ev.length?'📰 News: '+ev.slice(0,4).map(e=>`${sastHM(e.t*1000)} ${e.cur} ${e.title}`).join(' · '):'📰 News: no high-impact news left today');
-  const best=planBest(); lines.push(best?`⭐ Best pair: ${best.inst.name||best.inst.symbol} ${best.r.dir<0?'SELL':'BUY'} — ${best.r.state==='trigger'?'triggered':best.r.state==='zone'?'price is in the zone':'zone untouched'}${best.agree?', bias agrees':''}${best.r.q!=null?`, quality ${best.r.q}`:''}`:'⭐ No clean setup — patience is a position today');
-  lines.push(`🧭 New York opens ${sastHM(P.ny*1000)} SAST · wait for the ✓ trigger, max 2 trades, stop after 2 losses`);
+  const best=planBest(); lines.push(best?`⭐ Best pair: ${best.inst.name||best.inst.symbol} ${best.r.dir<0?'SELL':'BUY'} — ${best.r.state==='trigger'?'pattern printed in the zone':best.r.state==='zone'?'price is in the zone':'zone waiting for price'}${best.agree?', bias agrees':''}${best.r.q!=null?`, quality ${best.r.q}`:''}`:'⭐ No suggested setup right now');
+  lines.push(`🧭 New York opens ${sastHM(P.ny*1000)} SAST`);
   const D=new Date(nowS*1000).toLocaleDateString('en-ZA',{timeZone:'Africa/Johannesburg',weekday:'short',day:'numeric',month:'short'});
   return {title:`Game plan · ${D}`,lines}; }
 async function planSend(manual){ if(!manual&&Date.now()-scanLast>10*60e3&&feedMode==='live'){ try{ await scanRun(); }catch(e){} }
@@ -4320,12 +4347,17 @@ async function coachSend(manual){ const c=coachBuild((await getTrades()).map(enr
 setInterval(async()=>{ const C=planCfg(); if(!C.coach||rp.active) return; const d=new Date(), wd=d.toLocaleDateString('en-US',{timeZone:'Africa/Johannesburg',weekday:'short'}), hm=+d.toLocaleTimeString('en-GB',{timeZone:'Africa/Johannesburg',hour:'2-digit',hour12:false});
   if(wd!=='Sun'||hm<18||hm>=21) return; const day=todaySAST(); if(lsGet('bd_coach_sent','')===day) return; if(!(await claim('coach:'+day))) return; lsSet('bd_coach_sent',day); await coachSend(false); },60000);
 // ---- chart drawing: the strong grey POC box, 50% line, LH/LL and the trade once triggered
-function scanChartOn(){ const C=scanCfg(); const r=currentInst&&scanRes[currentInst.symbol]; return !!(C.on&&C.chart&&r&&r.box)||!!tlWrap()?.querySelector('svg.scan-layer:not([style*="none"])'); }
+function scanChartOn(){ const C=scanCfg(); return !!(C.on&&C.show&&currentInst&&scanActive(currentInst.symbol))||!!tlWrap()?.querySelector('svg.scan-layer:not([style*="none"])'); }
+function setupHdSync(){ const b=$('ct-setup-hd'); if(!b) return; const C=scanCfg(), r=C.on&&currentInst?scanActive(currentInst.symbol):null;
+  b.hidden=!r; b.classList.toggle('on',!!(r&&C.show)); const pl=b.querySelector('.su-pulse'); if(pl) pl.hidden=!(r&&(r.state==='zone'||r.state==='trigger'));
+  if(r) b.title=`Suggested ${r.dir<0?'SELL':'BUY'} setup on this pair (${r.grade}${r.fvg?' +FVG':''}) — press to ${C.show?'hide':'show'} it`; }
+setInterval(()=>{ if(document.body.dataset.page==='chart'&&!document.hidden) setupHdSync(); },1500);
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#ct-setup-hd'); if(!b) return; const C=scanCfg(); lsSet('bd_scan',{...C,show:!C.show}); setupHdSync(); try{ scanPosition(); tlKick(); }catch(_){} });
 function scanPosition(){ const w=tlWrap(); if(!w) return; let svg=w.querySelector('svg.scan-layer');
   if(!svg){ svg=document.createElementNS(TL_NS,'svg'); svg.setAttribute('class','scan-layer'); const fv=w.querySelector('svg.fvg-layer'); w.insertBefore(svg,fv?fv:(w.firstChild?.nextSibling||null)); }
-  const C=scanCfg(), r=currentInst&&scanRes[currentInst.symbol], g=granForLabel(currentTF||'15m');
+  const C=scanCfg(), r=currentInst&&scanActive(currentInst.symbol), g=granForLabel(currentTF||'15m');
   const hide=()=>{ if(svg.style.display!=='none'){ svg.style.display='none'; svg.innerHTML=''; svg.dataset.h=''; } };
-  if(!C.on||!C.chart||!r||!r.box||!r.dir||g>14400||rp.active){ hide(); return; }
+  if(!C.on||!C.show||!r||!r.dir||g>14400||rp.active){ hide(); return; }
   let aw=0, th=0; try{ aw=chart.priceScale('right').width()||0; th=chart.timeScale().height()||0; }catch(e){}
   const W=Math.max(0,w.clientWidth-aw), H=Math.max(0,w.clientHeight-th); const a=tlAnchor(); if(!a||!W||!H){ hide(); return; }
   svg.style.display=''; svg.style.width=W+'px'; svg.style.height=H+'px';
@@ -4333,13 +4365,11 @@ function scanPosition(){ const w=tlWrap(); if(!w) return; let svg=w.querySelecto
   const yT=Y(r.box[1]), yB=Y(r.box[0]), x0=X(r.bT+3600), xa=X(r.aT), ym=Y(r.mid);
   if(yT!=null&&yB!=null&&x0!=null&&x0<W){ const xs=Math.max(-2,x0);
     h+=`<rect x="${f(xs)}" y="${f(yT)}" width="${f(Math.max(2,W-xs))}" height="${f(Math.max(2,yB-yT))}" fill="rgba(186,192,200,.17)" stroke="rgba(214,219,226,.92)" stroke-width="1.3"/>`;
-    const lbl=`${sell?'SELL':'BUY'} ZONE · POC · ${r.grade}${r.fvg?' · FVG':''}${r.state==='waiting'?' · untouched':r.state==='zone'?' · IN ZONE':''}`, tw=lbl.length*6.1+12, lx=Math.max(4,Math.min(W-tw-4,xs+4)), ly=sell?yT-19:yB+4;
+    const lbl=`SUGGESTED ${sell?'SELL':'BUY'} ZONE · POC · ${r.grade}${r.fvg?' · FVG':''}${r.state==='waiting'?' · untouched':r.state==='zone'?' · price in zone':' · pattern printed'}`, tw=lbl.length*6.1+12, lx=Math.max(4,Math.min(W-tw-4,xs+4)), ly=sell?yT-19:yB+4;
     h+=`<rect x="${f(lx)}" y="${f(ly)}" width="${f(tw)}" height="15" rx="3" fill="rgba(214,219,226,.92)"/><text class="sess-n" x="${f(lx+6)}" y="${f(ly+10.5)}" fill="#0c1014">${lbl}</text>`; }
   if(ym!=null&&xa!=null&&xa<W){ const xs=Math.max(0,xa); h+=`<line x1="${f(xs)}" y1="${f(ym)}" x2="${f(W)}" y2="${f(ym)}" stroke="rgba(201,209,217,.55)" stroke-dasharray="6 4"/><text class="sess-n" x="${f(W-34)}" y="${f(ym-4)}" fill="rgba(201,209,217,.8)">50%</text>`; }
   const yA=Y(r.a), yb=Y(r.b), xb=X(r.bT); if(yA!=null&&xa!=null&&xa>=0&&xa<W) h+=`<text class="sess-n" x="${f(xa-8)}" y="${f(sell?yA-6:yA+14)}" fill="rgba(201,209,217,.9)">${sell?'LH':'HL'}</text>`;
   if(yb!=null&&xb!=null&&xb>=0&&xb<W) h+=`<text class="sess-n" x="${f(xb-8)}" y="${f(sell?yb+14:yb-6)}" fill="rgba(201,209,217,.9)">${sell?'LL':'HH'}</text>`;
-  if(r.trig){ const t=r.trig, xt=X(t.closeT-t.g); if(xt!=null&&xt<W){ const xs=Math.max(0,xt); const L=(p,c,txt,d)=>{ const y=Y(p); if(y==null) return; h+=`<line x1="${f(xs)}" y1="${f(y)}" x2="${f(W)}" y2="${f(y)}" stroke="${c}" stroke-width="1.2" ${d?'stroke-dasharray="5 4"':''}/><text class="sess-n" x="${f(Math.max(xs+4,W-118))}" y="${f(y-4)}" fill="${c}">${txt}</text>`; };
-      L(t.entry,'#c9d1d9',`ENTRY ${t.tf}`,true); L(t.sl,'#f0435a',r.state==='lost'?'SL ✗ hit':'SL'); L(t.tp,'#1ee883',r.state==='won'?'TP ✓ hit':'TP 1:2.5'); } }
   if(svg.dataset.h!==h){ svg.dataset.h=h; svg.innerHTML=h; } }
 // ---- Setups page
 const SU_ORDER={trigger:0,zone:1,waiting:2,won:3,lost:3,expired:4,broken:4,none:5};
@@ -4352,29 +4382,16 @@ function scanStateTxt(r,inst){ const F=v=>fmtPrice(inst,v);
     case 'expired': return ['expired','Zone was touched, no trigger in time · waiting for a new leg'];
     case 'broken': return ['broken',`Price went through the ${r.dir<0?'lower high':'higher low'} — setup cancelled`];
     default: return ['none',r.reason||'no setup']; } }
-function renderSetups(){ const root=$('setups-body'); if(!root) return; const C=scanCfg(); const pairs=scanPairs();
-  const rows=pairs.map(i=>({inst:i,r:scanRes[i.symbol]||{sym:i.symbol,state:'none',reason:scanBusy?'scanning…':'not scanned yet'}})).sort((x,y)=>(SU_ORDER[x.r.state]??9)-(SU_ORDER[y.r.state]??9));
-  const nZ=rows.filter(x=>x.r.state==='zone'||x.r.state==='trigger').length, nW=rows.filter(x=>x.r.state==='waiting').length;
+function renderSetups(){ const root=$('setups-body'); if(!root) return; const C=scanCfg();
+  const rows=scanPairs().map(i=>({inst:i,r:scanActive(i.symbol)})).filter(x=>x.r).sort((x,y)=>(SU_ORDER[x.r.state]??9)-(SU_ORDER[y.r.state]??9));
   const tg=(k,l)=>`<label><input type="checkbox" data-sc="${k}" ${C[k]?'checked':''}> ${l}</label>`;
-  root.innerHTML=`${planCardHtml()}<div class="su-top"><div style="display:flex;flex-wrap:wrap;gap:10px 18px">${tg('on','Scanner on')}${tg('chart','Show zone on chart')}${tg('touch','Alert when price enters a zone')}${tg('pc','Alert on this PC')}${tg('phone','Send to my phone')}${tg('sessOnly','Only London / New York hours')}</div>
-    <div class="su-meta">${scanBusy?`Scanning ${esc(scanProg)}…`:scanLast?`Last scan ${new Date(scanLast).toLocaleTimeString('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit'})} SAST · next at the next 15m close`:'Scans every 15 minutes while Bias Desk is open'} · ${nZ} at a zone · ${nW} waiting <button class="btn-soft" id="su-now" ${scanBusy?'disabled':''}>Scan now</button></div></div>
-   <details class="su-how"><summary>How the scanner reads your setup</summary><ol>
-    <li>4H and 1H market structure must point the same way (your structure indicator).</li>
-    <li>Sells: the 1H leg from the lower high (LH) to the lower low (LL). Buys: higher low (HL) to higher high (HH).</li>
-    <li>Fixed range volume profile of that leg. Sells: the <b>POC must be above 50%</b>. Buys: below 50%. Otherwise no zone.</li>
-    <li>Zone = a box around the POC. It only counts while untouched. POC within 6% of the 0.886 level = <b>A++</b>. Box overlapping a 1H fair value gap = <b>+FVG</b>.</li>
-    <li>When price first comes back into the box, it watches 15m and 1H for: a candle that sweeps the previous high and closes below the previous candle's low, or a sweep candle, inside candle(s), then a bearish close below the sweep low (mirror for buys).</li>
-    <li>Entry at that close · stop just beyond the sweep wick · target 1:2.5. Cancelled if price goes through the LH (HL for buys).</li></ol>
-    <p style="margin:6px 0 0">Forex, gold and indices have no volume on this feed, so the scanner weights candles by their range — always check the zone with your own FRVP before entering. BTC uses real Binance volume.</p></details>
-   <div class="su-grid">${rows.map(({inst,r})=>{ const [k,txt]=scanStateTxt(r,inst), F=v=>fmtPrice(inst,v), side=r.dir<0?'SELL':r.dir>0?'BUY':'';
-      const trade=r.trig&&(r.state==='trigger'||r.state==='won'||r.state==='lost')?`<div class="su-trade"><div><small>ENTRY</small>${F(r.trig.entry)}</div><div><small>STOP</small>${F(r.trig.sl)}</div><div><small>TP 1:2.5</small>${F(r.trig.tp)}</div></div>`:'';
-      const det=r.box?`<div class="su-d">${r.dir<0?'LH':'HL'} ${F(r.a)} → ${r.dir<0?'LL':'HH'} ${F(r.b)} · 50% ${F(r.mid)}<br>POC ${F(r.poc)} · zone ${F(r.box[0])} – ${F(r.box[1])}<br>${r.bias!=null?`daily bias ${r.bias>0?'+':''}${r.bias} · `:''}${r.q!=null?`quality ${r.q} ${qsEmo(r.q)} · `:''}${r.real?'real volume':'range-weighted profile'}${r.news?`<br>⚠ ${esc(r.news)}`:''}</div>`:'';
-      return `<div class="su-card st-${k}"><div class="su-h"><strong>${esc(inst.name||inst.symbol)}</strong>${side&&r.box?`<span class="su-chip ${r.dir<0?'su-sell':'su-buy'}">${side}</span>`:side?`<span class="su-d">4H ${r.dir<0?'▼ down':'▲ up'}</span>`:''}${r.grade?`<span class="su-chip su-g">${r.grade}</span>`:''}${r.fvg?'<span class="su-chip su-f">FVG</span>':''}</div>
-        <div class="su-st ${k}">${esc(txt)}</div>${trade}${det}<button class="btn-soft" data-open="${esc(inst.symbol)}">Open chart →</button></div>`; }).join('')}</div>`;
-  root.querySelectorAll('[data-sc]').forEach(x=>x.addEventListener('change',()=>{ lsSet('bd_scan',{...scanCfg(),[x.dataset.sc]:x.checked}); scanPosition.k=''; try{ scanPosition(); }catch(e){} if(x.dataset.sc==='on'&&x.checked) scanRun(); renderSetups(); }));
-  root.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>goTrade(b.dataset.open)));
-  planWire(root);
-  $('su-now')?.addEventListener('click',async()=>{ if(feedMode!=='live'){ toast('Waiting for live prices — try again in a moment'); return; } toast('Scanning all pairs…'); await scanRun(); }); }
+  const st=r=>r.state==='trigger'?'Pattern printed in the zone':r.state==='zone'?'Price is in the zone':'Zone waiting for price';
+  root.innerHTML=`<div class="su-ctl">${tg('on','Find setups')}${tg('touch','Alert: price reaches a zone')}${tg('pat','Alert: pattern prints in a zone')}${tg('phone','To my phone')}
+    <span class="su-meta">${!C.on?'Off':scanBusy?`Checking ${esc(scanProg)}…`:scanLast?`Checked ${new Date(scanLast).toLocaleTimeString('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit'})} SAST`:'Checks every 15 min'}</span></div>
+   ${rows.length?`<div class="su-list">${rows.map(({inst,r})=>`<div class="su-item st-${r.state}"><strong>${esc(inst.name||inst.symbol)}</strong><span class="su-chip ${r.dir<0?'su-sell':'su-buy'}">${r.dir<0?'SELL':'BUY'}</span><span class="su-chip su-g">${r.grade}</span>${r.fvg?'<span class="su-chip su-f">FVG</span>':''}<span class="su-s">${st(r)}</span><button class="btn-soft" data-open="${esc(inst.symbol)}">◎ View</button></div>`).join('')}</div>`
+     :`<div class="su-empty">${C.on?'No suggested setups right now.<br>A pair appears here only when your model finds one.':'Setup finder is off.'}</div>`}`;
+  root.querySelectorAll('[data-sc]').forEach(x=>x.addEventListener('change',()=>{ lsSet('bd_scan',{...scanCfg(),[x.dataset.sc]:x.checked}); if(x.dataset.sc==='on'&&x.checked) scanRun(); renderSetups(); try{ setupHdSync(); scanPosition(); }catch(e){} }));
+  root.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{ lsSet('bd_scan',{...scanCfg(),show:true}); goTrade(b.dataset.open); setTimeout(()=>{ try{ setupHdSync(); scanPosition(); tlKick(); }catch(e){} },900); })); }
 function fvgOn(){ return lsGet('bd_fvg_on',false)===true; }
 // ===== Tool colours — every chart tool's colour is yours to pick (drawings have their own toolbar; these cover the rest) =====
 const TOOL_COL_DEF={fvgBull:'#089981',fvgBear:'#f23645',ms:'',alert:'#f59e0b'};
@@ -6275,7 +6292,7 @@ document.addEventListener('pointermove',e=>{ if(e.pointerType!=='mouse') return;
 setInterval(()=>{ if(document.body.dataset.page==='overview'&&!document.hidden){ try{ updateHero(false); }catch(e){} } },1000);
 setInterval(()=>{ if(document.body.dataset.page==='overview'&&!document.hidden){ try{ renderKpis(); }catch(e){} } },15000);
 function greeting(){ const h=+new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Johannesburg',hour:'2-digit',hour12:false}).format(new Date())%24; return h<12?'Good morning':h<17?'Good afternoon':'Good evening'; }
-function renderOverview(){
+function renderOverview(){ try{ const pe=$('ov-plan'); if(pe){ pe.innerHTML=planCardHtml(); planWire(pe); } }catch(e){}
   if(!$('bias-board')) return; try{ renderOverviewNews(); }catch(e){}
   $('ov-greet').textContent=greeting();
   $('ov-date').textContent=new Intl.DateTimeFormat('en-ZA',{timeZone:'Africa/Johannesburg',weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
@@ -6581,7 +6598,7 @@ function railGroupsInit(){ const rail=document.querySelector('.tool-rail'); if(!
   rail.querySelectorAll('.rail-grp').forEach(g=>{ const k=g.dataset.g; const head=g.querySelector('.rail-head');
     if(!g.dataset.menu&&last[k]){ const b=g.querySelector('#'+CSS.escape(last[k])); if(b) setHead(g,b); }
     head.addEventListener('click',e=>{ e.stopPropagation(); if(g.dataset.menu||coarse()||e.target.closest('.rail-car')){ open(g); return; }
-      const b=g.querySelector('#'+CSS.escape((lsGet('bd_rail_last',{})||{})[k]||''))||g.querySelector('.rail-fly .rail-btn'); close(); b&&b.click(); });
+      const lk=(lsGet('bd_rail_last',{})||{})[k]; const b=(lk?g.querySelector('#'+CSS.escape(lk)):null)||g.querySelector('.rail-fly .rail-btn'); close(); b&&b.click(); });
     g.querySelector('.rail-fly').addEventListener('click',e=>{ const b=e.target.closest('.rail-btn'); if(!b) return; close(); if(!g.dataset.menu&&b.id!=='ct-alerts-page'){ const L=lsGet('bd_rail_last',{})||{}; L[k]=b.id; lsSet('bd_rail_last',L); setHead(g,b); } }); });
   document.addEventListener('pointerdown',e=>{ if(!e.target.closest('.rail-grp')) close(); },true);
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
@@ -6618,6 +6635,13 @@ function landingInit(){ const L=$('landing'); if(!L) return;
   document.addEventListener('visibilitychange',()=>document.body.classList.toggle('anim-paused',document.hidden)); }
 function playIntro(text){ if(reduceMotion()) return; const o=$('bd-intro'); if(!o) return; const host=$('intro-core'); buildCore(host); $('intro-txt').textContent=text; host.classList.remove('assemble'); void host.offsetWidth; host.classList.add('assemble');
   o.hidden=false; o.style.animation='none'; void o.offsetWidth; o.style.animation=''; clearTimeout(playIntro.t); playIntro.t=setTimeout(()=>{ o.hidden=true; },2000); }
+const SET_TABS=[['look','Look',/look|candle themes|motivation/i],['trading','Trading',/rules before|position tool|market structure/i],['data','Prices & data',/live price|bias scores/i],['account','Account & backup',/sync|security|backup|reset|version/i]];
+function settingsTabs(){ const g=$('settings-grid'); if(!g) return; let bar=$('set-tabs'); const cur=lsGet('bd_set_tab','look')||'look';
+  if(!bar){ bar=document.createElement('div'); bar.id='set-tabs'; bar.className='set-tabs'; bar.innerHTML=SET_TABS.map(([k,l])=>`<button data-st="${k}">${l}</button>`).join(''); g.parentNode.insertBefore(bar,g);
+    bar.addEventListener('click',e=>{ const b=e.target.closest('[data-st]'); if(!b) return; lsSet('bd_set_tab',b.dataset.st); settingsTabs(); }); }
+  bar.querySelectorAll('[data-st]').forEach(b=>b.classList.toggle('on',b.dataset.st===cur));
+  [...g.children].forEach(c=>{ if(!c.dataset.stab){ const h=(c.querySelector('h3')?.textContent||c.textContent||'').slice(0,80); const t=SET_TABS.find(x=>x[2].test(h)); c.dataset.stab=t?t[0]:'account'; } c.hidden=c.dataset.stab!==cur; }); }
+new MutationObserver(()=>{ const g=$('settings-grid'); if(g&&[...g.children].some(c=>!c.dataset.stab)) settingsTabs(); }).observe(document.documentElement,{childList:true,subtree:true});
 function lookCard(){ const g=$('settings-grid'); if(!g||g.querySelector('#look-card')) return; const c=document.createElement('div'); c.className='setting-card card-s'; c.id='look-card';
   const L=uiLook(), land=lsGet('bd_landing',true)!==false;
   c.innerHTML=`<h3>Look</h3><p class="pt-muted">The whole desk: colours, panels and buttons. Candle colours are set separately (Trade → theme).</p>
@@ -6703,7 +6727,7 @@ function showPage(name){
   document.querySelectorAll('.sn-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===name));
   document.querySelectorAll('main .page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));
   document.body.dataset.page=name;
-  if(name==='settings'){ renderSettings(); lookCard(); }
+  if(name==='settings'){ renderSettings(); lookCard(); settingsTabs(); }
   if(name==='journal') renderJournal();
   if(name==='analytics'){ renderAnalytics(); runBiasAccuracy(); }
   if(name==='overview') renderOverview();
