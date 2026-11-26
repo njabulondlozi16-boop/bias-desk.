@@ -1671,6 +1671,18 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 .qs-badge b,.qs-badge span{margin-right:10px}.qs-badge b{color:var(--accent);letter-spacing:.08em}.qs-badge small{display:block;font-weight:400;color:#8b96a3;margin-top:2px}
 .qs-jcard{margin:0 0 14px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid var(--line)}.qs-jh{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}.qs-jh small{color:var(--muted,#8b96a3)}
 .qs-jcard table{width:100%;border-collapse:collapse;font-size:13px}.qs-jcard th{text-align:left;font-weight:500;color:var(--muted,#8b96a3);padding:4px 6px}.qs-jcard td{padding:5px 6px;border-top:1px solid var(--line)}.qs-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px}
+.fvg-layer,.sess-layer,.scan-layer{pointer-events:none}.scan-layer{position:absolute;left:0;top:0;z-index:2;overflow:hidden}
+.su-top{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin-bottom:14px;padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.025)}
+.su-top label{display:inline-flex;gap:7px;align-items:center;font-size:13px;color:var(--muted,#8b96a3);cursor:pointer}.su-top .su-meta{font-size:12px;color:var(--muted,#8b96a3)}
+.su-how{margin:0 0 14px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);font-size:13px;color:var(--muted,#8b96a3)}.su-how summary{cursor:pointer;color:var(--text);font-weight:600}.su-how ol{margin:8px 0 2px 18px;padding:0;line-height:1.7}
+.su-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.su-card{padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.025);display:flex;flex-direction:column;gap:8px}
+.su-card.st-trigger{border-color:rgba(30,232,131,.7);box-shadow:0 0 0 1px rgba(30,232,131,.25) inset}.su-card.st-zone{border-color:rgba(245,176,65,.65)}.su-card.st-none{opacity:.62}
+.su-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.su-h strong{font-size:16px;letter-spacing:.02em}.su-chip{font:700 10.5px/1 ui-monospace,Menlo,monospace;padding:4px 7px;border-radius:6px;letter-spacing:.06em}
+.su-sell{background:rgba(240,67,90,.16);color:#ff7d8f}.su-buy{background:rgba(30,232,131,.14);color:#1ee883}.su-g{background:rgba(245,176,65,.16);color:#f5b041}.su-f{background:rgba(140,170,255,.14);color:#a9c0ff}
+.su-st{font-size:14px;font-weight:600}.su-st.zone{color:#f5b041}.su-st.trigger{color:#1ee883}.su-st.lost,.su-st.broken{color:#ff7d8f}
+.su-d{font:12px/1.55 ui-monospace,Menlo,monospace;color:var(--muted,#8b96a3)}.su-trade{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.su-trade div{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.04);font:12px ui-monospace,Menlo,monospace}.su-trade small{display:block;color:var(--muted,#8b96a3);font-size:10px;letter-spacing:.06em}
+.su-card .btn-soft{align-self:flex-start}
 </style>
 </head>
 <body>
@@ -1752,6 +1764,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
       <a href="#/overview" data-page="overview"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 9h8V3h-8z"/></svg><span>Overview</span></a>
       <a href="#/markets" data-page="markets"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Markets</span></a>
       <a href="#/invest" data-page="invest"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 16l4-5 3 3 5-7"/><circle cx="18" cy="7" r="1.6"/></svg><span>Invest</span></a>
+      <a href="#/setups" data-page="setups"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Setups</span></a>
       <a href="#/alerts" data-page="alerts"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span>Alerts</span></a>
       <a href="#/trade" data-page="chart"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="3" height="10"/><path d="M6.5 4v3M6.5 17v3"/><rect x="15" y="5" width="3" height="8"/><path d="M16.5 2v3M16.5 13v5"/></svg><span>Trade</span></a>
       <a href="#/journal" data-page="journal"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><span>Journal</span></a>
@@ -1809,6 +1822,10 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
       </section>
 
       <!-- ALERTS -->
+      <section id="page-setups" class="page">
+        <div class="page-head-row"><div><p class="eyebrow">Your model, watched on every pair</p><h1>Setups</h1><p class="lede">4H + 1H structure → 1H FRVP of the leg → POC on the right side of 50% → untouched POC zone → sweep + engulfing on 15m or 1H.</p></div></div>
+        <div id="setups-body"></div>
+      </section>
       <section id="page-alerts" class="page">
         <div class="page-head-row"><div><p class="eyebrow">Never miss a close</p><h1>Alerts</h1><p class="lede">Candle closes, zone boxes and price lines — on your phone and this PC.</p></div></div>
         <div id="alc-body"></div>
@@ -1882,7 +1899,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-26.12';
+const BUILD='2026-11-27.1';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -4150,6 +4167,145 @@ function qsJournalCard(trades){ const done=trades.filter(t=>t.quality&&typeof t.
     return `<tr><td><span class="qs-dot" style="background:${b==='green'?'#1ee883':b==='amber'?'#f5b041':'#f0435a'}"></span>${b==='green'?'Green · 65+':b==='amber'?'Amber · 45–64':'Red · under 45'}</td><td>${n}</td><td>${n?Math.round(w/n*100)+'%':'—'}</td><td>${avg==null?'—':(avg>=0?'+':'')+avg.toFixed(2)+'R'}</td></tr>`; }).join('');
   return `<div class="qs-jcard"><div class="qs-jh"><b>Trade quality vs your results</b><small>${done.length} closed trades scored${done.length<100?` · ${100-done.length} more until Bias Desk can learn your own filter`:' · enough to learn your own filter'}</small></div><table><thead><tr><th>Score when you entered</th><th>Trades</th><th>Win %</th><th>Avg R</th></tr></thead><tbody>${rows}</tbody></table></div>`; }
 setInterval(()=>{ if(!document.hidden||spCfg().pc||spCfg().phone) spRun(); },1500);
+// ===== Setup scanner — your own model, watched on every pair =====
+// SELL (BUY is the mirror): 4H and 1H market structure both down → the 1H leg from the lower high (LH) to the lower low (LL)
+// → fixed-range volume profile of that leg → the POC must sit ABOVE 50% of the leg, otherwise there is no zone → zone = the POC box,
+// valid only while untouched → when price first comes back into it, watch 15m and 1H for: a candle that sweeps the previous high and
+// closes below the previous candle's low, or a sweep candle, inside candle(s), then a bearish close below the sweep candle's low
+// → entry at that close, stop above the sweep wick, target 1:2.5 (minimum 1:2). POC within 6% of the 0.886 level = A++; POC box overlapping a 1H FVG = +FVG.
+// Forex / gold / index feeds have no volume here, so the profile weights each 15m candle by its range (tick volume follows range); BTC uses real Binance volume.
+const SCAN_DEF={on:true,chart:true,touch:true,phone:true,pc:true,sessOnly:false,skip:[]};
+function scanCfg(){ const c=lsGet('bd_scan',{})||{}; return {...SCAN_DEF,...c,skip:Array.isArray(c.skip)?c.skip:[]}; }
+let scanRes=lsGet('bd_scan_res',{})||{}, scanBusy=false, scanBucket=null, scanLast=0, scanProg='';
+function scanPairs(){ const C=scanCfg(); return getInstruments().filter(i=>!C.skip.includes(i.symbol)); }
+function scanBarsOf(raw,g){ const now=Date.now()/1000; return (raw||[]).map(b=>({time:+b.time,open:+b.open,high:+b.high,low:+b.low,close:+b.close})).filter(b=>isFinite(b.high)&&isFinite(b.low)&&b.time+g<=now+1).sort((x,y)=>x.time-y.time); }
+// the 1H leg: LH → lowest low after it (sell) · HL → highest high after it (buy)
+function scanLeg(dir,h1,ms){ if(dir<0){ if(ms.rHi==null||ms.rHiT==null) return null; const aft=h1.filter(b=>b.time>ms.rHiT); if(aft.length<2) return null; let x=aft[0]; for(const b of aft) if(b.low<x.low) x=b; return ms.rHi>x.low?{a:ms.rHi,aT:ms.rHiT,b:x.low,bT:x.time}:null; }
+  if(ms.rLo==null||ms.rLoT==null) return null; const aft=h1.filter(b=>b.time>ms.rLoT); if(aft.length<2) return null; let x=aft[0]; for(const b of aft) if(b.high>x.high) x=b; return x.high>ms.rLo?{a:ms.rLo,aT:ms.rLoT,b:x.high,bT:x.time}:null; }
+async function scanProfile(inst,leg,m15,h1){ const t1=leg.aT, t2=leg.bT+3600; let src=null, ltf=900, real=false;
+  if(isBinance(inst)){ try{ const k=await vpBinanceBars(inst,900,t1,t2); const f=k.filter(b=>b.t>=t1&&b.t<t2); if(f.length>=4){ src=f; real=true; } }catch(e){} }
+  if(!src){ let base=m15; if(!(m15.length&&m15[0].time<=t1)){ base=h1; ltf=3600; } src=base.filter(b=>b.time>=t1&&b.time<t2).map(b=>({t:b.time,o:b.open,h:b.high,l:b.low,c:b.close,v:Math.max(b.high-b.low,1e-9)})); }
+  if(src.length<4) return null; const P=vpBuild(src,{layout:'rows',rowSize:24,va:70},inst,3600,ltf); if(P) P.real=real; return P; }
+function scanAtr(bars,i){ let s=0,n=0; for(let j=Math.max(1,i-13);j<=i;j++){ const b=bars[j], pc=bars[j-1].close; s+=Math.max(b.high,pc)-Math.min(b.low,pc); n++; } return n?s/n:0; }
+// trigger candle at/after index `from`: sweep + engulfing, or sweep → inside candle(s) → break of the sweep candle
+function scanTrig(bars,from,dir,box,lim,stopLvl){ const end=Math.min(bars.length,from+lim);
+  for(let i=Math.max(2,from);i<end;i++){ const b=bars[i], p=bars[i-1];
+    if(dir<0?b.high>stopLvl:b.low<stopLvl) return {broken:i};
+    if(dir<0){ if(b.high>p.high&&b.close<p.low&&b.close<b.open&&b.high>=box[0]) return {i,s:i,ext:b.high,kind:'sweep + bearish engulfing'}; }
+    else { if(b.low<p.low&&b.close>p.high&&b.close>b.open&&b.low<=box[1]) return {i,s:i,ext:b.low,kind:'sweep + bullish engulfing'}; }
+    for(let n=0;n<=3;n++){ const si=i-1-n; if(si<from||si<1) break; const S=bars[si]; let ok=true;
+      for(let j=si+1;j<i;j++){ const x=bars[j]; if(x.high>S.high||x.low<S.low){ ok=false; break; } } if(!ok) continue;
+      if(dir<0){ if(S.high>bars[si-1].high&&S.high>=box[0]&&b.high<=S.high&&b.close<S.low&&b.close<b.open) return {i,s:si,ext:S.high,kind:n?`sweep, ${n} inside candle${n>1?'s':''}, bearish break`:'sweep, then bearish engulfing'}; }
+      else { if(S.low<bars[si-1].low&&S.low<=box[1]&&b.low>=S.low&&b.close>S.high&&b.close>b.open) return {i,s:si,ext:S.low,kind:n?`sweep, ${n} inside candle${n>1?'s':''}, bullish break`:'sweep, then bullish engulfing'}; } } }
+  return null; }
+async function scanPair(inst){ const sym=inst.symbol, at=Date.now(), base={sym,at};
+  const [t4,t1]=PRIO_TFS(); const r4=await msGet(inst,t4), r1=await msGet(inst,t1);
+  if(!r4||!r1) return {...base,state:'none',reason:'no price data yet'};
+  const dir=r4.trend; if(!dir) return {...base,state:'none',reason:'no clear 4H structure'};
+  if(r1.trend!==dir) return {...base,dir,state:'none',reason:`4H is ${dir<0?'down':'up'} but 1H structure is ${r1.trend>0?'up':r1.trend<0?'down':'unclear'} — waiting for them to agree`};
+  const h1=scanBarsOf(await fetchCandlesOnce(inst,3600,400),3600), m15=scanBarsOf(await fetchCandlesOnce(inst,900,1000),900);
+  if(h1.length<30||m15.length<60) return {...base,dir,state:'none',reason:'not enough candles yet'};
+  const leg=scanLeg(dir,h1,r1); if(!leg) return {...base,dir,state:'none',reason:'no completed 1H leg yet'};
+  const P=await scanProfile(inst,leg,m15,h1); if(!P) return {...base,dir,state:'none',reason:'leg too short for a profile'};
+  const span=Math.abs(leg.a-leg.b), mid=(leg.a+leg.b)/2, poc=P.pocP, right=dir<0?poc>mid:poc<mid;
+  const info={...base,dir,a:leg.a,aT:leg.aT,b:leg.b,bT:leg.bT,mid,poc,vah:P.vahP,val:P.valP,real:!!P.real,price:m15.at(-1).close};
+  if(!right) return {...info,state:'none',reason:`POC ${fmtPrice(inst,poc)} is ${dir<0?'below':'above'} 50% (${fmtPrice(inst,mid)}) — no zone on this leg`};
+  const box=[poc-P.rowH,poc+P.rowH];
+  const fib=dir<0?leg.b+0.886*span:leg.b-0.886*span, grade=Math.abs(poc-fib)<=0.06*span?'A++':'A';
+  let fvg=false; for(let i=2;i<h1.length;i++){ const x=h1[i]; if(x.time<leg.aT||x.time>leg.bT) continue; const g0=dir<0?[x.high,h1[i-2].low]:[h1[i-2].high,x.low]; if(g0[1]>g0[0]&&g0[0]<=box[1]&&g0[1]>=box[0]){ fvg=true; break; } }
+  const r={...info,box,grade,fvg,fib}; const endT=leg.bT+3600;
+  const t4h={bars:[{time:0}],trend:[dir]}; const QP=qsPrep(m15);
+  const bz=getBias(sym); r.bias=bz?bz.score:null; const nowS=Date.now()/1000; const nx=newsFor(inst,nowS,nowS+7200)[0]; r.news=nx?`${nx.cur} ${nx.title} in ${untilTxt(nx.t-nowS)}`:null;
+  const ti=m15.findIndex(b=>b.time>=endT&&(dir<0?b.high>=box[0]:b.low<=box[1]));
+  if(ti<0){ r.state='waiting'; r.away=Math.abs((dir<0?box[0]:box[1])-r.price)/span; const q=qsAt(QP,m15.length-1,dir,t4h,900); r.q=q?q.q:null; return r; }
+  r.touchT=m15[ti].time;
+  const stopLvl=leg.a; const T15=scanTrig(m15,ti,dir,box,32,stopLvl);
+  const hi=h1.findIndex(b=>b.time+3600>r.touchT); const T1=hi>=0?scanTrig(h1,hi,dir,box,8,stopLvl):null;
+  const cands=[]; if(T15&&T15.i!=null) cands.push({...T15,bars:m15,g:900,tf:'15m'}); if(T1&&T1.i!=null) cands.push({...T1,bars:h1,g:3600,tf:'1H'});
+  cands.sort((x,y)=>(x.bars[x.i].time+x.g)-(y.bars[y.i].time+y.g));
+  const brokenT=[T15&&T15.broken!=null?m15[T15.broken].time:Infinity, T1&&T1.broken!=null?h1[T1.broken].time:Infinity].reduce((p,q)=>Math.min(p,q),Infinity);
+  const tr=cands.find(c=>c.bars[c.i].time+c.g<=brokenT+900);
+  if(tr){ const bar=tr.bars[tr.i], entry=bar.close, k15=m15.findIndex(b=>b.time>=bar.time+tr.g)-1, atr=scanAtr(m15,Math.max(1,k15<0?m15.length-1:k15));
+    const sl=tr.ext+(dir<0?1:-1)*atr*0.05, risk=Math.abs(sl-entry);
+    if(risk>0){ const tp=entry+(dir<0?-1:1)*2.5*risk; r.trig={tf:tr.tf,g:tr.g,t:bar.time,closeT:bar.time+tr.g,entry,sl,tp,kind:tr.kind,llR:Math.abs(leg.b-entry)/risk};
+      const qi=Math.max(0,m15.findIndex(b=>b.time+900>=bar.time+tr.g)); const q=qsAt(QP,qi,dir,t4h,900); r.q=q?q.q:null;
+      r.state='trigger'; for(const b of m15){ if(b.time<r.trig.closeT) continue; if(dir<0?b.high>=sl:b.low<=sl){ r.state='lost'; r.endT=b.time; break; } if(dir<0?b.low<=tp:b.high>=tp){ r.state='won'; r.endT=b.time; break; } }
+      if(r.state==='trigger'&&nowS-r.trig.closeT>24*3600) r.state='expired';
+      return r; } }
+  if(brokenT<Infinity){ r.state='broken'; return r; }
+  const since=m15.length-1-ti; r.state=since>32?'expired':'zone'; const q=qsAt(QP,m15.length-1,dir,t4h,900); r.q=q?q.q:null; return r; }
+function scanAlert(inst,r){ const C=scanCfg(); if(!C.pc&&!C.phone) return; const nowS=Date.now()/1000; const fired=lsGet('bd_scan_fired',{})||{}; let ch=false;
+  if(C.sessOnly&&sessionFor(new Date())==='Asian') return;
+  const F=v=>fmtPrice(inst,v), side=r.dir<0?'SELL':'BUY', extra=`${r.bias!=null?` · daily bias ${r.bias>0?'+':''}${r.bias}${(r.bias>2&&r.dir>0)||(r.bias<-2&&r.dir<0)?' ✓ agrees':Math.abs(r.bias)<=2?'':' ✗ against'}`:''}${r.q!=null?` · quality ${r.q}/100 ${qsEmo(r.q)}`:''}${r.news?` · ⚠ ${r.news}`:''}`;
+  const opt=(o)=>({sym:inst.symbol,push:C.phone?undefined:false,ptype:'price',noToast:!C.pc,...o,sound:C.pc?o.sound:'off'});
+  if(r.state==='zone'&&C.touch&&r.touchT&&nowS-(r.touchT+900)<1800){ const k='z'+inst.symbol+r.touchT; if(!fired[k]){ fired[k]=nowS; ch=true;
+    fireAlert(`${side} setup · price is in your POC zone (${r.grade}${r.fvg?' +FVG':''})`,`zone ${F(r.box[0])} – ${F(r.box[1])} · 50% ${F(r.mid)} · now watch 15m / 1H for a sweep + ${r.dir<0?'bearish':'bullish'} engulfing${extra}`,'ok','scz'+k,opt({sound:'chime',prio:4,tags:['dart']})); } }
+  if(r.trig&&r.state==='trigger'&&nowS-r.trig.closeT<Math.max(900,r.trig.g*0.9)){ const k='t'+inst.symbol+r.trig.t; if(!fired[k]){ fired[k]=nowS; ch=true; const t=r.trig;
+    fireAlert(`${side} ENTRY · your setup triggered (${r.grade}${r.fvg?' +FVG':''}, ${t.tf})`,`${t.kind} at the POC zone · entry ${F(t.entry)} · SL ${F(t.sl)} · TP ${F(t.tp)} (1:2.5) · ${r.dir<0?'LL':'HH'} ${F(r.b)} = ${t.llR.toFixed(1)}R${extra}`,r.dir<0?'bad':'ok','sct'+k,opt({sound:'alarm',prio:5,tags:['rotating_light']})); } }
+  if(ch){ for(const k in fired) if(nowS-fired[k]>7*86400) delete fired[k]; lsSet('bd_scan_fired',fired); } }
+async function scanRun(){ const C=scanCfg(); if(!C.on||scanBusy||rp.active) return false; if(feedMode!=='live') return false; scanBusy=true;
+  const pairs=scanPairs(); try{ for(let k=0;k<pairs.length;k++){ const inst=pairs[k]; scanProg=`${k+1}/${pairs.length} ${inst.name||inst.symbol}`; if(document.body.dataset.page==='setups') renderSetups();
+      let r; try{ r=await scanPair(inst); }catch(e){ r={sym:inst.symbol,at:Date.now(),state:'none',reason:'scan error: '+String(e&&e.message||e).slice(0,80)}; }
+      scanRes[inst.symbol]=r; try{ scanAlert(inst,r); }catch(e){} }
+    for(const k of Object.keys(scanRes)) if(!pairs.some(i=>i.symbol===k)) delete scanRes[k];
+    lsSet('bd_scan_res',scanRes); scanLast=Date.now(); }
+  finally{ scanBusy=false; scanProg=''; } if(document.body.dataset.page==='setups') renderSetups(); scanPosition.k=''; try{ scanPosition(); tlKick(); }catch(e){} return true; }
+setInterval(()=>{ if(!scanCfg().on) return; const now=Math.floor(Date.now()/1000), b=Math.floor(now/900); if(b!==scanBucket&&now%900>=25&&feedMode==='live'&&!rp.active){ scanBucket=b; scanRun(); } },5000);
+// ---- chart drawing: the strong grey POC box, 50% line, LH/LL and the trade once triggered
+function scanChartOn(){ const C=scanCfg(); const r=currentInst&&scanRes[currentInst.symbol]; return !!(C.on&&C.chart&&r&&r.box)||!!tlWrap()?.querySelector('svg.scan-layer:not([style*="none"])'); }
+function scanPosition(){ const w=tlWrap(); if(!w) return; let svg=w.querySelector('svg.scan-layer');
+  if(!svg){ svg=document.createElementNS(TL_NS,'svg'); svg.setAttribute('class','scan-layer'); const fv=w.querySelector('svg.fvg-layer'); w.insertBefore(svg,fv?fv:(w.firstChild?.nextSibling||null)); }
+  const C=scanCfg(), r=currentInst&&scanRes[currentInst.symbol], g=granForLabel(currentTF||'15m');
+  const hide=()=>{ if(svg.style.display!=='none'){ svg.style.display='none'; svg.innerHTML=''; svg.dataset.h=''; } };
+  if(!C.on||!C.chart||!r||!r.box||!r.dir||g>14400||rp.active){ hide(); return; }
+  let aw=0, th=0; try{ aw=chart.priceScale('right').width()||0; th=chart.timeScale().height()||0; }catch(e){}
+  const W=Math.max(0,w.clientWidth-aw), H=Math.max(0,w.clientHeight-th); const a=tlAnchor(); if(!a||!W||!H){ hide(); return; }
+  svg.style.display=''; svg.style.width=W+'px'; svg.style.height=H+'px';
+  const X=t=>tlX(t,a), Y=p=>yAtPrice(p), f=v=>v.toFixed(1), sell=r.dir<0; let h='';
+  const yT=Y(r.box[1]), yB=Y(r.box[0]), x0=X(r.bT+3600), xa=X(r.aT), ym=Y(r.mid);
+  if(yT!=null&&yB!=null&&x0!=null&&x0<W){ const xs=Math.max(-2,x0);
+    h+=`<rect x="${f(xs)}" y="${f(yT)}" width="${f(Math.max(2,W-xs))}" height="${f(Math.max(2,yB-yT))}" fill="rgba(186,192,200,.17)" stroke="rgba(214,219,226,.92)" stroke-width="1.3"/>`;
+    const lbl=`${sell?'SELL':'BUY'} ZONE · POC · ${r.grade}${r.fvg?' · FVG':''}${r.state==='waiting'?' · untouched':r.state==='zone'?' · IN ZONE':''}`, tw=lbl.length*6.1+12, lx=Math.max(4,Math.min(W-tw-4,xs+4)), ly=sell?yT-19:yB+4;
+    h+=`<rect x="${f(lx)}" y="${f(ly)}" width="${f(tw)}" height="15" rx="3" fill="rgba(214,219,226,.92)"/><text class="sess-n" x="${f(lx+6)}" y="${f(ly+10.5)}" fill="#0c1014">${lbl}</text>`; }
+  if(ym!=null&&xa!=null&&xa<W){ const xs=Math.max(0,xa); h+=`<line x1="${f(xs)}" y1="${f(ym)}" x2="${f(W)}" y2="${f(ym)}" stroke="rgba(201,209,217,.55)" stroke-dasharray="6 4"/><text class="sess-n" x="${f(W-34)}" y="${f(ym-4)}" fill="rgba(201,209,217,.8)">50%</text>`; }
+  const yA=Y(r.a), yb=Y(r.b), xb=X(r.bT); if(yA!=null&&xa!=null&&xa>=0&&xa<W) h+=`<text class="sess-n" x="${f(xa-8)}" y="${f(sell?yA-6:yA+14)}" fill="rgba(201,209,217,.9)">${sell?'LH':'HL'}</text>`;
+  if(yb!=null&&xb!=null&&xb>=0&&xb<W) h+=`<text class="sess-n" x="${f(xb-8)}" y="${f(sell?yb+14:yb-6)}" fill="rgba(201,209,217,.9)">${sell?'LL':'HH'}</text>`;
+  if(r.trig){ const t=r.trig, xt=X(t.closeT-t.g); if(xt!=null&&xt<W){ const xs=Math.max(0,xt); const L=(p,c,txt,d)=>{ const y=Y(p); if(y==null) return; h+=`<line x1="${f(xs)}" y1="${f(y)}" x2="${f(W)}" y2="${f(y)}" stroke="${c}" stroke-width="1.2" ${d?'stroke-dasharray="5 4"':''}/><text class="sess-n" x="${f(Math.max(xs+4,W-118))}" y="${f(y-4)}" fill="${c}">${txt}</text>`; };
+      L(t.entry,'#c9d1d9',`ENTRY ${t.tf}`,true); L(t.sl,'#f0435a',r.state==='lost'?'SL ✗ hit':'SL'); L(t.tp,'#1ee883',r.state==='won'?'TP ✓ hit':'TP 1:2.5'); } }
+  if(svg.dataset.h!==h){ svg.dataset.h=h; svg.innerHTML=h; } }
+// ---- Setups page
+const SU_ORDER={trigger:0,zone:1,waiting:2,won:3,lost:3,expired:4,broken:4,none:5};
+function scanStateTxt(r,inst){ const F=v=>fmtPrice(inst,v);
+  switch(r.state){ case 'trigger': return ['trigger',`ENTRY NOW · ${r.trig.kind} (${r.trig.tf})`];
+    case 'zone': return ['zone','Price is IN your zone — watch for the sweep + engulfing'];
+    case 'waiting': return ['waiting',`Zone untouched · waiting for price to come back${r.away!=null?` (${Math.round(r.away*100)}% of the leg away)`:''}`];
+    case 'won': return ['won','Last setup hit TP ✓ · waiting for a new leg'];
+    case 'lost': return ['lost','Last setup was stopped ✗ · waiting for a new leg'];
+    case 'expired': return ['expired','Zone was touched, no trigger in time · waiting for a new leg'];
+    case 'broken': return ['broken',`Price went through the ${r.dir<0?'lower high':'higher low'} — setup cancelled`];
+    default: return ['none',r.reason||'no setup']; } }
+function renderSetups(){ const root=$('setups-body'); if(!root) return; const C=scanCfg(); const pairs=scanPairs();
+  const rows=pairs.map(i=>({inst:i,r:scanRes[i.symbol]||{sym:i.symbol,state:'none',reason:scanBusy?'scanning…':'not scanned yet'}})).sort((x,y)=>(SU_ORDER[x.r.state]??9)-(SU_ORDER[y.r.state]??9));
+  const nZ=rows.filter(x=>x.r.state==='zone'||x.r.state==='trigger').length, nW=rows.filter(x=>x.r.state==='waiting').length;
+  const tg=(k,l)=>`<label><input type="checkbox" data-sc="${k}" ${C[k]?'checked':''}> ${l}</label>`;
+  root.innerHTML=`<div class="su-top"><div style="display:flex;flex-wrap:wrap;gap:10px 18px">${tg('on','Scanner on')}${tg('chart','Show zone on chart')}${tg('touch','Alert when price enters a zone')}${tg('pc','Alert on this PC')}${tg('phone','Send to my phone')}${tg('sessOnly','Only London / New York hours')}</div>
+    <div class="su-meta">${scanBusy?`Scanning ${esc(scanProg)}…`:scanLast?`Last scan ${new Date(scanLast).toLocaleTimeString('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit'})} SAST · next at the next 15m close`:'Scans every 15 minutes while Bias Desk is open'} · ${nZ} at a zone · ${nW} waiting <button class="btn-soft" id="su-now" ${scanBusy?'disabled':''}>Scan now</button></div></div>
+   <details class="su-how"><summary>How the scanner reads your setup</summary><ol>
+    <li>4H and 1H market structure must point the same way (your structure indicator).</li>
+    <li>Sells: the 1H leg from the lower high (LH) to the lower low (LL). Buys: higher low (HL) to higher high (HH).</li>
+    <li>Fixed range volume profile of that leg. Sells: the <b>POC must be above 50%</b>. Buys: below 50%. Otherwise no zone.</li>
+    <li>Zone = a box around the POC. It only counts while untouched. POC within 6% of the 0.886 level = <b>A++</b>. Box overlapping a 1H fair value gap = <b>+FVG</b>.</li>
+    <li>When price first comes back into the box, it watches 15m and 1H for: a candle that sweeps the previous high and closes below the previous candle's low, or a sweep candle, inside candle(s), then a bearish close below the sweep low (mirror for buys).</li>
+    <li>Entry at that close · stop just beyond the sweep wick · target 1:2.5. Cancelled if price goes through the LH (HL for buys).</li></ol>
+    <p style="margin:6px 0 0">Forex, gold and indices have no volume on this feed, so the scanner weights candles by their range — always check the zone with your own FRVP before entering. BTC uses real Binance volume.</p></details>
+   <div class="su-grid">${rows.map(({inst,r})=>{ const [k,txt]=scanStateTxt(r,inst), F=v=>fmtPrice(inst,v), side=r.dir<0?'SELL':r.dir>0?'BUY':'';
+      const trade=r.trig&&(r.state==='trigger'||r.state==='won'||r.state==='lost')?`<div class="su-trade"><div><small>ENTRY</small>${F(r.trig.entry)}</div><div><small>STOP</small>${F(r.trig.sl)}</div><div><small>TP 1:2.5</small>${F(r.trig.tp)}</div></div>`:'';
+      const det=r.box?`<div class="su-d">${r.dir<0?'LH':'HL'} ${F(r.a)} → ${r.dir<0?'LL':'HH'} ${F(r.b)} · 50% ${F(r.mid)}<br>POC ${F(r.poc)} · zone ${F(r.box[0])} – ${F(r.box[1])}<br>${r.bias!=null?`daily bias ${r.bias>0?'+':''}${r.bias} · `:''}${r.q!=null?`quality ${r.q} ${qsEmo(r.q)} · `:''}${r.real?'real volume':'range-weighted profile'}${r.news?`<br>⚠ ${esc(r.news)}`:''}</div>`:'';
+      return `<div class="su-card st-${k}"><div class="su-h"><strong>${esc(inst.name||inst.symbol)}</strong>${side&&r.box?`<span class="su-chip ${r.dir<0?'su-sell':'su-buy'}">${side}</span>`:side?`<span class="su-d">4H ${r.dir<0?'▼ down':'▲ up'}</span>`:''}${r.grade?`<span class="su-chip su-g">${r.grade}</span>`:''}${r.fvg?'<span class="su-chip su-f">FVG</span>':''}</div>
+        <div class="su-st ${k}">${esc(txt)}</div>${trade}${det}<button class="btn-soft" data-open="${esc(inst.symbol)}">Open chart →</button></div>`; }).join('')}</div>`;
+  root.querySelectorAll('[data-sc]').forEach(x=>x.addEventListener('change',()=>{ lsSet('bd_scan',{...scanCfg(),[x.dataset.sc]:x.checked}); scanPosition.k=''; try{ scanPosition(); }catch(e){} if(x.dataset.sc==='on'&&x.checked) scanRun(); renderSetups(); }));
+  root.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>goTrade(b.dataset.open)));
+  $('su-now')?.addEventListener('click',async()=>{ if(feedMode!=='live'){ toast('Waiting for live prices — try again in a moment'); return; } toast('Scanning all pairs…'); await scanRun(); }); }
 function fvgOn(){ return lsGet('bd_fvg_on',false)===true; }
 // ===== Tool colours — every chart tool's colour is yours to pick (drawings have their own toolbar; these cover the rest) =====
 const TOOL_COL_DEF={fvgBull:'#089981',fvgBear:'#f23645',ms:'',alert:'#f59e0b'};
@@ -4187,8 +4343,8 @@ function fvgPosition(){ const w=tlWrap(); if(!w) return; let svg=w.querySelector
 // keep lines glued to the candles while you scroll / zoom (only runs on the Trade page when lines exist)
 let tlFrame=0;
 function tlKick(){ if(tlRaf) return; const tick=()=>{ tlRaf=null; if(document.body.dataset.page!=='chart'||document.hidden) return;
-    const other=tlLines.length||tlDraft||vpList.length||vpDraft||tlWrap()?.querySelector('.al-line')||rtTradesForMain().length||msOn()||fvgOn(); const ss=sessOn(); if(!other&&!ss) return;
-    if(other){ tlPosition(); fvgPosition(); vpPosition(); alPosition(); rtPosition(); msPosition(); }
+    const other=tlLines.length||tlDraft||vpList.length||vpDraft||tlWrap()?.querySelector('.al-line')||rtTradesForMain().length||msOn()||fvgOn()||scanChartOn(); const ss=sessOn(); if(!other&&!ss) return;
+    if(other){ tlPosition(); fvgPosition(); vpPosition(); alPosition(); rtPosition(); msPosition(); scanPosition(); }
     if(ss&&(other||(tlFrame++&1)===0)) sessPosition();       // sessions alone: every 2nd frame is plenty
     tlRaf=requestAnimationFrame(tick); }; tlRaf=requestAnimationFrame(tick); }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tlKick(); });
@@ -6471,7 +6627,7 @@ function goTrade(sym){ location.hash='#/trade/'+encodeURIComponent(sym); }
 function route(){
   const parts=(location.hash||'#/overview').replace(/^#\/?/,'').split('/'); let page=parts[0]||'overview';
   if(page==='trade'){ const sym=decodeURIComponent(parts[1]||lsGet('bd_last_pair','XAUUSD')); const inst=getInstruments().find(i=>i.symbol===sym)||getInstruments()[0]; if(inst){ lsSet('bd_last_pair',inst.symbol); showPage('chart'); if(!currentInst||currentInst.symbol!==inst.symbol||!chart) openChart(inst); else { setChartView(); } renderPairTabs(); } return; }
-  if(!['overview','markets','invest','alerts','journal','analytics','settings'].includes(page)) page='overview';
+  if(!['overview','markets','setups','invest','alerts','journal','analytics','settings'].includes(page)) page='overview';
   showPage(page);
 }
 function showPage(name){
@@ -6486,6 +6642,7 @@ function showPage(name){
   if(name==='markets') renderMarketsTable();
   if(name==='invest') renderInvest();
   if(name==='alerts') renderAlertsPage();
+  if(name==='setups'){ renderSetups(); if(Date.now()-scanLast>300000) scanRun(); }
   if(name==='chart'){ refreshRunTrades(true); setTimeout(()=>{ try{ tlKick(); }catch(e){} },800); }
   window.scrollTo({top:0});
 }
