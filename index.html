@@ -1683,6 +1683,10 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 .su-st{font-size:14px;font-weight:600}.su-st.zone{color:#f5b041}.su-st.trigger{color:#1ee883}.su-st.lost,.su-st.broken{color:#ff7d8f}
 .su-d{font:12px/1.55 ui-monospace,Menlo,monospace;color:var(--muted,#8b96a3)}.su-trade{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.su-trade div{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.04);font:12px ui-monospace,Menlo,monospace}.su-trade small{display:block;color:var(--muted,#8b96a3);font-size:10px;letter-spacing:.06em}
 .su-card .btn-soft{align-self:flex-start}
+.gp-card{margin:0 0 14px;padding:14px 16px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.gp-card h3{margin:0 0 8px;font-size:15px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}.gp-card ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.5}
+.gp-card .gp-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:12.5px;color:var(--muted,#8b96a3)}.gp-card select{font-size:12.5px}
+.coach-card{margin:0 0 16px}.coach-card li b{color:var(--text)}
 </style>
 </head>
 <body>
@@ -1899,7 +1903,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-27.1';
+const BUILD='2026-11-27.2';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -2738,8 +2742,8 @@ async function renderAnalytics(){
   const trades=(await getTrades()).map(enrich); const s=computeStats(trades);
   const pr=computeStats(trades,true); const prWR=(pr.wins+pr.losses)?Math.round(pr.wins/(pr.wins+pr.losses)*100):null;
   const practiceCard=pr.total?`<div class="card-s acc-card"><div class="acc-head"><div><h3>Practice — bar replay</h3><p class="pt-muted">Trades you placed in replay. Kept apart from your real win rate.</p></div><div class="acc-big"><strong class="${prWR===null?'':prWR>=50?'up':'down'}">${prWR===null?'—':prWR+'%'}</strong><small>${pr.wins} wins · ${pr.losses} losses · ${pr.total} practice trades</small></div></div></div>`:'';
-  if(!trades.some(t=>!t.practice)){ el.innerHTML=accuracyCard()+practiceCard+rpSessionsCardHtml(trades)+`<div class="empty-state"><h3>No real trades yet</h3><p>Your win rate, entry-model and session breakdowns appear after your first confirmed trades.</p></div>`; return; }
-  el.innerHTML=accuracyCard()+practiceCard+rpSessionsCardHtml(trades)+`
+  if(!trades.some(t=>!t.practice)){ el.innerHTML=coachCardHtml(trades)+accuracyCard()+practiceCard+rpSessionsCardHtml(trades)+`<div class="empty-state"><h3>No real trades yet</h3><p>Your win rate, entry-model and session breakdowns appear after your first confirmed trades.</p></div>`; return; }
+  el.innerHTML=coachCardHtml(trades)+accuracyCard()+practiceCard+rpSessionsCardHtml(trades)+`
   <div class="an-top">
     <div class="an-ring card-s"><div class="ring-wrap big"><svg viewBox="0 0 120 120" class="ring"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring-fg" id="ring-fg"/></svg><div class="ring-center"><strong id="ring-pct">0%</strong><small>WIN RATE</small></div></div>
       <div class="perf-stats"><div><small>Closed trades</small><strong>${s.wins+s.losses}</strong></div><div><small>Wins</small><strong class="up">${s.wins}</strong></div><div><small>Losses</small><strong class="down">${s.losses}</strong></div><div><small>Bonus wins</small><strong>${s.bonusWins}</strong></div><div><small>Manual closes</small><strong>${s.manual}</strong></div><div><small>Open now</small><strong>${s.open}</strong></div></div></div>
@@ -4251,6 +4255,70 @@ async function scanRun(){ const C=scanCfg(); if(!C.on||scanBusy||rp.active) retu
     lsSet('bd_scan_res',scanRes); scanLast=Date.now(); }
   finally{ scanBusy=false; scanProg=''; } if(document.body.dataset.page==='setups') renderSetups(); scanPosition.k=''; try{ scanPosition(); tlKick(); }catch(e){} return true; }
 setInterval(()=>{ if(!scanCfg().on) return; const now=Math.floor(Date.now()/1000), b=Math.floor(now/900); if(b!==scanBucket&&now%900>=25&&feedMode==='live'&&!rp.active){ scanBucket=b; scanRun(); } },5000);
+// ===== Daily game plan — one message before New York: setups, bias, news, the best pair =====
+const PLAN_DEF={on:true,mins:7*60+30,coach:true};
+function planCfg(){ return {...PLAN_DEF,...(lsGet('bd_plan',{})||{})}; }
+function planTime(nowS){ const C=planCfg(); const D=tzYMD('America/New_York',nowS*1000); return {t:tzEpoch('America/New_York',D.y,D.m,D.d,C.mins),wd:D.wd,ny:tzEpoch('America/New_York',D.y,D.m,D.d,9*60+30)}; }
+function planBest(){ let best=null, bs=-1; for(const inst of scanPairs()){ const r=scanRes[inst.symbol]; if(!r||!r.box||!['trigger','zone','waiting'].includes(r.state)) continue;
+    const agree=r.bias!=null&&((r.bias>2&&r.dir>0)||(r.bias<-2&&r.dir<0)); const sc=(r.state==='trigger'?3:r.state==='zone'?2:1)+(agree?1:0)+(r.q>=65?1:0)+(r.grade==='A++'?.5:0)+(r.fvg?.25:0)-(r.away||0);
+    if(sc>bs){ bs=sc; best={inst,r,agree}; } } return best; }
+function planBuild(){ const nowS=Date.now()/1000, P=planTime(nowS), lines=[];
+  const live=scanPairs().map(i=>({inst:i,r:scanRes[i.symbol]})).filter(x=>x.r&&x.r.box&&['trigger','zone','waiting'].includes(x.r.state)).sort((a,b)=>(SU_ORDER[a.r.state]-SU_ORDER[b.r.state])||((a.r.away||0)-(b.r.away||0)));
+  const F=(i,v)=>fmtPrice(i,v);
+  lines.push(live.length?'🎯 Setups: '+live.slice(0,5).map(({inst,r})=>`${inst.name||inst.symbol} ${r.dir<0?'SELL':'BUY'} ${r.grade}${r.fvg?' +FVG':''} ${r.state==='trigger'?'TRIGGERED':r.state==='zone'?'in zone':`waiting ${F(inst,r.box[0])}–${F(inst,r.box[1])}`}`).join(' · '):'🎯 Setups: none of your zones are live right now');
+  const bz=scanPairs().map(i=>({i,b:getBias(i.symbol)})).filter(x=>x.b&&Math.abs(x.b.score)>=3).sort((a,b)=>Math.abs(b.b.score)-Math.abs(a.b.score)).slice(0,5);
+  lines.push(bz.length?'📊 Bias: '+bz.map(x=>`${x.i.name||x.i.symbol} ${x.b.score>0?'+':''}${x.b.score}`).join(' · '):'📊 Bias: no strong daily bias today');
+  const [d0,d1]=sastDayBounds(); const seen=new Set(), ev=[]; for(const i of scanPairs()) for(const e of newsFor(i,Math.max(d0,nowS),d1)){ const k=e.t+e.cur+e.title; if(!seen.has(k)){ seen.add(k); ev.push(e); } }
+  ev.sort((a,b)=>a.t-b.t); lines.push(ev.length?'📰 News: '+ev.slice(0,4).map(e=>`${sastHM(e.t*1000)} ${e.cur} ${e.title}`).join(' · '):'📰 News: no high-impact news left today');
+  const best=planBest(); lines.push(best?`⭐ Best pair: ${best.inst.name||best.inst.symbol} ${best.r.dir<0?'SELL':'BUY'} — ${best.r.state==='trigger'?'triggered':best.r.state==='zone'?'price is in the zone':'zone untouched'}${best.agree?', bias agrees':''}${best.r.q!=null?`, quality ${best.r.q}`:''}`:'⭐ No clean setup — patience is a position today');
+  lines.push(`🧭 New York opens ${sastHM(P.ny*1000)} SAST · wait for the ✓ trigger, max 2 trades, stop after 2 losses`);
+  const D=new Date(nowS*1000).toLocaleDateString('en-ZA',{timeZone:'Africa/Johannesburg',weekday:'short',day:'numeric',month:'short'});
+  return {title:`Game plan · ${D}`,lines}; }
+async function planSend(manual){ if(!manual&&Date.now()-scanLast>10*60e3&&feedMode==='live'){ try{ await scanRun(); }catch(e){} }
+  const p=planBuild(); fireAlert(p.title,p.lines.join('\n'),'ok','plan'+todaySAST()+(manual?Date.now():''),{sound:'chime',ptype:'news',prio:4,tags:['clipboard'],noToast:true}); if(manual) toast('Game plan sent ✓'); return p; }
+setInterval(async()=>{ const C=planCfg(); if(!C.on||rp.active) return; const nowS=Math.floor(Date.now()/1000), P=planTime(nowS); if(P.wd==='Sat'||P.wd==='Sun') return;
+  if(nowS<P.t||nowS>P.t+45*60) return; const day=todaySAST(); if(lsGet('bd_plan_sent','')===day) return; if(!(await claim('plan:'+day))) return; lsSet('bd_plan_sent',day); await planSend(false); },20000);
+function planCardHtml(){ const C=planCfg(), p=planBuild(), nowS=Date.now()/1000, P=planTime(nowS);
+  const opts=[[6*60+30,'06:30'],[7*60+30,'07:30'],[8*60,'08:00'],[8*60+30,'08:30']].map(([m,l])=>{ const D=tzYMD('America/New_York',nowS*1000); return `<option value="${m}" ${C.mins===m?'selected':''}>${sastHM(tzEpoch('America/New_York',D.y,D.m,D.d,m)*1000)} SAST (${l} New York)</option>`; }).join('');
+  return `<div class="gp-card"><h3><span>📋 Today's game plan</span><button class="btn-soft" id="gp-send">Send to my phone now</button></h3><ul>${p.lines.map(l=>`<li>${esc(l)}</li>`).join('')}</ul>
+    <div class="gp-row"><label><input type="checkbox" id="gp-on" ${C.on?'checked':''}> Send it automatically on weekdays at</label><select id="gp-mins">${opts}</select><span>· Bias Desk must be open (any tab) at that time</span></div></div>`; }
+function planWire(root){ root.querySelector('#gp-send')?.addEventListener('click',()=>planSend(true));
+  root.querySelector('#gp-on')?.addEventListener('change',e=>{ lsSet('bd_plan',{...planCfg(),on:e.target.checked}); });
+  root.querySelector('#gp-mins')?.addEventListener('change',e=>{ lsSet('bd_plan',{...planCfg(),mins:+e.target.value}); lsSet('bd_plan_sent',''); toast('Game plan time saved'); }); }
+// ===== Weekly coach — reads your journal and says plainly what makes and loses you money =====
+function coachGroups(trades){ const wd=t=>new Date(t.entryTime).toLocaleDateString('en-ZA',{timeZone:'Africa/Johannesburg',weekday:'long'});
+  const rulesOk=t=>{ const v=Object.values(t.rulesCheck||{}); return v.length?v.every(Boolean):null; };
+  const dims=[['pair',t=>`${t.name||t.symbol} ${t.direction==='sell'?'sells':'buys'}`],['session',t=>`trades in the ${t.session} session`],['day',t=>`${wd(t)} trades`],
+    ['bias',t=>t.biasAlignment==='With bias'?'trades with the daily bias':t.biasAlignment==='Against bias'?'trades against the daily bias':null],
+    ['quality',t=>t.quality&&typeof t.quality.q==='number'?`${qsBand(t.quality.q)} quality-score trades`:null],['model',t=>t.setupTag?`${t.setupTag} entries`:null],
+    ['rules',t=>{ const r=rulesOk(t); return r==null?null:r?'trades where you followed all your rules':'trades where you broke a rule'; }],['emotion',t=>t.emotion?`trades taken feeling ${String(t.emotion).toLowerCase()}`:null],['tf',t=>t.timeframe?`${t.timeframe} entries`:null]];
+  const out=[]; for(const [k,f] of dims){ const m=new Map(); for(const t of trades){ const key=f(t); if(!key) continue; if(!m.has(key)) m.set(key,[]); m.get(key).push(t); }
+    for(const [label,list] of m){ const n=list.length, w=list.filter(isWin).length, l=list.filter(isLoss).length, R=list.reduce((a,t)=>a+(+t.R||0),0); out.push({dim:k,label,n,w,l,wr:w+l?Math.round(w/(w+l)*100):null,avg:R/n,R}); } }
+  return out; }
+function coachBuild(all){ const real=all.filter(t=>!t.practice&&isClosed(t)&&t.R!=null&&isFinite(+t.R)); const nowMs=Date.now(), wk=7*86400e3;
+  const at=t=>Date.parse(t.exitTime||t.entryTime)||0, tw=real.filter(t=>nowMs-at(t)<wk), lw=real.filter(t=>nowMs-at(t)>=wk&&nowMs-at(t)<2*wk);
+  const sum=L=>{ const w=L.filter(isWin).length, l=L.filter(isLoss).length, R=L.reduce((a,t)=>a+(+t.R||0),0); return {n:L.length,w,l,wr:w+l?Math.round(w/(w+l)*100):null,R}; };
+  const a=sum(tw), b=sum(lw), lines=[]; const r1=x=>(x>=0?'+':'')+x.toFixed(1)+'R';
+  lines.push(a.n?`📅 This week: ${a.n} trade${a.n>1?'s':''} · ${a.w}W ${a.l}L${a.wr!=null?` · ${a.wr}% win rate`:''} · ${r1(a.R)}${b.n?` (last week ${r1(b.R)})`:''}`:'📅 No closed trades this week');
+  if(real.length<5){ lines.push(`🧠 The coach needs at least 5 closed trades to find patterns — you have ${real.length}. Keep journaling every trade.`); return {lines,n:real.length}; }
+  const G=coachGroups(real).filter(g=>g.n>=3&&g.n<real.length); const good=G.filter(g=>g.avg>0.15).sort((x,y)=>y.R-x.R), bad=G.filter(g=>g.avg<-0.15).sort((x,y)=>x.R-y.R);
+  const used=new Set(); const pick=(L,k)=>{ const o=[]; for(const g of L){ if(o.length>=k) break; if(used.has(g.dim)) continue; used.add(g.dim); o.push(g); } return o; };
+  const fmt=g=>`<b>${g.label}</b> — ${g.n} trades, ${g.wr!=null?g.wr+'% wins, ':''}${(g.avg>=0?'+':'')+g.avg.toFixed(2)}R each (${r1(g.R)} total)`;
+  pick(good,2).forEach(g=>lines.push('✅ Keep doing: '+fmt(g))); pick(bad,2).forEach(g=>lines.push('❌ Costing you: '+fmt(g)+' — cut these'));
+  const ro=G.find(g=>g.label==='trades where you followed all your rules'), rb=coachGroups(real).find(g=>g.label==='trades where you broke a rule');
+  if(rb&&rb.n) lines.push(`📏 Rules: broken on ${rb.n} trade${rb.n>1?'s':''} → ${r1(rb.R)}${ro?`; followed → ${r1(ro.R)}`:''}`);
+  const worst=bad[0], best=good[0]; lines.push('🎯 Focus next week: '+(worst?`skip ${worst.label}`:'keep the same process')+(best?` and lean into ${best.label}`:'')+'.');
+  if(real.length<30) lines.push(`ℹ️ Based on ${real.length} trades — patterns firm up after about 30.`);
+  return {lines,n:real.length}; }
+function coachCardHtml(trades){ const c=coachBuild(trades), C=planCfg();
+  return `<div class="gp-card coach-card"><h3><span>🧠 Your coach</span><button class="btn-soft" id="coach-send">Send to my phone</button></h3><ul>${c.lines.map(l=>`<li>${l}</li>`).join('')}</ul>
+    <div class="gp-row"><label><input type="checkbox" id="coach-on" ${C.coach?'checked':''}> Send this report every Sunday at 18:00 SAST</label><span>· from your real (not practice) closed trades</span></div></div>`; }
+document.addEventListener('click',e=>{ if(e.target&&e.target.id==='coach-send') coachSend(true); });
+document.addEventListener('change',e=>{ if(e.target&&e.target.id==='coach-on') lsSet('bd_plan',{...planCfg(),coach:e.target.checked}); });
+async function coachSend(manual){ const c=coachBuild((await getTrades()).map(enrich)); const strip=x=>x.replace(/<[^>]+>/g,'');
+  fireAlert('Weekly coach report',c.lines.map(strip).join('\n'),'ok','coach'+todaySAST()+(manual?Date.now():''),{sound:'chime',ptype:'news',prio:3,tags:['brain'],noToast:true}); if(manual) toast('Coach report sent ✓'); }
+setInterval(async()=>{ const C=planCfg(); if(!C.coach||rp.active) return; const d=new Date(), wd=d.toLocaleDateString('en-US',{timeZone:'Africa/Johannesburg',weekday:'short'}), hm=+d.toLocaleTimeString('en-GB',{timeZone:'Africa/Johannesburg',hour:'2-digit',hour12:false});
+  if(wd!=='Sun'||hm<18||hm>=21) return; const day=todaySAST(); if(lsGet('bd_coach_sent','')===day) return; if(!(await claim('coach:'+day))) return; lsSet('bd_coach_sent',day); await coachSend(false); },60000);
 // ---- chart drawing: the strong grey POC box, 50% line, LH/LL and the trade once triggered
 function scanChartOn(){ const C=scanCfg(); const r=currentInst&&scanRes[currentInst.symbol]; return !!(C.on&&C.chart&&r&&r.box)||!!tlWrap()?.querySelector('svg.scan-layer:not([style*="none"])'); }
 function scanPosition(){ const w=tlWrap(); if(!w) return; let svg=w.querySelector('svg.scan-layer');
@@ -4288,7 +4356,7 @@ function renderSetups(){ const root=$('setups-body'); if(!root) return; const C=
   const rows=pairs.map(i=>({inst:i,r:scanRes[i.symbol]||{sym:i.symbol,state:'none',reason:scanBusy?'scanning…':'not scanned yet'}})).sort((x,y)=>(SU_ORDER[x.r.state]??9)-(SU_ORDER[y.r.state]??9));
   const nZ=rows.filter(x=>x.r.state==='zone'||x.r.state==='trigger').length, nW=rows.filter(x=>x.r.state==='waiting').length;
   const tg=(k,l)=>`<label><input type="checkbox" data-sc="${k}" ${C[k]?'checked':''}> ${l}</label>`;
-  root.innerHTML=`<div class="su-top"><div style="display:flex;flex-wrap:wrap;gap:10px 18px">${tg('on','Scanner on')}${tg('chart','Show zone on chart')}${tg('touch','Alert when price enters a zone')}${tg('pc','Alert on this PC')}${tg('phone','Send to my phone')}${tg('sessOnly','Only London / New York hours')}</div>
+  root.innerHTML=`${planCardHtml()}<div class="su-top"><div style="display:flex;flex-wrap:wrap;gap:10px 18px">${tg('on','Scanner on')}${tg('chart','Show zone on chart')}${tg('touch','Alert when price enters a zone')}${tg('pc','Alert on this PC')}${tg('phone','Send to my phone')}${tg('sessOnly','Only London / New York hours')}</div>
     <div class="su-meta">${scanBusy?`Scanning ${esc(scanProg)}…`:scanLast?`Last scan ${new Date(scanLast).toLocaleTimeString('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit'})} SAST · next at the next 15m close`:'Scans every 15 minutes while Bias Desk is open'} · ${nZ} at a zone · ${nW} waiting <button class="btn-soft" id="su-now" ${scanBusy?'disabled':''}>Scan now</button></div></div>
    <details class="su-how"><summary>How the scanner reads your setup</summary><ol>
     <li>4H and 1H market structure must point the same way (your structure indicator).</li>
@@ -4305,6 +4373,7 @@ function renderSetups(){ const root=$('setups-body'); if(!root) return; const C=
         <div class="su-st ${k}">${esc(txt)}</div>${trade}${det}<button class="btn-soft" data-open="${esc(inst.symbol)}">Open chart →</button></div>`; }).join('')}</div>`;
   root.querySelectorAll('[data-sc]').forEach(x=>x.addEventListener('change',()=>{ lsSet('bd_scan',{...scanCfg(),[x.dataset.sc]:x.checked}); scanPosition.k=''; try{ scanPosition(); }catch(e){} if(x.dataset.sc==='on'&&x.checked) scanRun(); renderSetups(); }));
   root.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>goTrade(b.dataset.open)));
+  planWire(root);
   $('su-now')?.addEventListener('click',async()=>{ if(feedMode!=='live'){ toast('Waiting for live prices — try again in a moment'); return; } toast('Scanning all pairs…'); await scanRun(); }); }
 function fvgOn(){ return lsGet('bd_fvg_on',false)===true; }
 // ===== Tool colours — every chart tool's colour is yours to pick (drawings have their own toolbar; these cover the rest) =====
