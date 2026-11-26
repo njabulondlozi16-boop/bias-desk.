@@ -7,11 +7,11 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
-      - run: node research/quality_backtest.mjs | tee research_out.txt
+      - run: node research/kalman_backtest.mjs | tee research_out.txt
       - uses: actions/upload-artifact@v4
         with: { name: research-output, path: research_out.txt }
