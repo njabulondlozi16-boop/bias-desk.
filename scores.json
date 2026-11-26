@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-25",
-  "generated_at": "04:59 SAST",
-  "model": "gemini-3.5-flash-lite",
+  "date": "2026-11-26",
+  "generated_at": "04:07 SAST",
+  "model": "gemini-3.8-flash",
   "scores": {
     "EURUSD": {
-      "score": -5,
-      "label": "Moderately Bearish",
-      "reason": "Euro pressured by robust US dollar strength and Fed hike bets."
-    },
-    "GBPUSD": {
-      "score": -4,
-      "label": "Moderately Bearish",
-      "reason": "Pound constrained by strong greenback and slowing domestic growth."
-    },
-    "AUDUSD": {
-      "score": -2,
-      "label": "Neutral",
-      "reason": "Domestic inflation supports AUD, but strong USD caps gains."
-    },
-    "NZDUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Weighed by low yield appeal, sluggish economy, and strong dollar."
+      "reason": "US tariff threats and widening Fed-ECB policy divergence heavily depress EURUSD."
+    },
+    "GBPUSD": {
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "Resilient BoE hike expectations cannot counter hot US PCE and aggressive Fed tightening bets."
+    },
+    "AUDUSD": {
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "Hot domestic inflation is overshadowed by tech rout, risk aversion, and broad USD strength."
+    },
+    "NZDUSD": {
+      "score": -8,
+      "label": "Strong Bearish",
+      "reason": "Kiwi hits multi-year lows against soaring USD on weak local growth and RBNZ pause."
     },
     "USDCHF": {
-      "score": 5,
-      "label": "Moderately Bullish",
-      "reason": "Widening interest rate differential favors USD over CHF."
+      "score": 2,
+      "label": "Neutral",
+      "reason": "Strong safe-haven franc buying largely absorbs dollar gains driven by resilient US growth."
     },
     "XAUUSD": {
       "score": -6,
       "label": "Strong Bearish",
-      "reason": "Hawkish Fed rate expectations and higher yields weigh on gold."
+      "reason": "Surging US PCE inflation and rising Fed rate hike expectations severely undercut bullion."
     },
     "US30": {
-      "score": -2,
+      "score": 2,
       "label": "Neutral",
-      "reason": "Tech rout and macro headwinds weigh on broader equities."
+      "reason": "Value-tilted Dow shows resilience, staging a dramatic late-day recovery amid dip-buying interest."
     },
     "US100": {
-      "score": -5,
-      "label": "Moderately Bearish",
-      "reason": "Heavy tech sector selloff and fading AI euphoria hit Nasdaq."
-    },
-    "GER30": {
       "score": -4,
       "label": "Moderately Bearish",
-      "reason": "DAX pressured by tech uncertainty and impending tariff fears."
+      "reason": "Tech valuation doubts and rising yields keep heavy pressure on AI and semiconductor names."
+    },
+    "GER30": {
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "Slumping tech stocks, easing domestic growth, and looming US tariffs batter German equities."
     },
     "BTCUSD": {
       "score": -7,
       "label": "Strong Bearish",
-      "reason": "Crypto-specific headwinds, ETF outflows, and risk-off sentiment hurt BTC."
+      "reason": "Persistent ETF outflows, hack contagion, and aggressive Fed hike expectations crush crypto sentiment."
     }
   },
   "currencies": {
     "USD": {
       "score": 7,
-      "reason": "Fed rate hike expectations rise and strong inflation focus."
+      "reason": "Strong GDP, sticky core PCE at 3.3%, and rising December Fed hike bets support USD."
     },
     "EUR": {
-      "score": -3,
-      "reason": "Weighed down by broad dollar strength and weak sentiment."
+      "score": -5,
+      "reason": "Threat of US tariffs, widening central bank divergence, and soft growth weigh heavily."
     },
     "GBP": {
-      "score": -2,
-      "reason": "Slowing private sector growth and persistent US dollar strength."
+      "score": -1,
+      "reason": "Hawkish BoE rate hike bets partially offset broader risk-off pressures and dollar strength."
     },
     "AUD": {
-      "score": 4,
-      "reason": "Stronger-than-expected inflation keeps RBA rate hike risks alive."
+      "score": -2,
+      "reason": "Hot CPI limits RBA rate cuts, but equity selloff and risk aversion drag AUD down."
     },
     "NZD": {
       "score": -6,
-      "reason": "Sluggish economy, low relative rates, and weak global risk sentiment."
+      "reason": "Weak domestic economy, low interest rates, and multi-year lows keep kiwi distinctly bearish."
     },
     "CHF": {
-      "score": -2,
-      "reason": "Low domestic rates compared to US amplify funding currency status."
+      "score": 4,
+      "reason": "Strong safe-haven inflows and rising SNB tightening bets amid tech sell-off boost the franc."
     }
   },
   "sources": {
@@ -108,7 +108,7 @@
     },
     "CHF": {
       "paragraphs": 3,
-      "headlines": 6,
+      "headlines": 5,
       "problems": []
     },
     "GOLD": {
