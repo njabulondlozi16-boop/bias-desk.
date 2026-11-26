@@ -1337,7 +1337,7 @@ body.qt-hide .quick-trade,body.qt-hide .mc-qt{display:none!important}
 .mc-tl{z-index:3}.mc-cap{z-index:8}
 .mc-mini .tl-tb,.mc-mini .tl-pop{z-index:12}
 /* market structure */
-.fvg-layer,.sess-layer{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:hidden}.sess-layer{z-index:1}.sess-t,.sess-o{font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.08em}.sess-n{font:700 9.5px 'JetBrains Mono',monospace;letter-spacing:.06em}.sess-pop a,.sp-pop a{color:var(--accent);text-decoration:none;font-weight:600}.sess-sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:-1px}.fvg-t{font:600 9.5px 'Space Grotesk',sans-serif;letter-spacing:.04em}
+.fvg-layer,.sess-layer{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:hidden}.sess-layer{z-index:1}.sess-t,.sess-o{font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.08em}.sess-n{font:700 9.5px 'JetBrains Mono',monospace;letter-spacing:.06em}.sess-pop a,.sp-pop a{color:var(--accent);text-decoration:none;font-weight:600}.sess-hd .sess-dots{display:inline-flex;gap:2px;font-style:normal}.sess-hd .sess-dots b{width:5px;height:10px;border-radius:2px;background:#6c727b}.sess-hd .sess-dots b:nth-child(2){background:#cfd6dd}.sess-hd .sess-dots b:nth-child(3){background:#1ee883}.sess-hd.on{border-color:color-mix(in srgb,var(--accent) 60%,transparent);background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--text)}.sess-sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:-1px}.fvg-t{font:600 9.5px 'Space Grotesk',sans-serif;letter-spacing:.04em}
 .ms-layer{position:absolute;left:0;top:0;height:100%;z-index:3;pointer-events:none;overflow:hidden}
 .ms-t{font:600 10.5px 'JetBrains Mono',monospace}.ms-r{font-weight:700}
 .ms-table{position:absolute;top:8px;z-index:6;pointer-events:none;background:rgba(10,13,20,.78);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:3px 4px;backdrop-filter:blur(4px)}
@@ -1878,7 +1878,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-26.5';
+const BUILD='2026-11-26.6';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -3425,6 +3425,7 @@ function buildChartShell(){
     <span id="hd-news" class="hd-news"><i>📰</i><span>News…</span></span>
     <div class="tvh-right">
       <button id="ct-bell" class="hd-btn" title="Alerts"><i class="ico">${ICON.bell}</i><span class="bell-n"></span></button>
+      <button id="ct-sess-hd" class="hd-btn sess-hd" title="Show / hide trading sessions (SAST)"><i class="sess-dots"><b></b><b></b><b></b></i><span>Sessions</span></button>
       <button id="ct-replay" class="hd-btn" title="Bar replay — practise on past candles"><i>⏮</i><span>Replay</span></button>
       <button id="ct-journal" class="hd-btn" title="Trades on this pair"><i>☰</i><span>Journal</span></button>
       <div class="th-dd"><button id="ct-theme" class="hd-btn th-btn" title="Candle design"><span class="th-mini"></span><span class="th-name"></span><b class="th-caret">▾</b></button><div id="theme-pop" class="theme-pop" hidden></div></div>
@@ -3482,8 +3483,9 @@ function buildChartShell(){
   $('ct-rect').addEventListener('click',()=>tlSetMode(!(tlMode&&tlKind==='rect'),'rect'));
   $('ct-sp').addEventListener('click',()=>{ const C=spCfg(); lsSet('bd_sp',{...C,on:!C.on}); spSig=''; spRun(); toast(!C.on?'Volume spikes on — S = sellers stepped in, B = buyers':'Volume spikes off'); if(!C.on) askNotify(); });
   $('ct-sp-set').addEventListener('click',()=>spSettings());
-  $('ct-sess').addEventListener('click',()=>{ const C=sessCfg(); lsSet('bd_sess',{...C,on:!C.on}); sessPosition(); tlKick(); toast(!C.on?'Sessions on (SAST)':'Sessions off'); });
+  $('ct-sess').addEventListener('click',()=>{ const C=sessCfg(); lsSet('bd_sess',{...C,on:!C.on}); sessPosition(); tlKick(); const big=granForLabel(currentTF||'15m')>3600; toast(!C.on?(big?'Sessions on — switch to 1h or lower to see the boxes':'Sessions on (SAST)'):'Sessions off'); });
   $('ct-sess-set').addEventListener('click',()=>sessSettings());
+  $('ct-sess-hd').addEventListener('click',()=>$('ct-sess').click());
   $('ct-zone').addEventListener('click',()=>{ tlSetMode(!(tlMode&&tlKind==='zone'),'zone'); askNotify(); });
   $('ct-alerts-page').addEventListener('click',()=>{ location.hash='#/alerts'; });
   railGroupsInit();
@@ -6494,7 +6496,7 @@ function sessOn(){ return !!sessCfg().on; }
 let sessSigLast='';
 function sessPosition(){ const w=tlWrap(); if(!w) return; let svg=w.querySelector('svg.sess-layer');
   if(!svg){ svg=document.createElementNS(TL_NS,'svg'); svg.setAttribute('class','sess-layer'); w.insertBefore(svg,w.firstChild?.nextSibling||null); }
-  const C=sessCfg(); $('ct-sess')?.classList.toggle('active',C.on); const g=granForLabel(currentTF||'15m');
+  const C=sessCfg(); $('ct-sess')?.classList.toggle('active',C.on); $('ct-sess-hd')?.classList.toggle('on',C.on); const g=granForLabel(currentTF||'15m'); const hb=$('ct-sess-hd'); if(hb) hb.title=C.on&&g>3600?'Sessions are on — switch to 1h or lower to see them':'Show / hide trading sessions (SAST)';
   if(!C.on||!currentInst||g>3600){ svg.style.display='none'; return; } svg.style.display='';
   const a=tlAnchor(); if(!a) return; let aw=0, th=0, vr=null; try{ aw=chart.priceScale('right').width()||0; th=chart.timeScale().height()||0; vr=chart.timeScale().getVisibleRange(); }catch(e){}
   const W=Math.max(0,w.clientWidth-aw), Hh=Math.max(0,w.clientHeight-th); svg.style.width=W+'px'; svg.style.height=Hh+'px'; if(!vr) return;
