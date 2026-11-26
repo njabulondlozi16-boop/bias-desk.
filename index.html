@@ -1878,7 +1878,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-26.2';
+const BUILD='2026-11-26.3';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -3915,7 +3915,7 @@ function hrayPlace(g,x1,y1,W){ if(x1===null||y1===null||!Number.isFinite(x1)||!N
 // Effort per candle = real traded volume (Binance) or, where the feed has no volume (forex, gold, indices),
 // the candle's true range — on these markets tick volume and range move together. A spike = effort ≥ k × its 20-candle average.
 // S = sellers stepped in: spike at/near a local high that closes weak (strong red body or a long upper rejection wick). B = the mirror.
-const SP_DEF={on:false,sens:'normal',bars:true,pc:true,phone:false,trend:true,early:false};
+const SP_DEF={on:false,sens:'normal',bars:true,pc:true,phone:false,trend:true,early:false,scalp:false,htf:'auto',scPhone:false};
 function spCfg(){ return {...SP_DEF,...(lsGet('bd_sp',{})||{})}; }
 const SP_K={low:2.2,normal:1.8,high:1.5};
 let spVol=null, spChart=null, spSig='', spLast={}, spBn={key:'',v:new Map(),at:0,busy:false}, spRes=[];
@@ -3956,6 +3956,58 @@ function spAnalyse(bars,vol){ const n=bars.length, C=spCfg(), K=SP_K[C.sens]||1.
   return out; }
 function spStats(res){ const st={}; for(const k of ['S','B']){ const ok=res.filter(r=>r.kind===k&&r.state==='ok'), done=ok.filter(r=>r.r1!=null); const w1=done.filter(r=>r.r1===1).length, d2=done.filter(r=>r.r2!=null||r.r1===0), w2=d2.filter(r=>r.r2===1).length;
     st[k]={n:ok.length,done:done.length,p1:done.length?Math.round(w1/done.length*100):null,p2:d2.length?Math.round(w2/d2.length*100):null,fail:res.filter(r=>r.kind===k&&r.state==='fail').length}; } return st; }
+// ===== Scalp mode (⚡): fast entries with the bigger trend =====
+// Higher-timeframe trend (swing structure, falling back to the 50-EMA slope) decides the direction.
+// On the chart timeframe: a 2–4 candle pullback against that trend, then the first candle that breaks back
+// with it (closes beyond the previous candle's low/high, or engulfs it) with at least average effort = entry at its close.
+// Stop just beyond the pullback extreme; targets 1R and 2R.
+function swingTrend(bars){ const n=bars.length, tr=new Array(n).fill(0), PH=[], PL=[]; let ema=null; const k=2/51; const emaArr=[];
+  const piv=(i,hi)=>{ for(let q=1;q<=3;q++){ if(hi?(bars[i-q].high>=bars[i].high||bars[i+q].high>bars[i].high):(bars[i-q].low<=bars[i].low||bars[i+q].low<bars[i].low)) return false; } return true; };
+  for(let i=0;i<n;i++){ ema=ema==null?bars[i].close:ema+(bars[i].close-ema)*k; emaArr.push(ema);
+    const j=i-3; if(j>=3&&j+3<n){ if(piv(j,true)) PH.push(bars[j].high); if(piv(j,false)) PL.push(bars[j].low); }
+    let t=0; if(PH.length>=2&&PL.length>=2){ const h1=PH[PH.length-1],h0=PH[PH.length-2],l1=PL[PL.length-1],l0=PL[PL.length-2]; if(h1<h0&&l1<l0) t=-1; else if(h1>h0&&l1>l0) t=1; }
+    if(t===0&&i>=60){ const sl=emaArr[i]-emaArr[i-10]; if(sl<0&&bars[i].close<emaArr[i]) t=-1; else if(sl>0&&bars[i].close>emaArr[i]) t=1; }
+    tr[i]=t; }
+  return tr; }
+const SC_HTF={auto:0,'15m':900,'1h':3600,'4h':14400};
+function scHtfGran(g){ const v=SC_HTF[spCfg().htf||'auto']; if(v&&v>g) return v; return g<=60?900:g<=900?3600:g<=3600?14400:86400; }
+let scHtf={key:'',bars:[],trend:[],at:0,busy:false};
+async function scLoadHtf(inst,hg){ const key=inst.symbol+'|'+hg; if(scHtf.key===key&&Date.now()-scHtf.at<Math.min(hg*1000/3,300000)) return scHtf; if(scHtf.busy) return scHtf.key===key?scHtf:null;
+  scHtf.busy=true; try{ const raw=await fetchCandlesOnceRaw(inst,hg,400); const now=Date.now()/1000; const bars=(raw||[]).filter(b=>b.time+hg<=now+1).sort((a,b)=>a.time-b.time);
+    if(bars.length>30){ scHtf={key,bars,trend:swingTrend(bars),at:Date.now(),busy:false}; spSig=''; return scHtf; } }catch(e){} scHtf.busy=false; return scHtf.key===key?scHtf:null; }
+function scTrendAt(H,hg,t){ const b=H.bars; let lo=0,hi=b.length-1,ans=-1; while(lo<=hi){ const m=(lo+hi)>>1; if(b[m].time+hg<=t){ ans=m; lo=m+1; } else hi=m-1; } return ans<0?0:H.trend[ans]; }
+function scAnalyse(bars,vol,H,hg,g){ const n=bars.length, out=[]; if(n<30||!H) return out;
+  const tr=bars.map((b,i)=>{ const pc=i?bars[i-1].close:b.open; return Math.max(b.high,pc)-Math.min(b.low,pc); });
+  const eff=bars.map((b,i)=>vol?(vol.get(b.time)??tr[i]):tr[i]); let lastSig=-99;
+  for(let i=25;i<n;i++){ const b=bars[i], p=bars[i-1]; const T=scTrendAt(H,hg,b.time+g); if(!T) continue;
+    let atr=0; for(let j=i-14;j<i;j++) atr+=tr[j]; atr/=14; let s=0; for(let j=i-20;j<i;j++) s+=eff[j]; const re=eff[i]/(s/20||1);
+    const rng=Math.max(b.high-b.low,1e-12), body=Math.abs(b.close-b.open)/rng;
+    // pullback against the trend over the previous 2–4 candles
+    let pbN=0; for(let j=i-1;j>=i-4;j--){ const c=bars[j]; if(T<0?(c.close>c.open||c.high>bars[j-1].high):(c.close<c.open||c.low<bars[j-1].low)) pbN++; else break; }
+    if(pbN<2) continue;
+    let ext=T<0?-Infinity:Infinity, base=T<0?Infinity:-Infinity; for(let j=i-pbN;j<=i;j++){ ext=T<0?Math.max(ext,bars[j].high):Math.min(ext,bars[j].low); }
+    for(let j=i-pbN-6;j<i-pbN+1;j++){ if(j<0) continue; base=T<0?Math.min(base,bars[j].low):Math.max(base,bars[j].high); }
+    const pbSize=Math.abs(ext-base); if(pbSize<atr*.5) continue;                         // pullback too small to matter
+    const brk=T<0?(b.close<b.open&&(b.close<p.low||(p.close>p.open&&b.close<p.open))):(b.close>b.open&&(b.close>p.high||(p.close<p.open&&b.close>p.open)));
+    if(!brk||body<.45||re<1.0) continue; if(i-lastSig<3) continue;
+    const entry=b.close, stop=ext+(T<0?1:-1)*atr*.05, risk=Math.abs(stop-entry); if(risk<=0||risk>atr*2.5) continue;
+    lastSig=i; const sig={i,time:b.time,side:T,entry,stop,risk,re};
+    sig.tp1=T<0?entry-risk:entry+risk; sig.tp2=T<0?entry-2*risk:entry+2*risk;
+    let r1=null,r2=null,endI=null; for(let j=i+1;j<Math.min(n,i+31);j++){ const x=bars[j]; const sl=T<0?x.high>=stop:x.low<=stop; const t1=T<0?x.low<=sig.tp1:x.high>=sig.tp1; const t2=T<0?x.low<=sig.tp2:x.high>=sig.tp2;
+      if(r1==null){ if(sl){ r1=0; r2=0; endI=j; break; } if(t1){ r1=1; if(t2){ r2=1; endI=j; break; } continue; } }
+      else { if(t2){ r2=1; endI=j; break; } if(T<0?x.high>=entry:x.low<=entry){ r2=0; endI=j; break; } } }   // after 1R the stop sits at breakeven
+    sig.r1=r1; sig.r2=r2; sig.endI=endI; out.push(sig); }
+  return out; }
+function scStats(sc){ const d=sc.filter(s=>s.r1!=null), w=d.filter(s=>s.r1===1).length, d2=d.filter(s=>s.r2!=null), w2=d2.filter(s=>s.r2===1).length;
+  // average result with "half off at 1R, rest at 2R or breakeven"
+  const avg=d.length?d.reduce((a,s)=>a+(s.r1===0?-1:.5+(s.r2===1?1:0)),0)/d.length:null;
+  return {n:sc.length,done:d.length,p1:d.length?Math.round(w/d.length*100):null,p2:d2.length?Math.round(w2/d2.length*100):null,avg}; }
+let scRes=[], scLines=[], scLineKey='', scLastAlert={};
+function scDrawTrade(closed,dn,up){ const last=scRes.at(-1); const nBars=closed.length;
+  const live=last&&last.endI==null&&nBars-1-last.i<=30?last:null; const key=live?live.time+'|'+(live.r1===1?'1':'0'):'';
+  if(key===scLineKey) return; scLineKey=key; scLines.forEach(l=>{ try{ series.removePriceLine(l); }catch(e){} }); scLines=[]; if(!live||typeof series.createPriceLine!=='function') return;
+  const sell=live.side<0, hit1=live.r1===1; const P=(price,color,title,style,w)=>{ try{ scLines.push(series.createPriceLine({price,color,lineWidth:w||1,lineStyle:style,axisLabelVisible:true,title})); }catch(e){} };
+  P(live.entry,'#c9d1d9',`⚡ ${sell?'SELL':'BUY'} entry`,2,1); P(hit1?live.entry:live.stop,sell?up:dn,hit1?'SL → BE':'SL',0,1); P(live.tp1,sell?dn:up,hit1?'TP1 ✓':'TP1 1R',2,1); P(live.tp2,sell?dn:up,'TP2 2R',2,1); }
 async function spBinanceVol(inst,g,bars){ const key=inst.symbol+'|'+g; if(!VP_BN_IV[g]) return null;
   if(spBn.key!==key){ spBn={key,v:new Map(),at:0,busy:false}; }
   const fresh=Date.now()-spBn.at<20000; if(!spBn.busy&&(!fresh||!spBn.v.has(bars[bars.length-1].time))){ spBn.busy=true;
@@ -3967,8 +4019,9 @@ async function spRun(){ const C=spCfg(); $('ct-sp')?.classList.toggle('active',C
   const g=granForLabel(currentTF); const now=rp.active?rp.now:Date.now()/1000; const all=[...candleMap.values()].sort((a,b)=>a.time-b.time); if(all.length<22) return;
   const closed=all.filter(b=>b.time+g<=now+1);
   const vol=isBinance(currentInst)?await spBinanceVol(currentInst,g,all):null;
-  const sig=currentInst.symbol+'|'+g+'|'+closed.length+'|'+(closed.at(-1)?.time)+'|'+(all.at(-1)?.close)+'|'+C.sens+'|'+C.bars+'|'+C.trend+'|'+(vol?vol.size:0); if(sig===spSig) return; spSig=sig;
-  spRes=spAnalyse(closed,vol);
+  const hg=scHtfGran(g); const H=C.scalp?await scLoadHtf(currentInst,hg):null;
+  const sig=currentInst.symbol+'|'+g+'|'+closed.length+'|'+(closed.at(-1)?.time)+'|'+(all.at(-1)?.close)+'|'+C.sens+'|'+C.bars+'|'+C.trend+'|'+(vol?vol.size:0)+'|'+C.scalp+'|'+(H?H.key+H.at:''); if(sig===spSig) return; spSig=sig;
+  spRes=spAnalyse(closed,vol); scRes=C.scalp&&H?scAnalyse(closed,vol,H,hg,g):[];
   let so={}; try{ so=series.options()||{}; }catch(e){} const up=so.upColor||'#22c58a', dn=so.downColor||'#f0506e';
   const mk=[]; for(const r of spRes){ if(!r.kind) continue;
     if(r.state==='fail') continue;
@@ -3976,7 +4029,10 @@ async function spRun(){ const C=spCfg(); $('ct-sp')?.classList.toggle('active',C
     if(r.kind==='S') mk.push({time:r.time,position:'aboveBar',color:r.state==='pending'?fade(dn):dn,shape:'arrowDown',text:r.state==='pending'?'S?':'S',size:1.4});
     else if(r.kind==='B') mk.push({time:r.time,position:'belowBar',color:r.state==='pending'?fade(up):up,shape:'arrowUp',text:r.state==='pending'?'B?':'B',size:1.4});
     else mk.push({time:r.time,position:r.kind==='s'?'aboveBar':'belowBar',color:r.kind==='s'?dn:up,shape:'circle',size:.5}); }
+  for(const z of scRes) mk.push({time:z.time,position:z.side<0?'aboveBar':'belowBar',color:z.side<0?dn:up,shape:z.side<0?'arrowDown':'arrowUp',text:'⚡',size:.9});
+  mk.sort((a,b)=>a.time-b.time);
   try{ series.setMarkers(mk); }catch(e){}
+  if(C.scalp) scDrawTrade(closed,dn,up); else if(scLines.length){ scLineKey='x'; scRes=[]; scDrawTrade(closed,dn,up); }
   if(C.bars&&typeof chart.addHistogramSeries==='function'){ if(!spVol||spChart!==chart){ spChart=chart; spVol=chart.addHistogramSeries({priceScaleId:'sp',priceFormat:{type:'volume'},lastValueVisible:false,priceLineVisible:false}); chart.priceScale('sp').applyOptions({scaleMargins:{top:.84,bottom:0},visible:false}); }
     const map=new Map(spRes.map(r=>[r.time,r])); const rgba=(h,a)=>{ const c=hexRgb(h); return `rgba(${c},${a})`; };
     const data=closed.map((b,i)=>{ const r=map.get(b.time); const e=vol?(vol.get(b.time)??0):Math.max(b.high,(closed[i-1]||b).close)-Math.min(b.low,(closed[i-1]||b).close); const red=b.close<b.open;
@@ -3984,9 +4040,13 @@ async function spRun(){ const C=spCfg(); $('ct-sp')?.classList.toggle('active',C
     try{ spVol.setData(data); }catch(e){} }
   else if(spVol&&spChart===chart){ try{ spVol.setData([]); }catch(e){} }
   // alert once per newly closed S/B candle on this chart
+  { const z=scRes.at(-1), lc2=closed.at(-1); if(C.scalp&&z&&lc2&&z.time===lc2.time&&!rp.active&&now-(lc2.time+g)<g*.9){ const k='sc'+currentInst.symbol+'|'+g; if(scLastAlert[k]!==z.time){ scLastAlert[k]=z.time; scNotify(currentInst,g,z,scStats(scRes)); } } }
   const lc=closed.at(-1); if(lc&&!rp.active&&now-(lc.time+g)<g*.9){ const k=currentInst.symbol+'|'+g;
     const conf=spRes.find(r=>r.state==='ok'&&closed[r.i+1]&&closed[r.i+1].time===lc.time); const early=C.early?spRes.find(r=>r.state==='pending'&&r.time===lc.time):null; const sig=conf||early;
     if(sig&&spLast[k]!==sig.time+(conf?'c':'e')){ spLast[k]=sig.time+(conf?'c':'e'); spNotify(currentInst,g,closed[sig.i],sig,!!conf,spStats(spRes)[sig.kind]); } } }
+function scNotify(inst,g,z,st){ const C=spCfg(); if(!C.pc&&!C.scPhone) return; const tf=currentTF.toUpperCase(), sell=z.side<0, F=v=>fmtPrice(inst,v);
+  fireAlert(`⚡ scalp ${sell?'SELL':'BUY'} (${tf}, with the ${sell?'down':'up'}trend)`,`entry ${F(z.entry)} · SL ${F(z.stop)} · TP1 ${F(z.tp1)} · TP2 ${F(z.tp2)}${st.p1!=null?` · this chart: ${st.p1}% hit TP1 (${st.done} scalps)`:''} · ${sastHM((z.time+g)*1000)} SAST`,
+    sell?'bad':'ok','sc'+inst.symbol+z.time,{sym:inst.symbol,sound:C.pc?'chime':'off',push:C.scPhone?undefined:false,ptype:'price',prio:4,tags:['zap']}); }
 function spNotify(inst,g,bar,r,confirmed,st){ const C=spCfg(); if(!C.pc&&!C.phone) return; const tf=currentTF.toUpperCase(); const sell=r.kind==='S';
   const zones=(zoneIdx.get(inst.symbol)||[]).concat(zoneAll().filter(o=>o.inst.symbol===inst.symbol&&o.l.zone&&o.l.zone.hitAt&&Date.now()-o.l.zone.hitAt<6*3600e3).map(o=>({lo:Math.min(o.l.p1,o.l.p2),hi:Math.max(o.l.p1,o.l.p2)})));
   const inZone=zones.some(z=>bar.high>=z.lo&&bar.low<=z.hi);
@@ -3999,11 +4059,15 @@ function spSettings(){ document.querySelector('.sp-pop')?.remove(); const host=(
    <label class="tc-row"><span>Sensitivity</span><select data-k="sens"><option value="low" ${C.sens==='low'?'selected':''}>Fewer (2.2×)</option><option value="normal" ${C.sens==='normal'?'selected':''}>Normal (1.8×)</option><option value="high" ${C.sens==='high'?'selected':''}>More (1.5×)</option></select></label>
    <label class="tc-row"><span>Trend filter <small>(only S in a downtrend, only B in an uptrend — from swing highs/lows)</small></span><input type="checkbox" data-k="trend" ${C.trend?'checked':''}></label>
    <label class="tc-row"><span>Alert at first close <small>(earlier, before confirmation)</small></span><input type="checkbox" data-k="early" ${C.early?'checked':''}></label>
+   <label class="tc-row sc-row"><span><b>⚡ Scalp mode</b> <small>(fast entries with the bigger trend — entry at the close of the first candle that breaks a pullback)</small></span><input type="checkbox" data-k="scalp" ${C.scalp?'checked':''}></label>
+   <label class="tc-row"><span>Bigger trend from</span><select data-k="htf"><option value="auto" ${C.htf==='auto'?'selected':''}>Auto (${(()=>{ const h=scHtfGran(granForLabel(currentTF||'15m')); return h>=86400?'1D':h>=14400?'4H':h>=3600?'1H':'15M'; })()})</option><option value="15m" ${C.htf==='15m'?'selected':''}>15M</option><option value="1h" ${C.htf==='1h'?'selected':''}>1H</option><option value="4h" ${C.htf==='4h'?'selected':''}>4H</option></select></label>
+   <label class="tc-row"><span>Send scalp alerts to my phone</span><input type="checkbox" data-k="scPhone" ${C.scPhone?'checked':''}></label>
    <label class="tc-row"><span>Volume bars at the bottom</span><input type="checkbox" data-k="bars" ${C.bars?'checked':''}></label>
    <label class="tc-row"><span>Alert on this PC when S / B closes</span><input type="checkbox" data-k="pc" ${C.pc?'checked':''}></label>
    <label class="tc-row"><span>Also send to my phone <small>(always when it is inside your zone)</small></span><input type="checkbox" data-k="phone" ${C.phone?'checked':''}></label>
    <div class="sp-stats">${(()=>{ const st=spStats(spRes); const row=(k,n)=>{ const x=st[k]; return `<div><b style="color:var(${k==='S'?'--down':'--up'})">${n}</b> ${x.n} confirmed · ${x.fail} failed · ${x.p1==null?'—':x.p1+'%'} reached 1R first · ${x.p2==null?'—':x.p2+'%'} reached 2R</div>`; };
-      return `<p class="tp-sub"><b>Track record on this chart</b> (${esc(currentInst?.name||'')} ${esc((currentTF||'').toUpperCase())}, ${spRes.length} candles; entry at the confirming close, stop beyond the signal candle)</p>${row('S','S')}${row('B','B')}<p class="tp-sub">Small samples swing a lot — over 30 signals means more. Not a promise of future results.</p>`; })()}</div>`;
+      const z=scStats(scRes); const scRow=C.scalp?`<div><b style="color:var(--accent)">⚡</b> ${z.n} scalps · ${z.p1==null?'—':z.p1+'%'} hit TP1 (1R) before SL · ${z.p2==null?'—':z.p2+'%'} went on to TP2 · avg ${z.avg==null?'—':(z.avg>=0?'+':'')+z.avg.toFixed(2)+'R'} per scalp <small>(half off at TP1, rest to TP2 or breakeven)</small></div>`:'';
+      return `<p class="tp-sub"><b>Track record on this chart</b> (${esc(currentInst?.name||'')} ${esc((currentTF||'').toUpperCase())}, ${spRes.length} candles; entry at the confirming close, stop beyond the signal candle)</p>${row('S','S')}${row('B','B')}${scRow}<p class="tp-sub">Small samples swing a lot — over 30 signals means more. Not a promise of future results.</p>`; })()}</div>`;
   box.querySelector('.tp-x').onclick=()=>box.remove();
   box.querySelectorAll('[data-k]').forEach(i=>i.addEventListener('change',async()=>{ lsSet('bd_sp',{...spCfg(),on:true,[i.dataset.k]:i.type==='checkbox'?i.checked:i.value}); spSig=''; await spRun(); spSettings(); }));
   box.addEventListener('pointerdown',e=>e.stopPropagation()); host.appendChild(box);
