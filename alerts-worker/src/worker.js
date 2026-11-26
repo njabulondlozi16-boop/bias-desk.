@@ -14,6 +14,18 @@ export function boundary(tf, now, anchor) { const T = TF[tf]; if (T.s <= 3600) r
 function hmMin(x) { const [h, m] = String(x || '0:0').split(':').map(Number); return (h || 0) * 60 + (m || 0); }
 function inHours(cc, ms) { const m = hmMin(hm(ms)), a = hmMin(cc.from || '00:00'), b = hmMin(cc.to || '23:59'); return a <= b ? (m >= a && m <= b) : (m >= a || m <= b); }
 
+// ---- session-open alarms (London 08:00 London time, New York 08:00 and NYSE 09:30 New York time) ----
+function tzOff(tz, ms) { try { const v = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' }).formatToParts(new Date(ms)).find(x => x.type === 'timeZoneName').value; const m = v.match(/GMT([+-]\d+)(?::(\d+))?/); return m ? (+m[1]) * 60 + (m[1].startsWith('-') ? -1 : 1) * (+(m[2] || 0)) : 0; } catch (e) { return 0; } }
+function tzEpoch(tz, y, mo, d, mins) { const g = Date.UTC(y, mo, d, 0, 0) + mins * 60e3; let e = g - tzOff(tz, g) * 60e3; e = g - tzOff(tz, e) * 60e3; return Math.floor(e / 1000); }
+function tzYMD(tz, ms) { const p = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }).formatToParts(new Date(ms)); const g = t => p.find(x => x.type === t).value; return { y: +g('year'), m: +g('month') - 1, d: +g('day'), wd: g('weekday') }; }
+const SESS = [{ k: 'london', name: 'London', tz: 'Europe/London', mins: 480, label: 'London session' }, { k: 'ny', name: 'New York', tz: 'America/New_York', mins: 480, label: 'New York session' }, { k: 'nyse', name: 'NYSE', tz: 'America/New_York', mins: 570, label: 'New York stock market (US30, US100)' }];
+export async function sessionAlarms(env, sess, now, log) {
+  if (!sess) return; const lead = Math.max(1, Math.min(120, +sess.lead || 15));
+  for (const x of SESS) { if (!sess[x.k]) continue; const D = tzYMD(x.tz, now * 1000); if (D.wd === 'Sat' || D.wd === 'Sun') continue; const open = tzEpoch(x.tz, D.y, D.m, D.d, x.mins);
+    for (const [at, pre] of [[open - lead * 60, true], [open, false]]) { if (!pre && !sess.atOpen) continue; if (now - at < 0 || now - at >= 60) continue;
+      const r = await push(env, { title: pre ? `⏰ ${x.label} opens in ${lead} min` : `🔔 ${x.label} is open`, message: `${x.name} opens at ${hm(open * 1000)} SAST · check your bias and zones`, priority: 4, tags: ['alarm_clock'] });
+      if (r.ok) log.sent++; else log.errors.push(r.err || r.skip); } } }
+
 // one WebSocket to Deriv, many requests, answers matched by req_id
 export async function derivBatch(reqs, timeoutMs = 12000, WS = globalThis.WebSocket) {
   if (!reqs.length) return [];
@@ -56,6 +68,7 @@ export async function run(env, nowMs = Date.now(), WS) {
   const st = (await env.KV.get('state', 'json')) || { side: {}, zones: {}, lastZone: 0 };
   let stDirty = false; const log = { at: nowMs, zones: 0, cc: [], sent: 0, errors: [] };
   const cc = cfg.cc || { on: false, sel: {} };
+  await sessionAlarms(env, cfg.sess, now, log);
   // what is due this minute
   const due = []; let B = 0;
   if (cc.on) for (const tf of Object.keys(TF)) { const b = boundary(tf, now, cc.anchor); if (now - b < 60 && (cc.sel[tf] || []).length) { due.push(tf); B = Math.max(B, b); } }
@@ -117,7 +130,8 @@ function cleanCfg(c) {
   const pair = p => ({ sym: sym(p.sym), deriv: sym(p.deriv), binance: sym(p.binance), name: sym(p.name || p.sym), dp: Math.max(0, Math.min(8, num(p.dp) || 5)) });
   const sel = {}; for (const tf of Object.keys(TF)) sel[tf] = ((c.cc && c.cc.sel && c.cc.sel[tf]) || []).slice(0, 40).map(pair).filter(p => p.deriv || p.binance);
   const zones = (c.zones || []).slice(0, 200).map(z => ({ ...pair(z), id: sym(z.id), lo: num(z.lo), hi: num(z.hi), mode: z.mode === 'close' ? 'close' : 'touch', tf: TF[z.tf] ? z.tf : '1h', repeat: !!z.repeat, on: !!z.on, armedAt: num(z.armedAt) || 0, kind: z.kind === 'level' ? 'level' : 'zone' })).filter(z => z.id && isFinite(z.lo) && isFinite(z.hi) && (z.deriv || z.binance));
-  return { cc: { on: !!(c.cc && c.cc.on), anchor: c.cc && c.cc.anchor === 'utc' ? 'utc' : 'ny', from: String((c.cc && c.cc.from) || '00:00').slice(0, 5), to: String((c.cc && c.cc.to) || '23:59').slice(0, 5), sel }, zones, at: Date.now() };
+  const ss = c.sess || {};
+  return { sess: { london: !!ss.london, ny: !!ss.ny, nyse: !!ss.nyse, atOpen: !!ss.atOpen, lead: Math.max(1, Math.min(120, +ss.lead || 15)) }, cc: { on: !!(c.cc && c.cc.on), anchor: c.cc && c.cc.anchor === 'utc' ? 'utc' : 'ny', from: String((c.cc && c.cc.from) || '00:00').slice(0, 5), to: String((c.cc && c.cc.to) || '23:59').slice(0, 5), sel }, zones, at: Date.now() };
 }
 export default {
   async scheduled(event, env, ctx) { ctx.waitUntil(run(env).catch(async e => { await env.KV.put('last', JSON.stringify({ at: Date.now(), errors: [String(e && e.message || e)] })).catch(() => { }); })); },
