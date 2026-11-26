@@ -1337,7 +1337,7 @@ body.qt-hide .quick-trade,body.qt-hide .mc-qt{display:none!important}
 .mc-tl{z-index:3}.mc-cap{z-index:8}
 .mc-mini .tl-tb,.mc-mini .tl-pop{z-index:12}
 /* market structure */
-.fvg-layer,.sess-layer{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:hidden}.sess-layer{z-index:1}.sess-t{font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.08em}.sess-pop a,.sp-pop a{color:var(--accent);text-decoration:none;font-weight:600}.sess-sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:-1px}.fvg-t{font:600 9.5px 'Space Grotesk',sans-serif;letter-spacing:.04em}
+.fvg-layer,.sess-layer{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:hidden}.sess-layer{z-index:1}.sess-t,.sess-o{font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.08em}.sess-n{font:700 9.5px 'JetBrains Mono',monospace;letter-spacing:.06em}.sess-pop a,.sp-pop a{color:var(--accent);text-decoration:none;font-weight:600}.sess-sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:-1px}.fvg-t{font:600 9.5px 'Space Grotesk',sans-serif;letter-spacing:.04em}
 .ms-layer{position:absolute;left:0;top:0;height:100%;z-index:3;pointer-events:none;overflow:hidden}
 .ms-t{font:600 10.5px 'JetBrains Mono',monospace}.ms-r{font-weight:700}
 .ms-table{position:absolute;top:8px;z-index:6;pointer-events:none;background:rgba(10,13,20,.78);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:3px 4px;backdrop-filter:blur(4px)}
@@ -1878,7 +1878,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-26.4';
+const BUILD='2026-11-26.5';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -6499,20 +6499,33 @@ function sessPosition(){ const w=tlWrap(); if(!w) return; let svg=w.querySelecto
   const a=tlAnchor(); if(!a) return; let aw=0, th=0, vr=null; try{ aw=chart.priceScale('right').width()||0; th=chart.timeScale().height()||0; vr=chart.timeScale().getVisibleRange(); }catch(e){}
   const W=Math.max(0,w.clientWidth-aw), Hh=Math.max(0,w.clientHeight-th); svg.style.width=W+'px'; svg.style.height=Hh+'px'; if(!vr) return;
   const bars=[...candleMap.values()].sort((p,q)=>p.time-q.time); if(!bars.length) return;
-  const now=Date.now()/1000; const on={'Asian':C.asia,'London':C.london,'New York':C.ny}; let h='';
-  for(const s of sessWindows(+vr.from,+vr.to)){ if(!on[s.name]) continue; let hi=-Infinity, lo=Infinity, n=0, lastT=null;
+  const now=Date.now()/1000; const on={'Asian':C.asia,'London':C.london,'New York':C.ny}; let h='', rib='';
+  const short={'Asian':'ASIA','London':'LONDON','New York':'NEW YORK'}, tag={'Asian':'ASIA','London':'LDN','New York':'NY'}, row={'Asian':0,'London':1,'New York':2};
+  const RB=Hh-4-3*6;                                                    // session timeline strip just above the time axis
+  const left=t=>{ const m=Math.round((t-now)/60); return m>=60?Math.floor(m/60)+'h '+(m%60)+'m':m+'m'; };
+  for(const s of sessWindows(+vr.from,+vr.to)){ if(!on[s.name]) continue; const col=sessCol(s.name), rgb=hexRgb(col), live=now>=s.a&&now<s.b;
+    // timeline strip (always drawn, even before candles exist for it)
+    const xa=tlX(s.a,a), xb=tlX(Math.min(s.b,now+g),a);
+    if(xa!=null&&xb!=null&&xb>0&&xa<W){ const y=RB+row[s.name]*6; rib+=`<rect x="${Math.max(0,xa).toFixed(1)}" y="${y}" width="${Math.max(2,Math.min(W,xb)-Math.max(0,xa)).toFixed(1)}" height="4" rx="2" fill="rgba(${rgb},${live?.95:.6})"/>`; }
+    let hi=-Infinity, lo=Infinity, n=0, lastT=null;
     for(const b of bars){ if(b.time<s.a) continue; if(b.time>=s.b) break; hi=Math.max(hi,b.high); lo=Math.min(lo,b.low); n++; lastT=b.time; }
-    if(!n) continue; const live=now<s.b; const x1=tlX(s.a,a), x2=live?tlX(lastT+g,a):tlX(s.b,a); const y1=yAtPrice(hi), y2=yAtPrice(lo);
-    if(x1==null||x2==null||y1==null||y2==null||x2<0||x1>W) continue; const col=sessCol(s.name), rgb=hexRgb(col);
-    const lbl=(s.name==='Asian'?'ASIA':s.name.toUpperCase())+'  '+sastHM(s.a*1000)+'–'+sastHM(s.b*1000)+(live?'  ● LIVE':'');
-    h+=`<g><rect x="${x1.toFixed(1)}" y="${y1.toFixed(1)}" width="${Math.max(1,x2-x1).toFixed(1)}" height="${Math.max(1,y2-y1).toFixed(1)}" fill="rgba(${rgb},${s.name==='New York'?.07:.05})" stroke="rgba(${rgb},.55)" stroke-width="1" stroke-dasharray="${s.name==='London'?'5 4':s.name==='Asian'?'2 4':'0'}"/>`
-      +`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${Hh}" stroke="rgba(${rgb},.18)" stroke-width="1"/>`
-      +`<text class="sess-t" x="${(x1+5).toFixed(1)}" y="${(y1-5).toFixed(1)}" fill="rgba(${rgb},.9)">${lbl}</text></g>`; }
+    if(!n) continue; const x1=tlX(s.a,a), x2=live?tlX(lastT+g,a):tlX(s.b,a); const y1=yAtPrice(hi), y2=yAtPrice(lo);
+    if(x1==null||x2==null||y1==null||y2==null||x2<0||x1>W) continue;
+    const bw=Math.max(1,x2-x1), dark=s.name==='New York'?'#03130a':'#0a0c10';
+    h+=`<g><rect x="${x1.toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,y2-y1).toFixed(1)}" fill="rgba(${rgb},${s.name==='New York'?.08:.055})" stroke="rgba(${rgb},${live?.85:.5})" stroke-width="${live?1.4:1}" stroke-dasharray="${s.name==='London'?'5 4':s.name==='Asian'?'2 4':'0'}"/>`;
+    // "OPEN" marker: line from the box down to the strip + tag
+    h+=`<line x1="${x1.toFixed(1)}" y1="${y2.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${RB-2}" stroke="rgba(${rgb},.35)" stroke-width="1" stroke-dasharray="3 3"/>`;
+    const ot=`${tag[s.name]} OPEN ${sastHM(s.a*1000)}`; h+=`<rect x="${(x1+2).toFixed(1)}" y="${RB-17}" width="${ot.length*6+10}" height="13" rx="3" fill="rgba(${rgb},.18)" stroke="rgba(${rgb},.5)" stroke-width=".8"/><text class="sess-o" x="${(x1+7).toFixed(1)}" y="${RB-7.5}" fill="${col}">${ot}</text>`;
+    // name tag inside the box (top-left)
+    const nm=live?`● ${tag[s.name]} NOW · ${left(s.b)} left`:`${short[s.name]}  ${sastHM(s.a*1000)}–${sastHM(s.b*1000)}`; const tw=nm.length*6.1+12;
+    { const room=W-x1-6, fb=live?`● ${tag[s.name]} NOW`:short[s.name], txt=room<tw?fb:nm, w2=room<tw?fb.length*6.1+12:tw; if(room>30) h+=`<rect x="${(x1+3).toFixed(1)}" y="${(y1+3).toFixed(1)}" width="${w2.toFixed(1)}" height="15" rx="3" fill="${col}" fill-opacity="${live?.95:.8}"/><text class="sess-n" x="${(x1+9).toFixed(1)}" y="${(y1+13.5).toFixed(1)}" fill="${dark}">${txt}</text>`; }
+    h+='</g>'; }
+  h=rib+h;
   if(svg.dataset.h!==h){ svg.dataset.h=h; svg.innerHTML=h; } }
 function sessSettings(){ document.querySelector('.sess-pop')?.remove(); const host=(typeof isFs==='function'&&isFs())?fsEl():document.body; const C=sessCfg(); const box=document.createElement('div'); box.className='tf-pick sess-pop';
   const row=(k,n,c)=>`<label class="tc-row"><span><i class="sess-sw" style="background:${c}"></i>${n}</span><input type="checkbox" data-k="${k}" ${C[k]?'checked':''}></label>`;
   const t=name=>{ const s=SESSIONS.find(x=>x.name===name), now=Date.now(), D=tzYMD(s.tz,now); return sastHM(tzEpoch(s.tz,D.y,D.m,D.d,s.open)*1000)+'–'+sastHM(tzEpoch(s.tz,D.y,D.m,D.d,s.close)*1000)+' SAST'; };
-  box.innerHTML=`<div class="tp-head"><strong>Sessions (SAST)</strong><button class="tp-x" title="Close">✕</button></div><p class="tp-sub">Boxes show each session's high and low, on 1H charts and lower. Times follow London/New York clock changes automatically.</p>
+  box.innerHTML=`<div class="tp-head"><strong>Sessions (SAST)</strong><button class="tp-x" title="Close">✕</button></div><p class="tp-sub">Each box = one session's high and low, with its name tag inside (● NOW on the running one). The coloured strip along the bottom shows which sessions were open at every candle — two rows lit at once is the London–New York overlap. On 1H charts and lower; times follow UK/US clock changes.</p>
    ${row('asia','Asia · '+t('Asian'),sessCol('Asian'))}${row('london','London · '+t('London'),sessCol('London'))}${row('ny','New York · '+t('New York'),sessCol('New York'))}
    <p class="tp-sub">Open alarms (15 min before London and New York) are on the <a href="#/alerts">Alerts page</a>.</p>`;
   box.querySelector('.tp-x').onclick=()=>box.remove();
