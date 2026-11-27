@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 const load=f=>{ const s=fs.readFileSync(f,'utf8'); const a=s.indexOf('function pivotHi('), b=s.indexOf('// closed candles only'); return new Function(s.slice(a,b)+'; return msRun;')(); };
-const NEW=load('index.html'), OLD=load('research/old_index.html');
+const NEW=load('research/new_index.html'), OLD=load('research/old_index.html');
 const ws=new WebSocket('wss://api.derivws.com/trading/v1/options/ws/public'); await new Promise(r=>ws.onopen=r);
 let id=0; const pend=new Map(); ws.onmessage=e=>{ const m=JSON.parse(e.data); const p=pend.get(m.req_id); if(p){ pend.delete(m.req_id); p(m); } };
 const ask=q=>new Promise(r=>{ const k=++id; pend.set(k,r); ws.send(JSON.stringify({...q,req_id:k})); });
