@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
-      - run: node research/symbols.mjs | tee research_out.txt
+      - run: node research/audit_prices.mjs | tee research_out.txt
       - uses: actions/upload-artifact@v4
         with: { name: research-output, path: research_out.txt }
