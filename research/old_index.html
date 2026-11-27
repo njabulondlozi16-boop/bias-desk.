@@ -1962,7 +1962,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-27.13';
+const BUILD='2026-11-27.15';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -5825,14 +5825,21 @@ const MS_SLOTS_DEF=[{on:true,tf:'1D',len:3},{on:true,tf:'4h',len:4},{on:true,tf:
 function msSlots(){ const o=lsGet('bd_ms_cfg',{})||{}; const sl=Array.isArray(o.slots)&&o.slots.length===4?o.slots:MS_SLOTS_DEF.map((d,i)=>({...d,len:o['len'+(i+1)]||d.len})); return sl.map((x,i)=>({...MS_SLOTS_DEF[i],...x})); }
 function msTFs(){ const seen=new Set(); return msSlots().filter(x=>x.on).map(x=>{ const t=parseTF(x.tf); return t?{tag:t.label.toLowerCase(),g:t.gran,len:Math.max(1,Math.min(25,+x.len||5))}:null; }).filter(t=>t&&!seen.has(t.g)&&seen.add(t.g)); }
 const PRIO_TFS=()=>{ const f=g=>msTFs().find(t=>t.g===g); return [f(14400)||{tag:'4h',g:14400,len:4},f(3600)||{tag:'1h',g:3600,len:5}]; };
-const MS_DEF={len1:3,len2:4,len3:5,len4:5,fast:3,leg:true,disp:true,internal:false,rearm:true,lock:true,maxEvents:30,bos:true,mss:true,sweep:true,riser:true,range:true,strong:true,sweepDash:true,table:true};
-function msOpt(){ return {...MS_DEF,...(lsGet('bd_ms_cfg',{})||{})}; }
+const MS_DEF={conf:'half',len1:3,len2:4,len3:5,len4:5,fast:3,leg:true,disp:false,internal:false,rearm:true,lock:true,maxEvents:30,bos:true,mss:true,sweep:true,riser:true,range:true,strong:true,sweepDash:true,table:true};
+function msOpt(){ const c=lsGet('bd_ms_cfg',{})||{}; if(!lsGet('bd_ms_mig2',false)){ if(c.disp!==undefined){ c.disp=false; lsSet('bd_ms_cfg',c); } lsSet('bd_ms_mig2',true); } return {...MS_DEF,...c}; }
 function msOn(){ return lsGet('bd_ms_on',false)===true; }
 function pivotHi(b,i,n){ const p=i-n; if(p-n<0) return null; const v=b[p].high; for(let k=p-n;k<p;k++) if(b[k].high>=v) return null; for(let k=p+1;k<=i;k++) if(b[k].high>v) return null; return v; }
 function pivotLo(b,i,n){ const p=i-n; if(p-n<0) return null; const v=b[p].low; for(let k=p-n;k<p;k++) if(b[k].low<=v) return null; for(let k=p+1;k<=i;k++) if(b[k].low<v) return null; return v; }
 // the engine — bar by bar, same order of rules as the Pine script; also keeps the marks the script would leave on the chart
 function msRun(bars,len,o){
-  const fast=o.fast, useLeg=o.leg, lockAny=o.lock, internalUp=o.internal, useReArm=o.rearm, displace=o.disp;
+  const fast=o.fast, useLeg=o.leg, lockAny=o.lock, internalUp=o.internal, useReArm=o.rearm, displace=o.disp, half=o.conf!=='pivot';
+  // protected low / high = the TRUE extreme of the pullback between the broken level and the break (no confirmation candles needed)
+  const idxOf=new Map(); for(let k=0;k<bars.length;k++) idxOf.set(bars[k].time,k);
+  const extBetween=(t0,i,side)=>{ const k0=idxOf.get(t0); if(k0===undefined) return null; let v=null,vt=null; for(let k=Math.min(k0+1,i);k<=i;k++){ const x=side<0?bars[k].low:bars[k].high; if(v===null||(side<0?x<v:x>v)){ v=x; vt=bars[k].time; } } return v===null?null:{v,t:vt}; };
+  let exHi=null,exHiT=null,exLo=null,exLoT=null,brkT=null; const fH=[],fL=[]; // 50% rule: the running extreme of the new leg, confirmed once price pulls back half of the LATEST leg
+  // latest leg = from the most recent minor swing (fast pivot) before the extreme — not from the start of the whole trend
+  const refHi=(tEx,fb)=>{ for(let k=fH.length-1;k>=0;k--){ const x=fH[k]; if(x.t<tEx&&(brkT===null||x.t>=brkT)) return x.v; if(x.t<(brkT??-Infinity)) break; } return fb; };
+  const refLo=(tEx,fb)=>{ for(let k=fL.length-1;k>=0;k--){ const x=fL[k]; if(x.t<tEx&&(brkT===null||x.t>=brkT)) return x.v; if(x.t<(brkT??-Infinity)) break; } return fb; };
   let rHi=null,rHiT=null,rLo=null,rLoT=null,trend=0,lastPH=null,lastPHT=null,lastPL=null,lastPLT=null,legHi=null,legHiT=null,legLo=null,legLoT=null,hiStrong=false,loStrong=false;
   let pHiOn=false,pHiLvl=null,pHiOrig=null,pLoOn=false,pLoLvl=null,pLoOrig=null; let arc=[],penHi=[],penLo=[],lastE='—';
   const word=e=>e===1?'bos':e===2?'mss':'sweep', show=e=>e===3?o.sweep:e===2?o.mss:e===1?o.bos:false;
@@ -5846,13 +5853,21 @@ function msRun(bars,len,o){
     if(dnEvt===0&&rLo!==null&&low<rLo&&(displace||!pLoOn)){ dnEvt=3; dnLvl=rLo; dnOrig=rLoT; if(!pLoOn){ pLoOn=true; pLoLvl=rLo; pLoOrig=rLoT; } if(displace){ dnDsp=low; rLo=low; rLoT=time; } }
     if((dnEvt===2||(lockAny&&dnEvt===1))&&pHiOn&&hiAct===0){ hiAct=2; pHiOn=false; }
     if((upEvt===2||(lockAny&&upEvt===1))&&pLoOn&&loAct===0){ loAct=2; pLoOn=false; }
-    if(brokeUp){ const s=useLeg&&legLo!==null?legLo:lastPL, st=useLeg&&legLo!==null?legLoT:lastPLT; if(s!==null){ rLo=s; rLoT=st; } loStrong=true; hiStrong=false; rHi=null; rHiT=null; legLo=null; legLoT=null; }
-    if(brokeDn){ const s=useLeg&&legHi!==null?legHi:lastPH, st=useLeg&&legHi!==null?legHiT:lastPHT; if(s!==null){ rHi=s; rHiT=st; } hiStrong=true; loStrong=false; rLo=null; rLoT=null; legHi=null; legHiT=null; }
+    if(brokeUp){ const tx=extBetween(upOrig,i,-1); const s=tx?tx.v:(useLeg&&legLo!==null?legLo:lastPL), st=tx?tx.t:(useLeg&&legLo!==null?legLoT:lastPLT); if(s!==null){ rLo=s; rLoT=st; } loStrong=true; hiStrong=false; rHi=null; rHiT=null; legLo=null; legLoT=null; exHi=high; exHiT=time; exLo=null; exLoT=null; }
+    if(brokeDn){ const tx=extBetween(dnOrig,i,1); const s=tx?tx.v:(useLeg&&legHi!==null?legHi:lastPH), st=tx?tx.t:(useLeg&&legHi!==null?legHiT:lastPHT); if(s!==null){ rHi=s; rHiT=st; } hiStrong=true; loStrong=false; rLo=null; rLoT=null; legHi=null; legHiT=null; exLo=low; exLoT=time; exHi=null; exHiT=null; }
+    // 50% rule: a new high (low) only becomes the range boundary once price has pulled back half of the leg from it
+    { const fh=pivotHi(bars,i,fast), fl=pivotLo(bars,i,fast); if(fh!==null){ fH.push({v:fh,t:bars[i-fast].time}); if(fH.length>60) fH.shift(); } if(fl!==null){ fL.push({v:fl,t:bars[i-fast].time}); if(fL.length>60) fL.shift(); } }
+    if(brokeUp||brokeDn) brkT=time;
+    if(half&&trend!==0){
+      if(trend===1&&rHi===null&&!brokeUp){ if(exHi===null||high>exHi){ exHi=high; exHiT=time; } else { const ref=refLo(exHiT,rLo); if(ref!==null&&low<=exHi-0.5*(exHi-ref)){ rHi=exHi; rHiT=exHiT; exHi=null; exHiT=null; } } }
+      if(trend===-1&&rLo===null&&!brokeDn){ if(exLo===null||low<exLo){ exLo=low; exLoT=time; } else { const ref=refHi(exLoT,rHi); if(ref!==null&&high>=exLo+0.5*(ref-exLo)){ rLo=exLo; rLoT=exLoT; exLo=null; exLoT=null; } } } }
     const ph=pivotHi(bars,i,len), pl=pivotLo(bars,i,len);
-    if(ph!==null){ const pt=bars[i-len].time; lastPH=ph; lastPHT=pt; if(legHi===null||ph>legHi){ legHi=ph; legHiT=pt; } if(rHi===null||internalUp){ rHi=ph; rHiT=pt; } }
-    else if(useReArm&&rHi===null){ const f=pivotHi(bars,i,fast); if(f!==null){ rHi=f; rHiT=bars[i-fast].time; } }
-    if(pl!==null){ const pt=bars[i-len].time; lastPL=pl; lastPLT=pt; if(legLo===null||pl<legLo){ legLo=pl; legLoT=pt; } if(rLo===null||internalUp){ rLo=pl; rLoT=pt; } }
-    else if(useReArm&&rLo===null){ const f=pivotLo(bars,i,fast); if(f!==null){ rLo=f; rLoT=bars[i-fast].time; } }
+    const seedHi=!half||trend===0||trend===-1;
+    if(ph!==null){ const pt=bars[i-len].time; lastPH=ph; lastPHT=pt; if(legHi===null||ph>legHi){ legHi=ph; legHiT=pt; } if(seedHi&&(rHi===null||internalUp)){ rHi=ph; rHiT=pt; } }
+    else if(seedHi&&useReArm&&rHi===null){ const f=pivotHi(bars,i,fast); if(f!==null){ rHi=f; rHiT=bars[i-fast].time; } }
+    const seedLo=!half||trend===0||trend===1;
+    if(pl!==null){ const pt=bars[i-len].time; lastPL=pl; lastPLT=pt; if(legLo===null||pl<legLo){ legLo=pl; legLoT=pt; } if(seedLo&&(rLo===null||internalUp)){ rLo=pl; rLoT=pt; } }
+    else if(seedLo&&useReArm&&rLo===null){ const f=pivotLo(bars,i,fast); if(f!==null){ rLo=f; rLoT=bars[i-fast].time; } }
     // marks: a revoked sweep disappears, a locked one stays; then this bar's new marks
     if(hiAct===1) penHi=[]; else if(hiAct===2){ arc.push(...penHi); penHi=[]; }
     if(loAct===1) penLo=[]; else if(loAct===2){ arc.push(...penLo); penLo=[]; }
@@ -6292,6 +6307,7 @@ function renderSettings(){
     ${(()=>{ const o=msOpt(); const num=(id,lab,v,min,max)=>`<label class="ms-f"><span>${lab}</span><input type="number" id="${id}" min="${min}" max="${max}" value="${v}"></label>`; const chk=(id,lab,v)=>`<label class="check-row"><input type="checkbox" id="${id}" ${v?'checked':''}> ${lab}</label>`;
       return `<div class="ms-slots"><div class="ms-sh"><span></span><span>Timeframe</span><span>Swing</span></div>${msSlots().map((x,i)=>`<div class="ms-slot"><input type="checkbox" id="ms-on${i}" ${x.on?'checked':''}><input id="ms-tf${i}" list="ms-tf-list" value="${esc(x.tf)}" placeholder="e.g. 4h, 45m, 1D"><input type="number" id="ms-len${i}" min="1" max="25" value="${x.len}"></div>`).join('')}<datalist id="ms-tf-list">${TF_PRESETS.map(t=>`<option value="${t}">`).join('')}</datalist></div>
       <div class="ms-grid">${num('ms-fast','Minor swing',o.fast,1,10)}${num('ms-max','Events kept',o.maxEvents,1,40)}</div>
+      <label class="field"><span>New high / low confirmed by</span><select id="ms-conf"><option value="half" ${o.conf!=='pivot'?'selected':''}>50% pullback (your rule)</option><option value="pivot" ${o.conf==='pivot'?'selected':''}>Pivot candles (swing length)</option></select></label>
       <label class="field"><span>Counter-boundary after a break</span><select id="ms-leg"><option value="1" ${o.leg?'selected':''}>Extreme of the leg</option><option value="0" ${o.leg?'':'selected'}>Most recent swing</option></select></label>
       ${chk('ms-disp','A sweep moves the boundary to the wick',o.disp)}${chk('ms-rearm','Rebuild a broken boundary from a minor swing',o.rearm)}${chk('ms-int','Let internal swings move the range',o.internal)}${chk('ms-lock','A break the other way also locks the sweep',o.lock)}
       ${chk('ms-strong','Label the range strong / weak',o.strong)}${chk('ms-table','Structure table',o.table)}${chk('ms-sweep','Show sweeps',o.sweep)}${chk('ms-riser','Draw the riser to the wick',o.riser)}`; })()}
@@ -6335,7 +6351,7 @@ function renderSettings(){
   document.getElementById('s-save-ms')?.addEventListener('click',()=>{ const n=(id,d)=>Math.max(1,parseInt(document.getElementById(id).value,10)||d), c=id=>document.getElementById(id).checked;
     const slots=[0,1,2,3].map(i=>{ const t=parseTF(document.getElementById('ms-tf'+i).value); return {on:c('ms-on'+i)&&!!t,tf:t?t.label:MS_SLOTS_DEF[i].tf,len:Math.min(25,n('ms-len'+i,MS_SLOTS_DEF[i].len))}; });
     if(!slots.some(x=>x.on)){ toast('Turn on at least one timeframe'); return; }
-    lsSet('bd_ms_cfg',{slots,fast:n('ms-fast',3),maxEvents:Math.min(40,n('ms-max',30)),leg:document.getElementById('ms-leg').value==='1',disp:c('ms-disp'),rearm:c('ms-rearm'),internal:c('ms-int'),lock:c('ms-lock'),strong:c('ms-strong'),table:c('ms-table'),sweep:c('ms-sweep'),riser:c('ms-riser')});
+    lsSet('bd_ms_cfg',{slots,conf:document.getElementById('ms-conf').value,fast:n('ms-fast',3),maxEvents:Math.min(40,n('ms-max',30)),leg:document.getElementById('ms-leg').value==='1',disp:c('ms-disp'),rearm:c('ms-rearm'),internal:c('ms-int'),lock:c('ms-lock'),strong:c('ms-strong'),table:c('ms-table'),sweep:c('ms-sweep'),riser:c('ms-riser')});
     msCache.clear(); msSig=''; msTable={}; mcCharts.forEach(m=>{ m.ms=null; }); toast('Structure settings saved ✓'); });
   document.getElementById('s-save-rules').addEventListener('click',()=>{ setRules(document.getElementById('s-rules').value.split('\n').map(s=>s.trim()).filter(Boolean));
     const n=id=>Math.max(0,parseInt(document.getElementById(id).value,10)||0); lsSet('bd_rules_auto',{bias:document.getElementById('s-r-bias').checked,newsMin:n('s-r-news'),maxLoss:n('s-r-loss'),maxTrades:n('s-r-trades')}); toast('Rules saved ✓'); });
