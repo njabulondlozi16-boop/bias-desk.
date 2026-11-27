@@ -5841,7 +5841,9 @@ function msRun(bars,len,o){
   // 50% rule: after a break the new extreme (exHi/exLo) only becomes the range boundary once price pulls back half of the WHOLE leg —
   // measured from where the breaking leg started (the LH for a sell, the HL for a buy), never from small swings inside the move.
   // Once confirmed, that leg start becomes the protected level (range = LH → LL / HL → HH).
-  let exHi=null,exHiT=null,exLo=null,exLoT=null,lsHi=null,lsHiT=null,lsLo=null,lsLoT=null;
+  let exHi=null,exHiT=null,exLo=null,exLoT=null,lsHi=null,lsHiT=null,lsLo=null,lsLoT=null,brkT=null; const sH=[],sL=[];
+  // the leg's top for the 50% check: the latest structure-size swing (your swing size) inside the move after the break, else the leg start
+  const legRef=(arr,tEx,fb)=>{ for(let k=arr.length-1;k>=0;k--){ const x=arr[k]; if(x.t>=tEx) continue; if(brkT!==null&&x.t>brkT) return x.v; break; } return fb; };
   let rHi=null,rHiT=null,rLo=null,rLoT=null,trend=0,lastPH=null,lastPHT=null,lastPL=null,lastPLT=null,legHi=null,legHiT=null,legLo=null,legLoT=null,hiStrong=false,loStrong=false;
   let pHiOn=false,pHiLvl=null,pHiOrig=null,pLoOn=false,pLoLvl=null,pLoOrig=null; let arc=[],penHi=[],penLo=[],lastE='—';
   const word=e=>e===1?'bos':e===2?'mss':'sweep', show=e=>e===3?o.sweep:e===2?o.mss:e===1?o.bos:false;
@@ -5857,16 +5859,17 @@ function msRun(bars,len,o){
     if((upEvt===2||(lockAny&&upEvt===1))&&pLoOn&&loAct===0){ loAct=2; pLoOn=false; }
     if(brokeUp){ const tx=extBetween(upOrig,i,-1); const s=tx?tx.v:(useLeg&&legLo!==null?legLo:lastPL), st=tx?tx.t:(useLeg&&legLo!==null?legLoT:lastPLT); if(s!==null){ rLo=s; rLoT=st; } loStrong=true; hiStrong=false; rHi=null; rHiT=null; legLo=null; legLoT=null; exHi=high; exHiT=time; exLo=null; exLoT=null; { const st=lastPLT!==null&&upOrig!==null&&lastPLT>upOrig?lastPLT:upOrig; const x=st!==null?extFrom(st,i,-1):null; lsLo=x?x.v:rLo; lsLoT=x?x.t:rLoT; } }
     if(brokeDn){ const tx=extBetween(dnOrig,i,1); const s=tx?tx.v:(useLeg&&legHi!==null?legHi:lastPH), st=tx?tx.t:(useLeg&&legHi!==null?legHiT:lastPHT); if(s!==null){ rHi=s; rHiT=st; } hiStrong=true; loStrong=false; rLo=null; rLoT=null; legHi=null; legHiT=null; exLo=low; exLoT=time; exHi=null; exHiT=null; { const st=lastPHT!==null&&dnOrig!==null&&lastPHT>dnOrig?lastPHT:dnOrig; const x=st!==null?extFrom(st,i,1):null; lsHi=x?x.v:rHi; lsHiT=x?x.t:rHiT; } }
+    if(brokeUp||brokeDn) brkT=time;
     // 50% rule: the new high (low) is confirmed once price pulls back half of the whole leg (leg start → extreme)
     if(half&&trend!==0){
-      if(trend===1&&rHi===null&&!brokeUp){ if(exHi===null||high>exHi){ exHi=high; exHiT=time; } else { const ref=lsLo!==null?lsLo:rLo; if(ref!==null&&low<=exHi-0.5*(exHi-ref)){ rHi=exHi; rHiT=exHiT; if(lsLo!==null){ rLo=lsLo; rLoT=lsLoT; } exHi=null; exHiT=null; } } }
-      if(trend===-1&&rLo===null&&!brokeDn){ if(exLo===null||low<exLo){ exLo=low; exLoT=time; } else { const ref=lsHi!==null?lsHi:rHi; if(ref!==null&&high>=exLo+0.5*(ref-exLo)){ rLo=exLo; rLoT=exLoT; if(lsHi!==null){ rHi=lsHi; rHiT=lsHiT; } exLo=null; exLoT=null; } } } }
+      if(trend===1&&rHi===null&&!brokeUp){ if(exHi===null||high>exHi){ exHi=high; exHiT=time; } else { const ref=legRef(sL,exHiT,lsLo!==null?lsLo:rLo); if(ref!==null&&low<=exHi-0.5*(exHi-ref)){ rHi=exHi; rHiT=exHiT; if(lsLo!==null){ rLo=lsLo; rLoT=lsLoT; } exHi=null; exHiT=null; } } }
+      if(trend===-1&&rLo===null&&!brokeDn){ if(exLo===null||low<exLo){ exLo=low; exLoT=time; } else { const ref=legRef(sH,exLoT,lsHi!==null?lsHi:rHi); if(ref!==null&&high>=exLo+0.5*(ref-exLo)){ rLo=exLo; rLoT=exLoT; if(lsHi!==null){ rHi=lsHi; rHiT=lsHiT; } exLo=null; exLoT=null; } } } }
     const ph=pivotHi(bars,i,len), pl=pivotLo(bars,i,len);
     const seedHi=!half||trend===0||trend===-1;
-    if(ph!==null){ const pt=bars[i-len].time; lastPH=ph; lastPHT=pt; if(legHi===null||ph>legHi){ legHi=ph; legHiT=pt; } if(seedHi&&(rHi===null||internalUp)){ rHi=ph; rHiT=pt; } }
+    if(ph!==null){ const pt=bars[i-len].time; sH.push({v:ph,t:pt}); if(sH.length>60) sH.shift(); lastPH=ph; lastPHT=pt; if(legHi===null||ph>legHi){ legHi=ph; legHiT=pt; } if(seedHi&&(rHi===null||internalUp)){ rHi=ph; rHiT=pt; } }
     else if(seedHi&&useReArm&&rHi===null){ const f=pivotHi(bars,i,fast); if(f!==null){ rHi=f; rHiT=bars[i-fast].time; } }
     const seedLo=!half||trend===0||trend===1;
-    if(pl!==null){ const pt=bars[i-len].time; lastPL=pl; lastPLT=pt; if(legLo===null||pl<legLo){ legLo=pl; legLoT=pt; } if(seedLo&&(rLo===null||internalUp)){ rLo=pl; rLoT=pt; } }
+    if(pl!==null){ const pt=bars[i-len].time; sL.push({v:pl,t:pt}); if(sL.length>60) sL.shift(); lastPL=pl; lastPLT=pt; if(legLo===null||pl<legLo){ legLo=pl; legLoT=pt; } if(seedLo&&(rLo===null||internalUp)){ rLo=pl; rLoT=pt; } }
     else if(seedLo&&useReArm&&rLo===null){ const f=pivotLo(bars,i,fast); if(f!==null){ rLo=f; rLoT=bars[i-fast].time; } }
     // marks: a revoked sweep disappears, a locked one stays; then this bar's new marks
     if(hiAct===1) penHi=[]; else if(hiAct===2){ arc.push(...penHi); penHi=[]; }
