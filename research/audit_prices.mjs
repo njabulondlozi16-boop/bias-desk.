@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 const src=fs.readFileSync('index.html','utf8'); const grab=(a,b)=>{ const i=src.indexOf(a), j=src.indexOf(b,i); return src.slice(i,j); };
 const code=grab('const DEFAULT_INSTRUMENTS=[','const SYNTH_DEFAULTS')+'\nconst mapping=new Map();\nfunction isBinance(i){ return i.type==="Crypto"; }\n'+grab('function norm(s)','// Normalise active_symbols')+grab('function normActive(','\n')+'\nreturn {DEFAULT_INSTRUMENTS,matchSymbols,normActive,mapping};';
-const L=new Function('getInstruments',code.replace(/^/,'')).call(null,()=>L2.DEFAULT_INSTRUMENTS);
+const L=new Function('getInstruments','lsGet',code).call(null,()=>L2.DEFAULT_INSTRUMENTS,()=>null);
 var L2=L; // getInstruments closure reads L2
 const ws=new WebSocket('wss://api.derivws.com/trading/v1/options/ws/public'); await new Promise(r=>ws.onopen=r);
 let id=0; const pend=new Map(); ws.onmessage=e=>{ const m=JSON.parse(e.data); const p=pend.get(m.req_id); if(p){ pend.delete(m.req_id); p(m); } };
