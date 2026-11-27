@@ -1727,6 +1727,12 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 #corr-pop .c-ov{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px}#corr-pop .c-ov select{font-size:12.5px}
 #corr-pop .c-note{font-size:11.5px;color:var(--muted,#8b96a3);margin:10px 0 0;line-height:1.45}
 .cmp-tag{position:absolute;left:12px;top:40px;z-index:5;padding:3px 9px;border-radius:6px;background:rgba(245,176,65,.15);border:1px solid rgba(245,176,65,.6);color:#f5b041;font:600 11px ui-monospace,Menlo,monospace;pointer-events:none}
+.tl-txt{pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:3px;stroke-linejoin:round;user-select:none}
+.tl-pop .pop-txt{width:100%;min-width:230px;box-sizing:border-box;resize:vertical;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);font:13px var(--font,system-ui)}
+.tl-pop .pop-trow{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap}.tl-pop .pop-trow select{flex:1;min-width:0;padding:5px 6px;border-radius:7px;border:1px solid var(--line);background:#12161b;color:var(--text);font-size:12.5px}
+.tl-pop .pop-trow button{min-width:32px;height:30px;padding:0 9px;border-radius:7px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);cursor:pointer;font-size:12.5px}.tl-pop .pop-trow button.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.tl-pop .pop-trow>span{font-size:12px;color:var(--muted,#8b96a3)}.tl-pop[data-k="text"] .pop-sw{margin-top:8px}
+.tb-btn .tb-t{font:700 15px Georgia,serif;line-height:1}
 </style>
 </head>
 <body>
@@ -1944,7 +1950,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-27.9';
+const BUILD='2026-11-27.10';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -3783,9 +3789,21 @@ const FIB_STD=[[-0.618,0],[-0.272,0],[0,1],[0.236,1],[0.382,1],[0.5,1],[0.618,1]
 const FIB_FORMAL_C=v=>v===0.5||v===0.618||v===0.705?'#c9a85a':v===0||v===1?'#9aa4b4':v<0||v>1?'#7d93b8':'#7f8b9e';
 const FIB_TV_C={'-0.618':'#2962ff','-0.272':'#2962ff','0':'#787b86','0.236':'#f23645','0.382':'#ff9800','0.5':'#4caf50','0.618':'#089981','0.705':'#089981','0.786':'#00bcd4','1':'#787b86','1.272':'#9c27b0','1.618':'#2962ff','2':'#9c27b0','2.618':'#f23645'};
 function fibDefault(){ return {levels:FIB_STD.map(([v,on])=>({v,on:!!on,c:FIB_FORMAL_C(v)})),trend:true,extL:false,extR:false,rev:false,bg:'pocket',labels:'left',prices:true}; }
-function fibCfg(l){ const d=fibDefault(), f=l.fib||{}; return {...d,...f,levels:Array.isArray(f.levels)&&f.levels.length?f.levels:d.levels}; }
+function fibCfg(l){ const sv=((lsGet('bd_draw_defaults',{})||{}).fib||{}).fib; const d=sv&&Array.isArray(sv.levels)&&sv.levels.length?JSON.parse(JSON.stringify(sv)):fibDefault(), f=l.fib||{}; return {...d,...f,levels:Array.isArray(f.levels)&&f.levels.length?f.levels:d.levels}; }
 const DRAW_DEF={line:{color:'#2962ff',width:2,style:'solid'},arrow:{color:'#f59e0b',width:2,style:'solid'},hray:{color:'#2962ff',width:1,style:'solid'},fib:{color:'#9aa4b4',width:1,style:'solid'},rect:{color:'#9c27b0',width:1,style:'solid',fill:0.2,ext:false}};
 function drawDef(kind){ const sv=(lsGet('bd_draw_defaults',{})||{})[kind]||{}; const d={...DRAW_DEF[kind],...sv}; if(kind==='fib') d.fib=JSON.parse(JSON.stringify(sv.fib||fibDefault())); return d; }
+const TXT_FONTS=[['sans','Sans','Inter, "Segoe UI", system-ui, sans-serif'],['grotesk','Grotesk','"Space Grotesk", sans-serif'],['serif','Serif','Georgia, "Times New Roman", serif'],['mono','Mono','ui-monospace, Menlo, Consolas, monospace'],['round','Rounded','"Trebuchet MS", "Arial Rounded MT Bold", sans-serif'],['bold','Heavy','Impact, "Arial Black", sans-serif'],['hand','Handwritten','"Segoe Print", "Comic Sans MS", cursive']];
+function txtFont(k){ return (TXT_FONTS.find(f=>f[0]===k)||TXT_FONTS[0])[2]; }
+function txtStyle(l){ const D=(lsGet('bd_draw_defaults',{})||{})[DRAW_DEF[l.kind]?l.kind:'line']||{}; return {tf:l.tf||D.tf||'sans',ts:+(l.ts||D.ts)||13,tc:l.tc||D.tc||'#ffffff',tb:l.tb!==undefined?!!l.tb:!!D.tb,tp:l.tp||D.tp||'middle'}; }
+function txtMarkup(l){ if(!l.txt||l.kind==='fib') return ''; const S=txtStyle(l), lines=String(l.txt).split('\n').slice(0,8);
+  return `<text class="tl-txt" font-family='${S.tf==='sans'?'Inter, Segoe UI, system-ui, sans-serif':txtFont(S.tf).replace(/'/g,'')}' font-size="${S.ts}" font-weight="${S.tb?700:500}" fill="${S.tc}">${lines.map(x=>`<tspan>${esc(x)||' '}</tspan>`).join('')}</text>`; }
+// place the text: inside a rectangle (top / middle / bottom), above the middle of a line (turned with it), above a horizontal ray near the right edge
+function txtPlace(g,l,geo){ const t=g.querySelector('.tl-txt'); if(!t) return; const S=txtStyle(l), sp=t.querySelectorAll('tspan'), n=sp.length, lh=S.ts*1.22; let cx,cy,rot=0,anchor='middle',y0;
+  if(geo.rect){ const b=geo.rect, vw=Math.max(1,Math.min(b.w,geo.W-b.x)); cx=b.x+vw/2; const blockH=n*lh; y0=S.tp==='top'?b.y+6+S.ts*0.85:S.tp==='bottom'?b.y+b.h-6-blockH+S.ts*0.85:b.y+b.h/2-blockH/2+S.ts*0.85; cy=y0; }
+  else if(geo.hray){ anchor='end'; cx=geo.W-10; y0=geo.y-6-(n-1)*lh; cy=geo.y; }
+  else { const {x1,y1,x2,y2}=geo; cx=(x1+x2)/2; cy=(y1+y2)/2; rot=Math.atan2(y2-y1,x2-x1)*180/Math.PI; if(rot>90) rot-=180; if(rot<-90) rot+=180; y0=cy-7-(n-1)*lh; }
+  t.setAttribute('text-anchor',anchor); sp.forEach((s,i)=>{ s.setAttribute('x',cx.toFixed(1)); s.setAttribute('y',(y0+i*lh).toFixed(1)); });
+  if(rot) t.setAttribute('transform',`rotate(${rot.toFixed(2)} ${cx.toFixed(1)} ${cy.toFixed(1)})`); else t.removeAttribute('transform'); }
 function tlStyleOf(l){ return {...(DRAW_DEF[l.kind]||DRAW_DEF.line),...l}; }
 function drawName(l){ return l&&l.kind==='arrow'?'Arrow':l&&l.kind==='rect'?(l.zone?'Zone alert':'Rectangle'):l&&l.kind==='hray'?'Horizontal ray':l&&l.kind==='fib'?'Fib retracement':'Trendline'; }
 // ---- Fib retracement drawing (shared by the main chart and the small multi-charts)
@@ -3850,6 +3868,7 @@ function tlSetup(){
   tb.innerHTML=`<button class="tb-btn" data-pop="color" title="Colour"><span class="tb-sw"></span></button>
     <button class="tb-btn tb-wbtn" data-pop="width" title="Thickness"><span class="tb-wl"></span><b class="tb-wn">2px</b></button>
     <button class="tb-btn" data-pop="style" title="Line style"><svg viewBox="0 0 24 24" class="tb-ls"><line x1="3" y1="12" x2="21" y2="12"/></svg></button>
+    <button class="tb-btn" data-pop="text" title="Text — write on this drawing, pick font, size and colour"><span class="tb-t">T</span></button>
     <span class="tb-sep"></span>
     <button class="tb-btn tb-set" title="Settings — levels, colours, extend, labels">${ICON.gear||'⚙'}</button>
     <button class="tb-btn tb-ext" title="Extend the zone to the right"><svg viewBox="0 0 24 24"><path d="M3 12h15M14 7l5 5-5 5M21 4v16"/></svg></button>
@@ -3868,9 +3887,10 @@ function tlSetup(){
       if(ex){ setAlerts(al.filter(a=>a!==ex)); toast(drawName(l)+' alert removed'); } else { al.push({id:'A'+Date.now().toString(36),sym:selSym(),kind:'line',lineId:l.id,active:true,created:Date.now()}); setAlerts(al); askNotify(); toast(l.kind==='hray'?'Alert on — you get told when price touches this level':'Trendline alert on — the dotted part shows where the line continues'); }
       drawChanged(selSym()); if(mSel) mdRender(mSel.m); else tlRender(); } });
   pop.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.tc){ tlUpdate({tc:b.dataset.tc}); fibRerender(); tlPopRender(); return; } if(b.dataset.tbold!==undefined){ const l=selLine(); tlUpdate({tb:!(l&&l.tb)}); fibRerender(); tlPopRender(); return; } if(b.dataset.tp){ tlUpdate({tp:b.dataset.tp}); fibRerender(); tlPopRender(); return; }
     if(b.dataset.c) tlUpdate({color:b.dataset.c}); else if(b.dataset.w) tlUpdate({width:+b.dataset.w}); else if(b.dataset.s) tlUpdate({style:b.dataset.s}); else return; tlPopRender(); });
-  pop.addEventListener('input',e=>{ const t=e.target; if(t.type==='color') tlUpdate({color:t.value},true); else if(t.type==='range'){ tlUpdate({fill:t.value/100},true); t.nextElementSibling.textContent=t.value+'%'; } });
-  pop.addEventListener('change',e=>{ if(e.target.type==='color'||e.target.type==='range'){ tlUpdate({},false); tlPopRender(); } });
+  pop.addEventListener('input',e=>{ const t=e.target; if(t.classList.contains('pop-txt')){ tlUpdate({txt:t.value.slice(0,300)},true); fibRerender(); return; } if(t.dataset.tcc!==undefined){ tlUpdate({tc:t.value},true); fibRerender(); return; } if(t.type==='color') tlUpdate({color:t.value},true); else if(t.type==='range'){ tlUpdate({fill:t.value/100},true); t.nextElementSibling.textContent=t.value+'%'; } });
+  pop.addEventListener('change',e=>{ const t=e.target; if(t.dataset.t){ tlUpdate({[t.dataset.t]:t.dataset.t==='ts'?+t.value:t.value}); fibRerender(); tlPopRender(); return; } if(t.classList.contains('pop-txt')||t.dataset.tcc!==undefined){ tlUpdate({},false); return; } if(t.type==='color'||t.type==='range'){ tlUpdate({},false); tlPopRender(); } });
   // drawing: click two points / corners (or press-drag-release)
   cap.addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); const pt=tlPoint(e); if(!pt) return;
     if(tlKind==='hray'){ const l=hrayNew(pt); tlLines.push(l); tlSave(); tlSel=l.id; tlSetMode(false); tlRender(); return; }
@@ -3946,13 +3966,16 @@ function tlUpdate(patch,live){ const l=selLine(); if(!l) return;
   Object.assign(l,patch);
   if(mSel){ const g=mSel.m.tl?.querySelector(`g[data-id="${l.id}"]`); if(g) tlApplyStyle(g,l); tlSyncTb(); mdPosition(mSel.m); if(!live) drawChanged(selSym()); }
   else { const g=tlSvg()?.querySelector(`g[data-id="${l.id}"]`); if(g){ tlApplyStyle(g,l); g.dataset.k=''; } tlSyncTb(); tlPosition(); }
-  if(!live){ if(!mSel) tlSave(); const k=DRAW_DEF[l.kind]?l.kind:'line', st=tlStyleOf(l), d=lsGet('bd_draw_defaults',{})||{}; d[k]={color:st.color,width:st.width,style:st.style,...(k==='rect'?{fill:st.fill}:{}),...(k==='fib'?{fib:fibCfg(l)}:{})}; lsSet('bd_draw_defaults',d); } }
+  if(!live){ if(!mSel) tlSave(); const k=DRAW_DEF[l.kind]?l.kind:'line', st=tlStyleOf(l), d=lsGet('bd_draw_defaults',{})||{}; d[k]={color:st.color,width:st.width,style:st.style,...(l.tf?{tf:l.tf}:{}),...(l.ts?{ts:l.ts}:{}),...(l.tc?{tc:l.tc}:{}),...(l.tb!==undefined?{tb:l.tb}:{}),...(l.tp?{tp:l.tp}:{}),...(k==='rect'?{fill:st.fill}:{}),...(k==='fib'?{fib:fibCfg(l)}:{})}; lsSet('bd_draw_defaults',d); } }
+function fibApplyEverywhere(src,f){ const cfg=JSON.parse(JSON.stringify(f)), st=tlStyleOf(src); const d=lsGet('bd_draw_defaults',{})||{}; d.fib={color:st.color,width:st.width,style:st.style,fib:cfg}; lsSet('bd_draw_defaults',d);
+  let n=0; for(const inst of getInstruments()){ const sym=inst.symbol, ls=drawLines(sym); let ch=false; for(const x of ls){ if(x.kind==='fib'&&x.id!==src.id){ x.fib={...JSON.parse(JSON.stringify(cfg)),extR:(x.fib&&x.fib.extR)??cfg.extR,extL:(x.fib&&x.fib.extL)??cfg.extL}; ch=true; n++; } } if(ch) drawChanged(sym); }
+  toast(`Fib settings saved — new Fibs use them${n?` and ${n} other Fib${n>1?'s':''} on your pairs were updated`:''} ✓`); }
 function fibRerender(){ if(mSel) mdRender(mSel.m); else tlRender(); }
 function tlSyncTb(){ const tb=document.querySelector('.tl-tb'); if(!tb) return; const l=selLine(); tb.hidden=!l; if(!l) return; const st=tlStyleOf(l), rect=l.kind==='rect';
   tb.querySelector('.tb-sw').style.setProperty('--sw',st.color); tb.querySelector('.tb-wl').style.height=Math.max(1,st.width)+'px'; tb.querySelector('.tb-wn').textContent=st.width+'px';
   tb.querySelector('.tb-ls line').setAttribute('stroke-dasharray',st.style==='dashed'?'5 3':st.style==='dotted'?'1 3':'none');
   const fib=l.kind==='fib'; const ex=tb.querySelector('.tb-ext'); ex.hidden=!rect&&!fib; ex.classList.toggle('on',fib?!!fibCfg(l).extR:!!st.ext); ex.title=fib?'Extend the levels to the right':'Extend the zone to the right';
-  const sb=tb.querySelector('.tb-set'); if(sb) sb.hidden=!fib;
+  const sb=tb.querySelector('.tb-set'); if(sb) sb.hidden=!fib; const tt=tb.querySelector('[data-pop="text"]'); if(tt){ tt.hidden=fib; tt.classList.toggle('on',!!l.txt); }
   const bl=tb.querySelector('.tl-bell'); bl.hidden=fib; bl.title=rect?'Zone alert — tell me (phone + PC) when price comes into this box':'Alert me when price touches this line'; bl.classList.toggle('on',rect?!!(l.zone&&l.zone.on):getAlerts().some(a=>a.kind==='line'&&a.active&&a.lineId===l.id));
   tb.querySelectorAll('[data-pop]').forEach(b=>b.classList.toggle('open',b.dataset.pop===tlPop)); }
 function tlPopRender(){ const pop=document.querySelector('.tl-pop'); if(!pop) return; const l=selLine(); if(!tlPop||!l){ pop.hidden=true; tlSyncTb(); return; }
@@ -3960,6 +3983,13 @@ function tlPopRender(){ const pop=document.querySelector('.tl-pop'); if(!pop) re
   if(tlPop==='color') pop.innerHTML=`<div class="pop-sw">${TL_COLORS.map(c=>`<button data-c="${c}" class="${c===cur?'on':''}" style="--sw:${c}" title="${c}"></button>`).join('')}</div>
     <label class="pop-custom"><input type="color" value="${/^#[0-9a-f]{6}$/.test(cur)?cur:'#2962ff'}"><span>Custom colour</span></label>
     ${l.kind==='rect'?`<div class="pop-fill"><span>Fill</span><input type="range" min="0" max="60" step="5" value="${Math.round(st.fill*100)}"><b>${Math.round(st.fill*100)}%</b></div>`:''}`;
+  else if(tlPop==='text'){ const S=txtStyle(l), tc=String(S.tc).toLowerCase();
+    pop.innerHTML=`<textarea class="pop-txt" rows="2" placeholder="Type your text… (Enter = new line)">${esc(l.txt||'')}</textarea>
+      <div class="pop-trow"><select data-t="tf" title="Font">${TXT_FONTS.map(f=>`<option value="${f[0]}" ${f[0]===S.tf?'selected':''}>${f[1]}</option>`).join('')}</select><select data-t="ts" title="Size">${[10,11,12,13,14,16,18,20,24,28,32].map(n=>`<option value="${n}" ${n===S.ts?'selected':''}>${n}px</option>`).join('')}</select><button data-tbold class="${S.tb?'on':''}" title="Bold"><b>B</b></button></div>
+      ${l.kind==='rect'?`<div class="pop-trow"><span>Position</span>${[['top','Top'],['middle','Middle'],['bottom','Bottom']].map(([k,n])=>`<button data-tp="${k}" class="${S.tp===k?'on':''}">${n}</button>`).join('')}</div>`:''}
+      <div class="pop-sw">${TL_COLORS.map(c=>`<button data-tc="${c}" class="${c===tc?'on':''}" style="--sw:${c}" title="${c}"></button>`).join('')}</div>
+      <label class="pop-custom"><input type="color" data-tcc value="${/^#[0-9a-f]{6}$/.test(tc)?tc:'#ffffff'}"><span>Custom text colour</span></label>`;
+    setTimeout(()=>{ const ta=pop.querySelector('.pop-txt'); if(ta&&!l.txt) ta.focus(); },0); }
   else if(tlPop==='width') pop.innerHTML=[1,2,3,4].map(n=>`<button class="pop-row${st.width===n?' on':''}" data-w="${n}"><svg viewBox="0 0 40 10"><line x1="3" y1="5" x2="37" y2="5" stroke-width="${n}"/></svg><span>${n} px</span></button>`).join('');
   else pop.innerHTML=[['solid','none','Solid'],['dashed','7 4','Dashed'],['dotted','0.5 4','Dotted']].map(([k,da,n])=>`<button class="pop-row${st.style===k?' on':''}" data-s="${k}"><svg viewBox="0 0 40 10"><line x1="3" y1="5" x2="37" y2="5" stroke-width="2" stroke-dasharray="${da}"/></svg><span>${n}</span></button>`).join('');
   tlSyncTb(); if(mSel) mdPosition(mSel.m); else tlPosition(); }
@@ -3969,9 +3999,9 @@ function tlRender(){
   const alIds=new Set(getAlerts().filter(a=>a.kind==='line'&&a.active).map(a=>a.lineId));
   svg.innerHTML=all.map(l=>{ const cls=`tl${l.kind==='rect'?' rc':''}${l.id===tlSel?' sel':''}${l.id==='__draft'?' draft':''}${alIds.has(l.id)?' alert':''}`;
     if(l.kind==='rect') return rectMarkup(cls,l);
-    if(l.kind==='hray') return `<g class="${cls} hr" data-id="${l.id}"><line class="tl-hit"></line><line class="tl-stroke"></line><circle class="tl-end" data-h="11" r="5"></circle></g>`;
+    if(l.kind==='hray') return `<g class="${cls} hr" data-id="${l.id}"><line class="tl-hit"></line><line class="tl-stroke"></line>${txtMarkup(l)}<circle class="tl-end" data-h="11" r="5"></circle></g>`;
     if(l.kind==='fib') return fibMarkup(cls,l);
-    return `<g class="${cls}${l.kind==='arrow'?' ar':''}" data-id="${l.id}"><line class="tl-ext"></line><line class="tl-hit"></line><line class="tl-stroke"></line>${l.kind==='arrow'?'<path class="tl-head"></path>':''}<circle class="tl-end" data-h="11" r="5"></circle><circle class="tl-end" data-h="22" r="5"></circle></g>`; }).join('');
+    return `<g class="${cls}${l.kind==='arrow'?' ar':''}" data-id="${l.id}"><line class="tl-ext"></line><line class="tl-hit"></line><line class="tl-stroke"></line>${l.kind==='arrow'?'<path class="tl-head"></path>':''}${txtMarkup(l)}<circle class="tl-end" data-h="11" r="5"></circle><circle class="tl-end" data-h="22" r="5"></circle></g>`; }).join('');
   svg.querySelectorAll('g.tl').forEach(g=>{ const l=all.find(x=>x.id===g.dataset.id); if(l) tlApplyStyle(g,l); });
   tlSyncTb(); tlPosition(); tlKick();
 }
@@ -3989,10 +4019,10 @@ function tlPosition(){
       const k=[b.x,b.y,b.w,b.h,b.x1,b.x2].map(v=>v.toFixed(1)).join(',')+W; if(g.dataset.k===k) continue; g.dataset.k=k;
       for(const r of g.querySelectorAll('rect')){ r.setAttribute('x',b.x); r.setAttribute('y',b.y); r.setAttribute('width',b.w); r.setAttribute('height',b.h); }
       const xm=(b.x1+b.x2)/2, ym=(b.y1+b.y2)/2, P={'11':[b.x1,b.y1],'22':[b.x2,b.y2],'12':[b.x1,b.y2],'21':[b.x2,b.y1],'t1':[b.x1,ym],'t2':[b.x2,ym],'p1':[xm,b.y1],'p2':[xm,b.y2]};
-      g.querySelectorAll('.tl-end').forEach(c=>{ const q=P[c.dataset.h]; c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); }); zoneLabelPlace(g,b);
+      g.querySelectorAll('.tl-end').forEach(c=>{ const q=P[c.dataset.h]; c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); }); zoneLabelPlace(g,b); txtPlace(g,l,{rect:b,W});
       continue;
     }
-    if(l.kind==='hray'){ const x1=a?tlX(l.t1,a):null, y1=yAtPrice(l.p1); if(!hrayPlace(g,x1,y1,W)){ g.style.display='none'; continue; } if(l.id===tlSel) selBox={x:Math.max(0,x1),y:y1,w:W-Math.max(0,x1),h:0}; continue; }
+    if(l.kind==='hray'){ const x1=a?tlX(l.t1,a):null, y1=yAtPrice(l.p1); if(!hrayPlace(g,x1,y1,W)){ g.style.display='none'; continue; } txtPlace(g,l,{hray:1,y:y1,W}); if(l.id===tlSel) selBox={x:Math.max(0,x1),y:y1,w:W-Math.max(0,x1),h:0}; continue; }
     if(l.kind==='fib'){ const x1=a?tlX(l.t1,a):null, x2=a?tlX(l.t2,a):null, y1=yAtPrice(l.p1), y2=yAtPrice(l.p2);
       if(![x1,y1,x2,y2].every(v=>v!==null&&Number.isFinite(v))){ g.style.display='none'; continue; } g.style.display='';
       const k=`${x1.toFixed(1)},${y1.toFixed(1)},${x2.toFixed(1)},${y2.toFixed(1)},${W}`; if(g.dataset.k!==k||!g._box){ g.dataset.k=k; g._box=fibPlace(g,l,x1,y1,x2,y2,W,yAtPrice,getInstruments().find(i=>i.symbol===tlSym)); }
@@ -4002,7 +4032,7 @@ function tlPosition(){
     g.style.display=''; if(l.id===tlSel) selBox={x:Math.min(x1,x2),y:Math.min(y1,y2),w:Math.abs(x2-x1),h:Math.abs(y2-y1)};
     const k=`${x1.toFixed(1)},${y1.toFixed(1)},${x2.toFixed(1)},${y2.toFixed(1)}`+W;
     if(g.dataset.k===k) continue; g.dataset.k=k;
-    for(const ln of g.querySelectorAll('line:not(.tl-ext)')){ ln.setAttribute('x1',x1); ln.setAttribute('y1',y1); ln.setAttribute('x2',x2); ln.setAttribute('y2',y2); }
+    for(const ln of g.querySelectorAll('line:not(.tl-ext)')){ ln.setAttribute('x1',x1); ln.setAttribute('y1',y1); ln.setAttribute('x2',x2); ln.setAttribute('y2',y2); } txtPlace(g,l,{x1,y1,x2,y2,W});
     if(l.kind==='arrow') tlHead(g,x1,y1,x2,y2,tlStyleOf(l).width);
     const ex=g.querySelector('.tl-ext'); if(ex){ const [ax,ay,bx,by]=x2>=x1?[x1,y1,x2,y2]:[x2,y2,x1,y1]; if(g.classList.contains('alert')&&bx>ax&&W>bx){ ex.setAttribute('x1',bx); ex.setAttribute('y1',by); ex.setAttribute('x2',W); ex.setAttribute('y2',by+(W-bx)*(by-ay)/(bx-ax)); ex.style.display='inline'; } else ex.style.display='none'; }
     const c=g.querySelectorAll('circle'); c[0].setAttribute('cx',x1); c[0].setAttribute('cy',y1); c[1].setAttribute('cx',x2); c[1].setAttribute('cy',y2);
@@ -4899,7 +4929,7 @@ function fibOpenSettings(){ const l=selLine(); if(!l||l.kind!=='fib') return; do
     live(); render(); });
   const close=()=>{ document.querySelector('.vpc')?.remove(); ov.remove(); document.removeEventListener('keydown',onKey,true); };
   const save=()=>{ if(mSel) drawChanged(selSym()); else tlSave(); };
-  const ok=()=>{ close(); save(); };
+  const ok=()=>{ close(); save(); fibApplyEverywhere(l,f); };
   const cancel=()=>{ l.fib=orig.fib; l.p1=orig.p1; l.p2=orig.p2; fibRerender(); close(); };
   const onKey=e=>{ if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); if(document.querySelector('.vpc')) document.querySelector('.vpc').remove(); else cancel(); } else if(e.key==='Enter'&&!/^(SELECT|TEXTAREA)$/.test(e.target.tagName)){ e.preventDefault(); e.target.blur?.(); setTimeout(ok,0); } };
   document.addEventListener('keydown',onKey,true);
@@ -5694,9 +5724,9 @@ function mdRender(m){ if(!m.tl||!m.inst) return; const ls=drawLines(m.inst.symbo
   const alIds=new Set(getAlerts().filter(a=>a.kind==='line'&&a.active).map(a=>a.lineId)); const sel=mSel&&mSel.m===m?mSel.id:null;
   m.tl.innerHTML=all.map(l=>{ const cls=`tl${l.kind==='rect'?' rc':''}${l.id===sel?' sel':''}${l.id==='__draft'?' draft':''}${alIds.has(l.id)?' alert':''}`;
     if(l.kind==='rect') return rectMarkup(cls,l);
-    if(l.kind==='hray') return `<g class="${cls} hr" data-id="${l.id}"><line class="tl-hit"></line><line class="tl-stroke"></line><circle class="tl-end" data-h="11" r="5"></circle></g>`;
+    if(l.kind==='hray') return `<g class="${cls} hr" data-id="${l.id}"><line class="tl-hit"></line><line class="tl-stroke"></line>${txtMarkup(l)}<circle class="tl-end" data-h="11" r="5"></circle></g>`;
     if(l.kind==='fib') return fibMarkup(cls,l);
-    return `<g class="${cls}${l.kind==='arrow'?' ar':''}" data-id="${l.id}"><line class="tl-ext"></line><line class="tl-hit"></line><line class="tl-stroke"></line>${l.kind==='arrow'?'<path class="tl-head"></path>':''}<circle class="tl-end" data-h="11" r="5"></circle><circle class="tl-end" data-h="22" r="5"></circle></g>`; }).join('');
+    return `<g class="${cls}${l.kind==='arrow'?' ar':''}" data-id="${l.id}"><line class="tl-ext"></line><line class="tl-hit"></line><line class="tl-stroke"></line>${l.kind==='arrow'?'<path class="tl-head"></path>':''}${txtMarkup(l)}<circle class="tl-end" data-h="11" r="5"></circle><circle class="tl-end" data-h="22" r="5"></circle></g>`; }).join('');
   m.tl.querySelectorAll('g.tl').forEach(g=>{ const l=all.find(x=>x.id===g.dataset.id); if(l) tlApplyStyle(g,l); }); mdPosition(m); }
 function mdPosition(m){ if(!m.tl||!m.inst) return; const {W,H,aw,th}=mPlot(m); m.tl.style.width=W+'px'; m.tl.style.height=H+'px'; if(m.cap){ m.cap.style.right=aw+'px'; m.cap.style.bottom=th+'px'; }
   const ls=drawLines(m.inst.symbol); const all=mdDraft&&mdDraft.m===m?[...ls,mdDraft.l]:ls; let selBox=null; const sel=mSel&&mSel.m===m?mSel.id:null;
@@ -5704,13 +5734,13 @@ function mdPosition(m){ if(!m.tl||!m.inst) return; const {W,H,aw,th}=mPlot(m); m
     if(l.kind==='rect'){ const b=mdRectBox(m,l,W); if(!b){ g.style.display='none'; continue; } g.style.display=''; if(l.id===sel) selBox={x:b.x,y:b.y,w:Math.min(b.w,W-b.x),h:b.h};
       for(const r of g.querySelectorAll('rect')){ r.setAttribute('x',b.x); r.setAttribute('y',b.y); r.setAttribute('width',b.w); r.setAttribute('height',b.h); }
       const xm=(b.x1+b.x2)/2, ym=(b.y1+b.y2)/2, P={'11':[b.x1,b.y1],'22':[b.x2,b.y2],'12':[b.x1,b.y2],'21':[b.x2,b.y1],'t1':[b.x1,ym],'t2':[b.x2,ym],'p1':[xm,b.y1],'p2':[xm,b.y2]};
-      g.querySelectorAll('.tl-end').forEach(c=>{ const q=P[c.dataset.h]; c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); }); zoneLabelPlace(g,b); continue; }
-    if(l.kind==='hray'){ const x1=mX(m,l.t1), y1=mY(m,l.p1); g.dataset.k=''; if(!hrayPlace(g,x1,y1,W)){ g.style.display='none'; continue; } if(l.id===sel) selBox={x:Math.max(0,x1),y:y1,w:W-Math.max(0,x1),h:0}; continue; }
+      g.querySelectorAll('.tl-end').forEach(c=>{ const q=P[c.dataset.h]; c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); }); zoneLabelPlace(g,b); txtPlace(g,l,{rect:b,W}); continue; }
+    if(l.kind==='hray'){ const x1=mX(m,l.t1), y1=mY(m,l.p1); g.dataset.k=''; if(!hrayPlace(g,x1,y1,W)){ g.style.display='none'; continue; } txtPlace(g,l,{hray:1,y:y1,W}); if(l.id===sel) selBox={x:Math.max(0,x1),y:y1,w:W-Math.max(0,x1),h:0}; continue; }
     if(l.kind==='fib'){ const x1=mX(m,l.t1), x2=mX(m,l.t2), y1=mY(m,l.p1), y2=mY(m,l.p2); if(![x1,y1,x2,y2].every(v=>v!==null&&Number.isFinite(v))){ g.style.display='none'; continue; } g.style.display='';
       const b=fibPlace(g,l,x1,y1,x2,y2,W,p=>mY(m,p),m.inst); if(l.id===sel) selBox=b; continue; }
     const x1=mX(m,l.t1), x2=mX(m,l.t2), y1=mY(m,l.p1), y2=mY(m,l.p2); if(![x1,y1,x2,y2].every(v=>v!==null&&Number.isFinite(v))){ g.style.display='none'; continue; } g.style.display='';
     if(l.id===sel) selBox={x:Math.min(x1,x2),y:Math.min(y1,y2),w:Math.abs(x2-x1),h:Math.abs(y2-y1)};
-    for(const ln of g.querySelectorAll('line:not(.tl-ext)')){ ln.setAttribute('x1',x1); ln.setAttribute('y1',y1); ln.setAttribute('x2',x2); ln.setAttribute('y2',y2); }
+    for(const ln of g.querySelectorAll('line:not(.tl-ext)')){ ln.setAttribute('x1',x1); ln.setAttribute('y1',y1); ln.setAttribute('x2',x2); ln.setAttribute('y2',y2); } txtPlace(g,l,{x1,y1,x2,y2,W});
     if(l.kind==='arrow') tlHead(g,x1,y1,x2,y2,tlStyleOf(l).width);
     const ex=g.querySelector('.tl-ext'); if(ex){ const [ax,ay,bx,by]=x2>=x1?[x1,y1,x2,y2]:[x2,y2,x1,y1]; if(g.classList.contains('alert')&&bx>ax&&W>bx){ ex.setAttribute('x1',bx); ex.setAttribute('y1',by); ex.setAttribute('x2',W); ex.setAttribute('y2',by+(W-bx)*(by-ay)/(bx-ax)); ex.style.display='inline'; } else ex.style.display='none'; }
     const c=g.querySelectorAll('circle'); c[0].setAttribute('cx',x1); c[0].setAttribute('cy',y1); c[1].setAttribute('cx',x2); c[1].setAttribute('cy',y2); }
@@ -6492,7 +6522,7 @@ async function pushOnce(key,msg){ try{ if(!(await claim('p:'+key+':'+Math.floor(
 // --- zone boxes ---
 const ZONE_STYLE={color:'#f5a524',fill:.12,style:'dashed',width:1};
 function zoneNew(){ return {on:true,mode:'touch',tf:'1h',repeat:false,armedAt:Date.now()}; }
-function rectMarkup(cls,l){ const z=l.zone; return `<g class="${cls}${z?' zn'+(z.on?'':' zn-off'):''}" data-id="${l.id}"><rect class="rc-body"></rect><rect class="rc-hit"></rect>${z?'<text class="zn-lbl"></text>':''}${['11','22','12','21','t1','t2','p1','p2'].map(h=>`<circle class="tl-end${isNaN(h)?' mid':''}" data-h="${h}" r="${isNaN(h)?4:5}"></circle>`).join('')}</g>`; }
+function rectMarkup(cls,l){ const z=l.zone; return `<g class="${cls}${z?' zn'+(z.on?'':' zn-off'):''}" data-id="${l.id}"><rect class="rc-body"></rect><rect class="rc-hit"></rect>${z?'<text class="zn-lbl"></text>':''}${txtMarkup(l)}${['11','22','12','21','t1','t2','p1','p2'].map(h=>`<circle class="tl-end${isNaN(h)?' mid':''}" data-h="${h}" r="${isNaN(h)?4:5}"></circle>`).join('')}</g>`; }
 function zoneText(z){ if(!z) return ''; if(z.on) return '🔔 ZONE ALERT · '+(z.mode==='close'?(CC_TF[z.tf]?.label||z.tf)+' close inside':'price enters'); return z.hitAt?`✓ HIT ${sastHM(z.hitAt)} · tap 🔔 to re-arm`:'zone alert off'; }
 function zoneLabelPlace(g,b){ const t=g.querySelector('.zn-lbl'); if(!t) return; const id=g.dataset.id; const sym=g.closest('.mc-cell:not(.mc-main)')?mcCharts.find(m=>m.tl&&m.tl.contains(g))?.inst?.symbol:tlSym; const l=(sym?drawLines(sym):[]).find(x=>x.id===id);
   t.textContent=zoneText(l&&l.zone); t.setAttribute('x',b.x+6); t.setAttribute('y',b.y+(b.h>22?14:-5)); }
