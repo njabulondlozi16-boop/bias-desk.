@@ -5843,7 +5843,8 @@ function msRun(bars,len,o){
   // Once confirmed, that leg start becomes the protected level (range = LH → LL / HL → HH).
   let exHi=null,exHiT=null,exLo=null,exLoT=null,lsHi=null,lsHiT=null,lsLo=null,lsLoT=null,brkT=null; const sH=[],sL=[];
   // the leg's top for the 50% check: the latest structure-size swing (your swing size) inside the move after the break, else the leg start
-  const legRef=(arr,tEx,fb)=>{ for(let k=arr.length-1;k>=0;k--){ const x=arr[k]; if(x.t>=tEx) continue; if(brkT!==null&&x.t>brkT) return x.v; break; } return fb; };
+  // — but only a swing that is a real part of the leg (beyond the leg's halfway line); small chop inside the move is ignored
+  const legRef=(arr,tEx,ex,fb,side)=>{ if(fb===null) return fb; const mid=(fb+ex)/2; for(let k=arr.length-1;k>=0;k--){ const x=arr[k]; if(x.t>=tEx) continue; if(brkT===null||x.t<=brkT) break; if(side>0?x.v>=mid:x.v<=mid) return x.v; } return fb; };
   let rHi=null,rHiT=null,rLo=null,rLoT=null,trend=0,lastPH=null,lastPHT=null,lastPL=null,lastPLT=null,legHi=null,legHiT=null,legLo=null,legLoT=null,hiStrong=false,loStrong=false;
   let pHiOn=false,pHiLvl=null,pHiOrig=null,pLoOn=false,pLoLvl=null,pLoOrig=null; let arc=[],penHi=[],penLo=[],lastE='—';
   const word=e=>e===1?'bos':e===2?'mss':'sweep', show=e=>e===3?o.sweep:e===2?o.mss:e===1?o.bos:false;
@@ -5862,8 +5863,8 @@ function msRun(bars,len,o){
     if(brokeUp||brokeDn) brkT=time;
     // 50% rule: the new high (low) is confirmed once price pulls back half of the whole leg (leg start → extreme)
     if(half&&trend!==0){
-      if(trend===1&&rHi===null&&!brokeUp){ if(exHi===null||high>exHi){ exHi=high; exHiT=time; } else { const ref=legRef(sL,exHiT,lsLo!==null?lsLo:rLo); if(ref!==null&&low<=exHi-0.5*(exHi-ref)){ rHi=exHi; rHiT=exHiT; if(lsLo!==null){ rLo=lsLo; rLoT=lsLoT; } exHi=null; exHiT=null; } } }
-      if(trend===-1&&rLo===null&&!brokeDn){ if(exLo===null||low<exLo){ exLo=low; exLoT=time; } else { const ref=legRef(sH,exLoT,lsHi!==null?lsHi:rHi); if(ref!==null&&high>=exLo+0.5*(ref-exLo)){ rLo=exLo; rLoT=exLoT; if(lsHi!==null){ rHi=lsHi; rHiT=lsHiT; } exLo=null; exLoT=null; } } } }
+      if(trend===1&&rHi===null&&!brokeUp){ if(exHi===null||high>exHi){ exHi=high; exHiT=time; } else { const ref=legRef(sL,exHiT,exHi,lsLo!==null?lsLo:rLo,-1); if(ref!==null&&low<=exHi-0.5*(exHi-ref)){ rHi=exHi; rHiT=exHiT; if(lsLo!==null){ rLo=lsLo; rLoT=lsLoT; } exHi=null; exHiT=null; } } }
+      if(trend===-1&&rLo===null&&!brokeDn){ if(exLo===null||low<exLo){ exLo=low; exLoT=time; } else { const ref=legRef(sH,exLoT,exLo,lsHi!==null?lsHi:rHi,1); if(ref!==null&&high>=exLo+0.5*(ref-exLo)){ rLo=exLo; rLoT=exLoT; if(lsHi!==null){ rHi=lsHi; rHiT=lsHiT; } exLo=null; exLoT=null; } } } }
     const ph=pivotHi(bars,i,len), pl=pivotLo(bars,i,len);
     const seedHi=!half||trend===0||trend===-1;
     if(ph!==null){ const pt=bars[i-len].time; sH.push({v:ph,t:pt}); if(sH.length>60) sH.shift(); lastPH=ph; lastPHT=pt; if(legHi===null||ph>legHi){ legHi=ph; legHiT=pt; } if(seedHi&&(rHi===null||internalUp)){ rHi=ph; rHiT=pt; } }
