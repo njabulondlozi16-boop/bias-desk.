@@ -1944,7 +1944,7 @@ body.ui-neon.ui-galaxy .aurora{background:radial-gradient(900px 520px at 82% -8%
 function lsGet(key, fallback=null){ try{ const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v);}catch(e){ console.warn('lsGet',e); return fallback; } }
 // ===== Version + "new version ready" banner — so an open tab never keeps running old code =====
 const ICON={"spike":"<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V14M8 20V11M12 20V5M16 20V12M20 20V15\"/><path d=\"M12 2.5l-1.6 1.6h3.2z\"/></svg>","cog":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1\"/></svg>","zone":"<svg viewBox=\"0 0 24 24\"><rect x=\"3.5\" y=\"7\" width=\"17\" height=\"10\" rx=\"1.5\" stroke-dasharray=\"3 2.2\"/><path d=\"M12 4.2v1.3M9.6 12h4.8M10.2 12V10.6a1.8 1.8 0 0 1 3.6 0V12\"/></svg>","clock":"<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"13\" r=\"7.5\"/><path d=\"M12 9v4.2l2.6 1.6M9 3h6\"/></svg>","arrow": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L19 5\"/><path d=\"M11 5h8v8\"/></svg>", "fvg": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3v6M5 15v6M19 3v4M19 13v8\"/><rect x=\"3.5\" y=\"9\" width=\"3\" height=\"6\"/><rect x=\"17.5\" y=\"7\" width=\"3\" height=\"6\"/><rect x=\"8\" y=\"9.5\" width=\"8\" height=\"3\" stroke-dasharray=\"2 1.5\"/></svg>", "fib": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 5H21M3 9.5H21M3 13H21M3 19H21\"/><path d=\"M5 19L19 5\" stroke-dasharray=\"2 2\"/></svg>", "gear": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1\"/></svg>", "hray": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 12H22\"/><circle cx=\"5\" cy=\"12\" r=\"2.2\"/></svg>", "cursor": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 3l14 8-6.2 1.6L10 19z\"/></svg>", "line": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20L20 4\"/><circle cx=\"4.5\" cy=\"19.5\" r=\"2\"/><circle cx=\"19.5\" cy=\"4.5\" r=\"2\"/></svg>", "rect": "<svg viewBox=\"0 0 24 24\"><rect x=\"4\" y=\"6\" width=\"16\" height=\"12\" rx=\"1\"/><circle cx=\"4\" cy=\"6\" r=\"1.8\"/><circle cx=\"20\" cy=\"18\" r=\"1.8\"/></svg>", "vp": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 4v16M4 6h9M4 9h13M4 12h16M4 15h11M4 18h6\"/></svg>", "bell": "<svg viewBox=\"0 0 24 24\"><path d=\"M6 16V11a6 6 0 0112 0v5l1.5 2h-15z\"/><path d=\"M10 20.5a2 2 0 004 0\"/></svg>", "trash": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6\"/></svg>", "trade": "<svg viewBox=\"0 0 24 24\"><path d=\"M7 20V5M3.5 8.5 7 5l3.5 3.5M17 4v15M13.5 15.5 17 19l3.5-3.5\"/></svg>", "ms": "<svg viewBox=\"0 0 24 24\"><path d=\"M3 17l4-5 3 3 5-8 3 4 3-3\"/><path d=\"M3 6h7M14 19h7\" stroke-dasharray=\"2 2\"/></svg>"};
-const BUILD='2026-11-27.8';
+const BUILD='2026-11-27.9';
 async function checkForUpdate(){
   if(!/^https?:/.test(location.protocol)) return;
   if(document.hidden||navigator.onLine===false||document.getElementById('update-bar')) return;
@@ -2147,12 +2147,22 @@ function tfNearest(label){ if(TIMEFRAMES.some(t=>t.label===label)) return label;
 let TIMEFRAMES=tfList();
 function granForLabel(label){ const t=TIMEFRAMES.find(x=>x.label===label)||parseTF(label); return t?t.gran:60; }
 // candle buckets — weeks start on Monday like every charting platform; everything else counts from 1 Jan 1970 UTC
-function bucketOf(t,g){ if(g%604800===0){ const off=345600; return Math.floor((t-off)/g)*g+off; } return Math.floor(t/g)*g; }
+// candle day: forex / metals / indices start their 2h–1W candles at 17:00 New York (MT5, TradingView forex, the candle-close alerts);
+// crypto and synthetic indices stay on UTC midnight. The setting lives on the Alerts page ("4H and Daily candles").
+let _anc={at:0,v:'ny'}; function candleAnchorMode(){ const n=Date.now(); if(n-_anc.at>2000){ let v='ny'; try{ v=((JSON.parse(localStorage.getItem('bd_cc')||'{}')||{}).anchor)==='utc'?'utc':'ny'; }catch(e){} _anc={at:n,v}; } return _anc.v; }
+function nyAnchored(inst){ return !!inst&&candleAnchorMode()==='ny'&&!isBinance(inst)&&inst.type!=='Synthetic'&&inst.type!=='Crypto'; }
+const _nyDst={}; function nyOffS(t){ const y=new Date(t*1000).getUTCFullYear(); let d=_nyDst[y];
+  if(!d){ const sun=(m,nth)=>{ const f=new Date(Date.UTC(y,m,1)).getUTCDay(); return 1+((7-f)%7)+7*(nth-1); }; d=_nyDst[y]=[Date.UTC(y,2,sun(2,2),7)/1000,Date.UTC(y,10,sun(10,1),6)/1000]; }
+  return t>=d[0]&&t<d[1]?-4*3600:-5*3600; }
+function nyBucket(t,g){ const off=nyOffS(t), L=t+off+7*3600, K=Math.floor(L/86400), dayStart=K*86400-7*3600-off;
+  if(g<86400) return dayStart+Math.floor((L-K*86400)/g)*g; if(g<604800) return dayStart;
+  const wd=((K+4)%7+7)%7, Km=K-((wd+6)%7); return Km*86400-7*3600-off; }
+function bucketOf(t,g,inst){ if(inst&&g>3600&&g<=604800&&g%3600===0&&nyAnchored(inst)) return nyBucket(t,g); if(g%604800===0){ const off=345600; return Math.floor((t-off)/g)*g+off; } return Math.floor(t/g)*g; }
 const DERIV_G=[60,120,180,300,600,900,1800,3600,7200,14400,28800,86400];
 const BN_G={60:'1m',180:'3m',300:'5m',900:'15m',1800:'30m',3600:'1h',7200:'2h',14400:'4h',21600:'6h',28800:'8h',43200:'12h',86400:'1d',604800:'1w'};
-function baseGran(inst,g){ const list=isBinance(inst)?Object.keys(BN_G).map(Number):DERIV_G; if(list.includes(g)) return g; let best=0; for(const b of list) if(b<g&&g%b===0&&b>best) best=b; return best||60; }
+function baseGran(inst,g){ if(g>3600&&g<=604800&&g%3600===0&&nyAnchored(inst)) return 3600; const list=isBinance(inst)?Object.keys(BN_G).map(Number):DERIV_G; if(list.includes(g)) return g; let best=0; for(const b of list) if(b<g&&g%b===0&&b>best) best=b; return best||60; }
 // join smaller candles into the timeframe you chose; an incomplete first candle is dropped so nothing looks short
-function aggCandles(cs,g){ const out=[]; let cur=null, first=null; for(const c of cs){ const b=bucketOf(c.time,g); if(!cur||cur.time!==b){ cur={time:b,open:c.open,high:c.high,low:c.low,close:c.close}; out.push(cur); if(first===null) first=c.time; } else { cur.high=Math.max(cur.high,c.high); cur.low=Math.min(cur.low,c.low); cur.close=c.close; } }
+function aggCandles(cs,g,inst){ const out=[]; let cur=null, first=null; for(const c of cs){ const b=bucketOf(c.time,g,inst); if(!cur||cur.time!==b){ cur={time:b,open:c.open,high:c.high,low:c.low,close:c.close}; out.push(cur); if(first===null) first=c.time; } else { cur.high=Math.max(cur.high,c.high); cur.low=Math.min(cur.low,c.low); cur.close=c.close; } }
   if(out.length>1&&first!==null&&first>out[0].time) out.shift(); return out; }
 function goOffline(reason){ if(reason) lastFeedError=reason; if(feedMode==='live') return; if(demoAllowed()) startDemo(); else setMode('offline'); modeListeners.forEach(fn=>{ try{fn(feedMode);}catch(e){} }); }
 // Seed one instrument: recent ticks (for sparkline + live chart) and today's open (for daily % change)
@@ -2160,7 +2170,8 @@ async function seedInstrument(inst,deriv){
   const s=getState(inst);
   try{ const h=await wsSend({ticks_history:deriv,adjust_start_time:1,count:600,end:'latest',style:'ticks'}); const prices=(h.history&&h.history.prices)||[], times=(h.history&&h.history.times)||[];
     if(prices.length){ s.ticks=[]; s.history=[]; prices.forEach((p,i)=>pushTick(s,times[i],p)); s.hasData=true; s.src='live'; s.open=prices[0]; } }catch(e){ console.warn('history',inst.symbol,e.message); }
-  try{ const d=await wsSend({ticks_history:deriv,adjust_start_time:1,count:1,end:'latest',style:'candles',granularity:86400}); const c=(d.candles||[])[0]; if(c) s.open=c.open; }catch(e){}
+  try{ if(nyAnchored(inst)){ const ds=nyBucket(Math.floor(Date.now()/1000),86400); const d=await wsSend({ticks_history:deriv,adjust_start_time:1,count:30,end:'latest',style:'candles',granularity:3600}); const c=(d.candles||[]).find(x=>+x.epoch>=ds); if(c) s.open=+c.open; }
+    else { const d=await wsSend({ticks_history:deriv,adjust_start_time:1,count:1,end:'latest',style:'candles',granularity:86400}); const c=(d.candles||[])[0]; if(c) s.open=c.open; } }catch(e){}
   try{ await wsSend({ticks:deriv,subscribe:1}); delete mktClosed[inst.symbol]; }catch(e){ const u=closedUntilFrom(e); if(u){ mktClosed[inst.symbol]=u; setTimeout(()=>{ try{ if(getFeedMode()==='live') wsSend({ticks:deriv,subscribe:1}).then(()=>{ delete mktClosed[inst.symbol]; notifyTick(); }).catch(()=>{}); }catch(_){} },Math.max(5000,u-Date.now()+3000)); } else console.warn('tick sub',inst.symbol,e.message); }
 }
 function endpointFailed(ep,reason){
@@ -2244,7 +2255,7 @@ function startFeed(){ if(started) return; started=true; fallbackTimer=setTimeout
 function reconnectFeed(){ reconnectAttempt=0; epFailsThisRound=0; lastFeedError=''; const old=ws; ws=null; try{ if(old) old.close(); }catch(e){} if(feedMode!=='live') setMode('connecting'); else setMode('connecting'); mapping.clear(); connect(); }
 // --- Candles for the full chart (live only; demo only when allowed) ---
 async function getCandles(inst,granularity,count=300){ const bg=baseGran(inst,granularity), f=Math.max(1,Math.round(granularity/bg));
-  if(f===1||feedMode==='demo') return getCandlesRaw(inst,granularity,count); const raw=await getCandlesRaw(inst,bg,Math.min(5000,count*f)); _gran=granularity; return aggCandles(raw,granularity); }
+  if(f===1||feedMode==='demo') return getCandlesRaw(inst,granularity,count); const raw=await getCandlesRaw(inst,bg,Math.min(5000,count*f)); _gran=granularity; return aggCandles(raw,granularity,inst); }
 // candles up to the last traded moment (used while a market is closed)
 async function derivLastSession(deriv,gran,count){ try{ const t=await wsSend({ticks_history:deriv,count:1,end:'latest',style:'ticks'}); const last=+((t.history&&t.history.times)||[]).slice(-1)[0]; if(!last) return [];
   const r=await wsSend({ticks_history:deriv,count,end:last+gran,style:'candles',granularity:gran}); return dropDead(deriv,(r.candles||[]).map(c=>({time:+c.epoch,open:+c.open,high:+c.high,low:+c.low,close:+c.close}))); }catch(e){ return []; } }
@@ -2323,7 +2334,7 @@ function startBinance(){
 }
 function updateFeedBadgeSafe(){ try{ updateFeedUI(); }catch(e){} }
 // N candles that closed before `before` (epoch s) — used to keep loading history as you scroll left
-async function fetchOlder(inst,g,before,count){ const bg=baseGran(inst,g), f=Math.max(1,Math.round(g/bg)); if(f===1) return fetchOlderRaw(inst,g,before,count); return aggCandles(await fetchOlderRaw(inst,bg,before,Math.min(5000,count*f)),g).filter(c=>c.time<before); }
+async function fetchOlder(inst,g,before,count){ const bg=baseGran(inst,g), f=Math.max(1,Math.round(g/bg)); if(f===1) return fetchOlderRaw(inst,g,before,count); return aggCandles(await fetchOlderRaw(inst,bg,before,Math.min(5000,count*f)),g,inst).filter(c=>c.time<before); }
 async function fetchOlderRaw(inst,g,before,count){
   if(isBinance(inst)){ const iv=BN_G[g]; if(!iv) return []; const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=${iv}&endTime=${before*1000-1}&limit=${Math.min(1000,count)}`); if(!r.ok) throw new Error('Binance HTTP '+r.status); const k=await r.json(); return k.map(c=>({time:Math.floor(c[0]/1000),open:+c[1],high:+c[2],low:+c[3],close:+c[4]})).filter(c=>c.time<before); }
   const d=getDerivSymbol(inst); if(feedMode!=='live'||!d) return [];
@@ -2361,7 +2372,7 @@ function mountTradingView(el,inst,tf,opts={}){
   sc.onerror=()=>{ el.innerHTML='<div class="hero-wait">⚠ TradingView could not load. Charts need internet in a normal browser (Chrome) — preview windows block them.</div>'; };
   box.appendChild(sc); el.appendChild(box);
 }
-async function fetchCandlesOnce(inst,gran,count){ const bg=baseGran(inst,gran), f=Math.max(1,Math.round(gran/bg)); if(f===1||feedMode==='demo') return fetchCandlesOnceRaw(inst,gran,count); return aggCandles((await fetchCandlesOnceRaw(inst,bg,Math.min(5000,count*f)))||[],gran); }
+async function fetchCandlesOnce(inst,gran,count){ const bg=baseGran(inst,gran), f=Math.max(1,Math.round(gran/bg)); if(f===1||feedMode==='demo') return fetchCandlesOnceRaw(inst,gran,count); return aggCandles((await fetchCandlesOnceRaw(inst,bg,Math.min(5000,count*f)))||[],gran,inst); }
 async function fetchCandlesOnceRaw(inst,gran,count){
   try{
     if(isBinance(inst)) return await binanceCandles(inst,gran,count);
@@ -2456,9 +2467,9 @@ function cycleTheme(){ const cur=getTheme(); const idx=THEMES.findIndex(x=>x.id=
 const SAST_FMT={};
 function sastLbl(sec,opts,key){ const f=SAST_FMT[key]||(SAST_FMT[key]=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Johannesburg',...opts})); return f.format(new Date(sec*1000)); }
 function chartTimeSec(t){ if(typeof t==='number') return t; if(t&&typeof t==='object'&&'year' in t) return Date.UTC(t.year,t.month-1,t.day)/1000; if(typeof t==='string') return Date.parse(t)/1000; return 0; }
-function sastCrosshair(t){ const s=chartTimeSec(t); const daily=granForLabel(currentTF||'15m')>=86400&&s%86400===0;
-  return daily?sastLbl(s,{weekday:'short',day:'2-digit',month:'short',year:'2-digit'},'cd'):sastLbl(s,{weekday:'short',day:'2-digit',month:'short',year:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false},'ct'); }
-function sastTick(t,type){ const s=chartTimeSec(t);
+function sastCrosshair(t){ const s=chartTimeSec(t); const daily=granForLabel(currentTF||'15m')>=86400;
+  return daily?sastLbl(s+43200,{weekday:'short',day:'2-digit',month:'short',year:'2-digit'},'cd'):sastLbl(s,{weekday:'short',day:'2-digit',month:'short',year:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false},'ct'); }
+function sastTick(t,type){ const s0=chartTimeSec(t), s=type<=2&&granForLabel(currentTF||'15m')>=86400?s0+43200:s0;
   if(type===0) return sastLbl(s,{year:'numeric'},'y'); if(type===1) return sastLbl(s,{month:'short'},'m'); if(type===2) return sastLbl(s,{day:'numeric'},'d');
   if(type===4) return sastLbl(s,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false},'hms'); return sastLbl(s,{hour:'2-digit',minute:'2-digit',hour12:false},'hm'); }
 function chartOptionsForTheme(def){
@@ -2957,9 +2968,14 @@ function setRatios(r){ const c={...r}; delete c.tp1; lsSet('bd_ratios',c); }
 function getUSDZAR(){
   const inst=getInstruments().find(i=>i.name.replace(/\s/g,'').toUpperCase()==='USDZAR');
   if(inst && getFeedMode()==='live'){ const p=getState(inst).price; if(p>1) return {rate:p,source:'Live USDZAR'}; }
-  return {rate:parseFloat(lsGet('bd_usdzar',18.20))||18.20,source:'Manual rate'};
+  const a=lsGet('bd_usdzar_auto',null); if(a&&a.rate>1&&lsGet('bd_usdzar_manual',false)!==true) return {rate:a.rate,source:`Daily rate ${a.date||''}`};
+  return {rate:parseFloat(lsGet('bd_usdzar',17.5))||17.5,source:'Manual rate'};
 }
-function setManualUSDZAR(v){ lsSet('bd_usdzar',parseFloat(v)||18.20); }
+async function usdzarRefresh(){ const a=lsGet('bd_usdzar_auto',null); if(a&&Date.now()-(a.at||0)<6*3600e3) return;
+  for(const [url,pick] of [['https://api.frankfurter.app/latest?from=USD&to=ZAR',j=>[j.rates&&j.rates.ZAR,j.date]],['https://open.er-api.com/v6/latest/USD',j=>[j.rates&&j.rates.ZAR,(j.time_last_update_utc||'').slice(5,16)]]]){
+    try{ const r=await fetch(url); if(!r.ok) continue; const [rate,date]=pick(await r.json()); if(rate>5&&rate<50){ lsSet('bd_usdzar_auto',{rate:+rate,date,at:Date.now()}); return; } }catch(e){} } }
+setTimeout(()=>usdzarRefresh(),3000); setInterval(()=>usdzarRefresh(),3600e3);
+function setManualUSDZAR(v){ lsSet('bd_usdzar',parseFloat(v)||17.5); lsSet('bd_usdzar_manual',true); }
 function findByName(n){ return getInstruments().find(i=>i.name.replace(/\s/g,'').toUpperCase()===n); }
 // Converts a profit in the instrument's quote currency into USD (e.g. USDCHF profit is in CHF, GER30 in EUR)
 function quoteToUSD(inst){
@@ -3007,7 +3023,7 @@ function barTimes(){ const key=candleMap.size+':'+lastBarTime(); if(key!==tlTime
 function barSpacing(){ try{ const ts=tsApi(); const T=barTimes(); if(ts&&T.length>1){ const a=ts.timeToCoordinate(T[T.length-1]), b=ts.timeToCoordinate(T[T.length-2]); if(a!=null&&b!=null&&a>b) return a-b; } return ts.options().barSpacing||6; }catch(e){ return 6; } }
 function lastBarTime(){ let mx=null; try{ for(const k of candleMap.keys()) if(mx===null||k>mx) mx=k; }catch(e){} return mx; }
 function xForTime(t){
-  const ts=tsApi(); if(!ts||!t) return null; const g=currentGranularity(); const tb=Math.floor(t/g)*g;
+  const ts=tsApi(); if(!ts||!t) return null; const g=currentGranularity(); const tb=bucketOf(t,g,currentInst);
   try{ const x=ts.timeToCoordinate(tb); if(x!==null&&x!==undefined&&!isNaN(x)) return x; }catch(e){}
   const last=lastBarTime(); if(last===null) return null;
   try{ const xl=ts.timeToCoordinate(last); if(xl===null||xl===undefined) return null; const lg=ts.coordinateToLogical(xl); const x=ts.logicalToCoordinate(lg+(tb-last)/g); return (x===null||isNaN(x))?null:x; }catch(e){ return null; }
@@ -3716,7 +3732,7 @@ function initChart(){
     if(!currentInst || p.symbol!==currentInst.symbol || rp.active || rp.picking) return;
     const gran=granForLabel(currentTF), bg=baseGran(currentInst,gran);
     if(gran && p.granularity && p.granularity!==gran && p.granularity!==bg) return;
-    const bt=p.granularity===gran?p.time:bucketOf(p.time,gran);
+    const bt=p.granularity===gran?p.time:bucketOf(p.time,gran,currentInst);
     { const lt=lastBarTime(); if(lt!=null&&bt<lt) return; } // a candle from the timeframe we just left — never write it behind the newest bar
     if(series && ensureChartLib()){ const existing=candleMap.get(bt); if(existing){ candleMap.set(bt,{time:bt,open:existing.open,high:Math.max(existing.high,p.high),low:Math.min(existing.low,p.low),close:p.close}); } else { candleMap.set(bt,{time:bt,open:p.open,high:p.high,low:p.low,close:p.close}); } try{ series.update(candleMap.get(bt)); }catch(e){} }
     updateHeader();
@@ -4198,7 +4214,7 @@ function qsAt(P,i,side,H4,g){ const b=P.bars[i]; if(!b) return null; const erP=q
 function qsTxt(x){ return x?`quality ${x.q}/100 ${qsEmo(x.q)}`:''; }
 let qsH4={key:'',bars:[],trend:[],at:0,busy:false};
 async function qsLoad4h(inst){ const key=inst.symbol; if(qsH4.key===key&&Date.now()-qsH4.at<600000) return qsH4; if(qsH4.busy) return qsH4.key===key?qsH4:null;
-  qsH4.busy=true; try{ const raw=await fetchCandlesOnceRaw(inst,14400,300); const now=Date.now()/1000; const bars=(raw||[]).filter(b=>b.time+14400<=now+1).sort((a,b)=>a.time-b.time);
+  qsH4.busy=true; try{ const raw=await fetchCandlesOnce(inst,14400,300); const now=Date.now()/1000; const bars=(raw||[]).filter(b=>b.time+14400<=now+1).sort((a,b)=>a.time-b.time);
     if(bars.length>30){ qsH4={key,bars,trend:swingTrend(bars),at:Date.now(),busy:false}; spSig=''; return qsH4; } }catch(e){} qsH4.busy=false; return qsH4.key===key?qsH4:null; }
 function qsClosed(){ const g=granForLabel(currentTF); const now=rp.active?rp.now:Date.now()/1000; return {g,closed:[...candleMap.values()].sort((a,b)=>a.time-b.time).filter(b=>b.time+g<=now+1)}; }
 // Saved with every confirmed trade (journal) so Bias Desk can later learn which conditions YOUR trades win in.
@@ -4522,7 +4538,7 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tlKick()
 let vpAnch=false, vpList=[], vpMode=false, vpDraft=null, vpSel=null, vpDrag=null, vpRefreshT=null;
 const vpCache=new Map(); // id -> {bars:[{t,o,h,l,c,v}], ltf, kind, lastT, lastP}
 // TradingView FRVP defaults, set to your TradingView setup (Inputs / Style tabs)
-const VP_DEF={layout:'rows',rowSize:24,vol:'delta',va:70,extendRight:false,
+const VP_DEF={layout:'rows',rowSize:24,vol:'delta',src:'activity',va:70,extendRight:false,
   hist:true,values:true,cValues:'#dbdbdb',width:30,place:'left',
   cUp:'#003398',oUp:100,cDn:'#b60000',oDn:100,cVaUp:'#005cb7',oVaUp:100,cVaDn:'#a91226',oVaDn:100,
   vah:true,cVah:'#dbdbdb',wVah:3,sVah:'solid', val:true,cVal:'#dbdbdb',wVal:3,sVal:'solid', poc:true,cPoc:'#50108b',wPoc:4,sPoc:'solid',
@@ -4560,6 +4576,7 @@ function vpVA(tot,pct){ const n=tot.length; let poc=0,maxV=-1,sum=0; for(let r=0
 //  · up volume if close >= open, otherwise down volume
 //  · developing POC / VA recalculated at the end of every chart bar
 function vpBuild(bars,cfg,inst,g,ltf){
+  if(cfg.src!=='time'&&bars.length&&bars.some(b=>b.a!==undefined)){ const m=vpMintick(inst)||1e-9; bars=bars.map(b=>({...b,v:b.a!==undefined?(b.a||0)/m:b.v})); }
   let hi=-Infinity,lo=Infinity; for(const b of bars){ if(!(b.v>0)) continue; if(b.h>hi) hi=b.h; if(b.l<lo) lo=b.l; }
   if(!isFinite(hi)||!isFinite(lo)) return null;
   const mt=vpMintick(inst), spanTk=Math.max(1,Math.round((hi-lo)/mt)); let tpr;
@@ -4573,7 +4590,7 @@ function vpBuild(bars,cfg,inst,g,ltf){
     if(s.v>0){ const isUp=s.c>=s.o, A=isUp?up:dn;
       if(!(s.h>s.l)){ const r=idx(s.h); A[r]+=s.v; tot[r]+=s.v; }
       else { const a=idx(s.l), b=idx(s.h), sp=s.h-s.l; for(let r=a;r<=b;r++){ const rl=lo+r*rowH, rt=r===rows-1?top:rl+rowH; const ov=Math.min(s.h,rt)-Math.max(s.l,rl); if(ov>0){ const sh=s.v*ov/sp; A[r]+=sh; tot[r]+=sh; } } } }
-    const cb=bucketOf(s.t,devG), nb=i+1<bars.length?bucketOf(bars[i+1].t,devG):null;
+    const cb=bucketOf(s.t,devG,inst), nb=i+1<bars.length?bucketOf(bars[i+1].t,devG,inst):null;
     if(nb!==cb&&dev.length<4000){ const d=vpVA(tot,cfg.va); if(d.sum>0) dev.push([cb,lo+(d.poc+0.5)*rowH,lo+(d.hi+1)*rowH,lo+d.lo*rowH]); }
   }
   const c=vpVA(tot,cfg.va); let uT=0,dT=0; for(let r=0;r<rows;r++){ uT+=up[r]; dT+=dn[r]; }
@@ -4609,9 +4626,9 @@ async function vpTicksDeriv(sym,start,end,onProg){
   if(aborted) return null; const all=parts.flat(); all.sort((x,y)=>x.t-y.t); return all;
 }
 // ticks -> lower-timeframe bars with TICK VOLUME (number of price ticks in the bar) — what TradingView shows for FX/CFD feeds
-function vpTicksToBars(ticks,ltf,into){ const out=into||[]; let cur=out.length?out[out.length-1]:null;
-  for(const k of ticks){ const b=Math.floor(k.t/ltf)*ltf; if(!cur||cur.t!==b){ if(cur&&b<cur.t) continue; cur={t:b,o:k.p,h:k.p,l:k.p,c:k.p,v:0}; out.push(cur); } if(k.p>cur.h) cur.h=k.p; if(k.p<cur.l) cur.l=k.p; cur.c=k.p; cur.v++; }
-  return out; }
+function vpTicksToBars(ticks,ltf,into){ const out=into||[]; let cur=out.length?out[out.length-1]:null, lp=out._lp??(cur?cur.c:null);
+  for(const k of ticks){ const b=Math.floor(k.t/ltf)*ltf; if(!cur||cur.t!==b){ if(cur&&b<cur.t) continue; cur={t:b,o:k.p,h:k.p,l:k.p,c:k.p,v:0,a:0}; out.push(cur); } if(k.p>cur.h) cur.h=k.p; if(k.p<cur.l) cur.l=k.p; cur.c=k.p; cur.v++; if(lp!=null) cur.a=(cur.a||0)+Math.abs(k.p-lp); lp=k.p; }
+  out._lp=lp; return out; }
 const VP_BN_IV={1:'1s',60:'1m',300:'5m',900:'15m',1800:'30m',3600:'1h',14400:'4h',86400:'1d'};
 async function vpBinanceBars(inst,ltf,start,end){ const out=[]; let from=start*1000; const to=end*1000-1, iv=VP_BN_IV[ltf]||'1m';
   for(let n=0;n<8&&from<=to;n++){ const r=await fetch(`${BN_API}?symbol=${binanceSym(inst)}&interval=${iv}&startTime=${from}&endTime=${to}&limit=1000`); if(!r.ok) throw new Error('Binance HTTP '+r.status); const k=await r.json(); if(!k.length) break;
@@ -4627,15 +4644,15 @@ let _tkP=null; function tkDB(){ if(_tkP) return _tkP; _tkP=new Promise((res,rej)
 async function tkGet(k){ try{ const db=await tkDB(); return await new Promise(res=>{ const q=db.transaction('days').objectStore('days').get(k); q.onsuccess=()=>res(q.result||null); q.onerror=()=>res(null); }); }catch(e){ return null; } }
 async function tkPut(k,v){ try{ const db=await tkDB(); await new Promise(res=>{ const tx=db.transaction('days','readwrite'); tx.objectStore('days').put(v,k); tx.oncomplete=res; tx.onerror=res; }); }catch(e){} }
 async function tkBars(dsym,start,end,onProg){ const now=Math.floor(Date.now()/1000), d0=Math.floor(start/86400)*86400, out=[]; const days=[]; for(let d=d0;d<end;d+=86400) days.push(d);
-  for(let k=0;k<days.length;k++){ const d=days[k], dEnd=Math.min(d+86400,now+1), key=dsym+'|'+d; let rec=await tkGet(key);
-    if(!rec||!rec.done){ onProg&&onProg(`day ${k+1}/${days.length}`); const from=rec?rec.to:d; let bars=rec?rec.bars.map(b=>({t:b[0],o:b[1],h:b[2],l:b[3],c:b[4],v:b[5]})):[];
+  for(let k=0;k<days.length;k++){ const d=days[k], dEnd=Math.min(d+86400,now+1), key=dsym+'|'+d+'|a'; let rec=await tkGet(key);
+    if(!rec||!rec.done){ onProg&&onProg(`day ${k+1}/${days.length}`); const from=rec?rec.to:d; let bars=rec?rec.bars.map(b=>({t:b[0],o:b[1],h:b[2],l:b[3],c:b[4],v:b[5],a:b[6]||0})):[];
       if(from<dEnd){ const ticks=await vpTicksDeriv(dsym,from,dEnd-1); if(ticks===null) throw new Error('feed stopped answering — try ⟳ in a minute');
         if(ticks.length){ bars=vpTicksToBars(ticks,60,bars); } }
-      const lastT=bars.length?bars[bars.length-1].t+60:from; rec={bars:bars.map(b=>[b.t,b.o,b.h,b.l,b.c,b.v]),to:Math.max(from,Math.min(dEnd,now-5)),done:dEnd<=now-300};
+      const lastT=bars.length?bars[bars.length-1].t+60:from; rec={bars:bars.map(b=>[b.t,b.o,b.h,b.l,b.c,b.v,b.a||0]),to:Math.max(from,Math.min(dEnd,now-5)),done:dEnd<=now-300};
       if(rec.done) rec.to=dEnd; await tkPut(key,rec); }
-    for(const b of rec.bars) if(b[0]>=start&&b[0]<end) out.push({t:b[0],o:b[1],h:b[2],l:b[3],c:b[4],v:b[5]}); }
+    for(const b of rec.bars) if(b[0]>=start&&b[0]<end) out.push({t:b[0],o:b[1],h:b[2],l:b[3],c:b[4],v:b[5],a:b[6]||0}); }
   return out; }
-function tkAgg(bars,ltf){ if(ltf<=60) return bars; const out=[]; let cur=null; for(const b of bars){ const k=Math.floor(b.t/ltf)*ltf; if(!cur||cur.t!==k){ cur={t:k,o:b.o,h:b.h,l:b.l,c:b.c,v:b.v}; out.push(cur); } else { if(b.h>cur.h) cur.h=b.h; if(b.l<cur.l) cur.l=b.l; cur.c=b.c; cur.v+=b.v; } } return out; }
+function tkAgg(bars,ltf){ if(ltf<=60) return bars; const out=[]; let cur=null; for(const b of bars){ const k=Math.floor(b.t/ltf)*ltf; if(!cur||cur.t!==k){ cur={t:k,o:b.o,h:b.h,l:b.l,c:b.c,v:b.v,a:b.a||0}; out.push(cur); } else { if(b.h>cur.h) cur.h=b.h; if(b.l<cur.l) cur.l=b.l; cur.c=b.c; cur.v+=b.v; cur.a+=b.a||0; } } return out; }
 async function vpLoadSamples(v,inst,g,cmap=candleMap){
   const now=Math.floor(Date.now()/1000), end=Math.min(v.t2,now+1), ltf=vpPickLTF(v.t1,end,g,cmap);
   if(isBinance(inst)){ const bars=(await vpBinanceBars(inst,ltf,v.t1,end)).filter(b=>b.t>=v.t1&&b.t<end); return {bars,ltf,kind:'volume',lastT:bars.length?bars[bars.length-1].t:v.t1}; }
@@ -4739,7 +4756,7 @@ function vpPosition(force){
 }
 function vpSelect(id){ vpSel=id; { const nm=tlWrap()?.querySelector('.vp-bar .vb-name'), v=vpList.find(x=>x.id===id); if(nm&&v) nm.textContent=v.anch?'Anchored VP':'FRVP'; } const svg=vpSvg(); if(svg) svg.querySelectorAll('g.vp').forEach(g=>g.classList.toggle('sel',g.dataset.id===id)); const bar=tlWrap()?.querySelector('.vp-bar'); if(bar) bar.hidden=!vpList.some(x=>x.id===id); if(!id) vpCloseSettings(); vpPosition(true); }
 function vpDelete(id){ vpList=vpList.filter(v=>v.id!==id); vpCache.delete(id); if(vpSel===id) vpSel=null; vpCloseSettings(); vpSave(); vpRender(); toast('Volume profile deleted'); }
-function vpTimeAt(e){ const w=tlWrap(); const r=w.getBoundingClientRect(); const a=tlAnchor(); if(!a) return null; const g=currentGranularity(); const t=tlT(e.clientX-r.left+a.bs/2,a); return t===null?null:Math.floor(t/g)*g; }
+function vpTimeAt(e){ const w=tlWrap(); const r=w.getBoundingClientRect(); const a=tlAnchor(); if(!a) return null; const g=currentGranularity(); const t=tlT(e.clientX-r.left+a.bs/2,a); return t===null?null:bucketOf(t,g,currentInst); }
 function vpFinish(tA,tB){ const g=currentGranularity(); let t1=Math.min(tA,tB), t2=Math.max(tA,tB)+g; const last=lastBarTime(); if(last!==null) t2=Math.min(t2,last+g);
   vpDraft=null; vpSetMode(false); if(t2-t1<g*2){ vpRender(); toast('Pick at least 2 candles for a volume profile'); return; }
   const v={id:'V'+Date.now().toString(36),t1,t2,cfg:vpDefaults()}; vpList.push(v); vpSel=v.id; vpSave(); vpRender(); vpCompute(v).then(vpScheduleLive); }
@@ -4782,6 +4799,7 @@ function vpOpenSettings(){
     in:()=>`<div class="vpd-row"><span>Rows Layout</span>${sel('layout',[['rows','Number Of Rows'],['ticks','Ticks Per Row']])}</div>
       <div class="vpd-row"><span>Row Size</span>${num('rowSize',1,1000)}</div>
       <div class="vpd-row"><span>Volume</span>${sel('vol',[['updown','Up/Down'],['total','Total'],['delta','Delta']])}</div>
+      <div class="vpd-row" title="The forex / gold / index feed sends about one tick per second, so counting ticks = counting time. Activity weights each minute by how far price travelled — it follows broker tick volume (busy New York, quiet Asia). BTC always uses real volume."><span>Volume source</span>${sel('src',[['activity','Activity (like tick volume)'],['time','Time at price']])}</div>
       <div class="vpd-row"><span>Value Area Volume</span>${num('va',1,100)}</div>
       ${chk('extendRight','Extend Right')}${note()}`,
     st:()=>`${chk('hist','Volume profile')}<div class="vpd-ind">
@@ -4976,7 +4994,7 @@ function vpSetup(){
 // Never depends on what was on your screen: drawn from the feed's own candles, so it is exact even for trades
 // that closed while the site was shut. Times are SAST.
 const BN_IV={60:'1m',300:'5m',900:'15m',1800:'30m',3600:'1h',14400:'4h',86400:'1d'};
-async function fetchRange(inst,g,start,end){ const bg=baseGran(inst,g); if(bg!==g){ const st=bucketOf(start,g); return aggCandles(await fetchRangeRaw(inst,bg,st,end),g).filter(c=>c.time>=st); } return fetchRangeRaw(inst,g,start,end); }
+async function fetchRange(inst,g,start,end){ const bg=baseGran(inst,g); if(bg!==g){ const st=bucketOf(start,g,inst); return aggCandles(await fetchRangeRaw(inst,bg,st,end),g,inst).filter(c=>c.time>=st); } return fetchRangeRaw(inst,g,start,end); }
 async function fetchRangeRaw(inst,g,start,end){
   start=bucketOf(start,g); const now=Math.floor(Date.now()/1000); end=Math.min(end,now); const out=[];
   if(isBinance(inst)){ const iv=BN_G[g]; if(!iv) return []; let from=start*1000;
@@ -4995,7 +5013,7 @@ function drawPicture(t,inst,candles,g,mode,tIn,tOut){
   if(th.chartBg2){ const gr=x2.createLinearGradient(0,0,0,H); gr.addColorStop(0,bg); gr.addColorStop(1,th.chartBg2); x2.fillStyle=gr; } else x2.fillStyle=bg; x2.fillRect(0,0,W,H);
   const buy=t.direction==='buy'; const iIn=candles.findIndex(k=>k.time>tIn-g&&k.time<=tIn); const entryIdx=iIn<0?candles.filter(k=>k.time<=tIn).length-1:iIn;
   // BEFORE shows only candles that had closed when you pressed CONFIRM — nothing from the future
-  const decide=mode==='after'&&tOut?Math.floor(tOut/g)*g:null; // the candle that hit the target / invalidation (or where you closed)
+  const decide=mode==='after'&&tOut?bucketOf(tOut,g,currentInst):null; // the candle that hit the target / invalidation (or where you closed)
   const shown=mode==='before'?candles.filter(k=>k.time+g<=tIn+1):candles.filter(k=>decide===null||k.time<=decide); const n=shown.length; if(n<3) return null;
   const extra=mode==='before'?Math.max(16,Math.round(n*0.4)):Math.max(6,Math.round(n*0.28)); const bw=(R-L)/(n+extra);
   const iE=mode==='before'?n:Math.max(0,shown.findIndex(k=>k.time>tIn-g&&k.time<=tIn)>=0?shown.findIndex(k=>k.time>tIn-g&&k.time<=tIn):shown.filter(k=>k.time<=tIn).length-1); const X=i=>L+(i+0.5)*bw;
@@ -5105,7 +5123,7 @@ function rpBar(D,g,b,now){ const end=Math.min(b+g,now); let i=rpIdx(D,b-1)+1, ba
 // load a pair's 1-minute engine: from the start of the clock's week (so 4H / daily / weekly candles are whole) to 3 days ahead
 async function rpEnsure(inst){ if(!rp.active||!inst) return null; rp.data=rp.data||{}; const sym=inst.symbol; if(rp.data[sym]) return rp.data[sym];
   rp.wait=rp.wait||{}; if(rp.wait[sym]) return rp.wait[sym]; const sid=rp.sid;
-  const p=(async()=>{ const from=bucketOf(rp.now,604800); let m1=[]; try{ m1=await rpFetch1m(inst,from,rp.now+3*86400); }catch(e){}
+  const p=(async()=>{ const from=bucketOf(rp.now,604800,inst); let m1=[]; try{ m1=await rpFetch1m(inst,from,rp.now+3*86400); }catch(e){}
     if(!rp.active||rp.sid!==sid||!m1.length) return null;
     const D={inst,sym,m1,from,m1End:m1[m1.length-1].time+60,noMore:false,loading:false,price:null,pLo:Infinity,pHi:-Infinity,hist:{}}; D.price=rpPriceNow(D,rp.now); rp.data[sym]=D; return D; })();
   rp.wait[sym]=p; try{ return await p; } finally{ delete rp.wait[sym]; } }
@@ -5113,10 +5131,10 @@ async function rpMore(D){ if(!D||D.loading||D.noMore||!rp.active||(D.retryAt&&Da
   try{ const more=await rpFetch1m(D.inst,D.m1End,D.m1End+3*86400); if(rp.sid!==sid) return; const add=more.filter(c=>c.time>=D.m1End); if(add.length){ D.m1.push(...add); D.m1End=add[add.length-1].time+60; D.fail=0; D.gapSkips=0; } else if(D.m1End+3*86400<Date.now()/1000-3600){ D.m1End+=3*86400; D.gapSkips=(D.gapSkips||0)+1; if(D.gapSkips>6) D.noMore=true; } else D.noMore=true; }
   catch(e){ D.fail=(D.fail||0)+1; D.retryAt=Date.now()+3000; if(D.fail>=4) D.noMore=true; } finally{ D.loading=false; } }
 // candles for one chart up to the clock: real history before the engine starts + bars built from the minutes
-async function rpCandles(D,g){ const Wb=bucketOf(D.from,g), k=g+':'+Wb;
+async function rpCandles(D,g){ const Wb=bucketOf(D.from,g,D.inst), k=g+':'+Wb;
   if(!D.hist[k]){ let h=[]; try{ h=await fetchOlder(D.inst,g,Wb,isBinance(D.inst)?1000:1500); }catch(e){} D.hist[k]=(h||[]).filter(c=>c.time<Wb); }
   const now=rp.now, bars=[]; for(let b=Wb;b<=now;b+=g){ const x=rpBar(D,g,b,now); if(x) bars.push(x); }
-  return {all:[...D.hist[k],...bars],curB:bucketOf(now,g)}; }
+  return {all:[...D.hist[k],...bars],curB:bucketOf(now,g,D.inst)}; }
 // main chart (called from loadCandles while a replay runs — pair, timeframe and chart swaps all come through here)
 async function rpLoadMain(){ const inst=currentInst; if(!inst||!series) return; const was=rp.playing; replayPlay(false); rp.building=true;
   try{ if(chartView==='trade') $('chart-status').textContent='Loading replay data…';
@@ -5211,7 +5229,7 @@ function replayPlay(on){ rp.playing=!!on&&rp.active; cancelAnimationFrame(rp.raf
       if(ts-(rp.idleAt||0)>20000){ rp.idleAt=ts; try{ resetIdle(); }catch(e){} } // watching a replay counts as activity
       rp.raf=requestAnimationFrame(loop); }; rp.raf=requestAnimationFrame(loop); }
   const b=document.querySelector('.rp-bar'); if(b&&rp.active){ const pb=b.querySelector('.rp-play'); if(pb) pb.textContent=rp.playing?'❚❚':'▶'; b.querySelector('.rp-dot')?.classList.toggle('on',rp.playing); } }
-function replayStep(){ if(!rp.active||rp.building||rp.jumping) return; const target=bucketOf(rp.now,rp.g)+rp.g; try{ rpAdvance(target-rp.now); }catch(e){ console.warn('replay',e); } }
+function replayStep(){ if(!rp.active||rp.building||rp.jumping) return; const target=bucketOf(rp.now,rp.g,currentInst)+rp.g; try{ rpAdvance(target-rp.now); }catch(e){ console.warn('replay',e); } }
 async function rpJump(j){ if(!rp.active||rp.jumping) return; let target;
   if(j==='date'){ const p=sastParts(rp.now); const v=prompt('Jump to (SAST) — YYYY-MM-DD HH:MM',`${p.date} ${p.time}`); if(!v) return; const m=v.trim().match(/^(\d{4}-\d{2}-\d{2})[ T](\d{1,2}:\d{2})$/); if(!m){ toast('Use the format 2026-11-10 09:00'); return; } target=sastToEpoch(m[1],m[2].padStart(5,'0')); }
   else if(j.startsWith('open:')){ const o=RP_OPENS.find(x=>'open:'+x.k===j); target=nextLocal(o.tz,o.h,o.m,rp.now); }
@@ -5236,7 +5254,7 @@ function rpAdvance(sec,force){
       if(seg) (D.seg||(D.seg=[])).push([Math.floor(Math.max(m.time,prev)),r[0],r[1]]); }
     D.price=rpPriceNow(D,now); }
   const D=rpD(rp.sym);
-  if(D&&series&&!rp.building){ const g=rp.g, cb=bucketOf(now,g);
+  if(D&&series&&!rp.building){ const g=rp.g, cb=bucketOf(now,g,D.inst);
     if(cb!==rp.curB){ for(let b=rp.curB;b<cb;b+=g){ const x=rpBar(D,g,b,b+g); if(x){ try{ series.update(x); }catch(e){} candleMap.set(x.time,x); } } rp.curB=cb; if(msOn()) setTimeout(()=>{ try{ msUpdate(); }catch(e){} },0); }
     const cur=rpBar(D,g,cb,now); if(cur){ try{ series.update(cur); }catch(e){} candleMap.set(cur.time,cur); } }
   for(const m of mcCharts){ if(!m.rp||!m.series||!m.inst) continue; const Dm=rpD(m.inst.symbol); if(!Dm) continue; const g=m.g, cb=bucketOf(now,g);
@@ -6681,7 +6699,7 @@ function renderAlertsPage(){ const root=$('alc-body'); if(!root) return; const P
   $('alc-perm')?.addEventListener('click',async()=>{ await askNotify(); renderAlertsPage(); });
   (()=>{ $('alc-loop')?.addEventListener('change',e=>{ lsSet('bd_alert_cfg',{...(lsGet('bd_alert_cfg',{})||{}),loop:e.target.checked}); toast(e.target.checked?'Alerts ring until you press Stop':'Alerts ring once'); }); return $('alc-pc'); })().addEventListener('change',e=>{ saveC({pc:e.target.value}); if(e.target.value!=='off') playAlarm(alertCfg().tone,e.target.value==='chime'?2.2:4,{preview:true}); });
   $('alc-on').addEventListener('change',e=>saveC({on:e.target.checked}));
-  $('alc-anchor').addEventListener('change',e=>{ saveC({anchor:e.target.value}); ccLast=null; renderAlertsPage(); });
+  $('alc-anchor').addEventListener('change',e=>{ saveC({anchor:e.target.value}); ccLast=null; _anc.at=0; msCache&&msCache.clear&&msCache.clear(); renderAlertsPage(); toast('Charts now cut 4H / daily candles at '+(e.target.value==='utc'?'UTC midnight':'17:00 New York')+' — reopen the chart to reload'); });
   $('alc-from').addEventListener('change',e=>saveC({from:e.target.value||'00:00'})); $('alc-to').addEventListener('change',e=>saveC({to:e.target.value||'23:59'}));
   const setSel=(tf,sym,on)=>{ const C=ccCfg(); const a=new Set(C.sel[tf]||[]); on?a.add(sym):a.delete(sym); C.sel[tf]=[...a]; lsSet('bd_cc',C); srvSoon(); };
   root.querySelectorAll('[data-cc]').forEach(x=>x.addEventListener('change',()=>{ setSel(x.dataset.cc,x.dataset.sym,x.checked); unlockAudio(); }));
