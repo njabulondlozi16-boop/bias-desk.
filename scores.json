@@ -1,83 +1,83 @@
 {
-  "date": "2026-11-27",
-  "generated_at": "04:06 SAST",
+  "date": "2026-11-28",
+  "generated_at": "04:10 SAST",
   "model": "gemini-3.8-flash",
   "scores": {
     "EURUSD": {
-      "score": -2,
-      "label": "Neutral",
-      "reason": "USD upside driven by strong GDP and PCE inflation outweighs modest ECB hawkishness."
+      "score": -6,
+      "label": "Strong Bearish",
+      "reason": "Diverging monetary policy as US growth excels while Eurozone inflation and growth stumble."
     },
     "GBPUSD": {
       "score": -3,
       "label": "Moderately Bearish",
-      "reason": "Dollar strength and broader risk sentiment keep sterling pinned near multi-month lows."
+      "reason": "Broad USD dominance and strong Fed rate hike bets overshadow BoE hawkishness."
     },
     "AUDUSD": {
-      "score": -1,
-      "label": "Neutral",
-      "reason": "Hawkish RBA pricing limits downside against broader US dollar resilience."
-    },
-    "NZDUSD": {
       "score": -4,
       "label": "Moderately Bearish",
-      "reason": "Kiwi faces fundamental headwinds and political drag against a tightening Fed."
+      "reason": "Australian rate cut expectations and robust USD demand limit Aussie upside."
+    },
+    "NZDUSD": {
+      "score": -5,
+      "label": "Moderately Bearish",
+      "reason": "New Zealand political deadlock and aggressive Fed pricing heavily favor the dollar."
     },
     "USDCHF": {
       "score": 5,
       "label": "Moderately Bullish",
-      "reason": "Widening interest rate gap and unwinding safe-haven demand favor USD upside."
+      "reason": "Widening rate differentials and reduced safe-haven appeal keep upward pressure on USDCHF."
     },
     "XAUUSD": {
-      "score": -6,
-      "label": "Strong Bearish",
-      "reason": "Surging US core inflation and firm December Fed rate-hike bets pressure bullion."
+      "score": -3,
+      "label": "Moderately Bearish",
+      "reason": "Technical bargain hunting faces strong headwinds from elevated Treasury yields and Fed tightening."
     },
     "US30": {
       "score": 4,
       "label": "Moderately Bullish",
-      "reason": "Dip-buying momentum and Black Friday optimism lift equity futures post-Thanksgiving."
+      "reason": "Strong Black Friday rally and easing AI concerns drive substantial broad-market dip-buying."
     },
     "US100": {
-      "score": 3,
-      "label": "Moderately Bullish",
-      "reason": "Bargain hunting emerges in tech, though persistent Fed tightening bets cap gains."
-    },
-    "GER30": {
       "score": 5,
       "label": "Moderately Bullish",
-      "reason": "Strong rally driven by bargain hunting, easing tariff fears, and tech rebound."
+      "reason": "Sharp tech rebound and AI hyperscaler dip-buying lift sentiment despite higher borrowing costs."
+    },
+    "GER30": {
+      "score": 4,
+      "label": "Moderately Bullish",
+      "reason": "European tech and defense gains support the index alongside cooling Eurozone inflation data."
     },
     "BTCUSD": {
-      "score": -7,
+      "score": -6,
       "label": "Strong Bearish",
-      "reason": "Slammed by massive ETF outflows, post-hack liquidity drain, and hawkish Fed expectations."
+      "reason": "Massive ETF outflows, exchange security concerns, and hawkish Fed expectations severely dampen demand."
     }
   },
   "currencies": {
     "USD": {
-      "score": 4,
-      "reason": "Supported by hawkish Fed rate hike bets and robust GDP despite holiday lull."
+      "score": 6,
+      "reason": "Strong 4.3% GDP growth and hot core PCE cement December Fed rate hike expectations."
     },
     "EUR": {
-      "score": 2,
-      "reason": "ECB minutes point to potential rate hike; leadership succession brings policy continuity."
+      "score": -5,
+      "reason": "Lower-than-expected inflation in France and Spain alongside French economic contraction soften ECB rate outlook."
     },
     "GBP": {
-      "score": 1,
-      "reason": "High BoE hike odds counteracted by safe-haven dollar demand and economic pressures."
+      "score": 2,
+      "reason": "Hawkish BoE rate hike bets and high energy cap counter broader macro pressure."
     },
     "AUD": {
-      "score": 3,
-      "reason": "Hotter CPI and surge in business investment reinforce hawkish RBA rate outlook."
+      "score": -2,
+      "reason": "Rising unemployment and RBA rate cut bets weigh despite a slight risk bounce."
     },
     "NZD": {
-      "score": -1,
-      "reason": "Strong retail sales offset by persistent hung parliament uncertainty and wide rate differentials."
+      "score": -3,
+      "reason": "Hung parliament results create political uncertainty while technically facing broad downside momentum."
     },
     "CHF": {
       "score": -3,
-      "reason": "Weakened as safe-haven demand faded and low yields encourage carry trade funding."
+      "reason": "Safe-haven demand softens amid equity rebound; remains low-yielding carry-trade funding currency."
     }
   },
   "sources": {
@@ -108,11 +108,11 @@
     },
     "CHF": {
       "paragraphs": 3,
-      "headlines": 6,
+      "headlines": 4,
       "problems": []
     },
     "GOLD": {
-      "paragraphs": 2,
+      "paragraphs": 3,
       "headlines": 6,
       "problems": []
     },
