@@ -1,13 +1,13 @@
 {
- "generated_at": "2026-11-27 12:10 SAST",
+ "generated_at": "2026-11-28 06:01 SAST",
  "instruments": [
   {
    "ticker": "AAPL",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2020-08-31",
@@ -20,90 +20,90 @@
   {
    "ticker": "ABBV",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "ABT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "ACN",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "ADBE",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "AIG",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "AMD",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "AMGN",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "AMT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "AMZN",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2022-06-06",
@@ -116,10 +116,10 @@
   {
    "ticker": "AVGO",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2024-07-15",
@@ -132,30 +132,30 @@
   {
    "ticker": "AXP",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "BA",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "BAC",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
@@ -170,10 +170,10 @@
   {
    "ticker": "BKNG",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2026-04-06",
@@ -186,80 +186,80 @@
   {
    "ticker": "BLK",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "BMY",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "BRK-B",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "C",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CAT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CHTR",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CL",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CMCSA",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2017-02-21",
@@ -276,90 +276,90 @@
   {
    "ticker": "COF",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "COP",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "COST",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CRM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CSCO",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CVS",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "CVX",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "DE",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "DHR",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2023-10-02",
@@ -372,50 +372,50 @@
   {
    "ticker": "DIS",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "DUK",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "EMR",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "F",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "FDX",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2026-06-01",
@@ -428,20 +428,20 @@
   {
    "ticker": "GD",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "GE",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2021-08-02",
@@ -462,30 +462,30 @@
   {
    "ticker": "GILD",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "GM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "GOOG",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2022-07-18",
@@ -498,10 +498,10 @@
   {
    "ticker": "GOOGL",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2022-07-18",
@@ -514,30 +514,30 @@
   {
    "ticker": "GS",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "HD",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "HON",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2018-10-29",
@@ -558,10 +558,10 @@
   {
    "ticker": "IBM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2021-11-04",
@@ -574,30 +574,30 @@
   {
    "ticker": "INTC",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "INTU",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "ISRG",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2017-10-06",
@@ -614,120 +614,120 @@
   {
    "ticker": "JNJ",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "JPM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "KO",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "LIN",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "LLY",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "LMT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "LOW",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MA",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MCD",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MDLZ",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MDT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MET",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2017-08-07",
@@ -740,20 +740,20 @@
   {
    "ticker": "META",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MMM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2024-04-01",
@@ -766,20 +766,20 @@
   {
    "ticker": "MO",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MRK",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2021-06-03",
@@ -792,30 +792,30 @@
   {
    "ticker": "MS",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "MSFT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "NEE",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2020-10-27",
@@ -828,10 +828,10 @@
   {
    "ticker": "NFLX",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2025-11-17",
@@ -846,20 +846,20 @@
   {
    "ticker": "NKE",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "NOW",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2025-12-18",
@@ -872,10 +872,10 @@
   {
    "ticker": "NVDA",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2021-07-20",
@@ -892,10 +892,10 @@
   {
    "ticker": "ORCL",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [
     "1 big one-day jumps (check splits): 2025-09-10 +36%"
    ],
@@ -904,20 +904,20 @@
   {
    "ticker": "PEP",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "PFE",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2020-11-17",
@@ -930,60 +930,60 @@
   {
    "ticker": "PG",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "PLTR",
    "market": "US",
-   "rows": 1547,
+   "rows": 1548,
    "first": "2020-09-30",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "PM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "PYPL",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "QCOM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "RTX",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2020-04-03",
@@ -996,50 +996,50 @@
   {
    "ticker": "SBUX",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "SCHW",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "SO",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "SPG",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "T",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2022-04-11",
@@ -1052,40 +1052,40 @@
   {
    "ticker": "TGT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "TMO",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "TMUS",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "TSLA",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2020-08-31",
@@ -1102,20 +1102,20 @@
   {
    "ticker": "TXN",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "UBER",
    "market": "US",
-   "rows": 1898,
+   "rows": 1899,
    "first": "2019-05-10",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [
     "1 big one-day jumps (check splits): 2020-03-19 +38%"
    ],
@@ -1124,80 +1124,80 @@
   {
    "ticker": "UNH",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "UNP",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "UPS",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "USB",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "V",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "VZ",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "WFC",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "WMT",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2024-02-26",
@@ -1210,20 +1210,20 @@
   {
    "ticker": "XOM",
    "market": "US",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "XLK",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2025-12-05",
@@ -1236,20 +1236,20 @@
   {
    "ticker": "XLF",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "XLE",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2025-12-05",
@@ -1262,30 +1262,30 @@
   {
    "ticker": "XLV",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "XLI",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "XLY",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2025-12-05",
@@ -1298,20 +1298,20 @@
   {
    "ticker": "XLP",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "XLU",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2025-12-05",
@@ -1324,10 +1324,10 @@
   {
    "ticker": "XLB",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2025-12-05",
@@ -1340,110 +1340,110 @@
   {
    "ticker": "XLRE",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "XLC",
    "market": "ETF",
-   "rows": 2122,
+   "rows": 2123,
    "first": "2018-06-19",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "SPY",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "QQQ",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "IWM",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "DIA",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "EFA",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "EEM",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "GLD",
    "market": "Commodity",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "SLV",
    "market": "Commodity",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "USO",
    "market": "Commodity",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "splits": [
     {
      "date": "2020-04-29",
@@ -1456,39 +1456,39 @@
   {
    "ticker": "TLT",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "IEF",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "DBC",
    "market": "Commodity",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "NPN.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "splits": [
     {
@@ -1506,9 +1506,9 @@
   {
    "ticker": "PRX.JO",
    "market": "JSE",
-   "rows": 1802,
+   "rows": 1803,
    "first": "2019-09-11",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "splits": [
     {
@@ -1522,9 +1522,9 @@
   {
    "ticker": "CFR.JO",
    "market": "JSE",
-   "rows": 901,
+   "rows": 902,
    "first": "2023-04-19",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1532,9 +1532,9 @@
   {
    "ticker": "BTI.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1542,9 +1542,9 @@
   {
    "ticker": "AGL.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "splits": [
     {
@@ -1558,9 +1558,9 @@
   {
    "ticker": "FSR.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1568,9 +1568,9 @@
   {
    "ticker": "SBK.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "cleaned": [
     "2025-04-25 x100 (rand/cents glitch)"
@@ -1584,9 +1584,9 @@
   {
    "ticker": "CPI.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [
     "1 big one-day jumps (check splits): 2020-03-20 +42%"
@@ -1596,9 +1596,9 @@
   {
    "ticker": "MTN.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1606,9 +1606,9 @@
   {
    "ticker": "ABG.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1616,9 +1616,9 @@
   {
    "ticker": "NED.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1626,9 +1626,9 @@
   {
    "ticker": "SLM.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "cleaned": [
     "2025-01-10 x100 (rand/cents glitch)"
@@ -1642,9 +1642,9 @@
   {
    "ticker": "BHG.JO",
    "market": "JSE",
-   "rows": 1204,
+   "rows": 1205,
    "first": "2022-01-31",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1652,9 +1652,9 @@
   {
    "ticker": "GLN.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1662,9 +1662,9 @@
   {
    "ticker": "VAL.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1672,9 +1672,9 @@
   {
    "ticker": "ANG.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1682,9 +1682,9 @@
   {
    "ticker": "GFI.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1692,9 +1692,9 @@
   {
    "ticker": "IMP.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1702,9 +1702,9 @@
   {
    "ticker": "SOL.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [
     "3 big one-day jumps (check splits): 2020-03-09 -47%, 2020-03-13 +36%, 2020-04-07 +53%"
@@ -1714,9 +1714,9 @@
   {
    "ticker": "VOD.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "cleaned": [
     "2025-01-10 x100 (rand/cents glitch)"
@@ -1730,9 +1730,9 @@
   {
    "ticker": "SHP.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1740,9 +1740,9 @@
   {
    "ticker": "BID.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1750,9 +1750,9 @@
   {
    "ticker": "BVT.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1760,9 +1760,9 @@
   {
    "ticker": "CLS.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1770,9 +1770,9 @@
   {
    "ticker": "WHL.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1780,9 +1780,9 @@
   {
    "ticker": "MNP.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "splits": [
     {
@@ -1796,9 +1796,9 @@
   {
    "ticker": "REM.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1806,9 +1806,9 @@
   {
    "ticker": "OMU.JO",
    "market": "JSE",
-   "rows": 2104,
+   "rows": 2105,
    "first": "2018-06-27",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1816,9 +1816,9 @@
   {
    "ticker": "DSY.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1826,9 +1826,9 @@
   {
    "ticker": "INL.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1836,9 +1836,9 @@
   {
    "ticker": "INP.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1846,9 +1846,9 @@
   {
    "ticker": "NRP.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "splits": [
     {
@@ -1862,9 +1862,9 @@
   {
    "ticker": "GRT.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1872,9 +1872,9 @@
   {
    "ticker": "APN.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1882,9 +1882,9 @@
   {
    "ticker": "HAR.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1892,9 +1892,9 @@
   {
    "ticker": "NPH.JO",
    "market": "JSE",
-   "rows": 1297,
+   "rows": 1298,
    "first": "2021-09-16",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1902,9 +1902,9 @@
   {
    "ticker": "SSW.JO",
    "market": "JSE",
-   "rows": 1690,
+   "rows": 1691,
    "first": "2020-02-21",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1912,9 +1912,9 @@
   {
    "ticker": "EXX.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1922,9 +1922,9 @@
   {
    "ticker": "PPH.JO",
    "market": "JSE",
-   "rows": 2298,
+   "rows": 2299,
    "first": "2017-09-20",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "cleaned": [
     "2025-01-10 x100 (rand/cents glitch)"
@@ -1938,9 +1938,9 @@
   {
    "ticker": "ANH.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "cleaned": [
     "2025-04-25 x100 (rand/cents glitch)"
@@ -1954,9 +1954,9 @@
   {
    "ticker": "MRP.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1964,9 +1964,9 @@
   {
    "ticker": "OUT.JO",
    "market": "JSE",
-   "rows": 2506,
+   "rows": 2507,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -1974,9 +1974,9 @@
   {
    "ticker": "STX40.JO",
    "market": "JSE",
-   "rows": 2494,
+   "rows": 2495,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "cleaned": [
     "2025-04-25 x100 (rand/cents glitch)"
@@ -1990,9 +1990,9 @@
   {
    "ticker": "STXIND.JO",
    "market": "JSE",
-   "rows": 2494,
+   "rows": 2495,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -2000,9 +2000,9 @@
   {
    "ticker": "STXRES.JO",
    "market": "JSE",
-   "rows": 2501,
+   "rows": 2502,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -2010,9 +2010,9 @@
   {
    "ticker": "STXFIN.JO",
    "market": "JSE",
-   "rows": 2494,
+   "rows": 2495,
    "first": "2016-11-28",
-   "last": "2026-11-25",
+   "last": "2026-11-26",
    "age_days": 2,
    "problems": [],
    "status": "ok"
@@ -2021,8 +2021,8 @@
    "ticker": "BTC-USD",
    "market": "Crypto",
    "rows": 3652,
-   "first": "2016-11-27",
-   "last": "2026-11-27",
+   "first": "2016-11-28",
+   "last": "2026-11-28",
    "age_days": 0,
    "problems": [],
    "status": "ok"
@@ -2030,9 +2030,9 @@
   {
    "ticker": "ETH-USD",
    "market": "Crypto",
-   "rows": 3305,
+   "rows": 3306,
    "first": "2017-11-09",
-   "last": "2026-11-27",
+   "last": "2026-11-28",
    "age_days": 0,
    "problems": [],
    "status": "ok"
@@ -2040,9 +2040,9 @@
   {
    "ticker": "SOL-USD",
    "market": "Crypto",
-   "rows": 2422,
+   "rows": 2423,
    "first": "2020-04-10",
-   "last": "2026-11-27",
+   "last": "2026-11-28",
    "age_days": 0,
    "problems": [],
    "status": "ok"
@@ -2050,9 +2050,9 @@
   {
    "ticker": "ZAR=X",
    "market": "FX",
-   "rows": 2602,
+   "rows": 2603,
    "first": "2016-11-28",
-   "last": "2026-11-27",
+   "last": "2026-11-28",
    "age_days": 0,
    "problems": [],
    "status": "ok"
@@ -2060,19 +2060,19 @@
   {
    "ticker": "^GSPC",
    "market": "Index",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "^VIX",
    "market": "Index",
-   "rows": 2516,
+   "rows": 2517,
    "first": "2016-11-28",
-   "last": "2026-11-26",
+   "last": "2026-11-27",
    "age_days": 1,
    "problems": [],
    "status": "ok"
@@ -2083,7 +2083,7 @@
    "rows": 2516,
    "first": "2016-11-28",
    "last": "2026-11-27",
-   "age_days": 0,
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
@@ -2093,7 +2093,7 @@
    "rows": 2516,
    "first": "2016-11-28",
    "last": "2026-11-27",
-   "age_days": 0,
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
@@ -2103,17 +2103,17 @@
    "rows": 2516,
    "first": "2016-11-28",
    "last": "2026-11-27",
-   "age_days": 0,
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   },
   {
    "ticker": "HYG",
    "market": "ETF",
-   "rows": 2513,
+   "rows": 2514,
    "first": "2016-11-28",
-   "last": "2026-11-25",
-   "age_days": 2,
+   "last": "2026-11-27",
+   "age_days": 1,
    "problems": [],
    "status": "ok"
   }
@@ -2150,23 +2150,23 @@
   {
    "series": "T3M (treasury)",
    "status": "ok",
-   "rows": 2725,
+   "rows": 2726,
    "first": "2016-01-04",
-   "last": "2026-11-25"
+   "last": "2026-11-27"
   },
   {
    "series": "T2Y (treasury)",
    "status": "ok",
-   "rows": 2725,
+   "rows": 2726,
    "first": "2016-01-04",
-   "last": "2026-11-25"
+   "last": "2026-11-27"
   },
   {
    "series": "T10Y (treasury)",
    "status": "ok",
-   "rows": 2725,
+   "rows": 2726,
    "first": "2016-01-04",
-   "last": "2026-11-25"
+   "last": "2026-11-27"
   }
  ],
  "summary": {
